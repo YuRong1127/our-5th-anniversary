@@ -31,21 +31,27 @@
             --modal-bg: #fffbf9;
         }
 
-        body { 
-            font-family: 'Kosugi Maru', 'Noto Sans TC', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--main-brown);
-            margin: 0;
-            padding-bottom: 140px;
-            letter-spacing: 0.02em;
-            overflow-x: hidden;
-            min-height: 100vh;
-            touch-action: pan-y;
-            -webkit-tap-highlight-color: transparent;
-            padding-top: env(safe-area-inset-top);
-            /* 修正重點：鎖定下拉行為，防止出現重新整理箭頭 */
-            overscroll-behavior-y: contain; 
-        }
+        html, body {
+    /* 同時鎖定 html 和 body，讓瀏覽器完全找不到下拉刷新的空間 */
+    overscroll-behavior-y: none;
+    overscroll-behavior: none;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body { 
+    font-family: 'Kosugi Maru', 'Noto Sans TC', sans-serif; 
+    background-color: var(--bg-color); 
+    color: var(--main-brown);
+    margin: 0;
+    padding-bottom: 140px;
+    letter-spacing: 0.02em;
+    min-height: 100vh;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+    padding-top: env(safe-area-inset-top);
+}
+
 
         body.modal-open {
             overflow: hidden !important;
