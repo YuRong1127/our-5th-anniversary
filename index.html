@@ -2,52 +2,687 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2026 Mie Anniversary</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>2026 MIE Anniversary Journey</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="三重之旅">
     
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/longlongadog802/try/main/1000038329.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="三重五週年">
     <link rel="icon" sizes="192x192" href="https://raw.githubusercontent.com/longlongadog802/try/main/1000038329.png">
+    
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJnameIjogIjIwMjYgTWllIEFubml2ZXJzYXJ5IEpvdXJuZXkiLAogICJzaG9ydF9uYW1lIjogIsm96YeN5LmL5peFIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZWY5ZjYiLAogICJ0aGVtZV9jb2xvciI6ICIjOGQ2ZTYzIgp9">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fef9f6; margin: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Kosugi+Maru&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
         
-        /* 恢復你原本的精美視覺設定 */
-        .hero-section {
+        :root {
+            --bg-color: #fef9f6;
+            --main-brown: #8d6e63;
+            --light-brown: #bcaaaa;
+            --accent-peach: #fbe9e7;
+            --card-border: #f0e6e2;
+            --heart-pink: #d17a6d;
+            --save-bg: #b0897e;
+            --cancel-bg: #e2d5d0;
+            --auth-title: #8d6e63;
+            --modal-bg: #fffbf9;
+        }
+
+        body { 
+            font-family: 'Kosugi Maru', 'Noto Sans TC', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--main-brown);
+            margin: 0;
+            padding-bottom: 140px;
+            letter-spacing: 0.02em;
+            overflow-x: hidden;
+            min-height: 100vh;
+            touch-action: pan-y;
+            -webkit-tap-highlight-color: transparent;
+            padding-top: env(safe-area-inset-top);
+        }
+
+        body.modal-open {
+            overflow: hidden !important;
+            height: 100% !important;
+            width: 100% !important;
+            position: fixed !important;
+            touch-action: none !important;
+        }
+
+        .btn-press-effect {
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+            cursor: pointer;
+            user-select: none;
+            touch-action: manipulation;
+            will-change: transform;
+        }
+        .btn-press-effect:active {
+            transform: scale(0.92) !important;
+            opacity: 0.7;
+        }
+
+        /* 顏文字對齊深層優化 */
+        .kaomoji-fix {
+            display: inline-block;
+            font-family: "Segoe UI Symbol", "Apple Color Emoji", "Hiragino Kaku Gothic ProN", "MS PGothic", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            white-space: nowrap;
+            vertical-align: baseline;
+            line-height: 1;
+            letter-spacing: normal;
+            transform: translateY(-2px);
+            -webkit-font-smoothing: antialiased;
+            margin-left: 2px;
+        }
+
+        .sticky-top-container {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: var(--bg-color);
+            padding-bottom: 2px;
+            padding-top: env(safe-area-inset-top);
+        }
+
+        header {
+            background-color: white;
+            border-radius: 0 0 40px 40px;
+            padding: 20px 20px 12px;
+            text-align: center;
+            box-shadow: 0 4px 25px rgba(141, 110, 99, 0.08);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header-main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #edit-mode-title {
+            display: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #a67c71;
+            letter-spacing: 0.05em;
+        }
+
+        .header-subtitle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             width: 100%;
-            height: 300px;
-            background: url('https://raw.githubusercontent.com/longlongadog802/try/main/1000038329.png') no-repeat center center;
-            background-size: cover;
         }
-        .main-card {
+
+        .header-line {
+            height: 1px;
+            background-color: #ede2db;
+            flex: 1;
+            max-width: 30px;
+        }
+
+        .header-subtitle {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1rem;
+            color: #d17a6d;
+            letter-spacing: 0.05em;
+        }
+
+        .header-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #a67c71;
+            margin: 2px 0;
+            letter-spacing: 0.12em;
+        }
+
+        .quote-single-line {
+            font-size: 0.85rem;
+            color: #bcaaaa;
+            font-style: italic;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        .date-nav {
+            display: flex;
+            justify-content: center;
+            gap: 14px; 
+            padding: 15px 20px 10px; 
+            background-color: var(--bg-color);
+            overflow-x: auto;
+            scrollbar-width: none;
+            width: 100%;
+        }
+        .date-nav::-webkit-scrollbar { display: none; }
+
+        .date-item {
+            text-align: center;
+            min-width: 62px;
+            padding: 10px 0; 
+            border-radius: 16px;
+            color: #bcaaaa;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .date-item.active {
+            background-color: var(--accent-peach);
+            color: #d17a6d;
+            font-weight: bold;
+            transform: scale(1.05);
+        }
+
+        .edit-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 20px 25px calc(20px + env(safe-area-inset-bottom));
+            display: none;
+            justify-content: center;
+            gap: 20px;
+            z-index: 100;
+            box-shadow: 0 -8px 20px rgba(141, 110, 99, 0.05);
+            border-radius: 35px 35px 0 0;
+        }
+
+        .card {
             background: white;
-            border-radius: 30px 30px 0 0;
-            margin-top: -30px;
-            padding: 25px;
-            min-height: 500px;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            border-radius: 25px;
+            padding: 20px;
+            border: 1.5px solid var(--card-border);
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(141, 110, 99, 0.03);
+            position: relative;
         }
+
+        .time-badge {
+            font-size: 0.7rem;
+            color: #d17a6d;
+            font-weight: bold;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .connector-line {
+            width: 1px;
+            height: 20px;
+            border-left: 2px dashed #e8dcd5;
+            margin-left: 45px;
+            margin-top: -6px;
+            margin-bottom: 6px;
+        }
+
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(141, 110, 99, 0.4); 
+            z-index: 1000; 
+            align-items: center; 
+            justify-content: center; 
+            backdrop-filter: blur(4px); 
+            -webkit-backdrop-filter: blur(4px);
+            overscroll-behavior: none;
+            touch-action: none;
+        }
+        
+        .modal-container { 
+            position: relative; 
+            width: 92%; 
+            max-width: 400px; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            transition: transform 0.3s ease; 
+            pointer-events: auto;
+            touch-action: none;
+        }
+        
+        .modal-container.keyboard-active {
+            transform: translateY(-25%);
+        }
+
+        .modal-content { 
+            background: var(--modal-bg); 
+            padding: 35px 25px; 
+            border-radius: 30px; 
+            width: 100%; 
+            max-height: 80vh; 
+            overflow: hidden; 
+            box-shadow: 0 10px 40px rgba(141, 110, 99, 0.1); 
+            border: 1px solid #f9f0ed; 
+        }
+        
+        #wallet-modal .modal-content {
+            overflow-y: auto;
+            touch-action: pan-y;
+        }
+        
+        .modal-close-btn { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            color: #d17a6d; 
+            width: 36px; 
+            height: 36px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            background: white; 
+            border-radius: 50%;
+            z-index: 1010;
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .modal-title { font-size: 1.4rem; font-weight: 800; color: var(--auth-title); margin-bottom: 15px; letter-spacing: 0.05em; }
+        .pw-hint-text { 
+            font-size: 1.1rem; 
+            color: #a67c71; 
+            transition: all 0.2s; 
+            font-weight: 500; 
+            margin-top: 10px; 
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        } 
+        .pw-hint-text.error { color: var(--heart-pink); animation: shake 0.4s ease-in-out; }
+        
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+        .heart-row { cursor: pointer; }
+        .heart-slot { position: relative; display: inline-block; width: 30px; height: 30px; margin: 0 3px; font-size: 1.6rem; }
+        .heart-slot .h-empty { color: #d6cdc9; position: absolute; left: 0; }
+        .heart-slot .h-full { color: var(--heart-pink); position: absolute; left: 0; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
+        .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
+        .heart-slot.active .h-empty { opacity: 0; }
+
+        .floating-menu { position: fixed; bottom: 95px; right: 20px; display: none; flex-direction: column; gap: 14px; z-index: 60; }
+        .float-icon { width: 62px; height: 62px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(141, 110, 99, 0.15); cursor: pointer; font-size: 1.8rem; transition: all 0.25s; border: 2px solid #fff; }
+        .menu-item { opacity: 0; transform: translateY(15px) scale(0.3); transition: all 0.25s; }
+        .floating-menu.show .menu-item { opacity: 1; transform: translateY(0) scale(1); }
+        .main-piggy { position: fixed; bottom: 25px; right: 20px; z-index: 70; background: #ffdada; }
+        .main-piggy.hidden-piggy { display: none !important; }
+        
+        .day-section { display: none; animation: fadeIn 0.4s ease-out; }
+        .day-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .editable:focus { outline: none; background: #fffde7; border-radius: 4px; }
+
+        .wallet-input { width: 100%; border: 1px solid #f0e6e2; padding: 14px 15px; border-radius: 15px; margin-bottom: 12px; outline: none; font-size: 1rem; appearance: none; }
+        .toggle-group { display: flex; background: #f5efec; border-radius: 15px; padding: 4px; margin-bottom: 12px; }
+        .toggle-btn { flex: 1; padding: 12px 4px; text-align: center; font-size: 0.9rem; border-radius: 12px; cursor: pointer; color: #bcaaaa; transition: all 0.1s; }
+        .toggle-btn.active { background: white; color: #d17a6d; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        
+        .modal-btn-primary {
+            background-color: var(--heart-pink);
+            color: white;
+            padding: 18px 24px; 
+            border-radius: 20px;
+            font-weight: 700;
+            width: 100%;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(209, 122, 109, 0.25);
+            border: none;
+            display: block;
+            text-align: center;
+        }
+
+        .footer-btn {
+            flex: 1;
+            padding: 16px 0;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 0.1em;
+            max-width: 160px;
+        }
+        
+        .total-summary { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #eee; }
+        .chart-container { background: #fdfaf8; border-radius: 20px; padding: 20px; margin-top: 20px; border: 1px solid #f9f0ed; }
+        .chart-bar-wrapper { display: flex; align-items: flex-end; justify-content: space-between; height: 120px; padding-top: 20px; }
+        .chart-bar { width: 22px; background: var(--accent-peach); border-radius: 10px 10px 4px 4px; transition: height 0.5s ease-out; position: relative; }
+        .chart-bar.highlight { background: var(--heart-pink); }
+        .chart-bar-label { font-size: 10px; color: #bcaaaa; margin-top: 5px; }
     </style>
 </head>
-<body>
+<body id="swipe-body">
 
-<div class="hero-section"></div>
+    <div class="sticky-top-container">
+        <header id="app-header">
+            <div id="header-normal-view" class="header-main-content">
+                <div class="header-subtitle-container">
+                    <div class="header-line"></div>
+                    <div class="header-subtitle">2026 Mie Anniversary</div>
+                    <div class="header-line"></div>
+                </div>
+                <h1 class="header-title editable">五週年・三重之旅</h1>
+                <div class="header-quote-container">
+                    <div class="quote-single-line editable">「在伊勢的微風中，我們圓圓的迎接第五年。」</div>
+                </div>
+            </div>
+            <div id="edit-mode-title">✎﹏現在是在編輯頁面裡喔💬</div>
+        </header>
 
-<div class="main-card">
-    <h1 class="text-2xl font-bold text-center text-orange-800">五週年 • 三重之旅</h1>
-    <p class="text-center italic text-gray-500 mt-2 handwriting">「在伊勢的微風中，圓圓地迎接第五年。」</p>
+        <nav id="app-nav" class="date-nav">
+            <div class="date-item active btn-press-effect" onclick="switchDay(1)" id="tab-1"><div class="text-xs">週三</div><div>11.25</div></div>
+            <div class="date-item btn-press-effect" onclick="switchDay(2)" id="tab-2"><div class="text-xs">週四</div><div>11.26</div></div>
+            <div class="date-item btn-press-effect" onclick="switchDay(3)" id="tab-3"><div class="text-xs">週五</div><div>11.27💕</div></div>
+            <div class="date-item btn-press-effect" onclick="switchDay(4)" id="tab-4"><div class="text-xs">週六</div><div>11.28</div></div>
+            <div class="date-item btn-press-effect" onclick="switchDay(5)" id="tab-5"><div class="text-xs">週日</div><div>11.29</div></div>
+        </nav>
+    </div>
 
-    <div class="mt-8 space-y-6">
-        <div class="border-l-2 border-orange-200 pl-4">
-            <span class="text-orange-600 font-bold text-sm">DAY 1 - 11.25</span>
-            <h3 class="font-bold">開啟週年之旅</h3>
-            <p class="text-sm text-gray-400">桃園機場 → 中部國際機場 → 名古屋榮區</p>
+    <main class="px-5 mt-4">
+        <div id="day-content">
+            <section id="day-1" class="day-section active">
+                <div class="card flex gap-4"><span class="text-2xl">🚗</span><div><span class="time-badge">06:45</span><div class="font-bold editable">桃園機場 T1 報到</div><div class="text-xs text-gray-400 editable">IT206 準備起飛，五週年之旅正式開始！</div></div></div>
+                <div class="connector-line"></div>
+                <div class="card flex gap-4"><span class="text-2xl">✈️</span><div><span class="time-badge">08:45-12:25</span><div class="font-bold editable">抵達中部國際機場 (NGO)</div><div class="text-xs text-gray-400 editable">領取租車，開啟五天四夜三重縣行程</div></div></div>
+                <div class="connector-line"></div>
+                <div class="card flex gap-4"><span class="text-2xl">🛍️</span><div><span class="time-badge">15:00</span><div class="font-bold editable">名古屋榮區逛街</div><div class="text-xs text-gray-400 editable">逛百貨公司、綠洲21，享受名古屋熱鬧氛圍</div></div></div>
+                <div class="connector-line"></div>
+                <div class="card flex gap-4"><span class="text-2xl">🏨</span><div><span class="time-badge">19:00</span><div class="font-bold editable">入住榮區附近飯店</div><div class="text-xs text-gray-400 editable">榮區住宿方便，晚餐可在附近尋找特色美食</div></div></div>
+            </section>
+
+            <section id="day-2" class="day-section">
+                <div class="card flex gap-4"><span class="text-2xl">🏎️</span><div><span class="time-badge">09:00</span><div class="font-bold editable">名古屋出發 → 鈴鹿賽道</div><div class="text-xs text-gray-400 editable">鈴鹿賽道樂園刺激玩樂（Suzuka Circuit Park）</div></div></div>
+                <div class="connector-line"></div>
+                <div class="card flex gap-4"><span class="text-2xl">🚉</span><div><span class="time-badge">15:30</span><div class="font-bold editable">前往伊勢市區</div><div class="text-xs text-gray-400 editable">📍 任務：伊勢車站觀光案內所領水溝蓋卡</div></div></div>
+            </section>
+
+            <section id="day-3" class="day-section">
+                <div class="card flex gap-4"><span class="text-2xl">⛩️</span><div><span class="time-badge">08:00</span><div class="font-bold editable">二見興玉神社 & 夫婦岩</div><div class="text-xs text-gray-400 editable">📍 任務：二見浦案內所領水溝蓋卡 / 吃赤福抹茶冰</div></div></div>
+                <div class="connector-line"></div>
+                <div class="card flex gap-4"><span class="text-2xl">🙏</span><div><span class="time-badge">10:30</span><div class="font-bold editable">伊勢神宮參拜 (外宮 → 內宮)</div><div class="text-xs text-gray-400 editable">感受日本第一神宮的莊嚴氣息</div></div></div>
+            </section>
+
+            <section id="day-4" class="day-section">
+                <div class="card flex gap-4"><span class="text-2xl">🦦</span><div><span class="time-badge">09:00</span><div class="font-bold editable">鳥羽水族館</div><div class="text-xs text-gray-400 editable">開門即進場，看可愛的海獺與儒艮</div></div></div>
+                <div class="connector-line"></div>
+                <div class="card flex gap-4"><span class="text-2xl">🦐</span><div><span class="time-badge">12:30</span><div class="font-bold editable">海女小屋體驗</div><div class="text-xs text-gray-400 editable">與海女互動，享用新鮮現烤的海鮮大餐</div></div></div>
+            </section>
+
+            <section id="day-5" class="day-section">
+                <div class="card flex gap-4"><span class="text-2xl">⚪</span><div><span class="time-badge">09:00</span><div class="font-bold editable">御木本真珠島</div><div class="text-xs text-gray-400 editable">參觀博物館、看海女表演、選購珍珠飾品</div></div></div>
+                <div class="connector-line"></div>
+                <div class="card flex gap-4"><span class="text-2xl">🛫</span><div><span class="time-badge">15:00</span><div class="font-bold editable">前往中部國際機場</div><div class="text-xs text-gray-400 editable">還車並準備報到登機</div></div></div>
+            </section>
+        </div>
+    </main>
+
+    <div id="edit-footer" class="edit-footer">
+        <button class="footer-btn btn-press-effect" onclick="toggleEditMode(false)" style="background-color: var(--cancel-bg); color: #8d6e63;">放棄存檔</button>
+        <button class="footer-btn btn-press-effect" onclick="toggleEditMode(false)" style="background-color: var(--save-bg); color: white;">儲存檔案</button>
+    </div>
+
+    <div id="password-modal" class="modal-overlay">
+        <div id="auth-container" class="modal-container">
+            <div class="modal-close-btn btn-press-effect" ontouchend="handleModalClose(event, 'password-modal')" onclick="closeModal('password-modal')">✕</div>
+            <div class="modal-content text-center flex flex-col items-center">
+                <div class="modal-title">身份認證</div>
+                <div class="flex justify-center mb-8 heart-row" id="heart-row" onclick="focusPassword()">
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                    <div class="heart-slot"><span class="h-empty">♡</span><span class="h-full">♥</span></div>
+                </div>
+                <input type="tel" id="pw-input" class="opacity-0 absolute pointer-events-none" maxlength="8" onfocus="handleInputFocus(true)" onblur="handleInputFocus(false)">
+                <p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<span class="kaomoji-fix">(๑> ◡ <๑)</span></p>
+            </div>
         </div>
     </div>
-</div>
 
+    <div id="wallet-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-close-btn btn-press-effect" ontouchend="handleModalClose(event, 'wallet-modal')" onclick="closeModal('wallet-modal')">✕</div>
+            <div class="modal-content">
+                <h2 class="text-xl font-bold mb-5 text-[#8d6e63]">👛 旅遊記帳統計</h2>
+                <div class="total-summary">
+                    <div><div class="text-[10px] text-gray-400 font-bold uppercase">Expenses</div><div class="text-3xl font-bold text-[#d17a6d]">¥ <span id="total-amount-display">0</span></div></div>
+                    <div class="text-right"><div class="text-[10px] text-gray-400">Est. TWD</div><div class="text-lg font-bold text-[#bcaaaa]">$ <span id="total-twd-display">0</span></div></div>
+                </div>
+                <div class="bg-gray-50 p-5 rounded-2xl mb-6">
+                    <input type="text" id="exp-title" class="wallet-input" placeholder="支出項目">
+                    <div class="toggle-group">
+                        <div id="payer-both" class="toggle-btn active btn-press-effect" onclick="setPayer('公費')">公費</div>
+                        <div id="payer-big" class="toggle-btn btn-press-effect" onclick="setPayer('大豬')">大豬</div>
+                        <div id="payer-small" class="toggle-btn btn-press-effect" onclick="setPayer('小豬')">小豬</div>
+                    </div>
+                    <input type="tel" id="exp-amount" class="wallet-input" placeholder="金額 (日幣 ¥)">
+                    <button onclick="addExpense()" class="modal-btn-primary btn-press-effect mt-2">確認新增</button>
+                </div>
+                <div class="chart-container">
+                    <div class="text-xs font-bold text-gray-400 mb-2">每日花費佔比</div>
+                    <div class="chart-bar-wrapper" id="expense-chart"></div>
+                </div>
+                <div id="expense-list" class="mt-6 space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="work-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-content text-center">
+                <div class="modal-title" style="color: var(--heart-pink);">還沒要出發喔</div>
+                <p class="text-[#8d6e63] leading-relaxed mb-6">ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></p>
+                <button ontouchend="handleModalClose(event, 'work-modal')" onclick="closeModal('work-modal')" class="modal-btn-primary btn-press-effect">好啦，不小心滑到齁！</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="finish-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-content text-center">
+                <div class="modal-title" style="color: var(--heart-pink);">旅程結束了喔</div>
+                <p class="text-[#8d6e63] leading-relaxed mb-6">繼續上班存錢錢💛再一起出去玩</p>
+                <button ontouchend="handleModalClose(event, 'finish-modal')" onclick="closeModal('finish-modal')" class="modal-btn-primary btn-press-effect" style="background-color: var(--save-bg);">好啦 (乖乖回辦公室)</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="floating-menu" class="floating-menu">
+        <div class="float-icon menu-item btn-press-effect" onclick="handleEditClick()">✏️</div>
+        <div class="float-icon menu-item btn-press-effect" onclick="openWallet()">👛</div>
+    </div>
+    <div id="main-btn" class="float-icon main-piggy btn-press-effect" onclick="toggleMenu()">🐷</div>
+
+    <script>
+        let currentDay = 1;
+        let expenses = []; 
+        let currentPayer = '公費';
+        const FX = 0.21;
+        const correctPw = "20211127";
+        let isModalOpen = false;
+        let isEditMode = false;
+        let scrollPos = 0;
+
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        function lockScroll() {
+            scrollPos = window.pageYOffset;
+            document.body.classList.add('modal-open');
+            document.body.style.top = `-${scrollPos}px`;
+        }
+
+        function unlockScroll() {
+            document.body.classList.remove('modal-open');
+            document.body.style.top = '';
+            window.scrollTo(0, scrollPos);
+        }
+
+        function handleModalClose(e, id) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal(id);
+        }
+
+        function focusPassword() {
+            const input = document.getElementById('pw-input');
+            input.focus();
+        }
+
+        function handleInputFocus(isFocused) {
+            const container = document.getElementById('auth-container');
+            if (isFocused && isTouchDevice) {
+                container.classList.add('keyboard-active');
+            } else {
+                container.classList.remove('keyboard-active');
+            }
+        }
+
+        function switchDay(day) {
+            if (isModalOpen) return;
+            currentDay = day;
+            document.querySelectorAll('.date-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${day}`).classList.add('active');
+            document.querySelectorAll('.day-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(`day-${day}`).classList.add('active');
+            const navEl = document.querySelector('.date-nav');
+            const activeTab = document.getElementById(`tab-${day}`);
+            if (navEl && activeTab) navEl.scrollTo({ left: activeTab.offsetLeft - (navEl.offsetWidth / 2) + (activeTab.offsetWidth / 2), behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('floating-menu');
+            if (!menu.classList.contains('show')) { menu.style.display = 'flex'; setTimeout(() => menu.classList.add('show'), 10); }
+            else { closeMenu(); }
+        }
+        function closeMenu() {
+            const menu = document.getElementById('floating-menu');
+            menu.classList.remove('show'); setTimeout(() => menu.style.display = 'none', 200);
+        }
+
+        function openSimpleModal(id) {
+            isModalOpen = true;
+            lockScroll();
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+        }
+
+        function handleEditClick() { 
+            closeMenu(); 
+            document.getElementById('pw-input').value = ""; 
+            updateHearts(""); 
+            openSimpleModal('password-modal'); 
+            setTimeout(() => focusPassword(), 150); 
+        }
+
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            if (!modal || modal.style.display === 'none') return;
+            isModalOpen = false;
+            modal.style.display = 'none';
+            unlockScroll();
+            if(id === 'password-modal') {
+                const input = document.getElementById('pw-input');
+                input.value = "";
+                input.blur();
+                updateHearts("");
+            }
+        }
+
+        function updateHearts(val) { document.querySelectorAll('.heart-slot').forEach((s, i) => i < val.length ? s.classList.add('active') : s.classList.remove('active')); }
+        
+        document.getElementById('pw-input').addEventListener('input', (e) => {
+            updateHearts(e.target.value);
+            if (e.target.value === correctPw) { 
+                setTimeout(() => { 
+                    closeModal('password-modal'); 
+                    toggleEditMode(true); 
+                }, 300); 
+            }
+            else if (e.target.value.length >= 8) {
+                const h = document.getElementById('pw-hint'); h.classList.add('error'); h.innerHTML = "阿賀❣️哩歐北來<span class='kaomoji-fix'>🐽💢</span>";
+                setTimeout(() => { 
+                    e.target.value = ""; 
+                    updateHearts(""); 
+                    h.classList.remove('error'); 
+                    h.innerHTML = "請輸入密碼以編輯行程<span class='kaomoji-fix'>(๑> ◡ <๑)</span>"; 
+                }, 1000);
+            }
+        });
+
+        function toggleEditMode(isEdit) {
+            isEditMode = isEdit;
+            const footer = document.getElementById('edit-footer');
+            footer.style.display = isEdit ? 'flex' : 'none';
+            document.querySelectorAll('.editable').forEach(el => el.contentEditable = isEdit);
+            document.getElementById('header-normal-view').style.display = isEdit ? 'none' : 'flex';
+            document.getElementById('edit-mode-title').style.display = isEdit ? 'block' : 'none';
+            document.getElementById('main-btn').classList.toggle('hidden-piggy', isEdit);
+        }
+
+        function setPayer(p) { currentPayer = p; document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.innerText === p)); }
+        function addExpense() {
+            const t = document.getElementById('exp-title').value; const a = parseFloat(document.getElementById('exp-amount').value);
+            if (t && !isNaN(a)) { expenses.unshift({ title:t, amount:a, day:currentDay, payer:currentPayer }); renderExpenses(); document.getElementById('exp-title').value = ''; document.getElementById('exp-amount').value = ''; }
+        }
+        function renderExpenses() {
+            let total = 0; let dTotal = {1:0,2:0,3:0,4:0,5:0}; expenses.forEach(e=>{total+=e.amount; dTotal[e.day]+=e.amount;});
+            document.getElementById('total-amount-display').innerText = Math.round(total).toLocaleString();
+            document.getElementById('total-twd-display').innerText = Math.round(total*FX).toLocaleString();
+            document.getElementById('expense-list').innerHTML = expenses.slice(0,5).map(e=>`<div class="flex justify-between items-center bg-[#fffcfb] border border-[#f9f0ed] p-4 rounded-2xl"><div><div class="text-sm font-bold text-gray-700">${e.title}</div><div class="text-[10px] text-gray-400">D${e.day} · ${e.payer}</div></div><div class="font-bold text-[#d17a6d]">¥${e.amount.toLocaleString()}</div></div>`).join('');
+            const max = Math.max(...Object.values(dTotal),1);
+            document.getElementById('expense-chart').innerHTML = [1,2,3,4,5].map(d=>`<div class="flex flex-col items-center flex-1"><div class="chart-bar ${d===currentDay?'highlight':''}" style="height:${(dTotal[d]/max)*100}%">${dTotal[d]>0 ? `<div class="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] font-bold text-gray-500">${Math.round(dTotal[d]/1000)}k</div>`:''}</div><div class="chart-bar-label">D${d}</div></div>`).join('');
+        }
+        function openWallet() { closeMenu(); openSimpleModal('wallet-modal'); renderExpenses(); }
+
+        let startX = 0, startY = 0, isMoving = false;
+        const body = document.getElementById('swipe-body');
+        body.addEventListener('touchstart', (e) => {
+            if (isModalOpen || e.target.closest('.date-nav') || e.target.closest('.modal-content') || e.target.closest('.float-icon')) return;
+            startX = e.touches[0].clientX; startY = e.touches[0].clientY; isMoving = true;
+        }, { passive: true });
+        
+        body.addEventListener('touchend', (e) => {
+            if (!isMoving || isModalOpen) return;
+            let diffX = startX - e.changedTouches[0].clientX;
+            let diffY = startY - e.changedTouches[0].clientY;
+            if (Math.abs(diffX) > 70 && Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX > 0) {
+                    if (currentDay < 5) switchDay(currentDay + 1);
+                    else if (!isEditMode) openSimpleModal('finish-modal');
+                } else {
+                    if (currentDay > 1) switchDay(currentDay - 1);
+                    else if (!isEditMode) openSimpleModal('work-modal');
+                }
+            }
+            isMoving = false;
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('touchmove', (e) => {
+                if (overlay.id !== 'wallet-modal' || !e.target.closest('.modal-content')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        });
+    </script>
 </body>
 </html>
