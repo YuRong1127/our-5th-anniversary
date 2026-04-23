@@ -9,12 +9,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="三重之旅">
     
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/longlongadog802/try/main/1000038329.png?v=99">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://raw.githubusercontent.com/longlongadog802/try/main/1000038329.png?v=99">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/longlongadog802/try/main/1776919829487.png?v=102">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://raw.githubusercontent.com/longlongadog802/try/main/1776919829487.png?v=102">
     
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=102">
 
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Kosugi+Maru&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
@@ -44,9 +43,9 @@
             touch-action: pan-y;
             -webkit-tap-highlight-color: transparent;
             padding-top: env(safe-area-inset-top);
+            /* 修正重點：鎖定下拉行為，防止出現重新整理箭頭 */
             overscroll-behavior-y: contain; 
         }
-
 
         body.modal-open {
             overflow: hidden !important;
