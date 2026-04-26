@@ -1,0 +1,23 @@
+{
+  "name": "2026 Mie Anniversary Journey",
+  "short_name": "三重之旅",
+  "start_url": "/our-5th-anniversary/",
+  "scope": "/our-5th-anniversary/",
+  "display": "standalone",
+  "background_color": "#fef9f6",
+  "theme_color": "#8d6e63",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
