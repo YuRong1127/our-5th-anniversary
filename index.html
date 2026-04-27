@@ -33,12 +33,12 @@
 --modal-bg: #fffbf9;
 }
 body.day-3-theme {
---bg-color: #fef9f6;
+--bg-color: #fff6f8;
 --main-brown: #8d6e63;
 --light-brown: #bcaaaa;
---accent-peach: #f6ddd8;
+--accent-peach: #ffdce3;
 --card-border: #f0e6e2;
---heart-pink: #c8797f;
+--heart-pink: #d96b86;
 --save-bg: #b0897e;
 --cancel-bg: #e2d5d0;
 --modal-bg: #fffbf9;
@@ -140,24 +140,66 @@ body.day-3-theme header,
 body.day-3-theme .card,
 body.day-3-theme .wallet-card,
 body.day-3-theme .expense-card {
-background: #fff;
-box-shadow: 0 8px 24px rgba(200,121,127,.08);
+background: linear-gradient(180deg, #fff 0%, #fffafd 100%);
+box-shadow: 0 10px 28px rgba(217,107,134,.12);
 }
 body.day-3-theme .date-item.active {
-background: linear-gradient(180deg, #f9e3e0 0%, #f6d8d4 100%);
-color: #b96a72;
-box-shadow: 0 6px 16px rgba(200,121,127,.14), inset 0 0 0 1px rgba(200,121,127,.08);
+position: relative;
+background: linear-gradient(180deg, #ffeaf0 0%, #ffd5df 100%);
+color: #c95272;
+box-shadow: 0 8px 18px rgba(217,107,134,.18), inset 0 0 0 1px rgba(217,107,134,.1);
+}
+body.day-3-theme .date-item.active::after {
+content: 'Anniv.';
+position: absolute;
+left: 50%;
+bottom: -9px;
+transform: translateX(-50%);
+padding: 2px 7px;
+border-radius: 999px;
+background: #fff;
+color: #d96b86;
+font-family: 'Dancing Script', cursive;
+font-size: .68rem;
+font-weight: 600;
+box-shadow: 0 4px 12px rgba(217,107,134,.14);
 }
 body.day-3-theme .sticky-top-container {
 background: var(--bg-color);
+}
+body.day-3-theme main::before {
+content: '♡ 五週年紀念日 ♡';
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 4px 14px;
+padding: 9px 14px;
+border: 1px solid #f6d6df;
+border-radius: 999px;
+background: rgba(255,255,255,.76);
+color: #c95272;
+font-family: 'Dancing Script', 'Kosugi Maru', cursive;
+font-size: 1.02rem;
+font-weight: 600;
+box-shadow: 0 8px 20px rgba(217,107,134,.1);
 }
 body.day-3-theme .edit-footer {
 background: rgba(255,250,248,.92);
 box-shadow: 0 -8px 24px rgba(200,121,127,.08);
 }
 body.day-3-theme #day-3 .card {
-border-color: #f2ddd9;
-box-shadow: 0 8px 20px rgba(141,110,99,.035), 0 0 0 4px rgba(248,219,216,.18);
+border-color: #f7d8df;
+box-shadow: 0 10px 26px rgba(217,107,134,.12), 0 0 0 4px rgba(255,221,229,.32);
+overflow: hidden;
+}
+body.day-3-theme #day-3 .card::after {
+content: '♥';
+position: absolute;
+right: 18px;
+top: 14px;
+color: rgba(217,107,134,.22);
+font-size: 1.1rem;
+line-height: 1;
 }
 body.day-3-theme #day-3 .itinerary-icon::before {
 content: '♡';
@@ -171,11 +213,18 @@ font-weight: 900;
 line-height: 1;
 }
 body.day-3-theme #day-3 .connector-line {
-border-left-color: #efd8d3;
+border-left-color: #f0cbd5;
+}
+body.day-3-theme #day-3 .time-badge {
+color: #d96b86;
+}
+body.day-3-theme #day-3 .item-title {
+color: #76545a;
 }
 body.edit-mode .card { padding-right: 156px; }
 body:not(.edit-mode) .card:has(.more-info-btn:not(.is-empty)) { padding-right: 126px; }
 .card > div:not(.card-extra-controls):not(.reorder-controls) { min-width: 0; flex: 1; }
+body.edit-mode .card > div:not(.card-extra-controls):not(.reorder-controls):not(.map-place-control) { padding-right: 42px; }
 .itinerary-icon { width: 32px; flex: 0 0 32px; align-self: stretch; display: flex; align-items: center; justify-content: center; font-size: 1.55rem; line-height: 1; }
 .time-badge { display: block; margin-bottom: 4px; color: var(--heart-pink); font-size: .72rem; font-weight: 800; }
 .item-title { font-weight: 800; color: #705b55; line-height: 1.25; }
@@ -200,23 +249,37 @@ flex: 0 0 30px;
 display: inline-flex;
 align-items: center;
 justify-content: center;
-border: 1px solid #f1d9d2;
+border: 1.5px solid #e8b9ad;
 border-radius: 50%;
-background: #fff7f3;
+background: #fffdfb;
 color: #c07d6d;
 font-size: 1rem;
 font-weight: 900;
 line-height: 1;
 text-decoration: none;
 white-space: nowrap;
-box-shadow: 0 3px 10px rgba(141,110,99,.06);
+box-shadow: 0 5px 14px rgba(209,122,109,.14);
 }
 .route-nav-link svg {
 display: block;
-width: 18px;
-height: 18px;
-filter: saturate(.62) brightness(1.04);
+width: 19px;
+height: 19px;
+filter: saturate(.92) brightness(1.02);
 }
+.route-edit-btn {
+display: none;
+height: 30px;
+border: 1px solid #f1d9d2;
+border-radius: 999px;
+padding: 0 8px;
+background: #fff7f3;
+color: #c07d6d;
+font-size: .68rem;
+font-weight: 900;
+white-space: nowrap;
+box-shadow: 0 3px 10px rgba(141,110,99,.06);
+}
+body.edit-mode .route-edit-btn { display: inline-flex; align-items: center; justify-content: center; }
 .connector-line.flight-connector {
 height: 120px;
 min-height: 120px;
@@ -279,11 +342,42 @@ white-space: nowrap;
 
 
 .float-icon { width: 62px; height: 62px; border: 2px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 8px 24px rgba(141,110,99,.15); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
-.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; background: #ffdada; }
+.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; }
+.main-piggy::before { display: none; }
+.main-piggy img { width: 86%; height: 86%; object-fit: contain; display: block; filter: none; pointer-events: none; position: relative; z-index: 1; }
+.main-piggy:active { transform: scale(.96); }
 .main-piggy.hidden-piggy { display: none !important; }
-.floating-menu { position: fixed; right: 20px; bottom: 95px; display: none; flex-direction: column; gap: 14px; z-index: 60; }
-.menu-item { opacity: 0; transform: translateY(15px) scale(.35); transition: all .25s; }
-.floating-menu.show .menu-item { opacity: 1; transform: none; }
+.menu-backdrop {
+position: fixed;
+inset: 0;
+z-index: 55;
+display: none;
+background: rgba(141,110,99,.16);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+opacity: 0;
+transition: opacity .12s ease-out;
+}
+.menu-backdrop.show { opacity: 1; }
+.floating-menu { position: fixed; right: 20px; bottom: 106px; display: none; flex-direction: column; gap: 12px; align-items: flex-end; z-index: 60; }
+.menu-action { display: flex; align-items: center; justify-content: flex-end; gap: 10px; opacity: 0; transform: translateY(18px) scale(.42); transition: opacity .22s ease-out, transform .26s cubic-bezier(.18,1.35,.32,1); will-change: opacity, transform; transform-origin: right bottom; }
+.floating-menu.show .menu-action { opacity: 1; transform: none; }
+.menu-label {
+padding: 8px 12px;
+border: 1px solid #f2ded8;
+border-radius: 999px;
+background: rgba(255,250,247,.96);
+color: var(--main-brown);
+font-size: .82rem;
+font-weight: 900;
+white-space: nowrap;
+box-shadow: 0 8px 20px rgba(141,110,99,.12);
+}
+.menu-action .float-icon { flex: 0 0 62px; }
+.floating-menu.show .menu-action:nth-child(1) { transition-delay: .03s; }
+.floating-menu.show .menu-action:nth-child(2) { transition-delay: .05s; }
+.floating-menu.show .menu-action:nth-child(3) { transition-delay: .07s; }
+.floating-menu.show .menu-action:nth-child(4) { transition-delay: .09s; }
 .add-itinerary-btn {
 position: fixed; right: 20px; bottom: 108px; z-index: 101;
 display: none; align-items: center; justify-content: center;
@@ -471,6 +565,29 @@ line-height: 1;
 padding: 0 9px;
 box-shadow: 0 3px 10px rgba(141,110,99,.08);
 white-space: nowrap;
+}
+.map-place-btn.has-map-place {
+border-color: #d8eadf;
+background: #f0fbf5;
+color: #6d8f6b;
+}
+.map-place-control {
+position: absolute;
+right: 50px;
+top: 16px;
+z-index: 6;
+display: none;
+}
+body.edit-mode .map-place-control { display: block; }
+.map-place-control .map-place-btn {
+width: 28px;
+height: 28px;
+border-radius: 50%;
+padding: 0;
+font-size: .9rem;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 .flight-detail-btn {
 border-color: #efd9ce;
@@ -983,35 +1100,53 @@ object-fit: contain;
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); gap: 8px; }
 .icon-picker-item { min-height: 44px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; }
+.wishlist-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; margin-bottom: 12px; padding: 4px; border-radius: 16px; background: #f5efec; }
+.prep-tabs { grid-template-columns: repeat(5, minmax(0,1fr)); }
+.wishlist-tab { min-height: 38px; border: 0; border-radius: 13px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; }
+.prep-tabs .wishlist-tab { min-height: 42px; padding: 6px 2px; font-size: .66rem; line-height: 1.15; white-space: normal; }
+.wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 2px 8px rgba(141,110,99,.1); }
+.wishlist-form { display: flex; gap: 8px; margin-bottom: 14px; }
+.wishlist-input { flex: 1; min-width: 0; border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 14px; outline: 0; background: #fff; color: #705b55; font-size: .92rem; }
+.wishlist-add-btn { width: 52px; flex: 0 0 52px; border: 0; border-radius: 16px; background: var(--heart-pink); color: #fff; font-size: 1.35rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.18); }
+.wishlist-list { display: flex; flex-direction: column; gap: 9px; min-height: 120px; }
+.wishlist-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 32px; align-items: center; gap: 8px; padding: 10px 10px; border: 1px solid #f4e4df; border-radius: 18px; background: #fff; box-shadow: 0 5px 14px rgba(141,110,99,.045); }
+.wishlist-check { width: 28px; height: 28px; border: 1px solid #efd9d2; border-radius: 50%; background: #fffaf7; color: var(--heart-pink); font-size: .85rem; font-weight: 900; }
+.wishlist-name { min-width: 0; color: #705b55; font-size: .92rem; font-weight: 800; line-height: 1.35; word-break: break-word; }
+.wishlist-item.done .wishlist-name { color: var(--light-brown); text-decoration: line-through; }
+.wishlist-delete { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #fff7f6; color: #e57373; font-weight: 900; }
+.wishlist-empty { margin: 18px auto; padding: 22px 18px; border: 1px solid #f7e6e1; border-radius: 22px; background: #fffaf7; color: var(--light-brown); text-align: center; font-size: .9rem; font-weight: 800; line-height: 1.7; }
 .heart-row { display: flex; justify-content: center; margin-bottom: 24px; cursor: pointer; }
 .heart-slot { position: relative; width: 30px; height: 30px; margin: 0 3px; font-size: 1.6rem; }
 .h-empty, .h-full { position: absolute; left: 0; top: 0; }
-.h-empty { color: #d6cdc9; }
+.h-empty { color: #a78980; }
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
 .pw-hint-text { display: flex; justify-content: center; align-items: center; min-height: 32px; margin: 0 0 10px; color: #bcaaaa; font-size: 1.05rem; font-weight: 600; text-align: center; }
 .pw-keypad {
 display: grid;
-grid-template-columns: repeat(3, 64px);
-gap: 10px;
+grid-template-columns: repeat(3, 74px);
+gap: 12px;
 justify-content: center;
-margin: 6px 0 16px;
+margin: 8px 0 18px;
 }
 .pw-keypad button {
-width: 64px;
-height: 48px;
+width: 74px;
+height: 54px;
 border: 1px solid #f0e6e2;
-border-radius: 16px;
+border-radius: 18px;
 background: #fffaf7;
 color: var(--main-brown);
-font-size: 1.1rem;
+font-size: 1.18rem;
 font-weight: 900;
-box-shadow: 0 3px 10px rgba(141,110,99,.08);
+box-shadow: 0 5px 14px rgba(141,110,99,.1);
+transition: transform .08s ease, box-shadow .08s ease, background .08s ease;
 }
 .pw-keypad button:active {
-transform: scale(.96);
-opacity: .72;
+transform: scale(.94);
+background: #f9ece7;
+box-shadow: inset 0 3px 8px rgba(141,110,99,.13);
+opacity: .86;
 }
 .auth-cancel-btn { border: 0; background: transparent; color: #b7aaa5; text-decoration: underline; font-size: .78rem; font-weight: 700; }
 .kaomoji-fix { display: inline-block; margin-left: 2px; transform: translateY(-2px); white-space: nowrap; letter-spacing: 0; }
@@ -1020,6 +1155,8 @@ opacity: .72;
 main { padding: 0 14px; }
 .summary-btn { font-size: .76rem; }
 .route-inline { width: calc(100vw - 95px); }
+.pw-keypad { grid-template-columns: repeat(3, 68px); gap: 10px; }
+.pw-keypad button { width: 68px; height: 52px; }
 }
 </style>
 </head>
@@ -1195,7 +1332,11 @@ main { padding: 0 14px; }
 <div id="details-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費明細</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div id="settle-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div id="settle-content" class="panel-content settle-panel-content"></div></div></div></div></div>
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
+<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('wishlist-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-tabs" id="wishlist-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setWishlistCategory('超商必買')">超商必買</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setWishlistCategory('機場必買')">機場必買</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setWishlistCategory('伴手禮')">伴手禮</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
+<div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
+<div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
+<div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 徒步 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
@@ -1210,11 +1351,14 @@ main { padding: 0 14px; }
 <button class="footer-btn btn-press-effect" onclick="discardEditChanges()" style="background:var(--cancel-bg);color:var(--main-brown)">放棄存檔</button>
 <button class="footer-btn btn-press-effect" onclick="saveEditChanges()" style="background:var(--save-bg);color:white">儲存檔案</button>
 </div>
+<div id="menu-backdrop" class="menu-backdrop" onclick="closeMenu()"></div>
 <div id="floating-menu" class="floating-menu">
-<div class="float-icon menu-item btn-press-effect" onclick="handleEditClick()">✏️</div>
-<div class="float-icon menu-item btn-press-effect" onclick="openWallet()">👛</div>
+<div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon">✏️</div></div>
+<div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon">🎒</div></div>
+<div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon">🧺</div></div>
+<div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon">👛</div></div>
 </div>
-<div id="main-btn" class="float-icon main-piggy btn-press-effect" onclick="toggleMenu(event)">🐷</div>
+<div id="main-btn" class="float-icon main-piggy btn-press-effect" onclick="toggleMenu(event)"><img src="piggy-main.png" alt="小豬選單"></div>
 <button id="add-itinerary-btn" class="add-itinerary-btn btn-press-effect" type="button" onclick="addItineraryItem()">＋</button>
 
 
@@ -1223,6 +1367,19 @@ main { padding: 0 14px; }
 <script>
 let currentDay = 1;
 let expenses = [];
+let wishItems = [
+{ id: 101, category: '超商必買', title: '限定甜點', done: false },
+{ id: 102, category: '機場必買', title: '免稅店小零食', done: false }
+];
+let currentWishlistCategory = '超商必買';
+let prepItems = [
+{ id: 201, category: '出行必備', title: '護照', done: false },
+{ id: 202, category: '出行必備', title: '機票 / 訂房確認', done: false },
+{ id: 203, category: '藥品健康', title: '旅平險', done: false },
+{ id: 204, category: '數位電器', title: '充電器 / 行動電源', done: false },
+{ id: 205, category: '出行必備', title: '確認瓦斯、門窗、鑰匙', done: false }
+];
+let currentPrepCategory = '出行必備';
 let editingId = null;
 let currentPayer = '大豬';
 let currentSplit = '均分';
@@ -1233,10 +1390,16 @@ let isModalOpen = false;
 let isEditMode = false;
 let scrollPos = 0;
 let isMenuShowing = false;
+let isHandlingAppHistory = false;
+let lastExitHintAt = 0;
+let exitHintTimer = null;
+let hasManualDaySelection = false;
 let editSnapshotHTML = '';
 let editSnapshotHeaderHTML = '';
 let currentIconTarget = null;
 let currentDetailCard = null;
+let currentMapPlaceCard = null;
+let currentRouteConnector = null;
 let lastBothEdited = null;
 let bothManualEdits = { big: false, small: false };
 let fp = null;
@@ -1324,6 +1487,107 @@ isModalOpen = false;
 unlockScroll();
 return false;
 }
+
+function getAppHistoryUrl(day = currentDay) {
+const url = new URL(window.location.href);
+url.hash = `day-${day}`;
+return url.href;
+}
+function getDayFromHash() {
+const match = String(window.location.hash || '').match(/^#day-([1-5])$/);
+return match ? Number(match[1]) : null;
+}
+function getTripDayForDate(date = new Date()) {
+const tripStart = new Date(2026, 10, 25);
+const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+const diffDays = Math.floor((localDate - tripStart) / 86400000) + 1;
+if (diffDays >= 1 && diffDays <= 5) return diffDays;
+return 1;
+}
+function isTripInProgress(date = new Date()) {
+const tripStart = new Date(2026, 10, 25);
+const tripEnd = new Date(2026, 10, 29);
+const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+return localDate >= tripStart && localDate <= tripEnd;
+}
+function getInitialTripDay() {
+const autoDay = getTripDayForDate();
+const hashDay = getDayFromHash();
+return isTripInProgress() && hashDay ? hashDay : autoDay;
+}
+function pushAppHistory(day = currentDay, replace = false) {
+if (!window.history || typeof window.history.pushState !== 'function') return;
+const state = { mieApp: true, day };
+if (replace) history.replaceState(state, '', getAppHistoryUrl(day));
+else history.pushState(state, '', getAppHistoryUrl(day));
+}
+function getTopOpenModal() {
+const openModals = Array.from(document.querySelectorAll('.modal-overlay')).filter(modal => modal.style.display === 'flex');
+return openModals[openModals.length - 1] || null;
+}
+function closeTopModalFromBackButton() {
+const topModal = getTopOpenModal();
+if (!topModal) return false;
+if (topModal.id === 'alert-modal') closeAlertModal(false);
+else if (topModal.id === 'details-modal' || topModal.id === 'settle-modal' || topModal.id === 'stats-modal') closeNestedModal(topModal.id);
+else closeModal(topModal.id);
+return true;
+}
+function showExitHint() {
+let hint = document.getElementById('app-exit-hint');
+if (!hint) {
+hint = document.createElement('div');
+hint.id = 'app-exit-hint';
+hint.style.cssText = 'position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));z-index:2000;max-width:82vw;transform:translate(-50%, 12px);padding:12px 16px;border:1px solid #f2ded8;border-radius:999px;background:rgba(255,250,247,.96);color:#8d6e63;font-size:.86rem;font-weight:900;text-align:center;box-shadow:0 10px 28px rgba(141,110,99,.18);opacity:0;transition:opacity .18s ease, transform .18s ease;pointer-events:none;';
+document.body.appendChild(hint);
+}
+hint.textContent = '再按一次上一頁就會關閉程式喔';
+requestAnimationFrame(() => {
+hint.style.opacity = '1';
+hint.style.transform = 'translate(-50%, 0)';
+});
+clearTimeout(exitHintTimer);
+exitHintTimer = setTimeout(() => {
+hint.style.opacity = '0';
+hint.style.transform = 'translate(-50%, 12px)';
+}, 1800);
+}
+function initAppBackButton() {
+if (!window.history || typeof window.history.pushState !== 'function') return;
+pushAppHistory(currentDay, true);
+pushAppHistory(currentDay);
+window.addEventListener('popstate', () => {
+if (isHandlingAppHistory) return;
+isHandlingAppHistory = true;
+if (closeTopModalFromBackButton()) {
+pushAppHistory(currentDay);
+isHandlingAppHistory = false;
+return;
+}
+if (isMenuShowing) {
+closeMenu();
+pushAppHistory(currentDay);
+isHandlingAppHistory = false;
+return;
+}
+if (currentDay > 1) {
+switchDay(currentDay - 1, { skipHistory: true });
+pushAppHistory(currentDay);
+isHandlingAppHistory = false;
+return;
+}
+const now = Date.now();
+if (!isEditMode && now - lastExitHintAt < 2200) {
+isHandlingAppHistory = false;
+history.back();
+return;
+}
+lastExitHintAt = now;
+showExitHint();
+pushAppHistory(currentDay);
+isHandlingAppHistory = false;
+});
+}
 function showAlert(msg) {
 pendingAlertConfirm = null;
 document.getElementById('alert-cancel-btn').style.display = 'none';
@@ -1374,8 +1638,9 @@ closeModal('wallet-modal');
 
 
 
-function switchDay(day) {
+function switchDay(day, options = {}) {
 if (isModalOpen) return;
+if (!options.auto) hasManualDaySelection = true;
 currentDay = day;
 document.body.classList.toggle('day-3-theme', day === 3);
 document.querySelectorAll('.date-item').forEach(el => el.classList.remove('active'));
@@ -1383,6 +1648,7 @@ document.getElementById(`tab-${day}`).classList.add('active');
 document.querySelectorAll('.day-section').forEach(el => el.classList.remove('active'));
 document.getElementById(`day-${day}`).classList.add('active');
 initFloatingBackground();
+if (!options.skipHistory && !isHandlingAppHistory) pushAppHistory(day);
 }
 
 
@@ -1391,13 +1657,47 @@ initFloatingBackground();
 function buildRouteHref(origin, destination) {
 return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=transit`;
 }
+function buildRouteAppHref(origin, destination) {
+return `comgooglemaps://?saddr=${encodeURIComponent(origin)}&daddr=${encodeURIComponent(destination)}&directionsmode=transit`;
+}
+function extractMapPlaceValue(value, fallback = '') {
+const raw = String(value || '').trim();
+if (!raw) return '';
+const decoded = decodeURIComponent(raw.replace(/\+/g, ' '));
+const coordAt = decoded.match(/@(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)/);
+if (coordAt) return `${coordAt[1]},${coordAt[2]}`;
+const coordBang = decoded.match(/!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/);
+if (coordBang) return `${coordBang[1]},${coordBang[2]}`;
+try {
+const url = new URL(raw);
+const param = url.searchParams.get('q') || url.searchParams.get('query') || url.searchParams.get('destination') || url.searchParams.get('daddr');
+if (param) return param.trim();
+const placeMatch = decoded.match(/\/place\/([^/@?]+)/);
+if (placeMatch) return placeMatch[1].replace(/\+/g, ' ').trim();
+} catch (error) {
+}
+return raw || fallback;
+}
+function getCardRoutePoint(card) {
+if (!card) return '';
+return card.dataset.mapPlaceValue || card.querySelector('.item-title')?.textContent.trim() || '';
+}
 function refreshRouteHref(connector) {
 const prevCard = connector.previousElementSibling;
 const nextCard = connector.nextElementSibling;
-const origin = prevCard ? (prevCard.querySelector('.item-title')?.textContent.trim() || '目前位置') : '目前位置';
-const destination = nextCard ? (nextCard.querySelector('.item-title')?.textContent.trim() || '下一站') : '下一站';
+const origin = prevCard ? (getCardRoutePoint(prevCard) || '目前位置') : '目前位置';
+const destination = nextCard ? (getCardRoutePoint(nextCard) || '下一站') : '下一站';
 const navEl = connector.querySelector('.route-nav-link');
-if (navEl) navEl.href = buildRouteHref(origin, destination);
+const textEl = connector.querySelector('.route-text');
+if (navEl) {
+navEl.href = connector.dataset.routeUrl || buildRouteHref(origin, destination);
+navEl.dataset.appHref = buildRouteAppHref(origin, destination);
+}
+if (textEl && connector.dataset.routeText && textEl.textContent !== connector.dataset.routeText) {
+textEl.textContent = connector.dataset.routeText;
+} else if (textEl && textEl.textContent.trim() === '交通方式：可補上步行/巴士/地鐵/轉乘站資訊') {
+textEl.textContent = '交通備註';
+}
 }
 function getMapIconSvg() {
 return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s6.5-6.1 6.5-11.2A6.5 6.5 0 0 0 5.5 9.8C5.5 14.9 12 21 12 21Z" fill="#d9867b"/><path d="M12 21s6.5-6.1 6.5-11.2c0-2.1-1-4-2.6-5.2L9.5 18.7C10.8 20.1 12 21 12 21Z" fill="#6fa48e"/><path d="M6.5 13.5c.7 1.8 2 3.7 3.1 5.1l6.3-14A6.5 6.5 0 0 0 11.9 3L6.5 13.5Z" fill="#f0c96b"/><circle cx="12" cy="9.6" r="2.45" fill="#fffaf7"/></svg>`;
@@ -1436,7 +1736,13 @@ return;
 }
 connector.classList.remove('flight-connector');
 if (!connector.querySelector('.route-inline')) {
-connector.insertAdjacentHTML('beforeend', `<div class="route-inline"><div class="route-text editable" contenteditable="false">交通方式：可補上步行/巴士/地鐵/轉乘站資訊</div><a class="route-nav-link btn-press-effect" href="#" onclick="openRouteLink(event, this)" target="_blank" rel="noopener" aria-label="Google Maps 導航">${getMapIconSvg()}</a></div>`);
+connector.insertAdjacentHTML('beforeend', `<div class="route-inline"><div class="route-text editable" contenteditable="false">交通備註</div><button type="button" class="route-edit-btn btn-press-effect" onclick="openRoutePlanEditor(event, this)">貼路線</button><a class="route-nav-link btn-press-effect" href="#" onclick="openRouteLink(event, this)" target="_blank" rel="noopener" aria-label="Google Maps 導航">${getMapIconSvg()}</a></div>`);
+}
+if (connector.querySelector('.route-inline') && !connector.querySelector('.route-edit-btn')) {
+const navLink = connector.querySelector('.route-nav-link');
+const btnHtml = `<button type="button" class="route-edit-btn btn-press-effect" onclick="openRoutePlanEditor(event, this)">貼路線</button>`;
+if (navLink) navLink.insertAdjacentHTML('beforebegin', btnHtml);
+else connector.querySelector('.route-inline').insertAdjacentHTML('beforeend', btnHtml);
 }
 connector.querySelector('.route-text').contentEditable = isEditMode;
 refreshRouteHref(connector);
@@ -1448,8 +1754,83 @@ event.preventDefault();
 event.stopPropagation();
 refreshRouteHref(linkEl.closest('.connector-line'));
 const href = linkEl.href;
+const appHref = linkEl.dataset.appHref || href;
+const iframe = document.createElement('iframe');
+iframe.style.display = 'none';
+iframe.src = appHref;
+document.body.appendChild(iframe);
+setTimeout(() => {
+iframe.remove();
+if (!document.hidden) {
 const opened = window.open(href, '_blank', 'noopener');
-if (!opened) window.location.href = href;
+if (!opened) showAlert('如果沒有自動開啟 Google Maps，請長按導航圖標用瀏覽器開啟地圖喔');
+}
+}, 900);
+}
+function summarizeRouteUrl(value) {
+const raw = String(value || '').trim();
+if (!raw) return '';
+const decoded = decodeURIComponent(raw.replace(/\+/g, ' '));
+const dirMatch = decoded.match(/\/dir\/([^?#]+)/);
+if (dirMatch) {
+const parts = dirMatch[1].split('/').filter(Boolean).filter(part => !part.startsWith('@'));
+if (parts.length >= 2) return `${parts[0]} → ${parts[parts.length - 1]}`.replace(/\s+/g, ' ');
+}
+if (decoded.includes('travelmode=walking') || decoded.includes('directionsmode=walking')) return '步行路線';
+if (decoded.includes('travelmode=driving') || decoded.includes('directionsmode=driving')) return '開車路線';
+if (decoded.includes('travelmode=transit') || decoded.includes('directionsmode=transit')) return '大眾運輸路線';
+return '已設定 Google Maps 路線';
+}
+function updateRoutePlanPreview() {
+const urlInput = document.getElementById('route-plan-url');
+const textInput = document.getElementById('route-plan-text');
+const preview = document.getElementById('route-plan-preview');
+if (!urlInput || !textInput || !preview) return;
+const summary = textInput.value.trim() || summarizeRouteUrl(urlInput.value);
+preview.innerHTML = summary ? `行程中會顯示：<br><b>${escapeHtml(summary)}</b>` : '貼上路線後，會套用到這兩個行程中間';
+}
+function openRoutePlanEditor(event, btn) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+if (!isEditMode) return;
+currentRouteConnector = btn.closest('.connector-line');
+document.getElementById('route-plan-url').value = currentRouteConnector?.dataset.routeUrl || '';
+document.getElementById('route-plan-text').value = currentRouteConnector?.dataset.routeText || '';
+updateRoutePlanPreview();
+openSimpleModal('route-plan-modal');
+setTimeout(() => document.getElementById('route-plan-url')?.focus(), 120);
+}
+function saveRoutePlan() {
+if (!currentRouteConnector) return;
+const routeUrl = document.getElementById('route-plan-url').value.trim();
+const routeText = document.getElementById('route-plan-text').value.trim() || summarizeRouteUrl(routeUrl);
+if (!routeUrl && !routeText) {
+clearRoutePlan();
+return;
+}
+if (routeUrl) currentRouteConnector.dataset.routeUrl = routeUrl;
+else delete currentRouteConnector.dataset.routeUrl;
+currentRouteConnector.dataset.routeText = routeText || '已設定移動方式';
+enhanceRouteConnectors();
+queueTripCloudSave();
+closeRoutePlanModal();
+}
+function clearRoutePlan() {
+if (currentRouteConnector) {
+delete currentRouteConnector.dataset.routeUrl;
+delete currentRouteConnector.dataset.routeText;
+const textEl = currentRouteConnector.querySelector('.route-text');
+if (textEl) textEl.textContent = '交通備註';
+enhanceRouteConnectors();
+queueTripCloudSave();
+}
+closeRoutePlanModal();
+}
+function closeRoutePlanModal() {
+currentRouteConnector = null;
+closeModal('route-plan-modal');
 }
 
 
@@ -1503,7 +1884,15 @@ if (!card.querySelector('.reorder-controls')) {
 card.insertAdjacentHTML('beforeend', `<div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div>`);
 }
 if (!card.querySelector('.card-extra-controls')) {
-card.insertAdjacentHTML('beforeend', `<button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">點我看更多</button></div>`);
+card.insertAdjacentHTML('beforeend', `<button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">📍</button></div><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">點我看更多</button></div>`);
+}
+if (!card.querySelector('.map-place-control')) {
+card.insertAdjacentHTML('beforeend', `<div class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">📍</button></div>`);
+}
+const mapBtn = card.querySelector('.map-place-btn');
+if (mapBtn) {
+mapBtn.classList.toggle('has-map-place', Boolean(card.dataset.mapPlaceValue));
+mapBtn.textContent = card.dataset.mapPlaceValue ? '✓' : '📍';
 }
 const moreBtn = card.querySelector('.more-info-btn');
 if (moreBtn) {
@@ -1522,6 +1911,11 @@ return noteHasContent(card);
 function updateMoreInfoButtons() {
 document.querySelectorAll('.day-section .card').forEach(card => {
 card.querySelector('.more-info-btn')?.classList.toggle('is-empty', !cardHasMoreInfo(card));
+const mapBtn = card.querySelector('.map-place-btn');
+if (mapBtn) {
+mapBtn.classList.toggle('has-map-place', Boolean(card.dataset.mapPlaceValue));
+mapBtn.textContent = card.dataset.mapPlaceValue ? '✓' : '📍';
+}
 });
 }
 function updateReorderButtons() {
@@ -1942,6 +2336,56 @@ const modal = document.getElementById('itinerary-detail-modal');
 const scrollArea = modal?.querySelector('.modal-scroll-area');
 if (scrollArea) scrollArea.scrollTop = 0;
 }
+function openMapPlaceEditor(event, btn) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+if (!isEditMode) return;
+currentMapPlaceCard = btn.closest('.card');
+const input = document.getElementById('map-place-input');
+input.value = currentMapPlaceCard?.dataset.mapPlaceInput || '';
+updateMapPlacePreview();
+openSimpleModal('map-place-modal');
+setTimeout(() => input.focus(), 120);
+}
+function updateMapPlacePreview() {
+const input = document.getElementById('map-place-input');
+const preview = document.getElementById('map-place-preview');
+if (!input || !preview) return;
+const fallback = currentMapPlaceCard?.querySelector('.item-title')?.textContent.trim() || '';
+const parsed = extractMapPlaceValue(input.value, fallback);
+preview.innerHTML = parsed ? `導航會使用：<br><b>${escapeHtml(parsed)}</b>` : '尚未設定定位，會用行程標題導航';
+}
+function saveMapPlace() {
+if (!currentMapPlaceCard) return;
+const input = document.getElementById('map-place-input');
+const raw = input.value.trim();
+const fallback = currentMapPlaceCard.querySelector('.item-title')?.textContent.trim() || '';
+const parsed = extractMapPlaceValue(raw, fallback);
+if (!raw || !parsed) {
+clearMapPlace();
+return;
+}
+currentMapPlaceCard.dataset.mapPlaceInput = raw;
+currentMapPlaceCard.dataset.mapPlaceValue = parsed;
+enhanceRouteConnectors();
+queueTripCloudSave();
+closeMapPlaceModal();
+}
+function clearMapPlace() {
+if (currentMapPlaceCard) {
+delete currentMapPlaceCard.dataset.mapPlaceInput;
+delete currentMapPlaceCard.dataset.mapPlaceValue;
+enhanceRouteConnectors();
+queueTripCloudSave();
+}
+closeMapPlaceModal();
+}
+function closeMapPlaceModal() {
+currentMapPlaceCard = null;
+closeModal('map-place-modal');
+}
 function closeItineraryDetailModal() {
 currentDetailCard = null;
 closeModal('itinerary-detail-modal');
@@ -2005,19 +2449,36 @@ openIconPicker(icon);
 function toggleMenu(event) {
 if (event) event.stopPropagation();
 const menu = document.getElementById('floating-menu');
+const backdrop = document.getElementById('menu-backdrop');
+const piggyImg = document.querySelector('#main-btn img');
 if (!menu.classList.contains('show')) {
 menu.style.display = 'flex';
-setTimeout(() => { menu.classList.add('show'); isMenuShowing = true; }, 10);
+backdrop.style.display = 'block';
+if (piggyImg) piggyImg.src = 'piggy-open.png';
+requestAnimationFrame(() => {
+menu.classList.add('show');
+backdrop.classList.add('show');
+isMenuShowing = true;
+});
 } else {
 closeMenu();
 }
 }
 function closeMenu() {
 const menu = document.getElementById('floating-menu');
+const backdrop = document.getElementById('menu-backdrop');
 if (!menu || !isMenuShowing) return;
+const piggyImg = document.querySelector('#main-btn img');
+if (piggyImg) piggyImg.src = 'piggy-main.png';
 menu.classList.remove('show');
+backdrop?.classList.remove('show');
 isMenuShowing = false;
-setTimeout(() => { if (!isMenuShowing) menu.style.display = 'none'; }, 200);
+setTimeout(() => {
+if (!isMenuShowing) {
+menu.style.display = 'none';
+if (backdrop) backdrop.style.display = 'none';
+}
+}, 140);
 }
 window.addEventListener('click', e => {
 const menu = document.getElementById('floating-menu');
@@ -2048,6 +2509,9 @@ function focusPassword() {}
 function updateHearts(val) {
 document.querySelectorAll('.heart-slot').forEach((s, i) => s.classList.toggle('active', i < val.length));
 }
+function vibrateKeypad(duration = 12) {
+if (navigator.vibrate) navigator.vibrate(duration);
+}
 function handlePasswordValue(value) {
 updateHearts(value);
 const hint = document.getElementById('pw-hint');
@@ -2071,18 +2535,44 @@ document.getElementById('auth-cancel-btn').style.display = '';
 function pressPwKey(num) {
 const input = document.getElementById('pw-input');
 if (input.value.length >= 8) return;
+vibrateKeypad(12);
 input.value += num;
 handlePasswordValue(input.value);
 }
 function deletePwKey() {
 const input = document.getElementById('pw-input');
+vibrateKeypad(10);
 input.value = input.value.slice(0, -1);
 handlePasswordValue(input.value);
 }
 function clearPwKey() {
 const input = document.getElementById('pw-input');
+vibrateKeypad(16);
 input.value = '';
 handlePasswordValue('');
+}
+function handlePasswordKeyboard(event) {
+const modal = document.getElementById('password-modal');
+if (!modal || modal.style.display !== 'flex') return;
+if (/^\d$/.test(event.key)) {
+event.preventDefault();
+pressPwKey(event.key);
+return;
+}
+if (event.key === 'Backspace') {
+event.preventDefault();
+deletePwKey();
+return;
+}
+if (event.key === 'Delete') {
+event.preventDefault();
+clearPwKey();
+return;
+}
+if (event.key === 'Escape') {
+event.preventDefault();
+cancelPasswordAuth();
+}
 }
 function toggleEditMode(isEdit) {
 if (isEdit && !isEditMode) {
@@ -2138,6 +2628,136 @@ function selectCategory(cat) {
 currentCategory = cat;
 document.getElementById('selected-cat').innerHTML = getCategoryIconHtml(cat, 'cat-icon-sm');
 document.getElementById('cat-menu').style.display = 'none';
+}
+function openWishlist() {
+closeMenu();
+renderWishlist();
+openSimpleModal('wishlist-modal');
+setTimeout(() => document.getElementById('wishlist-input')?.focus(), 120);
+}
+function setWishlistCategory(category) {
+currentWishlistCategory = category;
+document.querySelectorAll('#wishlist-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === category));
+renderWishlist();
+}
+function addWishlistItem() {
+const input = document.getElementById('wishlist-input');
+const title = input.value.trim();
+if (!title) return showAlert('先寫一個想買的小東西吧 🧺');
+wishItems.unshift({
+id: Date.now(),
+category: currentWishlistCategory,
+title,
+done: false
+});
+input.value = '';
+renderWishlist();
+queueTripCloudSave();
+input.focus();
+}
+function handleWishlistKey(event) {
+if (event.key === 'Enter') {
+event.preventDefault();
+addWishlistItem();
+}
+}
+function toggleWishlistItem(id) {
+const item = wishItems.find(wish => wish.id === id);
+if (!item) return;
+item.done = !item.done;
+renderWishlist();
+queueTripCloudSave();
+}
+function deleteWishlistItem(id) {
+wishItems = wishItems.filter(wish => wish.id !== id);
+renderWishlist();
+queueTripCloudSave();
+}
+function renderWishlist() {
+const list = document.getElementById('wishlist-list');
+if (!list) return;
+document.querySelectorAll('#wishlist-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === currentWishlistCategory));
+const items = wishItems.filter(wish => wish.category === currentWishlistCategory);
+if (!items.length) {
+list.innerHTML = `<div class="wishlist-empty">這裡還空空的<br>可以先把${escapeHtml(currentWishlistCategory)}寫進來</div>`;
+return;
+}
+list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}">
+<button type="button" class="wishlist-check btn-press-effect" onclick="toggleWishlistItem(${item.id})">${item.done ? '✓' : ''}</button>
+<div class="wishlist-name">${escapeHtml(item.title)}</div>
+<button type="button" class="wishlist-delete btn-press-effect" onclick="deleteWishlistItem(${item.id})">×</button>
+</div>`).join('');
+}
+function openPrepList() {
+closeMenu();
+normalizePrepItems();
+renderPrepList();
+openSimpleModal('prep-modal');
+setTimeout(() => document.getElementById('prep-input')?.focus(), 120);
+}
+function normalizePrepItems() {
+const categoryMap = {
+'證件': '出行必備',
+'行李': '生活日用',
+'保險健康': '藥品健康',
+'出門前': '出行必備'
+};
+prepItems = prepItems.map(item => ({ ...item, category: categoryMap[item.category] || item.category }));
+if (!['出行必備', '生活日用', '衣服配飾', '藥品健康', '數位電器'].includes(currentPrepCategory)) currentPrepCategory = '出行必備';
+}
+function setPrepCategory(category) {
+currentPrepCategory = category;
+document.querySelectorAll('#prep-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === category));
+renderPrepList();
+}
+function addPrepItem() {
+const input = document.getElementById('prep-input');
+const title = input.value.trim();
+if (!title) return showAlert('先寫一個要準備的東西吧 🎒');
+prepItems.unshift({
+id: Date.now(),
+category: currentPrepCategory,
+title,
+done: false
+});
+input.value = '';
+renderPrepList();
+queueTripCloudSave();
+input.focus();
+}
+function handlePrepKey(event) {
+if (event.key === 'Enter') {
+event.preventDefault();
+addPrepItem();
+}
+}
+function togglePrepItem(id) {
+const item = prepItems.find(prep => prep.id === id);
+if (!item) return;
+item.done = !item.done;
+renderPrepList();
+queueTripCloudSave();
+}
+function deletePrepItem(id) {
+prepItems = prepItems.filter(prep => prep.id !== id);
+renderPrepList();
+queueTripCloudSave();
+}
+function renderPrepList() {
+const list = document.getElementById('prep-list');
+if (!list) return;
+normalizePrepItems();
+document.querySelectorAll('#prep-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === currentPrepCategory));
+const items = prepItems.filter(prep => prep.category === currentPrepCategory);
+if (!items.length) {
+list.innerHTML = `<div class="wishlist-empty">${escapeHtml(currentPrepCategory)}還沒有項目<br>想到什麼就先放進來</div>`;
+return;
+}
+list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}">
+<button type="button" class="wishlist-check btn-press-effect" onclick="togglePrepItem(${item.id})">${item.done ? '✓' : ''}</button>
+<div class="wishlist-name">${escapeHtml(item.title)}</div>
+<button type="button" class="wishlist-delete btn-press-effect" onclick="deletePrepItem(${item.id})">×</button>
+</div>`).join('');
 }
 function getCurrencyRateToJPY(currency) {
 return currency === 'TWD' ? 1 / FX : 1;
@@ -2751,18 +3371,20 @@ openSimpleModal('stats-modal');
 function initFloatingBackground() {
 const host = document.getElementById('floating-bg');
 const mieIcons = currentDay === 3
-? ['💕','💖','💗','☀️','🌞','🐷','🐽','💛','🌻','✨','💞','🐖']
+? ['💕','💖','💗','💓','💞','💌','🌹','✨','☀️','🌞','🐷','🐽','💛','🌻']
 : ['🍁','🍂','⛩️','♨️','🦞','🦪','🌊','🍵','🎡','🚆','🛳️','🌅'];
-const count = 18;
-const leftPositions = [5, 83, 18, 64, 38, 94, 72, 27, 52, 9, 88, 43, 15, 76, 59, 31, 97, 68];
+const count = currentDay === 3 ? 24 : 18;
+const leftPositions = currentDay === 3
+? [4, 88, 16, 62, 34, 96, 73, 24, 51, 8, 81, 44, 13, 69, 58, 29, 93, 76, 39, 19, 86, 54, 2, 66]
+: [5, 83, 18, 64, 38, 94, 72, 27, 52, 9, 88, 43, 15, 76, 59, 31, 97, 68];
 let html = '';
 for (let i = 0; i < count; i++) {
 const icon = mieIcons[i % mieIcons.length];
 const left = leftPositions[i % leftPositions.length];
-const duration = 30 + ((i * 7) % 9) * 2.4;
+const duration = (currentDay === 3 ? 26 : 30) + ((i * 7) % 9) * 2.4;
 const phase = ((i * 11) % count) / count;
 const delay = -(phase * duration);
-const size = 17 + (i % 4) * 4;
+const size = (currentDay === 3 ? 15 : 17) + (i % 4) * 4;
 const drift = i % 2 === 0 ? 18 : -18;
 html += `<span class="float-item" style="left:${left}%;--float-x:${drift}px;animation-delay:${delay.toFixed(2)}s;animation-duration:${duration.toFixed(2)}s;font-size:${size}px">${icon}</span>`;
 }
@@ -2775,6 +3397,8 @@ return {
 dayContentHTML: document.getElementById('day-content')?.innerHTML || '',
 headerHTML: document.getElementById('header-normal-view')?.innerHTML || '',
 expenses,
+wishItems,
+prepItems,
 currentDay,
 updatedAt: new Date().toISOString()
 };
@@ -2787,13 +3411,19 @@ const header = document.getElementById('header-normal-view');
 if (data.dayContentHTML && dayContent) dayContent.innerHTML = data.dayContentHTML;
 if (data.headerHTML && header) header.innerHTML = data.headerHTML;
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
-if (Number.isInteger(data.currentDay)) currentDay = data.currentDay;
+wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
+prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
+normalizePrepItems();
+if (Number.isInteger(data.currentDay) && hasManualDaySelection && isTripInProgress()) currentDay = data.currentDay;
 enhanceRouteConnectors();
 enhanceItineraryCards();
 toggleEditMode(false);
-switchDay(currentDay || 1);
+switchDay(hasManualDaySelection && isTripInProgress() ? currentDay : getInitialTripDay(), { auto: true, skipHistory: true });
+pushAppHistory(currentDay, true);
 updatePublicFundDisplay();
 renderExpenses();
+renderWishlist();
+renderPrepList();
 editSnapshotHTML = dayContent?.innerHTML || '';
 editSnapshotHeaderHTML = header?.innerHTML || '';
 isApplyingCloudData = false;
@@ -2808,7 +3438,7 @@ window.applyTripCloudData = applyTripCloudData;
 
 let startX = 0, startY = 0, isMoving = false;
 document.getElementById('swipe-body').addEventListener('touchstart', e => {
-if (isModalOpen || e.target.closest('.date-nav') || e.target.closest('.modal-content') || e.target.closest('.float-icon')) return;
+if (isModalOpen || isMenuShowing || e.target.closest('.date-nav') || e.target.closest('.modal-content') || e.target.closest('.float-icon')) return;
 startX = e.touches[0].clientX;
 startY = e.touches[0].clientY;
 isMoving = true;
@@ -2831,14 +3461,21 @@ isMoving = false;
 
 document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('heart-row').innerHTML = Array.from({ length: 8 }, () => `<div class="heart-slot"><span class="h-empty">\u2661</span><span class="h-full">\u2665</span></div>`).join('');
+window.addEventListener('keydown', handlePasswordKeyboard);
+const initialDay = getInitialTripDay();
+switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();
 initCategoryMenu();
 initIconPicker();
 enhanceRouteConnectors();
 initDatePicker();
+initAppBackButton();
 document.getElementById('both-big-pig').addEventListener('input', () => syncBothAmountSum('big'));
 document.getElementById('both-small-pig').addEventListener('input', () => syncBothAmountSum('small'));
 document.getElementById('exp-amount').addEventListener('input', () => syncBothAmountSum('amount'));
+document.getElementById('map-place-input').addEventListener('input', updateMapPlacePreview);
+document.getElementById('route-plan-url').addEventListener('input', updateRoutePlanPreview);
+document.getElementById('route-plan-text').addEventListener('input', updateRoutePlanPreview);
 ['both-big-pig', 'both-small-pig', 'exp-amount', 'topup-big-pig', 'topup-small-pig'].forEach((id) => {
 document.getElementById(id).addEventListener('focus', (event) => {
 event.target.select();
