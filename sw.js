@@ -1,4 +1,4 @@
-const CACHE_NAME = 'our-5th-anniversary-v5';
+const CACHE_NAME = 'our-5th-anniversary-v6';
 const ASSETS = [
   './',
   './index.html',
