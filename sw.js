@@ -1,4 +1,4 @@
-const CACHE_NAME = 'our-5th-anniversary-v3';
+const CACHE_NAME = 'our-5th-anniversary-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -23,7 +23,12 @@ self.addEventListener('activate', event => {
           .filter(key => key !== CACHE_NAME)
           .map(key => caches.delete(key))
       )
-    )
+    ).then(() => self.clients.matchAll({ type: 'window' }))
+      .then(clients => {
+        clients.forEach(client => {
+          if ('navigate' in client) client.navigate(client.url);
+        });
+      })
   );
   self.clients.claim();
 });

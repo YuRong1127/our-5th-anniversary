@@ -343,7 +343,7 @@ white-space: nowrap;
 
 
 .float-icon { width: 62px; height: 62px; border: 2px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 8px 24px rgba(141,110,99,.15); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
-.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; padding: 0; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; }
+.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; padding: 0; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; pointer-events: auto; touch-action: manipulation; appearance: none; -webkit-appearance: none; }
 .main-piggy::before { display: none; }
 .main-piggy img { width: 86%; height: 86%; object-fit: contain; display: block; filter: none; pointer-events: none; position: relative; z-index: 1; }
 .main-piggy.is-open img { width: 96%; height: 96%; }
@@ -1395,6 +1395,7 @@ let isModalOpen = false;
 let isEditMode = false;
 let scrollPos = 0;
 let isMenuShowing = false;
+let lastPiggyPointerToggleAt = 0;
 let isHandlingAppHistory = false;
 let lastExitHintAt = 0;
 let exitHintTimer = null;
@@ -2475,6 +2476,18 @@ isMenuShowing = true;
 closeMenu();
 }
 }
+function handlePiggyMenuPointer(event) {
+lastPiggyPointerToggleAt = Date.now();
+toggleMenu(event);
+}
+function handlePiggyMenuClick(event) {
+if (Date.now() - lastPiggyPointerToggleAt < 450) {
+event.preventDefault();
+event.stopPropagation();
+return;
+}
+toggleMenu(event);
+}
 function closeMenu() {
 const menu = document.getElementById('floating-menu');
 const backdrop = document.getElementById('menu-backdrop');
@@ -3475,7 +3488,9 @@ isMoving = false;
 document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('heart-row').innerHTML = Array.from({ length: 8 }, () => `<div class="heart-slot"><span class="h-empty">\u2661</span><span class="h-full">\u2665</span></div>`).join('');
 window.addEventListener('keydown', handlePasswordKeyboard);
-document.getElementById('main-btn')?.addEventListener('click', toggleMenu);
+const mainPiggyBtn = document.getElementById('main-btn');
+mainPiggyBtn?.addEventListener('pointerup', handlePiggyMenuPointer);
+mainPiggyBtn?.addEventListener('click', handlePiggyMenuClick);
 const initialDay = getInitialTripDay();
 switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();
