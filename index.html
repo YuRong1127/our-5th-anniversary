@@ -1360,7 +1360,7 @@ main { padding: 0 14px; }
 <div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon">🧺</div></div>
 <div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon">👛</div></div>
 </div>
-<button id="main-btn" class="float-icon main-piggy btn-press-effect" type="button" aria-label="開啟小豬選單"><img src="piggy-main.png" alt="小豬選單"></button>
+<button id="main-btn" class="float-icon main-piggy btn-press-effect" type="button" aria-label="開啟小豬選單" onpointerup="handlePiggyMenuPointer(event)" onclick="handlePiggyMenuClick(event)"><img src="piggy-main.png" alt="小豬選單"></button>
 <button id="add-itinerary-btn" class="add-itinerary-btn btn-press-effect" type="button" onclick="addItineraryItem()">＋</button>
 
 
@@ -3488,9 +3488,6 @@ isMoving = false;
 document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('heart-row').innerHTML = Array.from({ length: 8 }, () => `<div class="heart-slot"><span class="h-empty">\u2661</span><span class="h-full">\u2665</span></div>`).join('');
 window.addEventListener('keydown', handlePasswordKeyboard);
-const mainPiggyBtn = document.getElementById('main-btn');
-mainPiggyBtn?.addEventListener('pointerup', handlePiggyMenuPointer);
-mainPiggyBtn?.addEventListener('click', handlePiggyMenuClick);
 const initialDay = getInitialTripDay();
 switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();

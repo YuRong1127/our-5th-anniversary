@@ -1,11 +1,12 @@
-const CACHE_NAME = 'our-5th-anniversary-v4';
+const CACHE_NAME = 'our-5th-anniversary-v5';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './1776919829487.png',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './piggy-main.png',
+  './piggy-open.png'
 ];
 
 self.addEventListener('install', event => {
