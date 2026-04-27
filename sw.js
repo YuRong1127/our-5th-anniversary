@@ -1,4 +1,4 @@
-const CACHE_NAME = 'our-5th-anniversary-v2';
+const CACHE_NAME = 'our-5th-anniversary-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -30,6 +30,27 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+
+  const requestUrl = new URL(event.request.url);
+  const isAppShell =
+    requestUrl.origin === self.location.origin &&
+    (requestUrl.pathname.endsWith('/our-5th-anniversary/') ||
+      requestUrl.pathname.endsWith('/our-5th-anniversary/index.html'));
+
+  if (isAppShell) {
+    event.respondWith(
+      fetch(event.request)
+        .then(fetchResponse => {
+          const responseClone = fetchResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseClone);
+          });
+          return fetchResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then(response => {

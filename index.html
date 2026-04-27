@@ -343,7 +343,7 @@ white-space: nowrap;
 
 
 .float-icon { width: 62px; height: 62px; border: 2px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 8px 24px rgba(141,110,99,.15); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
-.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; }
+.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; padding: 0; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; }
 .main-piggy::before { display: none; }
 .main-piggy img { width: 86%; height: 86%; object-fit: contain; display: block; filter: none; pointer-events: none; position: relative; z-index: 1; }
 .main-piggy.is-open img { width: 96%; height: 96%; }
@@ -1360,7 +1360,7 @@ main { padding: 0 14px; }
 <div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon">🧺</div></div>
 <div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon">👛</div></div>
 </div>
-<div id="main-btn" class="float-icon main-piggy btn-press-effect" onclick="toggleMenu(event)"><img src="piggy-main.png" alt="小豬選單"></div>
+<button id="main-btn" class="float-icon main-piggy btn-press-effect" type="button" aria-label="開啟小豬選單"><img src="piggy-main.png" alt="小豬選單"></button>
 <button id="add-itinerary-btn" class="add-itinerary-btn btn-press-effect" type="button" onclick="addItineraryItem()">＋</button>
 
 
@@ -2452,12 +2452,16 @@ openIconPicker(icon);
 
 
 function toggleMenu(event) {
-if (event) event.stopPropagation();
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
 const menu = document.getElementById('floating-menu');
 const backdrop = document.getElementById('menu-backdrop');
 const mainBtn = document.getElementById('main-btn');
 const piggyImg = document.querySelector('#main-btn img');
-if (!menu.classList.contains('show')) {
+if (!menu || !backdrop || !mainBtn) return;
+if (!isMenuShowing) {
 menu.style.display = 'flex';
 backdrop.style.display = 'block';
 if (piggyImg) piggyImg.src = 'piggy-open.png';
@@ -2492,7 +2496,7 @@ if (backdrop) backdrop.style.display = 'none';
 window.addEventListener('click', e => {
 const menu = document.getElementById('floating-menu');
 const mainBtn = document.getElementById('main-btn');
-if (isMenuShowing && !mainBtn.contains(e.target) && !menu.contains(e.target)) closeMenu();
+if (isMenuShowing && mainBtn && menu && !mainBtn.contains(e.target) && !menu.contains(e.target)) closeMenu();
 });
 window.addEventListener('scroll', () => { if (isMenuShowing) closeMenu(); }, { passive: true });
 
@@ -3471,6 +3475,7 @@ isMoving = false;
 document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('heart-row').innerHTML = Array.from({ length: 8 }, () => `<div class="heart-slot"><span class="h-empty">\u2661</span><span class="h-full">\u2665</span></div>`).join('');
 window.addEventListener('keydown', handlePasswordKeyboard);
+document.getElementById('main-btn')?.addEventListener('click', toggleMenu);
 const initialDay = getInitialTripDay();
 switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();
