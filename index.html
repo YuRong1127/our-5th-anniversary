@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -345,6 +346,7 @@ white-space: nowrap;
 .main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; }
 .main-piggy::before { display: none; }
 .main-piggy img { width: 86%; height: 86%; object-fit: contain; display: block; filter: none; pointer-events: none; position: relative; z-index: 1; }
+.main-piggy.is-open img { width: 96%; height: 96%; }
 .main-piggy:active { transform: scale(.96); }
 .main-piggy.hidden-piggy { display: none !important; }
 .menu-backdrop {
@@ -2450,11 +2452,13 @@ function toggleMenu(event) {
 if (event) event.stopPropagation();
 const menu = document.getElementById('floating-menu');
 const backdrop = document.getElementById('menu-backdrop');
+const mainBtn = document.getElementById('main-btn');
 const piggyImg = document.querySelector('#main-btn img');
 if (!menu.classList.contains('show')) {
 menu.style.display = 'flex';
 backdrop.style.display = 'block';
 if (piggyImg) piggyImg.src = 'piggy-open.png';
+mainBtn?.classList.add('is-open');
 requestAnimationFrame(() => {
 menu.classList.add('show');
 backdrop.classList.add('show');
@@ -2468,8 +2472,10 @@ function closeMenu() {
 const menu = document.getElementById('floating-menu');
 const backdrop = document.getElementById('menu-backdrop');
 if (!menu || !isMenuShowing) return;
+const mainBtn = document.getElementById('main-btn');
 const piggyImg = document.querySelector('#main-btn img');
 if (piggyImg) piggyImg.src = 'piggy-main.png';
+mainBtn?.classList.remove('is-open');
 menu.classList.remove('show');
 backdrop?.classList.remove('show');
 isMenuShowing = false;
@@ -3375,17 +3381,17 @@ const mieIcons = currentDay === 3
 : ['🍁','🍂','⛩️','♨️','🦞','🦪','🌊','🍵','🎡','🚆','🛳️','🌅'];
 const count = currentDay === 3 ? 24 : 18;
 const leftPositions = currentDay === 3
-? [4, 88, 16, 62, 34, 96, 73, 24, 51, 8, 81, 44, 13, 69, 58, 29, 93, 76, 39, 19, 86, 54, 2, 66]
-: [5, 83, 18, 64, 38, 94, 72, 27, 52, 9, 88, 43, 15, 76, 59, 31, 97, 68];
+? [4, 76, 31, 92, 15, 58, 86, 39, 69, 8, 48, 97, 23, 63, 82, 12, 54, 94, 35, 72, 2, 44, 88, 19]
+: [6, 54, 88, 24, 72, 12, 62, 94, 38, 82, 18, 68, 48, 96, 30, 78, 4, 58];
 let html = '';
 for (let i = 0; i < count; i++) {
-const icon = mieIcons[i % mieIcons.length];
+const icon = mieIcons[(i * 5 + (currentDay === 3 ? 3 : 1)) % mieIcons.length];
 const left = leftPositions[i % leftPositions.length];
 const duration = (currentDay === 3 ? 26 : 30) + ((i * 7) % 9) * 2.4;
-const phase = ((i * 11) % count) / count;
+const phase = ((i * 13 + (currentDay === 3 ? 5 : 2)) % count) / count;
 const delay = -(phase * duration);
 const size = (currentDay === 3 ? 15 : 17) + (i % 4) * 4;
-const drift = i % 2 === 0 ? 18 : -18;
+const drift = i % 2 === 0 ? 22 : -22;
 html += `<span class="float-item" style="left:${left}%;--float-x:${drift}px;animation-delay:${delay.toFixed(2)}s;animation-duration:${duration.toFixed(2)}s;font-size:${size}px">${icon}</span>`;
 }
 host.innerHTML = html;
