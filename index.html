@@ -1496,12 +1496,11 @@ return false;
 
 function getAppHistoryUrl(day = currentDay) {
 const url = new URL(window.location.href);
-url.hash = `day-${day}`;
+url.hash = '';
 return url.href;
 }
 function getDayFromHash() {
-const match = String(window.location.hash || '').match(/^#day-([1-5])$/);
-return match ? Number(match[1]) : null;
+return null;
 }
 function getTripDayForDate(date = new Date()) {
 const tripStart = new Date(2026, 10, 25);
@@ -1517,10 +1516,9 @@ const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 return localDate >= tripStart && localDate <= tripEnd;
 }
 function getInitialTripDay() {
-const autoDay = getTripDayForDate();
-const hashDay = getDayFromHash();
-return isTripInProgress() && hashDay ? hashDay : autoDay;
+return getTripDayForDate();
 }
+
 function pushAppHistory(day = currentDay, replace = false) {
 if (!window.history || typeof window.history.pushState !== 'function') return;
 const state = { mieApp: true, day };
