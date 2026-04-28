@@ -1423,6 +1423,8 @@ let fp = null;
 let pendingNoteFocusIndex = null;
 let pendingAlertConfirm = null;
 let isApplyingCloudData = false;
+const CLOUD_SYNC_ENABLED = false;
+window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const FX = 0.21;
 const correctPw = '20211127';
 
@@ -2738,17 +2740,23 @@ const categoryMap = {
 '保險健康': '藥品健康',
 '出門前': '出行必備'
 };
-prepItems = prepItems.map(item => ({ ...item, category: categoryMap[item.category] || item.category }));
-let addedDefaultPrepItems = false;
+let prepItemsChanged = false;
+const allowedPrepTitles = DEFAULT_PREP_ITEMS.map(item => item.title);
+const normalizedExistingPrepItems = prepItems
+.map(item => ({ ...item, category: categoryMap[item.category] || item.category }))
+.filter(item => allowedPrepTitles.includes(String(item.title || '').trim()));
+if (normalizedExistingPrepItems.length !== prepItems.length) prepItemsChanged = true;
+prepItems = normalizedExistingPrepItems;
 DEFAULT_PREP_ITEMS.forEach(defaultItem => {
 const exists = prepItems.some(item => item.title === defaultItem.title);
 if (!exists) {
 prepItems.push({ ...defaultItem });
-addedDefaultPrepItems = true;
+prepItemsChanged = true;
 }
 });
+prepItems.sort((a, b) => allowedPrepTitles.indexOf(a.title) - allowedPrepTitles.indexOf(b.title));
 if (!['出行必備', '生活日用', '衣服配飾', '藥品健康', '數位電器'].includes(currentPrepCategory)) currentPrepCategory = '出行必備';
-return addedDefaultPrepItems;
+return prepItemsChanged;
 }
 function setPrepCategory(category) {
 currentPrepCategory = category;
@@ -3447,6 +3455,7 @@ updatedAt: new Date().toISOString()
 };
 }
 function applyTripCloudData(data) {
+if (!CLOUD_SYNC_ENABLED) return;
 if (!data || isEditMode) return;
 isApplyingCloudData = true;
 
@@ -3473,6 +3482,7 @@ isApplyingCloudData = false;
 if (addedDefaultPrepItems) queueTripCloudSave();
 }
 function queueTripCloudSave() {
+if (!CLOUD_SYNC_ENABLED) return;
 if (isApplyingCloudData || typeof window.saveTripToCloud !== 'function') return;
 window.saveTripToCloud(collectTripCloudData());
 }
@@ -3576,6 +3586,7 @@ window.saveTripToCloud = (data) => {
 };
 
 window.addEventListener('DOMContentLoaded', async () => {
+  if (window.CLOUD_SYNC_ENABLED === false) return;
   try {
     const snapshot = await getDoc(tripRef);
     if (!snapshot.exists()) {
