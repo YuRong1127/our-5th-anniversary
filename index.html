@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -3418,8 +3419,6 @@ host.innerHTML = html;
 
 function collectTripCloudData() {
 return {
-dayContentHTML: document.getElementById('day-content')?.innerHTML || '',
-headerHTML: document.getElementById('header-normal-view')?.innerHTML || '',
 expenses,
 wishItems,
 prepItems,
@@ -3430,15 +3429,14 @@ updatedAt: new Date().toISOString()
 function applyTripCloudData(data) {
 if (!data || isEditMode) return;
 isApplyingCloudData = true;
-const dayContent = document.getElementById('day-content');
-const header = document.getElementById('header-normal-view');
-if (data.dayContentHTML && dayContent) dayContent.innerHTML = data.dayContentHTML;
-if (data.headerHTML && header) header.innerHTML = data.headerHTML;
+
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
 normalizePrepItems();
+
 if (Number.isInteger(data.currentDay) && hasManualDaySelection && isTripInProgress()) currentDay = data.currentDay;
+
 enhanceRouteConnectors();
 enhanceItineraryCards();
 toggleEditMode(false);
@@ -3448,8 +3446,9 @@ updatePublicFundDisplay();
 renderExpenses();
 renderWishlist();
 renderPrepList();
-editSnapshotHTML = dayContent?.innerHTML || '';
-editSnapshotHeaderHTML = header?.innerHTML || '';
+
+editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
+editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
 isApplyingCloudData = false;
 }
 function queueTripCloudSave() {
@@ -3518,7 +3517,8 @@ import {
   getDoc,
   setDoc,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  deleteField
 } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -3542,6 +3542,8 @@ window.saveTripToCloud = (data) => {
     try {
       const payload = {
         ...data,
+        dayContentHTML: deleteField(),
+        headerHTML: deleteField(),
         serverUpdatedAt: serverTimestamp()
       };
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
@@ -3585,3 +3587,4 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
+
