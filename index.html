@@ -1385,6 +1385,16 @@ let prepItems = [
 { id: 207, category: '出行必備', title: '門票 / 交通卡', done: false },
 { id: 208, category: '出行必備', title: '填寫Visit Japan Web', done: false }
 ];
+const DEFAULT_PREP_ITEMS = [
+{ id: 201, category: '出行必備', title: '護照 / ESIM', done: false },
+{ id: 202, category: '出行必備', title: '機票 / 訂房確認', done: false },
+{ id: 203, category: '藥品健康', title: '過敏藥', done: false },
+{ id: 204, category: '數位電器', title: '充電器 / 行動電源', done: false },
+{ id: 205, category: '出行必備', title: '日幣 / 信用卡', done: false },
+{ id: 206, category: '出行必備', title: '旅平險 / 不便險', done: false },
+{ id: 207, category: '出行必備', title: '門票 / 交通卡', done: false },
+{ id: 208, category: '出行必備', title: '填寫Visit Japan Web', done: false }
+];
 let currentPrepCategory = '出行必備';
 let editingId = null;
 let currentPayer = '大豬';
@@ -2715,8 +2725,9 @@ list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'don
 }
 function openPrepList() {
 closeMenu();
-normalizePrepItems();
+const addedDefaultPrepItems = normalizePrepItems();
 renderPrepList();
+if (addedDefaultPrepItems) queueTripCloudSave();
 openSimpleModal('prep-modal');
 setTimeout(() => document.getElementById('prep-input')?.focus(), 120);
 }
@@ -2728,7 +2739,16 @@ const categoryMap = {
 '出門前': '出行必備'
 };
 prepItems = prepItems.map(item => ({ ...item, category: categoryMap[item.category] || item.category }));
+let addedDefaultPrepItems = false;
+DEFAULT_PREP_ITEMS.forEach(defaultItem => {
+const exists = prepItems.some(item => item.title === defaultItem.title);
+if (!exists) {
+prepItems.push({ ...defaultItem });
+addedDefaultPrepItems = true;
+}
+});
 if (!['出行必備', '生活日用', '衣服配飾', '藥品健康', '數位電器'].includes(currentPrepCategory)) currentPrepCategory = '出行必備';
+return addedDefaultPrepItems;
 }
 function setPrepCategory(category) {
 currentPrepCategory = category;
@@ -3433,7 +3453,7 @@ isApplyingCloudData = true;
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
-normalizePrepItems();
+const addedDefaultPrepItems = normalizePrepItems();
 
 if (Number.isInteger(data.currentDay) && hasManualDaySelection && isTripInProgress()) currentDay = data.currentDay;
 
@@ -3450,6 +3470,7 @@ renderPrepList();
 editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
 editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
 isApplyingCloudData = false;
+if (addedDefaultPrepItems) queueTripCloudSave();
 }
 function queueTripCloudSave() {
 if (isApplyingCloudData || typeof window.saveTripToCloud !== 'function') return;
