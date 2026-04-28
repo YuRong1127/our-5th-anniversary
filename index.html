@@ -3613,6 +3613,17 @@ window.addEventListener('DOMContentLoaded', async () => {
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
+    if (window.CLOUD_SYNC_ENABLED === false) {
+      navigator.serviceWorker.getRegistrations()
+        .then(registrations => registrations.forEach(registration => registration.unregister()))
+        .catch(error => console.error('Service worker unregister failed:', error));
+      if ('caches' in window) {
+        caches.keys()
+          .then(keys => Promise.all(keys.map(key => caches.delete(key))))
+          .catch(error => console.error('Cache cleanup failed:', error));
+      }
+      return;
+    }
     navigator.serviceWorker.register('./sw.js');
   });
 }
