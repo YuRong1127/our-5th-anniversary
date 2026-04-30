@@ -1167,17 +1167,17 @@ display: block;
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 6px; min-height: 38px; margin: 0 0 10px; color: #bcaaaa; font-size: 1.05rem; font-weight: 600; text-align: center; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 7px; min-height: 48px; margin: 0 0 10px; color: #bcaaaa; font-size: 1.05rem; font-weight: 600; text-align: center; line-height: 1.2; }
 .pw-hint-pig {
-display: inline-block;
-width: 46px;
+display: block;
+width: 58px;
 height: auto;
-transform: translateY(2px);
+flex: 0 0 auto;
+align-self: center;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 }
 .pw-hint-pig.angry {
-width: 44px;
-transform: translateY(3px);
+width: 52px;
 }
 .pw-keypad {
 display: grid;
