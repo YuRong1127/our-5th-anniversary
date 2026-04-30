@@ -1,5 +1,4 @@
-
-
+﻿
 
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -230,6 +229,7 @@ body.edit-mode .card > div:not(.card-extra-controls):not(.reorder-controls):not(
 .itinerary-icon { width: 32px; flex: 0 0 32px; align-self: stretch; display: flex; align-items: center; justify-content: center; font-size: 1.55rem; line-height: 1; }
 .time-badge { display: block; margin-bottom: 4px; color: var(--heart-pink); font-size: .72rem; font-weight: 800; }
 .item-title { font-weight: 800; color: #705b55; line-height: 1.25; }
+body.edit-mode .item-title { display: inline; }
 .item-desc { margin-top: 4px; color: #9ca3af; font-size: .78rem; line-height: 1.4; }
 .editable:focus { outline: 0; background: #fffde7; border-radius: 4px; }
 .connector-line {
@@ -575,19 +575,19 @@ background: #f0fbf5;
 color: #6d8f6b;
 }
 .map-place-control {
-position: absolute;
-right: 50px;
-top: 16px;
+position: static;
 z-index: 6;
 display: none;
+margin-left: 7px;
+vertical-align: -2px;
 }
-body.edit-mode .map-place-control { display: block; }
+body.edit-mode .map-place-control { display: inline-flex; }
 .map-place-control .map-place-btn {
-width: 28px;
-height: 28px;
+width: 24px;
+height: 24px;
 border-radius: 50%;
 padding: 0;
-font-size: .9rem;
+font-size: .78rem;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -643,6 +643,14 @@ color: var(--main-brown);
 .settle-loan-line { margin-top: 10px; line-height: 1.35; }
 .settle-loan-note { margin-top: 8px; color: var(--light-brown); font-size: .78rem; }
 .settle-result-icon { margin-top: 16px; font-size: 2.35rem; }
+.settle-money-pig { margin-top: 14px; font-size: 0; }
+.settle-money-pig img {
+display: block;
+width: min(190px, 58vw);
+height: auto;
+margin: 0 auto;
+filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
+}
 .modal-close-btn { position: absolute; top: 2px; right: 2px; z-index: 1010; padding: 12px; }
 .modal-close-circle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: var(--heart-pink); box-shadow: 0 2px 10px rgba(0,0,0,.1); }
 .modal-btn-primary { width: 100%; border: 0; border-radius: 20px; padding: 18px 24px; background: var(--heart-pink); color: #fff; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.25); }
@@ -1112,10 +1120,43 @@ object-fit: contain;
 .wishlist-input { flex: 1; min-width: 0; border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 14px; outline: 0; background: #fff; color: #705b55; font-size: .92rem; }
 .wishlist-add-btn { width: 52px; flex: 0 0 52px; border: 0; border-radius: 16px; background: var(--heart-pink); color: #fff; font-size: 1.35rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.18); }
 .wishlist-list { display: flex; flex-direction: column; gap: 9px; min-height: 120px; }
-.wishlist-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 32px; align-items: center; gap: 8px; padding: 10px 10px; border: 1px solid #f4e4df; border-radius: 18px; background: #fff; box-shadow: 0 5px 14px rgba(141,110,99,.045); }
+.wishlist-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 42px 32px; align-items: center; gap: 8px; padding: 10px 10px; border: 1px solid #f4e4df; border-radius: 18px; background: #fff; box-shadow: 0 5px 14px rgba(141,110,99,.045); cursor: pointer; }
 .wishlist-check { width: 28px; height: 28px; border: 1px solid #efd9d2; border-radius: 50%; background: #fffaf7; color: var(--heart-pink); font-size: .85rem; font-weight: 900; }
 .wishlist-name { min-width: 0; color: #705b55; font-size: .92rem; font-weight: 800; line-height: 1.35; word-break: break-word; }
-.wishlist-item.done .wishlist-name { color: var(--light-brown); text-decoration: line-through; }
+.wishlist-photo-btn {
+width: 40px;
+height: 40px;
+border: 1px solid #f0e2dd;
+border-radius: 14px;
+padding: 0;
+background: #fffaf7;
+color: #c07d6d;
+font-size: 1rem;
+font-weight: 900;
+line-height: 1;
+overflow: hidden;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+vertical-align: middle;
+appearance: none;
+-webkit-appearance: none;
+}
+.wishlist-photo-btn.has-image {
+border-color: #efd5cd;
+background: #fff;
+box-shadow: 0 4px 12px rgba(141,110,99,.08);
+}
+.wishlist-photo-btn img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+.wishlist-item.done { background: #fffaf7; opacity: .78; }
+.wishlist-item.done .wishlist-name { color: var(--light-brown); text-decoration-line: line-through; text-decoration-thickness: 2px; text-decoration-color: #d17a6d; }
+.wishlist-item.done .wishlist-check { background: var(--heart-pink); color: #fff; border-color: var(--heart-pink); }
 .wishlist-delete { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #fff7f6; color: #e57373; font-weight: 900; }
 .wishlist-empty { margin: 18px auto; padding: 22px 18px; border: 1px solid #f7e6e1; border-radius: 22px; background: #fffaf7; color: var(--light-brown); text-align: center; font-size: .9rem; font-weight: 800; line-height: 1.7; }
 .heart-row { display: flex; justify-content: center; margin-bottom: 24px; cursor: pointer; }
@@ -1615,7 +1656,7 @@ openSimpleModal('alert-modal');
 function showConfirmAlert(msg, onConfirm) {
 pendingAlertConfirm = typeof onConfirm === 'function' ? onConfirm : null;
 document.getElementById('alert-cancel-btn').style.display = 'block';
-document.getElementById('alert-primary-btn').textContent = '確定退出';
+document.getElementById('alert-primary-btn').textContent = '確定';
 document.getElementById('alert-message').innerText = msg;
 openSimpleModal('alert-modal');
 }
@@ -1911,10 +1952,15 @@ if (!card.querySelector('.reorder-controls')) {
 card.insertAdjacentHTML('beforeend', `<div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div>`);
 }
 if (!card.querySelector('.card-extra-controls')) {
-card.insertAdjacentHTML('beforeend', `<button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">📍</button></div><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">點我看更多</button></div>`);
+card.insertAdjacentHTML('beforeend', `<button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">點我看更多</button></div>`);
 }
 if (!card.querySelector('.map-place-control')) {
-card.insertAdjacentHTML('beforeend', `<div class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">📍</button></div>`);
+card.insertAdjacentHTML('beforeend', `<span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">📍</button></span>`);
+}
+const titleEl = card.querySelector('.item-title');
+const mapControl = card.querySelector('.map-place-control');
+if (titleEl && mapControl && mapControl.previousElementSibling !== titleEl) {
+titleEl.insertAdjacentElement('afterend', mapControl);
 }
 const mapBtn = card.querySelector('.map-place-btn');
 if (mapBtn) {
@@ -2716,7 +2762,39 @@ renderWishlist();
 queueTripCloudSave();
 }
 function deleteWishlistItem(id) {
+const item = wishItems.find(wish => wish.id === id);
+if (!item) return;
+showConfirmAlert(`要刪掉「${item.title}」嗎？\n刪掉後就回不來囉`, () => {
 wishItems = wishItems.filter(wish => wish.id !== id);
+renderWishlist();
+queueTripCloudSave();
+});
+}
+function getWishlistImageSrc(item) {
+return item.imageSrc || item.photoSrc || item.image || '';
+}
+function openWishlistImage(event, id) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const item = wishItems.find(wish => wish.id === id);
+const src = item ? getWishlistImageSrc(item) : '';
+if (!src) {
+document.getElementById(`wishlist-photo-input-${id}`)?.click();
+return;
+}
+document.getElementById('image-preview-img').src = src;
+openOverlayModal('image-preview-modal');
+}
+async function attachWishlistImage(id, event) {
+if (event) event.stopPropagation();
+const file = event.target.files && event.target.files[0];
+if (!file || !file.type.startsWith('image/')) return;
+const item = wishItems.find(wish => wish.id === id);
+if (!item) return;
+item.imageSrc = await readImageFile(file);
+event.target.value = '';
 renderWishlist();
 queueTripCloudSave();
 }
@@ -2729,10 +2807,12 @@ if (!items.length) {
 list.innerHTML = `<div class="wishlist-empty">這裡還空空的<br>可以先把${escapeHtml(currentWishlistCategory)}寫進來</div>`;
 return;
 }
-list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}">
-<button type="button" class="wishlist-check btn-press-effect" onclick="toggleWishlistItem(${item.id})">${item.done ? '✓' : ''}</button>
+list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}" onclick="toggleWishlistItem(${item.id})">
+<button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${item.id})">${item.done ? '✓' : ''}</button>
 <div class="wishlist-name">${escapeHtml(item.title)}</div>
-<button type="button" class="wishlist-delete btn-press-effect" onclick="deleteWishlistItem(${item.id})">×</button>
+<button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${item.id})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(getWishlistImageSrc(item))}" alt="${escapeHtml(item.title)}圖片">` : '📷'}</button>
+<input type="file" id="wishlist-photo-input-${item.id}" accept="image/*" style="display:none" onchange="attachWishlistImage(${item.id}, event)">
+<button type="button" class="wishlist-delete btn-press-effect" onclick="event.stopPropagation(); deleteWishlistItem(${item.id})">×</button>
 </div>`).join('');
 }
 function openPrepList() {
@@ -3401,7 +3481,7 @@ html = `<div class="settle-result"><div class="settle-result-main">目前雙方�
 const debtor = netJPY > 0 ? '大豬' : '小豬';
 const creditor = netJPY > 0 ? '小豬' : '大豬';
 const twd = Math.round(valJPY * FX);
-html = `<div class="settle-result"><div class="settle-result-main"><span class="settle-highlight-name">${debtor}</span>目前尊享<span class="settle-highlight-name">${creditor}</span>提供的</div><div class="settle-loan-line"><span class="settle-highlight-amount">$${twd.toLocaleString()}元無息貸款服務</span></div><div class="settle-loan-note">約 ¥${Math.round(valJPY).toLocaleString()}</div><div class="settle-result-icon">💸</div></div>`;
+html = `<div class="settle-result"><div class="settle-result-main"><span class="settle-highlight-name">${debtor}</span>目前尊享<span class="settle-highlight-name">${creditor}</span>提供的</div><div class="settle-loan-line"><span class="settle-highlight-amount">$${twd.toLocaleString()}元無息貸款服務</span></div><div class="settle-loan-note">約 ¥${Math.round(valJPY).toLocaleString()}</div><div class="settle-result-icon settle-money-pig"><img src="money-pig.png" alt="錢多多小豬"></div></div>`;
 }
 document.getElementById('settle-content').innerHTML = html;
 document.getElementById('wallet-modal').style.display = 'none';
