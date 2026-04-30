@@ -22,7 +22,7 @@
 <link rel="preload" as="image" href="empty-wallet-pig-inline.png">
 <link rel="preload" as="image" href="empty-stats-pig-inline.png">
 <link rel="preload" as="image" href="empty-details-pig-inline.png">
-<link rel="preload" as="image" href="missing-title-pig-inline.png">
+<link rel="preload" as="image" href="missing-title-pig-v2-inline.png">
 <link rel="preload" as="image" href="invalid-amount-pig-inline.png">
 <link rel="preload" as="image" href="fund-topup-success-pig-inline.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -3387,7 +3387,7 @@ return;
 const title = document.getElementById('exp-title').value.trim();
 if (currentSplit === '都有啦') syncBothAmountSum('submit');
 const amount = parseMoneyValue(document.getElementById('exp-amount').value);
-if (!title) return showAlertHtml('<span class="inline-alert-row">哎呀！消費品項忘記寫了啦～<img class="inline-alert-pig" src="missing-title-pig-inline.png" alt="忘記品項小豬"></span>');
+if (!title) return showAlertHtml('<span class="inline-alert-row">哎呀！消費品項忘記寫了啦～<img class="inline-alert-pig" src="missing-title-pig-v2-inline.png" alt="忘記品項小豬"></span>');
 if (amount === null || amount <= 0) return showAlertHtml('<span class="inline-alert-row">金額也要寫正確喔！不能是 0 吧？<img class="inline-alert-pig" src="invalid-amount-pig-inline.png" alt="金額錯誤小豬"></span>');
 let bigShare = 0;
 let smallShare = 0;
@@ -3826,7 +3826,7 @@ window.addEventListener('DOMContentLoaded', () => {
     'empty-wallet-pig-inline.png',
     'empty-stats-pig-inline.png',
     'empty-details-pig-inline.png',
-    'missing-title-pig-inline.png',
+    'missing-title-pig-v2-inline.png',
     'invalid-amount-pig-inline.png',
     'fund-topup-success-pig-inline.png'
   ].forEach((src) => {
