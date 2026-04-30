@@ -175,20 +175,20 @@ align-items: center;
 justify-content: center;
 margin: 0 4px 14px;
 min-height: 42px;
-padding: 8px 72px;
-border: 1px solid #f6d6df;
-border-radius: 999px;
-background-color: rgba(255,255,255,.76);
+padding: 6px 58px;
+border: 0;
+border-radius: 0;
+background-color: transparent;
 background-image: url('anniv-left.png'), url('anniv-right.png');
 background-repeat: no-repeat, no-repeat;
-background-position: left 20px center, right 20px center;
+background-position: calc(50% - 86px) center, calc(50% + 86px) center;
 background-size: 42px auto, 42px auto;
 color: #c95272;
 font-family: 'Dancing Script', 'Kosugi Maru', cursive;
 font-size: 1.02rem;
 font-weight: 600;
 line-height: 1;
-box-shadow: 0 8px 20px rgba(217,107,134,.1);
+box-shadow: none;
 }
 body.day-3-theme .edit-footer {
 background: rgba(255,250,248,.92);
@@ -638,6 +638,21 @@ body:not(.edit-mode) .more-info-btn.is-empty { display: none; }
 .empty-state::before,
 .empty-state::after {
 display: none;
+}
+.inline-alert-pig {
+display: inline-block;
+width: 46px;
+height: auto;
+margin-left: 6px;
+vertical-align: middle;
+filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
+}
+.inline-alert-row {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+white-space: nowrap;
 }
 .settle-result {
 width: 100%;
@@ -1714,6 +1729,13 @@ pendingAlertConfirm = null;
 document.getElementById('alert-cancel-btn').style.display = 'none';
 document.getElementById('alert-primary-btn').textContent = '好滴！我知道了';
 document.getElementById('alert-message').innerText = msg;
+openSimpleModal('alert-modal');
+}
+function showAlertHtml(msgHtml) {
+pendingAlertConfirm = null;
+document.getElementById('alert-cancel-btn').style.display = 'none';
+document.getElementById('alert-primary-btn').textContent = '好滴！我知道了';
+document.getElementById('alert-message').innerHTML = msgHtml;
 openSimpleModal('alert-modal');
 }
 function showConfirmAlert(msg, onConfirm) {
@@ -3462,7 +3484,7 @@ const listEl = document.getElementById('expense-details-list');
 if (!listEl) return;
 if (!expenses.length) {
 setPanelEmptyState('details-modal', true);
-listEl.innerHTML = `<div class="empty-state">目前還沒有記錄耶 ʕ´-ﻌก̀ʔᐝ</div>`;
+listEl.innerHTML = `<div class="empty-state"><span class="inline-alert-row">目前還沒有記錄耶<img class="inline-alert-pig" src="empty-details-pig.png" alt="沒有記錄小豬"></span></div>`;
 return;
 }
 setPanelEmptyState('details-modal', false);
@@ -3522,7 +3544,7 @@ syncTimeDisplay();
 }
 function openDetailsModal() {
 if (!expenses.length) {
-showAlert('目前還沒有記錄耶 ʕ´-ﻌก̀ʔᐝ');
+showAlertHtml('<span class="inline-alert-row">目前還沒有記錄耶<img class="inline-alert-pig" src="empty-details-pig.png" alt="沒有記錄小豬"></span>');
 return;
 }
 document.getElementById('wallet-modal').style.display = 'none';
@@ -3531,7 +3553,7 @@ openSimpleModal('details-modal');
 }
 function showSettleSummary() {
 if (!expenses.length) {
-showAlert('還沒開始記帳餒(◍ˊㅿˋ◍)');
+showAlertHtml('<span class="inline-alert-row">還沒開始記帳餒<img class="inline-alert-pig" src="empty-wallet-pig.png" alt="還沒記帳小豬"></span>');
 return;
 }
 let bigDebtJPY = 0;
@@ -3562,7 +3584,7 @@ openSimpleModal('settle-modal');
 }
 function openStatsModal() {
 if (!expenses.length) {
-showAlert('還沒有可以統計的資料哦(｡•̀ᴗ-)✧');
+showAlertHtml('<span class="inline-alert-row">還沒有可以統計的資料哦<img class="inline-alert-pig" src="empty-stats-pig.png" alt="沒有統計資料小豬"></span>');
 return;
 }
 let bigTotalTWD = 0;
