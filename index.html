@@ -1118,6 +1118,7 @@ object-fit: contain;
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 2px 8px rgba(141,110,99,.1); }
 .wishlist-form { display: flex; gap: 8px; margin-bottom: 14px; }
 .wishlist-input { flex: 1; min-width: 0; border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 14px; outline: 0; background: #fff; color: #705b55; font-size: .92rem; }
+.wishlist-input::placeholder { color: #cbbcb7; font-size: .82rem; }
 .wishlist-add-btn { width: 52px; flex: 0 0 52px; border: 0; border-radius: 16px; background: var(--heart-pink); color: #fff; font-size: 1.35rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.18); }
 .wishlist-list { display: flex; flex-direction: column; gap: 9px; min-height: 120px; }
 .wishlist-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 42px 32px; align-items: center; gap: 8px; padding: 10px 10px; border: 1px solid #f4e4df; border-radius: 18px; background: #fff; box-shadow: 0 5px 14px rgba(141,110,99,.045); cursor: pointer; }
@@ -1166,7 +1167,18 @@ display: block;
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; min-height: 32px; margin: 0 0 10px; color: #bcaaaa; font-size: 1.05rem; font-weight: 600; text-align: center; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 6px; min-height: 38px; margin: 0 0 10px; color: #bcaaaa; font-size: 1.05rem; font-weight: 600; text-align: center; }
+.pw-hint-pig {
+display: inline-block;
+width: 46px;
+height: auto;
+transform: translateY(2px);
+filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
+}
+.pw-hint-pig.angry {
+width: 44px;
+transform: translateY(3px);
+}
 .pw-keypad {
 display: grid;
 grid-template-columns: repeat(3, 74px);
@@ -1384,7 +1396,7 @@ main { padding: 0 14px; }
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
-<div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<span class="kaomoji-fix">(๑&gt; ◡ &lt;๑)</span></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
+<div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
 <div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><p>ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></p><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect">好啦，不小心滑到齁！</button></div></div></div>
 <div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><p>繼續上班存錢錢💛再一起出去玩</p><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg)">好啦 (乖乖回辦公室)</button></div></div></div>
 
@@ -1416,11 +1428,16 @@ let wishItems = [
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false }
 ];
 let currentWishlistCategory = '超商必買';
+const WISHLIST_PLACEHOLDERS = {
+'超商必買': '新增超商想買...',
+'機場必買': '新增機場想買...',
+'伴手禮': '新增伴手禮...'
+};
 let prepItems = [
 { id: 201, category: '出行必備', title: '護照 / ESIM', done: false },
 { id: 202, category: '出行必備', title: '機票 / 訂房確認', done: false },
-{ id: 203, category: '藥品健康', title: '過敏藥', done: false },
 { id: 221, category: '藥品健康', title: '口罩', done: false },
+{ id: 203, category: '藥品健康', title: '過敏藥', done: false },
 { id: 222, category: '藥品健康', title: '腸胃藥', done: false },
 { id: 223, category: '藥品健康', title: '暈車藥', done: false },
 { id: 204, category: '數位電器', title: '手錶 / 耳機充電線', done: false },
@@ -1444,8 +1461,8 @@ let prepItems = [
 const DEFAULT_PREP_ITEMS = [
 { id: 201, category: '出行必備', title: '護照 / ESIM', done: false },
 { id: 202, category: '出行必備', title: '機票 / 訂房確認', done: false },
-{ id: 203, category: '藥品健康', title: '過敏藥', done: false },
 { id: 221, category: '藥品健康', title: '口罩', done: false },
+{ id: 203, category: '藥品健康', title: '過敏藥', done: false },
 { id: 222, category: '藥品健康', title: '腸胃藥', done: false },
 { id: 223, category: '藥品健康', title: '暈車藥', done: false },
 { id: 204, category: '數位電器', title: '手錶 / 耳機充電線', done: false },
@@ -1467,11 +1484,11 @@ const DEFAULT_PREP_ITEMS = [
 { id: 208, category: '出行必備', title: '填寫Visit Japan Web', done: false }
 ];
 const PREP_PLACEHOLDERS = {
-'出行必備': '例如：護照、Visit Japan Web、旅平險...',
-'生活日用': '例如：牙刷、購物袋、濕紙巾...',
-'衣服配飾': '例如：外出服、襪子、雨傘...',
-'藥品健康': '例如：口罩、過敏藥、腸胃藥...',
-'數位電器': '例如：手機充電線、行動電源、耳機充電線...'
+'出行必備': '新增必備項目...',
+'生活日用': '新增日用品...',
+'衣服配飾': '新增衣物配件...',
+'藥品健康': '新增藥品用品...',
+'數位電器': '新增電器配件...'
 };
 let currentPrepCategory = '出行必備';
 let editingId = null;
@@ -1505,6 +1522,8 @@ const CLOUD_SYNC_ENABLED = false;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const FX = 0.21;
 const correctPw = '20211127';
+const passwordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬">';
+const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="angry-pig.png" alt="生氣小豬">';
 
 
 
@@ -2624,14 +2643,14 @@ function handleEditClick() {
 closeMenu();
 document.getElementById('pw-input').value = '';
 document.getElementById('auth-cancel-btn').style.display = '';
-document.getElementById('pw-hint').innerHTML = "請輸入密碼以編輯行程<span class='kaomoji-fix'>(๑&gt; ◡ &lt;๑)</span>";
+document.getElementById('pw-hint').innerHTML = passwordPromptHtml;
 updateHearts('');
 openSimpleModal('password-modal');
 }
 function cancelPasswordAuth() {
 document.getElementById('pw-input').value = '';
 document.getElementById('auth-cancel-btn').style.display = '';
-document.getElementById('pw-hint').innerHTML = "請輸入密碼以編輯行程<span class='kaomoji-fix'>(๑&gt; ◡ &lt;๑)</span>";
+document.getElementById('pw-hint').innerHTML = passwordPromptHtml;
 updateHearts('');
 closeModal('password-modal');
 }
@@ -2652,12 +2671,12 @@ closeModal('password-modal');
 toggleEditMode(true);
 }, 250);
 } else if (value.length >= 8) {
-hint.innerHTML = "阿賀❣️哩歐北來<span class='kaomoji-fix'>🐽💢</span>";
+hint.innerHTML = passwordWrongHtml;
 document.getElementById('auth-cancel-btn').style.display = 'none';
 setTimeout(() => {
 input.value = '';
 updateHearts('');
-hint.innerHTML = "請輸入密碼以編輯行程<span class='kaomoji-fix'>(๑&gt; ◡ &lt;๑)</span>";
+hint.innerHTML = passwordPromptHtml;
 document.getElementById('auth-cancel-btn').style.display = '';
 }, 900);
 }
@@ -2770,6 +2789,10 @@ currentWishlistCategory = category;
 document.querySelectorAll('#wishlist-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === category));
 renderWishlist();
 }
+function updateWishlistPlaceholder() {
+const input = document.getElementById('wishlist-input');
+if (input) input.placeholder = WISHLIST_PLACEHOLDERS[currentWishlistCategory] || '新增想買的東西...';
+}
 function addWishlistItem() {
 const input = document.getElementById('wishlist-input');
 const title = input.value.trim();
@@ -2838,6 +2861,7 @@ queueTripCloudSave();
 function renderWishlist() {
 const list = document.getElementById('wishlist-list');
 if (!list) return;
+updateWishlistPlaceholder();
 document.querySelectorAll('#wishlist-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === currentWishlistCategory));
 const items = wishItems.filter(wish => wish.category === currentWishlistCategory);
 if (!items.length) {
