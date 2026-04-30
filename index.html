@@ -25,6 +25,7 @@
 <link rel="preload" as="image" href="missing-title-pig-v2-inline.png">
 <link rel="preload" as="image" href="invalid-amount-pig-inline.png">
 <link rel="preload" as="image" href="fund-topup-success-pig-inline.png">
+<link rel="preload" as="image" href="wallet-unsaved-pig-inline.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
@@ -665,6 +666,23 @@ align-items: center;
 justify-content: center;
 gap: 6px;
 white-space: nowrap;
+}
+.alert-stack {
+display: inline-flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 12px;
+}
+.alert-stack-text {
+white-space: pre-line;
+}
+.alert-stack-pig {
+display: block;
+width: 118px;
+height: 118px;
+object-fit: contain;
+filter: drop-shadow(0 5px 10px rgba(141,110,99,.12));
 }
 .settle-result {
 width: 100%;
@@ -1758,6 +1776,13 @@ document.getElementById('alert-primary-btn').textContent = '確定';
 document.getElementById('alert-message').innerText = msg;
 openSimpleModal('alert-modal');
 }
+function showConfirmAlertHtml(msgHtml, onConfirm) {
+pendingAlertConfirm = typeof onConfirm === 'function' ? onConfirm : null;
+document.getElementById('alert-cancel-btn').style.display = 'block';
+document.getElementById('alert-primary-btn').textContent = '確定';
+document.getElementById('alert-message').innerHTML = msgHtml;
+openSimpleModal('alert-modal');
+}
 function closeAlertModal(confirmed) {
 const action = confirmed ? pendingAlertConfirm : null;
 pendingAlertConfirm = null;
@@ -1782,7 +1807,7 @@ return Boolean(editingId || title || amount || big || small || topupBig || topup
 }
 function closeWalletModal() {
 if (hasWalletDraft()) {
-showConfirmAlert('這筆還沒存～\n退出會清空內容喔', () => {
+showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">這筆還沒存～\n退出會清空內容喔</span><img class="alert-stack-pig" src="wallet-unsaved-pig-inline.png" alt="未存檔提醒小豬"></span>', () => {
 resetExpenseForm();
 closeModal('wallet-modal');
 });
@@ -3828,7 +3853,8 @@ window.addEventListener('DOMContentLoaded', () => {
     'empty-details-pig-inline.png',
     'missing-title-pig-v2-inline.png',
     'invalid-amount-pig-inline.png',
-    'fund-topup-success-pig-inline.png'
+    'fund-topup-success-pig-inline.png',
+    'wallet-unsaved-pig-inline.png'
   ].forEach((src) => {
     const img = new Image();
     img.decoding = 'async';
