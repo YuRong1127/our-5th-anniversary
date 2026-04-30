@@ -641,9 +641,10 @@ display: none;
 }
 .inline-alert-pig {
 display: inline-block;
-width: 46px;
-height: auto;
-margin-left: 6px;
+width: 50px;
+height: 50px;
+object-fit: contain;
+margin-left: 0;
 vertical-align: middle;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 }
@@ -3484,7 +3485,7 @@ const listEl = document.getElementById('expense-details-list');
 if (!listEl) return;
 if (!expenses.length) {
 setPanelEmptyState('details-modal', true);
-listEl.innerHTML = `<div class="empty-state"><span class="inline-alert-row">目前還沒有記錄耶<img class="inline-alert-pig" src="empty-details-pig.png" alt="沒有記錄小豬"></span></div>`;
+listEl.innerHTML = `<div class="empty-state"><span class="inline-alert-row">目前還沒有記錄耶<img class="inline-alert-pig" src="empty-details-pig-inline.png" alt="沒有記錄小豬"></span></div>`;
 return;
 }
 setPanelEmptyState('details-modal', false);
@@ -3544,7 +3545,7 @@ syncTimeDisplay();
 }
 function openDetailsModal() {
 if (!expenses.length) {
-showAlertHtml('<span class="inline-alert-row">目前還沒有記錄耶<img class="inline-alert-pig" src="empty-details-pig.png" alt="沒有記錄小豬"></span>');
+showAlertHtml('<span class="inline-alert-row">目前還沒有記錄耶<img class="inline-alert-pig" src="empty-details-pig-inline.png" alt="沒有記錄小豬"></span>');
 return;
 }
 document.getElementById('wallet-modal').style.display = 'none';
@@ -3553,7 +3554,7 @@ openSimpleModal('details-modal');
 }
 function showSettleSummary() {
 if (!expenses.length) {
-showAlertHtml('<span class="inline-alert-row">還沒開始記帳餒<img class="inline-alert-pig" src="empty-wallet-pig.png" alt="還沒記帳小豬"></span>');
+showAlertHtml('<span class="inline-alert-row">還沒開始記帳餒<img class="inline-alert-pig" src="empty-wallet-pig-inline.png" alt="還沒記帳小豬"></span>');
 return;
 }
 let bigDebtJPY = 0;
@@ -3584,7 +3585,7 @@ openSimpleModal('settle-modal');
 }
 function openStatsModal() {
 if (!expenses.length) {
-showAlertHtml('<span class="inline-alert-row">還沒有可以統計的資料哦<img class="inline-alert-pig" src="empty-stats-pig.png" alt="沒有統計資料小豬"></span>');
+showAlertHtml('<span class="inline-alert-row">還沒有可以統計的資料哦<img class="inline-alert-pig" src="empty-stats-pig-inline.png" alt="沒有統計資料小豬"></span>');
 return;
 }
 let bigTotalTWD = 0;
