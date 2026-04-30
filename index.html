@@ -1420,7 +1420,22 @@ let prepItems = [
 { id: 201, category: '出行必備', title: '護照 / ESIM', done: false },
 { id: 202, category: '出行必備', title: '機票 / 訂房確認', done: false },
 { id: 203, category: '藥品健康', title: '過敏藥', done: false },
-{ id: 204, category: '數位電器', title: '充電器 / 行動電源', done: false },
+{ id: 221, category: '藥品健康', title: '口罩', done: false },
+{ id: 222, category: '藥品健康', title: '腸胃藥', done: false },
+{ id: 223, category: '藥品健康', title: '暈車藥', done: false },
+{ id: 204, category: '數位電器', title: '手錶 / 耳機充電線', done: false },
+{ id: 209, category: '數位電器', title: '手機充電線 / 行動電源', done: false },
+{ id: 210, category: '數位電器', title: '吹風機 / 離子夾', done: false },
+{ id: 211, category: '衣服配飾', title: '外出服 / 睡衣', done: false },
+{ id: 212, category: '衣服配飾', title: '內衣褲 / 襪子', done: false },
+{ id: 213, category: '衣服配飾', title: '雨傘 / 雨衣', done: false },
+{ id: 214, category: '衣服配飾', title: '外套 / 隨身小包', done: false },
+{ id: 215, category: '生活日用', title: '購物袋 / 飲料提袋', done: false },
+{ id: 216, category: '生活日用', title: '牙刷 / 牙膏 / 牙線', done: false },
+{ id: 217, category: '生活日用', title: '浴巾 / 擦髮巾', done: false },
+{ id: 218, category: '生活日用', title: '卸妝品 / 洗面乳', done: false },
+{ id: 219, category: '生活日用', title: '潤髮乳 / 護髮乳', done: false },
+{ id: 220, category: '生活日用', title: '酒精 / 濕紙巾 / 面紙', done: false },
 { id: 205, category: '出行必備', title: '日幣 / 信用卡', done: false },
 { id: 206, category: '出行必備', title: '旅平險 / 不便險', done: false },
 { id: 207, category: '出行必備', title: '門票 / 交通卡', done: false },
@@ -1430,12 +1445,34 @@ const DEFAULT_PREP_ITEMS = [
 { id: 201, category: '出行必備', title: '護照 / ESIM', done: false },
 { id: 202, category: '出行必備', title: '機票 / 訂房確認', done: false },
 { id: 203, category: '藥品健康', title: '過敏藥', done: false },
-{ id: 204, category: '數位電器', title: '充電器 / 行動電源', done: false },
+{ id: 221, category: '藥品健康', title: '口罩', done: false },
+{ id: 222, category: '藥品健康', title: '腸胃藥', done: false },
+{ id: 223, category: '藥品健康', title: '暈車藥', done: false },
+{ id: 204, category: '數位電器', title: '手錶 / 耳機充電線', done: false },
+{ id: 209, category: '數位電器', title: '手機充電線 / 行動電源', done: false },
+{ id: 210, category: '數位電器', title: '吹風機 / 離子夾', done: false },
+{ id: 211, category: '衣服配飾', title: '外出服 / 睡衣', done: false },
+{ id: 212, category: '衣服配飾', title: '內衣褲 / 襪子', done: false },
+{ id: 213, category: '衣服配飾', title: '雨傘 / 雨衣', done: false },
+{ id: 214, category: '衣服配飾', title: '外套 / 隨身小包', done: false },
+{ id: 215, category: '生活日用', title: '購物袋 / 飲料提袋', done: false },
+{ id: 216, category: '生活日用', title: '牙刷 / 牙膏 / 牙線', done: false },
+{ id: 217, category: '生活日用', title: '浴巾 / 擦髮巾', done: false },
+{ id: 218, category: '生活日用', title: '卸妝品 / 洗面乳', done: false },
+{ id: 219, category: '生活日用', title: '潤髮乳 / 護髮乳', done: false },
+{ id: 220, category: '生活日用', title: '酒精 / 濕紙巾 / 面紙', done: false },
 { id: 205, category: '出行必備', title: '日幣 / 信用卡', done: false },
 { id: 206, category: '出行必備', title: '旅平險 / 不便險', done: false },
 { id: 207, category: '出行必備', title: '門票 / 交通卡', done: false },
 { id: 208, category: '出行必備', title: '填寫Visit Japan Web', done: false }
 ];
+const PREP_PLACEHOLDERS = {
+'出行必備': '例如：護照、Visit Japan Web、旅平險...',
+'生活日用': '例如：牙刷、購物袋、濕紙巾...',
+'衣服配飾': '例如：外出服、襪子、雨傘...',
+'藥品健康': '例如：口罩、過敏藥、腸胃藥...',
+'數位電器': '例如：手機充電線、行動電源、耳機充電線...'
+};
 let currentPrepCategory = '出行必備';
 let editingId = null;
 let currentPayer = '大豬';
@@ -2823,6 +2860,10 @@ if (addedDefaultPrepItems) queueTripCloudSave();
 openSimpleModal('prep-modal');
 setTimeout(() => document.getElementById('prep-input')?.focus(), 120);
 }
+function updatePrepPlaceholder() {
+const input = document.getElementById('prep-input');
+if (input) input.placeholder = PREP_PLACEHOLDERS[currentPrepCategory] || '想到什麼就先放進來...';
+}
 function normalizePrepItems() {
 const categoryMap = {
 '證件': '出行必備',
@@ -2890,6 +2931,7 @@ function renderPrepList() {
 const list = document.getElementById('prep-list');
 if (!list) return;
 normalizePrepItems();
+updatePrepPlaceholder();
 document.querySelectorAll('#prep-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === currentPrepCategory));
 const items = prepItems.filter(prep => prep.category === currentPrepCategory);
 if (!items.length) {
