@@ -169,19 +169,25 @@ body.day-3-theme .sticky-top-container {
 background: var(--bg-color);
 }
 body.day-3-theme main::before {
-content: '♡ 五週年紀念日 ♡';
+content: '五週年紀念日';
 display: flex;
 align-items: center;
 justify-content: center;
 margin: 0 4px 14px;
-padding: 9px 14px;
+min-height: 42px;
+padding: 8px 72px;
 border: 1px solid #f6d6df;
 border-radius: 999px;
-background: rgba(255,255,255,.76);
+background-color: rgba(255,255,255,.76);
+background-image: url('anniv-left.png'), url('anniv-right.png');
+background-repeat: no-repeat, no-repeat;
+background-position: left 20px center, right 20px center;
+background-size: 42px auto, 42px auto;
 color: #c95272;
 font-family: 'Dancing Script', 'Kosugi Maru', cursive;
 font-size: 1.02rem;
 font-weight: 600;
+line-height: 1;
 box-shadow: 0 8px 20px rgba(217,107,134,.1);
 }
 body.day-3-theme .edit-footer {
@@ -1178,6 +1184,7 @@ filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 }
 .pw-hint-pig.angry {
 width: 52px;
+transform: translateY(-4px);
 }
 .pw-keypad {
 display: grid;
