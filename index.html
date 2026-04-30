@@ -22,6 +22,9 @@
 <link rel="preload" as="image" href="empty-wallet-pig-inline.png">
 <link rel="preload" as="image" href="empty-stats-pig-inline.png">
 <link rel="preload" as="image" href="empty-details-pig-inline.png">
+<link rel="preload" as="image" href="missing-title-pig-inline.png">
+<link rel="preload" as="image" href="invalid-amount-pig-inline.png">
+<link rel="preload" as="image" href="fund-topup-success-pig-inline.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
@@ -3376,7 +3379,7 @@ openDetailsModal();
 expenses.unshift(next);
 resetExpenseForm();
 renderExpenses();
-showAlert('公費儲值成功！');
+showAlertHtml('<span class="inline-alert-row">公費儲值成功！<img class="inline-alert-pig" src="fund-topup-success-pig-inline.png" alt="公費儲值成功小豬"></span>');
 }
 queueTripCloudSave();
 return;
@@ -3384,8 +3387,8 @@ return;
 const title = document.getElementById('exp-title').value.trim();
 if (currentSplit === '都有啦') syncBothAmountSum('submit');
 const amount = parseMoneyValue(document.getElementById('exp-amount').value);
-if (!title) return showAlert('哎呀！消費品項忘記寫了啦～');
-if (amount === null || amount <= 0) return showAlert('金額也要寫正確喔！不能是 0 吧？ 💰');
+if (!title) return showAlertHtml('<span class="inline-alert-row">哎呀！消費品項忘記寫了啦～<img class="inline-alert-pig" src="missing-title-pig-inline.png" alt="忘記品項小豬"></span>');
+if (amount === null || amount <= 0) return showAlertHtml('<span class="inline-alert-row">金額也要寫正確喔！不能是 0 吧？<img class="inline-alert-pig" src="invalid-amount-pig-inline.png" alt="金額錯誤小豬"></span>');
 let bigShare = 0;
 let smallShare = 0;
 if (currentSplit === '都有啦') {
@@ -3822,7 +3825,10 @@ window.addEventListener('DOMContentLoaded', () => {
     'anniv-right-inline.png',
     'empty-wallet-pig-inline.png',
     'empty-stats-pig-inline.png',
-    'empty-details-pig-inline.png'
+    'empty-details-pig-inline.png',
+    'missing-title-pig-inline.png',
+    'invalid-amount-pig-inline.png',
+    'fund-topup-success-pig-inline.png'
   ].forEach((src) => {
     const img = new Image();
     img.decoding = 'async';
