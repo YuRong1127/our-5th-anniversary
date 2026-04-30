@@ -16,7 +16,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="preload" as="image" href="money-pig.png">
 <link rel="preload" as="image" href="typing-pig.png">
-<link rel="preload" as="image" href="angry-pig.png">
+<link rel="preload" as="image" href="angry-pig-inline.png">
 <link rel="preload" as="image" href="anniv-left-inline.png">
 <link rel="preload" as="image" href="anniv-right-inline.png">
 <link rel="preload" as="image" href="empty-wallet-pig-inline.png">
@@ -1207,8 +1207,9 @@ align-self: center;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 }
 .pw-hint-pig.angry {
-width: 52px;
-transform: translateY(-4px);
+width: auto;
+height: 46px;
+transform: translateY(-1px);
 }
 .pw-keypad {
 display: grid;
@@ -1554,7 +1555,7 @@ window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const FX = 0.21;
 const correctPw = '20211127';
 const passwordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬">';
-const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="angry-pig.png" alt="生氣小豬">';
+const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="angry-pig-inline.png" alt="生氣小豬">';
 
 
 
@@ -3816,7 +3817,7 @@ window.addEventListener('DOMContentLoaded', () => {
   [
     'money-pig.png',
     'typing-pig.png',
-    'angry-pig.png',
+    'angry-pig-inline.png',
     'anniv-left-inline.png',
     'anniv-right-inline.png',
     'empty-wallet-pig-inline.png',
