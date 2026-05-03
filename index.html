@@ -259,6 +259,7 @@ margin: -1px 0 -1px 36px;
 border-left: 2px dashed #e8dcd5;
 }
 .route-inline { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; width: min(320px, calc(100vw - 110px)); }
+body:not(.edit-mode) .connector-line:not(.has-route-plan) .route-inline { display: none; }
 .route-text { min-width: 0; flex: 1; color: #9c877f; font-size: .76rem; line-height: 1.35; }
 .route-nav-link {
 position: relative;
@@ -1891,6 +1892,10 @@ textEl.textContent = connector.dataset.routeText;
 textEl.textContent = '交通備註';
 }
 }
+function hasRoutePlan(connector) {
+const text = connector.querySelector('.route-text')?.textContent.trim() || '';
+return Boolean(connector.dataset.routeUrl || connector.dataset.routeText || (text && text !== '交通備註' && text !== '交通方式：可補上步行/巴士/地鐵/轉乘站資訊'));
+}
 function getMapIconSvg() {
 return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s6.5-6.1 6.5-11.2A6.5 6.5 0 0 0 5.5 9.8C5.5 14.9 12 21 12 21Z" fill="#d9867b"/><path d="M12 21s6.5-6.1 6.5-11.2c0-2.1-1-4-2.6-5.2L9.5 18.7C10.8 20.1 12 21 12 21Z" fill="#6fa48e"/><path d="M6.5 13.5c.7 1.8 2 3.7 3.1 5.1l6.3-14A6.5 6.5 0 0 0 11.9 3L6.5 13.5Z" fill="#f0c96b"/><circle cx="12" cy="9.6" r="2.45" fill="#fffaf7"/></svg>`;
 }
@@ -1938,6 +1943,7 @@ else connector.querySelector('.route-inline').insertAdjacentHTML('beforeend', bt
 }
 connector.querySelector('.route-text').contentEditable = isEditMode;
 refreshRouteHref(connector);
+connector.classList.toggle('has-route-plan', hasRoutePlan(connector));
 });
 enhanceItineraryCards();
 }
