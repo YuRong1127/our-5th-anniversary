@@ -280,6 +280,21 @@ min-height: 66px;
 margin: -1px 0 -1px 36px;
 border-left: 2px dashed #e8dcd5;
 }
+.connector-line.same-place-connector {
+height: 14px;
+min-height: 14px;
+}
+.connector-line.same-place-connector::after {
+content: '';
+position: absolute;
+left: -4px;
+top: 50%;
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: #d8c8c1;
+transform: translateY(-50%);
+}
 .route-inline { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; width: min(320px, calc(100vw - 110px)); }
 body:not(.edit-mode) .connector-line:not(.has-route-plan) .route-inline { display: none; }
 .route-text { min-width: 0; flex: 1; color: #9c877f; font-size: .76rem; line-height: 1.35; }
@@ -1385,9 +1400,9 @@ main { padding: 0 14px; }
 <div class="card" data-map-place-value="戶田家"><span class="itinerary-icon btn-press-effect">🏨</span><div><span class="time-badge editable">住宿</span><div class="item-title editable">戶田家</div><div class="item-desc editable">第三天住宿確定，已預定，包含晚餐與隔天早餐。</div></div></div>
 </section>
 <section id="day-4" class="day-section">
-<div class="card"><span class="itinerary-icon btn-press-effect">🍽️</span><div><span class="time-badge editable">07:00 - 08:20</span><div class="item-title editable">飯店享用早餐</div><div class="item-desc editable">早上先在飯店慢慢吃早餐，補滿體力再出發。</div></div></div>
+<div class="card" data-map-place-value="戶田家"><span class="itinerary-icon btn-press-effect">🍽️</span><div><span class="time-badge editable">07:00 - 08:20</span><div class="item-title editable">飯店享用早餐</div><div class="item-desc editable">早上先在飯店慢慢吃早餐，補滿體力再出發。</div></div></div>
 <div class="connector-line"></div>
-<div class="card"><span class="itinerary-icon btn-press-effect">💄</span><div><span class="time-badge editable">08:20 - 08:50</span><div class="item-title editable">回房間休息化妝</div><div class="item-desc editable">早餐後回房間整理一下，漂亮出門。</div></div></div>
+<div class="card" data-map-place-value="戶田家"><span class="itinerary-icon btn-press-effect">💄</span><div><span class="time-badge editable">08:20 - 08:50</span><div class="item-title editable">回房間休息化妝</div><div class="item-desc editable">早餐後回房間整理一下，漂亮出門。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/2vLcV3KfzptrDh5C9" data-map-place-value="御木本幸吉紀念館"><span class="itinerary-icon btn-press-effect">🧑‍🔬</span><div><span class="time-badge editable">09:00 - 09:40</span><div class="item-title editable">御木本幸吉紀念館</div><div class="item-desc editable">先從御木本幸吉的故事開始，進入珍珠島行程。</div></div></div>
 <div class="connector-line" data-route-url="https://maps.app.goo.gl/qXWSxU41JjecQ9bi8" data-route-text="徒步3分"></div>
@@ -1931,6 +1946,17 @@ function getCardRoutePoint(card) {
 if (!card) return '';
 return card.dataset.mapPlaceValue || card.querySelector('.item-title')?.textContent.trim() || '';
 }
+function normalizePlaceKey(value) {
+return String(value || '').trim().replace(/\s+/g, '').toLowerCase();
+}
+function isSamePlaceConnector(connector) {
+const prevCard = connector.previousElementSibling?.classList.contains('card') ? connector.previousElementSibling : null;
+const nextCard = connector.nextElementSibling?.classList.contains('card') ? connector.nextElementSibling : null;
+if (!prevCard || !nextCard) return false;
+const prevPlace = normalizePlaceKey(prevCard.dataset.mapPlaceValue);
+const nextPlace = normalizePlaceKey(nextCard.dataset.mapPlaceValue);
+return Boolean(prevPlace && nextPlace && prevPlace === nextPlace);
+}
 function refreshRouteHref(connector) {
 const prevCard = connector.previousElementSibling;
 const nextCard = connector.nextElementSibling;
@@ -2017,6 +2043,7 @@ else connector.querySelector('.route-inline').insertAdjacentHTML('beforeend', bt
 connector.querySelector('.route-text').contentEditable = isEditMode;
 refreshRouteHref(connector);
 connector.classList.toggle('has-route-plan', hasRoutePlan(connector));
+connector.classList.toggle('same-place-connector', isSamePlaceConnector(connector) && !hasRoutePlan(connector));
 });
 enhanceItineraryCards();
 }
