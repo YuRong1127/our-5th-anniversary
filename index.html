@@ -209,23 +209,34 @@ box-shadow: 0 -8px 24px rgba(200,121,127,.08);
 body.day-3-theme #day-3 .card {
 border-color: #f7d8df;
 box-shadow: 0 10px 26px rgba(217,107,134,.12), 0 0 0 4px rgba(255,221,229,.32);
-overflow: hidden;
+overflow: visible;
 }
 body.day-3-theme #day-3 .card::before,
 body.day-3-theme #day-3 .card::after {
 content: '♡';
 position: absolute;
-top: 14px;
-color: rgba(217,107,134,.24);
-font-size: 1.1rem;
+top: -8px;
+width: 18px;
+height: 18px;
+display: flex;
+align-items: center;
+justify-content: center;
+border: 1px solid #f3ccd5;
+border-radius: 5px;
+background: #fffafd;
+color: #d96b86;
+font-size: .72rem;
 font-weight: 900;
 line-height: 1;
+box-shadow: 0 5px 12px rgba(217,107,134,.12);
+transform: rotate(-14deg);
 }
 body.day-3-theme #day-3 .card::before {
-left: 18px;
+left: -7px;
 }
 body.day-3-theme #day-3 .card::after {
-right: 18px;
+right: -7px;
+transform: rotate(14deg);
 }
 body.day-3-theme #day-3 .connector-line {
 border-left-color: #f0cbd5;
