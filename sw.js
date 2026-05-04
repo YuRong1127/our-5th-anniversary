@@ -1,72 +1,40 @@
-const CACHE_NAME = 'our-5th-anniversary-v6';
-const ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  './piggy-main.png',
-  './piggy-open.png'
-];
+const CACHE_VERSION = 'mie-anniversary-v20260504-1';
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
-  );
+self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
-      )
-    ).then(() => self.clients.matchAll({ type: 'window' }))
-      .then(clients => {
-        clients.forEach(client => {
-          if ('navigate' in client) client.navigate(client.url);
-        });
-      })
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_VERSION).map((key) => caches.delete(key))))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+});
 
-  const requestUrl = new URL(event.request.url);
-  const isAppShell =
-    requestUrl.origin === self.location.origin &&
-    (requestUrl.pathname.endsWith('/our-5th-anniversary/') ||
-      requestUrl.pathname.endsWith('/our-5th-anniversary/index.html'));
-
-  if (isAppShell) {
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .then(fetchResponse => {
-          const responseClone = fetchResponse.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
-          });
-          return fetchResponse;
-        })
-        .catch(() => caches.match(event.request))
+      fetch(request, { cache: 'no-store' }).catch(() => caches.match(request))
     );
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request).then(fetchResponse => {
-        const responseClone = fetchResponse.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseClone);
-        });
-        return fetchResponse;
-      });
+    caches.match(request).then((cached) => {
+      const fresh = fetch(request).then((response) => {
+        if (response && response.ok && request.method === 'GET') {
+          const copy = response.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      }).catch(() => cached);
+      return cached || fresh;
     })
   );
 });
