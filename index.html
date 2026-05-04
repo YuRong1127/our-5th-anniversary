@@ -1660,6 +1660,8 @@ let pendingAlertConfirm = null;
 let isApplyingCloudData = false;
 const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
+const CLOUD_STATIC_SYNC_ENABLED = true;
+window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
 const FX = 0.21;
 const correctPw = '20211127';
 const passwordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬">';
@@ -3833,19 +3835,26 @@ host.innerHTML = html;
 
 
 function collectTripCloudData() {
-return {
+const data = {
 expenses,
 wishItems,
 prepItems,
 currentDay,
 updatedAt: new Date().toISOString()
 };
+if (CLOUD_STATIC_SYNC_ENABLED) {
+data.dayContentHTML = document.getElementById('day-content')?.innerHTML || '';
+}
+return data;
 }
 function applyTripCloudData(data) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (!data || isEditMode) return;
 isApplyingCloudData = true;
 
+if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim()) {
+document.getElementById('day-content').innerHTML = data.dayContentHTML;
+}
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
@@ -3961,16 +3970,24 @@ window.saveTripToCloud = (data) => {
     try {
       const payload = {
         ...data,
-        dayContentHTML: deleteField(),
         headerHTML: deleteField(),
         serverUpdatedAt: serverTimestamp()
       };
+      if (!window.CLOUD_STATIC_SYNC_ENABLED) payload.dayContentHTML = deleteField();
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
       await setDoc(tripRef, payload, { merge: true });
     } catch (error) {
       console.error('Firebase save failed:', error);
     }
   }, 350);
+};
+
+window.compactTripCloudDraft = async () => {
+  await setDoc(tripRef, {
+    dayContentHTML: deleteField(),
+    headerHTML: deleteField(),
+    serverUpdatedAt: serverTimestamp()
+  }, { merge: true });
 };
 
 window.addEventListener('DOMContentLoaded', async () => {
