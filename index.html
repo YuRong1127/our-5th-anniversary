@@ -1668,6 +1668,8 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
+const STATIC_CONTENT_VERSION = '2026-05-04-day3-breakfast-v1';
+window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
 const passwordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬">';
@@ -3855,6 +3857,7 @@ updatedAt: new Date().toISOString()
 };
 if (CLOUD_STATIC_SYNC_ENABLED) {
 data.dayContentHTML = document.getElementById('day-content')?.innerHTML || '';
+data.staticContentVersion = STATIC_CONTENT_VERSION;
 }
 return data;
 }
@@ -3862,9 +3865,12 @@ function applyTripCloudData(data) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (!data || isEditMode) return;
 isApplyingCloudData = true;
+let shouldRefreshCloudStatic = false;
 
-if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim()) {
+if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim() && data.staticContentVersion === STATIC_CONTENT_VERSION) {
 document.getElementById('day-content').innerHTML = data.dayContentHTML;
+} else if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim()) {
+shouldRefreshCloudStatic = true;
 }
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
@@ -3886,6 +3892,7 @@ renderPrepList();
 editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
 editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
 isApplyingCloudData = false;
+if (shouldRefreshCloudStatic) queueTripCloudSave();
 if (addedDefaultPrepItems) queueTripCloudSave();
 }
 function queueTripCloudSave() {
