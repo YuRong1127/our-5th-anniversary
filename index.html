@@ -363,18 +363,18 @@ margin-bottom: 7px;
 }
 .flight-info-title {
 min-width: 0;
-color: #c07d6d;
+color: #9b6a61;
 font-size: .76rem;
 font-weight: 900;
 line-height: 1.2;
 }
 .flight-live-link {
 flex: 0 0 auto;
-border: 1px solid #f1d9d2;
+border: 1px solid #ead8d2;
 border-radius: 999px;
 padding: 4px 8px;
-background: #fff7f3;
-color: #c07d6d;
+background: #fffaf7;
+color: #9b6a61;
 font-size: .68rem;
 font-weight: 900;
 line-height: 1;
@@ -389,7 +389,7 @@ gap: 5px 10px;
 }
 .flight-info-item {
 min-width: 0;
-color: #8d6e63;
+color: #76645e;
 font-size: .7rem;
 font-weight: 800;
 line-height: 1.35;
@@ -398,7 +398,7 @@ white-space: nowrap;
 .flight-info-label {
 display: inline;
 margin-bottom: 0;
-color: #8d6e63;
+color: #76645e;
 font-size: .7rem;
 font-weight: 900;
 white-space: nowrap;
@@ -406,7 +406,7 @@ white-space: nowrap;
 .flight-info-label::after { content: '：'; }
 .flight-info-value {
 display: inline;
-color: #9ca3af;
+color: #9aa0a6;
 font-size: .7rem;
 font-weight: 800;
 white-space: nowrap;
@@ -1233,8 +1233,8 @@ object-fit: contain;
 .stat-box { padding: 12px; border-radius: 18px; text-align: center; }
 .icon-picker-grid { display: flex; flex-direction: column; gap: 6px; }
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
-.icon-group-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); gap: 8px; }
-.icon-picker-item { min-height: 44px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; }
+.icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
+.icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
 .wishlist-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; margin-bottom: 12px; padding: 4px; border-radius: 16px; background: #f5efec; }
 .prep-tabs { grid-template-columns: repeat(5, minmax(0,1fr)); }
 .wishlist-tab { min-height: 38px; border: 0; border-radius: 13px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; }
@@ -1671,12 +1671,17 @@ const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry
 
 
 const ICON_GROUPS = {
-'交通': ['🚶','🚲','🛴','🚌','🚇','🚉','🚆','🚄','🚗','🚕','🚢','✈️','🧭','🗺️'],
-'吃喝': ['🍽️','🍜','🍣','🍱','🍡','🍞','☕','🍵','🍰','🍓','🍶'],
-'景點': ['⛩️','🏯','🌅','🌄','🌊','🏞️','🎆','📸','🪭','🍁','🌸'],
-'住宿': ['🏨','🛏️','♨️','🧳','🛁'],
-'玩樂': ['🎮','🎲','🎡','🎢','🎠','🎤','🎨','🎬','🎯','🏁','💖','✨'],
-'海洋': ['🦞','🦪','🐟','🐬','🦦','🛥️']
+'常用': ['📍','⭐','✨','💖','💕','✅','📝','📸','🛍️','🎁','💰','🎫','🧺','🎒','🧳','🗺️','🧭','⏰'],
+'交通': ['🚶','🚶‍♀️','🚶‍♂️','🏃','🚲','🛴','🚌','🚎','🚐','🚗','🚕','🚙','🚇','🚉','🚆','🚄','🚃','🚋','🚊','✈️','🛫','🛬','🚢','⛴️','🛥️','🚏','🅿️'],
+'吃喝': ['🍽️','🍴','🥢','🍜','🍣','🍱','🍙','🍘','🍡','🍢','🍤','🥩','🍗','🍖','🍛','🍲','🥘','🥟','🍞','🥐','🥞','🍰','🍮','🍦','🍧','🍓','🍇','🍎','☕','🍵','🧋','🥤','🍶','🍺','🥂'],
+'景點': ['⛩️','🏯','🏛️','🗿','🗽','🏰','🕍','⛪','🕌','🛕','🌅','🌄','🌃','🌉','🌁','🌊','🏞️','🏔️','⛰️','🌋','🏝️','🏖️','🌲','🌳','🍁','🌸','🌺','🌻','🎆','🎇','🪭','🏮'],
+'住宿': ['🏨','🏩','🏡','🏠','🛏️','🛌','♨️','🛁','🚿','🧴','🧖','🧖‍♀️','🧖‍♂️','🧳','🪞'],
+'購物': ['🛍️','🛒','🏬','🏪','💳','💴','💵','🧾','🎁','💝','👗','👚','👟','👒','💄','💍','🧸','📦'],
+'玩樂': ['🎡','🎢','🎠','🎮','🎲','🎯','🎳','🎤','🎧','🎵','🎬','🎨','🖼️','🏁','🏎️','🏟️','🎟️','🎫','🪄','🔮'],
+'人物': ['🐷','🐽','👫','👩‍❤️‍👨','💑','🙋','🙋‍♀️','🙋‍♂️','💁','💁‍♀️','💁‍♂️','🧑‍🔬','👨‍🔬','👩‍🔬','🧑‍🍳','👨‍🍳','👩‍🍳','🧑‍🎨','👨‍🎨','👩‍🎨'],
+'海洋': ['🦞','🦪','🐟','🐠','🐡','🐬','🐳','🦭','🦦','🐚','🪸','🦀','🦑','🐙','🛥️','⛵'],
+'自然': ['☀️','🌤️','🌙','⭐','🌈','☔','❄️','🔥','💧','🌿','🍃','🍂','🍁','🌸','🌼','🌹','🌻','🪷','🍄'],
+'符號': ['❤️','🧡','💛','💚','💙','💜','🤍','🤎','💔','❣️','💯','⭕','❌','❗','❓','➕','➡️','⬅️','⬆️','⬇️']
 };
 const CATEGORY_META = {
 '吃': { icon: '🍴', tone: 'tone-eat' },
