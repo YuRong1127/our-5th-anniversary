@@ -259,16 +259,16 @@ body.edit-mode .item-title:has(.terminal-badge) { display: flex; }
 display: inline-flex;
 align-items: center;
 justify-content: center;
-height: 22px;
-padding: 0 8px;
-border: 1px solid #b8d4e7;
-border-radius: 999px;
-background: #eef8ff;
-color: #357ca5;
+height: 20px;
+padding: 0 6px;
+border: 1px solid #cbd5df;
+border-radius: 5px;
+background: #f7fafc;
+color: #4f6475;
 font-size: .72rem;
 font-weight: 900;
 line-height: 1;
-box-shadow: 0 4px 10px rgba(53,124,165,.08);
+box-shadow: none;
 }
 .item-desc { margin-top: 4px; color: #9ca3af; font-size: .78rem; line-height: 1.4; }
 .editable:focus { outline: 0; background: #fffde7; border-radius: 4px; }
@@ -283,17 +283,6 @@ border-left: 2px dashed #e8dcd5;
 .connector-line.same-place-connector {
 height: 14px;
 min-height: 14px;
-}
-.connector-line.same-place-connector::after {
-content: '';
-position: absolute;
-left: -4px;
-top: 50%;
-width: 6px;
-height: 6px;
-border-radius: 50%;
-background: #d8c8c1;
-transform: translateY(-50%);
 }
 .route-inline { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; width: min(320px, calc(100vw - 110px)); }
 body:not(.edit-mode) .connector-line:not(.has-route-plan) .route-inline { display: none; }
