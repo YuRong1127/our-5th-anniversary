@@ -302,8 +302,8 @@ box-shadow: 0 3px 10px rgba(141,110,99,.06);
 }
 body.edit-mode .route-edit-btn { display: inline-flex; align-items: center; justify-content: center; }
 .connector-line.flight-connector {
-height: 120px;
-min-height: 120px;
+height: 186px;
+min-height: 186px;
 }
 .flight-inline {
 position: absolute;
@@ -316,6 +316,70 @@ border: 1px solid #efe1dc;
 border-radius: 18px;
 background: rgba(255,250,247,.94);
 box-shadow: 0 6px 16px rgba(141,110,99,.07);
+}
+.flight-summary {
+display: grid;
+gap: 7px;
+margin-bottom: 9px;
+padding-bottom: 9px;
+border-bottom: 1px dashed #ead9d3;
+}
+.flight-summary-top {
+display: flex;
+align-items: center;
+gap: 7px;
+min-width: 0;
+}
+.flight-number {
+color: #c07d6d;
+font-size: .78rem;
+font-weight: 900;
+white-space: nowrap;
+}
+.flight-fare {
+display: inline-flex;
+align-items: center;
+height: 20px;
+padding: 0 8px;
+border-radius: 999px;
+background: #fff4ee;
+color: #c07d6d;
+font-size: .67rem;
+font-weight: 900;
+white-space: nowrap;
+}
+.flight-summary-route {
+display: grid;
+grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+align-items: center;
+gap: 7px;
+}
+.flight-summary-airport {
+min-width: 0;
+padding: 6px 7px;
+border: 1px solid #f1e1dc;
+border-radius: 10px;
+background: rgba(255,255,255,.64);
+}
+.flight-summary-city {
+display: block;
+color: #806962;
+font-size: .7rem;
+font-weight: 900;
+white-space: nowrap;
+}
+.flight-summary-detail {
+display: block;
+margin-top: 1px;
+color: #9ca3af;
+font-size: .66rem;
+font-weight: 800;
+white-space: nowrap;
+}
+.flight-summary-arrow {
+color: #d09a8c;
+font-size: .8rem;
+font-weight: 900;
 }
 .flight-info-header {
 display: flex;
@@ -348,14 +412,29 @@ box-shadow: 0 3px 10px rgba(141,110,99,.06);
 .flight-info-grid {
 display: grid;
 grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 5px 10px;
+gap: 7px;
 }
 .flight-info-item {
 min-width: 0;
+padding: 7px 8px;
+border: 1px solid #f2e4df;
+border-radius: 10px;
+background: rgba(255,255,255,.62);
+line-height: 1.3;
+}
+.flight-info-label {
+display: block;
+margin-bottom: 2px;
 color: #8d6e63;
+font-size: .66rem;
+font-weight: 900;
+white-space: nowrap;
+}
+.flight-info-value {
+display: block;
+color: #9ca3af;
 font-size: .7rem;
 font-weight: 800;
-line-height: 1.35;
 white-space: nowrap;
 }
 
@@ -904,10 +983,28 @@ overflow-y: visible;
 }
 .flight-detail-modal .note-text-view {
 font-size: .86rem;
-line-height: 1.46;
+line-height: 1.72;
 }
 .flight-detail-modal .note-text-view b {
+display: inline-block;
+margin: 12px 0 5px;
+padding: 3px 8px;
+border-radius: 999px;
+background: #fff4ee;
+color: #b87568;
 font-size: .92rem;
+line-height: 1.25;
+}
+.flight-detail-modal .note-text-view b:first-child {
+margin-top: 0;
+}
+.flight-detail-modal .note-text-view br {
+content: '';
+display: block;
+margin: 3px 0;
+}
+.flight-detail-modal .note-text-view span[style*="white-space:nowrap"] {
+white-space: normal !important;
 }
 .flight-detail-modal .note-page::before,
 .flight-detail-modal .note-page::after {
@@ -1300,7 +1397,7 @@ main { padding: 0 14px; }
 <main>
 <div id="day-content">
 <section id="day-1" class="day-section active">
-<div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT206 去程航班備忘</b><br>航線：TPE 台北（桃園）T1 → NGO 名古屋 T2<br>時間：08:45 起飛 / 12:25 抵達<br>票種：tigerlight<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：無托運行李<br>小豬：<span style=\"white-space:nowrap\">預付行李重量&nbsp;15&nbsp;公斤（優先行李）</span>","text":"IT206 去程航班備忘\n航線：TPE 台北（桃園）T1 → NGO 名古屋 T2\n時間：08:45 起飛 / 12:25 抵達\n票種：tigerlight\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：<span style=\"white-space:nowrap\">預付行李重量&nbsp;15&nbsp;公斤（優先行李）</span>"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">08:45</span><div class="item-title editable">桃園機場 TPE T1 出發</div><div class="item-desc editable">IT206 台北（桃園）T1 → 名古屋 T2，tigerlight，預計 12:25 抵達。</div></div></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT206 去程航班備忘</b><br>航班：IT206<br>票種：tigerlight<br>出發：TPE 台北（桃園）T1，08:45<br>抵達：NGO 名古屋 T2，12:25<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：無托運行李<br>小豬：預付行李 15 公斤（優先行李）","text":"IT206 去程航班備忘\n航班：IT206\n票種：tigerlight\n出發：TPE 台北（桃園）T1，08:45\n抵達：NGO 名古屋 T2，12:25\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：預付行李 15 公斤（優先行李）"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">08:45</span><div class="item-title editable">桃園機場 TPE T1 出發</div><div class="item-desc editable">航班總覽與即時資訊整理在下方。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable">12:25</span><div class="item-title editable">中部國際機場 NGO T2</div><div class="item-desc editable">名古屋中部機場 T2 入境，領行李後前往名古屋站。</div></div></div>
 <div class="connector-line"></div>
@@ -1354,7 +1451,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">17:10</span><div class="item-title editable">抵達中部國際機場 NGO T2</div><div class="item-desc editable">建議 17:10 前抵達機場 T2，準備辦理回程搭機。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT207 回程航班備忘</b><br>航線：NGO 名古屋 T2 → TPE 台北（桃園）T1<br>時間：19:40 起飛 / 22:15 抵達<br>票種：tigersmart<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：<span style=\"white-space:nowrap\">預付行李重量&nbsp;20&nbsp;公斤（優先行李）</span><br>小豬：<span style=\"white-space:nowrap\">預付行李重量&nbsp;25&nbsp;公斤（優先行李）</span>","text":"IT207 回程航班備忘\n航線：NGO 名古屋 T2 → TPE 台北（桃園）T1\n時間：19:40 起飛 / 22:15 抵達\n票種：tigersmart\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：<span style=\"white-space:nowrap\">預付行李重量&nbsp;20&nbsp;公斤（優先行李）</span>\n小豬：<span style=\"white-space:nowrap\">預付行李重量&nbsp;25&nbsp;公斤（優先行李）</span>"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">19:40</span><div class="item-title editable">中部國際機場 NGO T2 起飛</div><div class="item-desc editable">IT207 名古屋 T2 → 台北（桃園）T1，tigersmart，建議 17:10 前抵達機場。</div></div></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT207 回程航班備忘</b><br>航班：IT207<br>票種：tigersmart<br>出發：NGO 名古屋 T2，19:40<br>抵達：TPE 台北（桃園）T1，22:15<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：預付行李 20 公斤（優先行李）<br>小豬：預付行李 25 公斤（優先行李）","text":"IT207 回程航班備忘\n航班：IT207\n票種：tigersmart\n出發：NGO 名古屋 T2，19:40\n抵達：TPE 台北（桃園）T1，22:15\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：預付行李 20 公斤（優先行李）\n小豬：預付行李 25 公斤（優先行李）"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">19:40</span><div class="item-title editable">中部國際機場 NGO T2 起飛</div><div class="item-desc editable">航班總覽與即時資訊整理在下方。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable">22:15</span><div class="item-title editable">抵達桃園機場 TPE T1</div><div class="item-desc editable">回到台北（桃園）T1，五週年三重之旅收工。</div></div></div>
 </section>
@@ -1904,14 +2001,26 @@ const prevTitle = connector.previousElementSibling?.querySelector('.item-title')
 const nextTitle = connector.nextElementSibling?.querySelector('.item-title')?.textContent.trim() || '';
 if (prevTitle.includes('桃園機場') && nextTitle.includes('中部國際機場')) {
 return {
-title: 'IT206 TPE → NGO 即時航班資訊',
+title: '即時航班資訊',
+flightNo: 'IT206',
+fare: 'tigerlight',
+fromCity: '台北（桃園）',
+fromDetail: 'TPE · T1 · 08:45',
+toCity: '名古屋',
+toDetail: 'NGO · T2 · 12:25',
 url: 'https://www.google.com/search?q=IT206',
 items: ['登機門：待公布', '最晚報到：待公布', '報到櫃台：待公布', '行李轉盤：抵達後公布']
 };
 }
 if (prevTitle.includes('中部國際機場') && nextTitle.includes('桃園機場')) {
 return {
-title: 'IT207 NGO → TPE 即時航班資訊',
+title: '即時航班資訊',
+flightNo: 'IT207',
+fare: 'tigersmart',
+fromCity: '名古屋',
+fromDetail: 'NGO · T2 · 19:40',
+toCity: '台北（桃園）',
+toDetail: 'TPE · T1 · 22:15',
 url: 'https://www.google.com/search?q=IT207',
 items: ['登機門：待公布', '最晚報到：待公布', '報到櫃台：待公布', '行李轉盤：抵達後公布']
 };
@@ -1920,7 +2029,12 @@ return null;
 }
 function renderFlightConnector(connector, info) {
 connector.classList.add('flight-connector');
-connector.innerHTML = `<div class="flight-inline"><div class="flight-info-header"><div class="flight-info-title editable" contenteditable="${isEditMode}">${info.title}</div><a class="flight-live-link btn-press-effect" href="${info.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查即時航班</a></div><div class="flight-info-grid">${info.items.map(item => `<div class="flight-info-item editable" contenteditable="${isEditMode}">${item}</div>`).join('')}</div></div>`;
+connector.innerHTML = `<div class="flight-inline"><div class="flight-summary"><div class="flight-summary-top"><span class="flight-number">${escapeHtml(info.flightNo)}</span><span class="flight-fare">${escapeHtml(info.fare)}</span></div><div class="flight-summary-route"><span class="flight-summary-airport"><span class="flight-summary-city">${escapeHtml(info.fromCity)}</span><span class="flight-summary-detail">${escapeHtml(info.fromDetail)}</span></span><span class="flight-summary-arrow">→</span><span class="flight-summary-airport"><span class="flight-summary-city">${escapeHtml(info.toCity)}</span><span class="flight-summary-detail">${escapeHtml(info.toDetail)}</span></span></div></div><div class="flight-info-header"><div class="flight-info-title editable" contenteditable="${isEditMode}">${info.title}</div><a class="flight-live-link btn-press-effect" href="${info.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">查即時航班</a></div><div class="flight-info-grid">${info.items.map(item => {
+const parts = item.split(/[:：]/);
+const label = escapeHtml(parts.shift() || '');
+const value = escapeHtml(parts.join('：') || '');
+return `<div class="flight-info-item editable" contenteditable="${isEditMode}"><span class="flight-info-label">${label}</span><span class="flight-info-value">${value}</span></div>`;
+}).join('')}</div></div>`;
 }
 function enhanceRouteConnectors() {
 document.querySelectorAll('.connector-line').forEach(connector => {
@@ -1979,6 +2093,45 @@ if (decoded.includes('travelmode=driving') || decoded.includes('directionsmode=d
 if (decoded.includes('travelmode=transit') || decoded.includes('directionsmode=transit')) return '大眾運輸路線';
 return '已設定 Google Maps 路線';
 }
+function normalizeRouteText(value) {
+const raw = String(value || '').replace(/\s+/g, ' ').trim();
+if (!raw) return '';
+const match = raw.match(/(徒步|步行|走路|開車|駕車|搭車|公車|巴士|地鐵|電車|火車|近鐵|計程車|船)\s*([0-9０-９]+)\s*(分|分鐘|小時|hr|h|min|m)/i);
+if (!match) return '';
+const modeMap = {
+'徒步': '步行',
+'走路': '步行',
+'駕車': '開車',
+'公車': '巴士',
+'搭車': '大眾運輸',
+'地鐵': '大眾運輸',
+'電車': '大眾運輸',
+'火車': '大眾運輸',
+'近鐵': '大眾運輸'
+};
+const mode = modeMap[match[1]] || match[1];
+const duration = `${match[2]}${match[3].replace(/^分鐘$/, '分').replace(/^min$/i, '分').replace(/^m$/i, '分').replace(/^hr$/i, '小時').replace(/^h$/i, '小時')}`;
+return `${mode} ${duration}`;
+}
+function parseRoutePaste(value) {
+const raw = String(value || '').trim();
+const urlMatch = raw.match(/https?:\/\/\S+/);
+return {
+url: urlMatch ? urlMatch[0].replace(/[，,。]+$/, '') : raw,
+text: normalizeRouteText(raw)
+};
+}
+function handleRoutePlanUrlPaste(event) {
+const pasted = event.clipboardData?.getData('text') || '';
+if (!pasted) return;
+const parsed = parseRoutePaste(pasted);
+if (!parsed.url || parsed.url === pasted.trim()) return;
+event.preventDefault();
+document.getElementById('route-plan-url').value = parsed.url;
+const textInput = document.getElementById('route-plan-text');
+if (textInput && !textInput.value.trim() && parsed.text) textInput.value = parsed.text;
+updateRoutePlanPreview();
+}
 function updateRoutePlanPreview() {
 const urlInput = document.getElementById('route-plan-url');
 const textInput = document.getElementById('route-plan-text');
@@ -2002,8 +2155,9 @@ setTimeout(() => document.getElementById('route-plan-url')?.focus(), 120);
 }
 function saveRoutePlan() {
 if (!currentRouteConnector) return;
-const routeUrl = document.getElementById('route-plan-url').value.trim();
-const routeText = document.getElementById('route-plan-text').value.trim() || summarizeRouteUrl(routeUrl);
+const parsedRoute = parseRoutePaste(document.getElementById('route-plan-url').value);
+const routeUrl = parsedRoute.url;
+const routeText = document.getElementById('route-plan-text').value.trim() || parsedRoute.text || summarizeRouteUrl(routeUrl);
 if (!routeUrl && !routeText) {
 clearRoutePlan();
 return;
@@ -2043,14 +2197,14 @@ return card;
 function isFlightDetailCard(card) {
 const title = card.querySelector('.item-title')?.textContent || '';
 const desc = card.querySelector('.item-desc')?.textContent || '';
-return (title.includes('機場') || title.includes('TPE') || title.includes('NGO')) && /IT20[67]/.test(desc);
+return /IT20[67]/.test(desc) || ((title.includes('出發') || title.includes('起飛')) && (title.includes('桃園機場 TPE') || title.includes('中部國際機場 NGO')));
 }
 function getLockedFlightPairKey(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const desc = card.querySelector('.item-desc')?.textContent.trim() || '';
-if (desc.includes('IT206') || title.includes('桃園機場 TPE 出發')) return 'IT206';
+if (desc.includes('IT206') || (title.includes('桃園機場 TPE') && title.includes('出發'))) return 'IT206';
 if (title.includes('中部國際機場') && (desc.includes('入境') || desc.includes('領行李') || desc.includes('名古屋站'))) return 'IT206';
-if (desc.includes('IT207') || title.includes('中部國際機場 NGO 起飛')) return 'IT207';
+if (desc.includes('IT207') || title.includes('中部國際機場 NGO') && title.includes('起飛')) return 'IT207';
 if (title.includes('抵達桃園機場')) return 'IT207';
 return '';
 }
@@ -3769,6 +3923,7 @@ document.getElementById('both-small-pig').addEventListener('input', () => syncBo
 document.getElementById('exp-amount').addEventListener('input', () => syncBothAmountSum('amount'));
 document.getElementById('map-place-input').addEventListener('input', updateMapPlacePreview);
 document.getElementById('route-plan-url').addEventListener('input', updateRoutePlanPreview);
+document.getElementById('route-plan-url').addEventListener('paste', handleRoutePlanUrlPaste);
 document.getElementById('route-plan-text').addEventListener('input', updateRoutePlanPreview);
 ['both-big-pig', 'both-small-pig', 'exp-amount', 'topup-big-pig', 'topup-small-pig'].forEach((id) => {
 document.getElementById(id).addEventListener('focus', (event) => {
