@@ -244,6 +244,16 @@ body.edit-mode .card { padding-right: 156px; }
 body:not(.edit-mode) .card:has(.more-info-btn:not(.is-empty)) { padding-right: 126px; }
 .card > div:not(.card-extra-controls):not(.reorder-controls) { min-width: 0; flex: 1; }
 body.edit-mode .card > div:not(.card-extra-controls):not(.reorder-controls):not(.map-place-control) { padding-right: 42px; }
+body.edit-mode .card > div:has(.map-place-control) {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+column-gap: 7px;
+}
+body.edit-mode .card > div:has(.map-place-control) .time-badge,
+body.edit-mode .card > div:has(.map-place-control) .item-desc {
+flex: 0 0 100%;
+}
 .itinerary-icon { width: 32px; flex: 0 0 32px; align-self: stretch; display: flex; align-items: center; justify-content: center; font-size: 1.55rem; line-height: 1; }
 .time-badge { display: block; margin-bottom: 4px; color: var(--heart-pink); font-size: .72rem; font-weight: 800; }
 .item-title { font-weight: 800; color: #705b55; line-height: 1.25; }
@@ -284,6 +294,7 @@ border-left: 2px dashed #e8dcd5;
 height: 14px;
 min-height: 14px;
 }
+body.edit-mode .connector-line.same-place-connector .route-inline { display: none; }
 .route-inline { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; width: min(320px, calc(100vw - 110px)); }
 body:not(.edit-mode) .connector-line:not(.has-route-plan) .route-inline { display: none; }
 .route-text { min-width: 0; flex: 1; color: #9c877f; font-size: .76rem; line-height: 1.35; }
@@ -640,7 +651,8 @@ position: static;
 z-index: 6;
 display: none;
 margin-left: 7px;
-vertical-align: -2px;
+align-items: center;
+vertical-align: middle;
 }
 body.edit-mode .map-place-control { display: inline-flex; }
 .map-place-control .map-place-btn {
@@ -1408,7 +1420,11 @@ main { padding: 0 14px; }
 <div class="card" data-map-place-value="戶田家"><span class="itinerary-icon btn-press-effect">🏨</span><div><span class="time-badge editable">住宿</span><div class="item-title editable">續住戶田家</div><div class="item-desc editable">第四天續住，已預定，包含晚餐與隔天早餐。</div></div></div>
 </section>
 <section id="day-5" class="day-section">
-<div class="card"><span class="itinerary-icon btn-press-effect">⛩️</span><div><span class="time-badge editable">09:00 - 14:00</span><div class="item-title editable">伊勢神宮（內外宮）+ 托福橫丁</div><div class="item-desc editable">最後衝刺，安排整整 5 小時參拜與大吃，這天跟海女龍蝦錯開了，胃袋有空間，達成。</div></div></div>
+<div class="card"><span class="itinerary-icon btn-press-effect">⛩️</span><div><span class="time-badge editable">09:00 - 10:00</span><div class="item-title editable">伊勢神宮 外宮</div><div class="item-desc editable">最後一天先從外宮開始參拜。</div></div></div>
+<div class="connector-line"></div>
+<div class="card"><span class="itinerary-icon btn-press-effect">⛩️</span><div><span class="time-badge editable">10:30 - 12:00</span><div class="item-title editable">伊勢神宮 內宮</div><div class="item-desc editable">接著前往內宮參拜，五週年三重之旅重點達成。</div></div></div>
+<div class="connector-line"></div>
+<div class="card"><span class="itinerary-icon btn-press-effect">🍡</span><div><span class="time-badge editable">12:00 - 14:00</span><div class="item-title editable">托福橫丁</div><div class="item-desc editable">參拜後慢慢逛街大吃，和海女龍蝦錯開，胃袋有空間。</div></div></div>
 <div class="connector-line"></div>
 <div class="card"><span class="itinerary-icon btn-press-effect">🚆</span><div><span class="time-badge editable">14:30</span><div class="item-title editable">伊勢市站搭特急回名古屋</div><div class="item-desc editable">從伊勢市站搭特急回名古屋，補買第二份 つばめパン。</div></div></div>
 <div class="connector-line"></div>
@@ -2031,8 +2047,9 @@ else connector.querySelector('.route-inline').insertAdjacentHTML('beforeend', bt
 }
 connector.querySelector('.route-text').contentEditable = isEditMode;
 refreshRouteHref(connector);
-connector.classList.toggle('has-route-plan', hasRoutePlan(connector));
-connector.classList.toggle('same-place-connector', isSamePlaceConnector(connector) && !hasRoutePlan(connector));
+const routePlanExists = hasRoutePlan(connector);
+connector.classList.toggle('has-route-plan', routePlanExists);
+connector.classList.toggle('same-place-connector', isSamePlaceConnector(connector) && !routePlanExists);
 });
 enhanceItineraryCards();
 }
