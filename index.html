@@ -297,6 +297,7 @@ height: 14px;
 min-height: 14px;
 }
 body.edit-mode .connector-line.same-place-connector .route-inline { display: none; }
+.connector-line.same-place-connector .route-inline { display: none; }
 .route-inline { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; width: min(320px, calc(100vw - 110px)); }
 body:not(.edit-mode) .connector-line:not(.has-route-plan) .route-inline { display: none; }
 .route-text { min-width: 0; flex: 1; color: #9c877f; font-size: .76rem; line-height: 1.35; }
@@ -1113,6 +1114,13 @@ white-space: pre-wrap;
 word-break: keep-all;
 overflow-wrap: anywhere;
 }
+.note-text-view span[style*="background-color"],
+.note-text-input span[style*="background-color"] {
+border-radius: 5px;
+padding: 0 3px;
+box-decoration-break: clone;
+-webkit-box-decoration-break: clone;
+}
 .note-nowrap {
 white-space: nowrap;
 }
@@ -1448,8 +1456,6 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card"><span class="itinerary-icon btn-press-effect">🚆</span><div><span class="time-badge editable">14:30</span><div class="item-title editable">伊勢市站搭特急回名古屋</div><div class="item-desc editable">從伊勢市站搭特急回名古屋，給 つばめパン 留一個甜甜的回訪。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">17:10</span><div class="item-title editable">抵達中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">建議 17:10 前抵達機場，準備辦理回程搭機。</div></div></div>
-<div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT207 回程航班備忘</b><br>航班：IT207<br>票種：tigersmart<br>出發：NGO 名古屋 T2，19:40<br>抵達：TPE 台北（桃園）T1，22:15<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：預付行李 20 公斤（優先行李）<br>小豬：預付行李 25 公斤（優先行李）","text":"IT207 回程航班備忘\n航班：IT207\n票種：tigersmart\n出發：NGO 名古屋 T2，19:40\n抵達：TPE 台北（桃園）T1，22:15\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：預付行李 20 公斤（優先行李）\n小豬：預付行李 25 公斤（優先行李）"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">19:40</span><div class="item-title editable">中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">IT207，建議 17:10 前抵達機場。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable">22:15</span><div class="item-title editable">抵達桃園機場 TPE<span class="terminal-badge">T1</span></div><div class="item-desc editable">回到台北（桃園），五週年旅行平安到家。</div></div></div>
@@ -1682,7 +1688,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-05-itinerary-swap-v1';
+const STATIC_CONTENT_VERSION = '2026-05-06-note-route-fixes-v2';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -1987,8 +1993,8 @@ function isSamePlaceConnector(connector) {
 const prevCard = connector.previousElementSibling?.classList.contains('card') ? connector.previousElementSibling : null;
 const nextCard = connector.nextElementSibling?.classList.contains('card') ? connector.nextElementSibling : null;
 if (!prevCard || !nextCard) return false;
-const prevPlace = normalizePlaceKey(prevCard.dataset.mapPlaceValue);
-const nextPlace = normalizePlaceKey(nextCard.dataset.mapPlaceValue);
+const prevPlace = normalizePlaceKey(getCardRoutePoint(prevCard));
+const nextPlace = normalizePlaceKey(getCardRoutePoint(nextCard));
 return Boolean(prevPlace && nextPlace && prevPlace === nextPlace);
 }
 function refreshRouteHref(connector) {
@@ -2077,8 +2083,9 @@ else connector.querySelector('.route-inline').insertAdjacentHTML('beforeend', bt
 connector.querySelector('.route-text').contentEditable = isEditMode;
 refreshRouteHref(connector);
 const routePlanExists = hasRoutePlan(connector);
-connector.classList.toggle('has-route-plan', routePlanExists);
-connector.classList.toggle('same-place-connector', isSamePlaceConnector(connector) && !routePlanExists);
+const samePlace = isSamePlaceConnector(connector);
+connector.classList.toggle('has-route-plan', routePlanExists && !samePlace);
+connector.classList.toggle('same-place-connector', samePlace);
 });
 enhanceItineraryCards();
 }
@@ -2443,13 +2450,24 @@ return escapeHtml(value).replace(/\n/g, '<br>');
 function stripHtml(value) {
 const div = document.createElement('div');
 div.innerHTML = value || '';
-return div.textContent || '';
+div.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
+div.querySelectorAll('div, p, li').forEach(el => {
+if (el.nextSibling) el.appendChild(document.createTextNode('\n'));
+});
+return (div.textContent || '').replace(/\n{3,}/g, '\n\n');
 }
 function sanitizeNoteHtml(value) {
 const template = document.createElement('template');
 template.innerHTML = value || '';
 const allowedColors = ['#705b55', 'rgb(112, 91, 85)', '#c86f77', 'rgb(200, 111, 119)', '#8d6e63', 'rgb(141, 110, 99)', '#6d8f6b', 'rgb(109, 143, 107)', '#6f7fa6', 'rgb(111, 127, 166)'];
-const allowedBackgrounds = ['#fff3b8', 'rgb(255, 243, 184)', 'rgba(255, 243, 184, 0.65)'];
+function isAllowedBackground(value) {
+const bg = String(value || '').trim().toLowerCase();
+return bg === '#fff3b8' || bg === 'rgb(255, 243, 184)' || bg === 'rgba(255, 243, 184, 0.65)' || bg === 'rgb(255, 255, 0)' || bg === 'yellow';
+}
+function appendBreak(fragment) {
+const last = fragment.lastChild;
+if (!last || last.nodeName !== 'BR') fragment.appendChild(document.createElement('br'));
+}
 function cleanNode(node) {
 if (node.nodeType === Node.TEXT_NODE) return document.createTextNode(node.textContent || '');
 if (node.nodeType !== Node.ELEMENT_NODE) return document.createTextNode('');
@@ -2457,8 +2475,16 @@ const tag = node.tagName.toLowerCase();
 if (tag === 'br') return document.createElement('br');
 const fragment = document.createDocumentFragment();
 Array.from(node.childNodes).forEach(child => fragment.appendChild(cleanNode(child)));
+if (tag === 'li') {
+const item = document.createDocumentFragment();
+item.appendChild(document.createTextNode('⚫ '));
+item.appendChild(fragment);
+appendBreak(item);
+return item;
+}
+if (['ul', 'ol'].includes(tag)) return fragment;
 if (['div', 'p'].includes(tag)) {
-fragment.appendChild(document.createElement('br'));
+appendBreak(fragment);
 return fragment;
 }
 if (['b', 'strong'].includes(tag)) {
@@ -2466,13 +2492,19 @@ const b = document.createElement('b');
 b.appendChild(fragment);
 return b;
 }
+if (tag === 'mark') {
+const mark = document.createElement('span');
+mark.style.backgroundColor = '#fff3b8';
+mark.appendChild(fragment);
+return mark;
+}
 if (tag === 'span' || tag === 'font') {
 const color = (node.style.color || node.getAttribute('color') || '').trim();
-const background = (node.style.backgroundColor || '').trim();
+const background = (node.style.backgroundColor || node.getAttribute('data-background') || '').trim();
 const whiteSpace = (node.style.whiteSpace || '').trim();
 const span = document.createElement('span');
 if (allowedColors.includes(color.toLowerCase())) span.style.color = color;
-if (allowedBackgrounds.includes(background.toLowerCase())) span.style.backgroundColor = background;
+if (isAllowedBackground(background)) span.style.backgroundColor = '#fff3b8';
 if (whiteSpace.toLowerCase() === 'nowrap') {
 span.style.whiteSpace = 'nowrap';
 span.className = 'note-nowrap';
