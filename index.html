@@ -710,10 +710,16 @@ border-radius: 999px;
 font-size: .74rem;
 }
 body.edit-mode .more-info-btn {
-border-color: #d17a6d;
-background: #d17a6d;
-color: #fff;
-box-shadow: 0 4px 12px rgba(209,122,109,.2);
+border-color: #b9d9cf;
+background: #f0fbf5;
+color: #5f8d78;
+box-shadow: 0 4px 12px rgba(111,164,142,.14);
+}
+body.edit-mode .more-info-btn.is-empty {
+border-color: #efd9ce;
+background: #fffaf7;
+color: #c07d6d;
+box-shadow: 0 3px 10px rgba(141,110,99,.08);
 }
 .delete-card-btn {
 position: absolute;
@@ -2365,9 +2371,19 @@ updateMoreInfoButtons();
 function cardHasMoreInfo(card) {
 return noteHasContent(card);
 }
+function getMoreInfoButtonText(card, hasMoreInfo) {
+const isFlight = isFlightDetailCard(card);
+if (isEditMode) return isFlight ? (hasMoreInfo ? '航班記好了!' : '還沒補航班資料耶') : (hasMoreInfo ? '有偷偷記惹' : '寫點什麼吧!');
+return isFlight ? '🐯✈️' : '點我看更多';
+}
 function updateMoreInfoButtons() {
 document.querySelectorAll('.day-section .card').forEach(card => {
-card.querySelector('.more-info-btn')?.classList.toggle('is-empty', !cardHasMoreInfo(card));
+const moreBtn = card.querySelector('.more-info-btn');
+const hasMoreInfo = cardHasMoreInfo(card);
+if (moreBtn) {
+moreBtn.classList.toggle('is-empty', !hasMoreInfo);
+moreBtn.textContent = getMoreInfoButtonText(card, hasMoreInfo);
+}
 const mapBtn = card.querySelector('.map-place-btn');
 if (mapBtn) {
 mapBtn.classList.toggle('has-map-place', Boolean(card.dataset.mapPlaceValue));
@@ -3101,9 +3117,12 @@ toggleEditMode(false);
 editSnapshotHTML = document.getElementById('day-content').innerHTML;
 editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML;
 enhanceRouteConnectors();
-queueTripCloudSave();
+queueTripCloudSave(true);
 }
 function discardEditChanges() {
+showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">要放棄這次編輯嗎？\n剛剛改的內容會不見喔</span><img class="alert-stack-pig" src="discard-unsaved-pig.png" alt="放棄編輯提醒小豬"></span>', confirmDiscardEditChanges);
+}
+function confirmDiscardEditChanges() {
 if (editSnapshotHTML) document.getElementById('day-content').innerHTML = editSnapshotHTML;
 if (editSnapshotHeaderHTML) document.getElementById('header-normal-view').innerHTML = editSnapshotHeaderHTML;
 toggleEditMode(false);
@@ -4093,10 +4112,10 @@ toast.className = `save-status-toast show ${type}`;
 clearTimeout(saveStatusTimer);
 saveStatusTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
-function queueTripCloudSave() {
+function queueTripCloudSave(showStatus = false) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (isApplyingCloudData || typeof window.saveTripToCloud !== 'function') return;
-return window.saveTripToCloud(collectTripCloudData());
+return window.saveTripToCloud(collectTripCloudData(), { showStatus });
 }
 window.collectTripCloudData = collectTripCloudData;
 window.applyTripCloudData = applyTripCloudData;
@@ -4199,7 +4218,7 @@ async function backupCloudStaticBeforeOverwrite(nextPayload) {
   });
 }
 
-window.saveTripToCloud = (data) => {
+window.saveTripToCloud = (data, options = {}) => {
   if (pendingSaveResolve) pendingSaveResolve(false);
   clearTimeout(saveTimer);
   return new Promise((resolve) => {
@@ -4216,11 +4235,11 @@ window.saveTripToCloud = (data) => {
         latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
         if (window.CLOUD_STATIC_SYNC_ENABLED) await backupCloudStaticBeforeOverwrite(payload);
         await setDoc(tripRef, payload, { merge: true });
-        window.showSaveStatus?.('儲存成功', 'success');
+        if (options.showStatus) window.showSaveStatus?.('儲存成功', 'success');
         resolve(true);
       } catch (error) {
         console.error('Firebase save failed:', error);
-        window.showSaveStatus?.('儲存失敗', 'error');
+        if (options.showStatus) window.showSaveStatus?.('儲存失敗', 'error');
         resolve(false);
       }
     }, 350);
