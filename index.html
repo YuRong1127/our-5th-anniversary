@@ -476,6 +476,36 @@ backdrop-filter: blur(12px); box-shadow: 0 -8px 20px rgba(141,110,99,.05);
 
 
 .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; background: rgba(141,110,99,.4); backdrop-filter: blur(4px); }
+.save-status-toast {
+position: fixed;
+left: 50%;
+bottom: calc(22px + env(safe-area-inset-bottom));
+z-index: 1300;
+max-width: calc(100vw - 40px);
+padding: 12px 18px;
+border-radius: 999px;
+background: rgba(112,91,85,.94);
+color: #fff;
+font-size: .88rem;
+font-weight: 900;
+line-height: 1;
+box-shadow: 0 10px 26px rgba(112,91,85,.18);
+opacity: 0;
+pointer-events: none;
+transform: translate(-50%, 12px);
+transition: opacity .18s ease-out, transform .18s ease-out;
+white-space: nowrap;
+}
+.save-status-toast.show {
+opacity: 1;
+transform: translate(-50%, 0);
+}
+.save-status-toast.success {
+background: rgba(111,164,142,.96);
+}
+.save-status-toast.error {
+background: rgba(209,122,109,.96);
+}
 .modal-container { position: relative; width: 92%; max-width: 400px; padding: 20px; }
 .modal-content { width: 100%; max-height: 86vh; overflow: hidden; display: flex; flex-direction: column; padding: 30px 20px; border: 1px solid #f9f0ed; border-radius: 30px; background: var(--modal-bg); box-shadow: 0 10px 40px rgba(141,110,99,.1); }
 .modal-scroll-area { min-height: 0; flex: 1; overflow-y: auto; padding: 5px; -webkit-overflow-scrolling: touch; }
@@ -1592,6 +1622,7 @@ main { padding: 0 14px; }
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
+<div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
 <div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
 <div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><p>ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></p><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect">好啦，不小心滑到齁！</button></div></div></div>
 <div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><p>繼續上班存錢錢💛再一起出去玩</p><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg)">好啦 (乖乖回辦公室)</button></div></div></div>
@@ -4054,13 +4085,23 @@ isApplyingCloudData = false;
 if (shouldRefreshCloudStatic) queueTripCloudSave();
 if (addedDefaultPrepItems) queueTripCloudSave();
 }
+let saveStatusTimer = null;
+function showSaveStatus(message, type = 'success') {
+const toast = document.getElementById('save-status-toast');
+if (!toast) return;
+toast.textContent = message;
+toast.className = `save-status-toast show ${type}`;
+clearTimeout(saveStatusTimer);
+saveStatusTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
 function queueTripCloudSave() {
 if (!CLOUD_SYNC_ENABLED) return;
 if (isApplyingCloudData || typeof window.saveTripToCloud !== 'function') return;
-window.saveTripToCloud(collectTripCloudData());
+return window.saveTripToCloud(collectTripCloudData());
 }
 window.collectTripCloudData = collectTripCloudData;
 window.applyTripCloudData = applyTripCloudData;
+window.showSaveStatus = showSaveStatus;
 
 
 let startX = 0, startY = 0, isMoving = false;
@@ -4139,6 +4180,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const tripRef = doc(db, 'trips', 'our-5th-anniversary');
 let saveTimer = null;
+let pendingSaveResolve = null;
 let latestCloudUpdatedAt = '';
 
 async function backupCloudStaticBeforeOverwrite(nextPayload) {
@@ -4159,22 +4201,31 @@ async function backupCloudStaticBeforeOverwrite(nextPayload) {
 }
 
 window.saveTripToCloud = (data) => {
+  if (pendingSaveResolve) pendingSaveResolve(false);
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
-    try {
-      const payload = {
-        ...data,
-        headerHTML: deleteField(),
-        serverUpdatedAt: serverTimestamp()
-      };
-      if (!window.CLOUD_STATIC_SYNC_ENABLED) payload.dayContentHTML = deleteField();
-      latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
-      if (window.CLOUD_STATIC_SYNC_ENABLED) await backupCloudStaticBeforeOverwrite(payload);
-      await setDoc(tripRef, payload, { merge: true });
-    } catch (error) {
-      console.error('Firebase save failed:', error);
-    }
-  }, 350);
+  return new Promise((resolve) => {
+    pendingSaveResolve = resolve;
+    saveTimer = setTimeout(async () => {
+      pendingSaveResolve = null;
+      try {
+        const payload = {
+          ...data,
+          headerHTML: deleteField(),
+          serverUpdatedAt: serverTimestamp()
+        };
+        if (!window.CLOUD_STATIC_SYNC_ENABLED) payload.dayContentHTML = deleteField();
+        latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
+        if (window.CLOUD_STATIC_SYNC_ENABLED) await backupCloudStaticBeforeOverwrite(payload);
+        await setDoc(tripRef, payload, { merge: true });
+        window.showSaveStatus?.('儲存成功', 'success');
+        resolve(true);
+      } catch (error) {
+        console.error('Firebase save failed:', error);
+        window.showSaveStatus?.('儲存失敗', 'error');
+        resolve(false);
+      }
+    }, 350);
+  });
 };
 
 window.compactTripCloudDraft = async () => {
