@@ -1258,6 +1258,30 @@ object-fit: contain;
 .wishlist-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 42px 32px; align-items: center; gap: 8px; padding: 10px 10px; border: 1px solid #f4e4df; border-radius: 18px; background: #fff; box-shadow: 0 5px 14px rgba(141,110,99,.045); cursor: pointer; }
 .wishlist-check { width: 28px; height: 28px; border: 1px solid #efd9d2; border-radius: 50%; background: #fffaf7; color: var(--heart-pink); font-size: .85rem; font-weight: 900; }
 .wishlist-name { min-width: 0; color: #705b55; font-size: .92rem; font-weight: 800; line-height: 1.35; word-break: break-word; }
+#prep-list { gap: 7px; }
+#prep-list .wishlist-item {
+grid-template-columns: 28px minmax(0,1fr) 30px;
+gap: 8px;
+min-height: 48px;
+padding: 8px 10px;
+border-radius: 16px;
+}
+#prep-list .wishlist-check {
+width: 26px;
+height: 26px;
+}
+#prep-list .wishlist-name {
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+word-break: normal;
+font-size: .9rem;
+line-height: 1.2;
+}
+#prep-list .wishlist-delete {
+width: 28px;
+height: 28px;
+}
 .wishlist-photo-btn {
 width: 40px;
 height: 40px;
@@ -1695,7 +1719,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-06-prep-done-sort-v1';
+const STATIC_CONTENT_VERSION = '2026-05-06-prep-compact-list-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
