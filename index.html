@@ -810,14 +810,14 @@ box-shadow: 0 4px 12px rgba(141,110,99,.06);
 .boundary-speech::after {
 content: '';
 position: absolute;
-left: 50%;
-bottom: -7px;
+left: 22px;
+top: -7px;
 width: 12px;
 height: 12px;
-border-right: 1px solid #f1d9d2;
-border-bottom: 1px solid #f1d9d2;
+border-left: 1px solid #f1d9d2;
+border-top: 1px solid #f1d9d2;
 background: #fffaf7;
-transform: translateX(-50%) rotate(45deg);
+transform: rotate(45deg);
 }
 .settle-result {
 width: 100%;
@@ -1322,11 +1322,36 @@ object-fit: contain;
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
-.wishlist-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; margin-bottom: 12px; padding: 4px; border-radius: 16px; background: #f5efec; }
-.prep-tabs { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; padding: 6px; background: #f3ebe8; }
-.wishlist-tab { min-height: 38px; border: 0; border-radius: 13px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; }
+.wishlist-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; padding: 6px; border-radius: 16px; background: #f5efec; }
+.prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; padding: 6px; background: #f3ebe8; overflow: visible; }
+.wishlist-tab { min-height: 36px; flex: 1 1 calc(33.333% - 8px); min-width: 86px; border: 0; border-radius: 13px; padding: 0 10px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; white-space: nowrap; }
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
+.wishlist-add-category-tab { border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
+.wishlist-category-form {
+display: none;
+gap: 8px;
+align-items: center;
+margin: 0 0 12px;
+padding: 8px;
+border: 1px solid #f4e4df;
+border-radius: 18px;
+background: #fffaf7;
+}
+.wishlist-category-form.show { display: flex; }
+.wishlist-category-form .wishlist-input { padding: 10px 12px; border-radius: 14px; font-size: .86rem; }
+.wishlist-category-save,
+.wishlist-category-cancel {
+height: 38px;
+border: 0;
+border-radius: 13px;
+padding: 0 12px;
+font-size: .78rem;
+font-weight: 900;
+white-space: nowrap;
+}
+.wishlist-category-save { background: var(--heart-pink); color: #fff; box-shadow: 0 4px 12px rgba(209,122,109,.14); }
+.wishlist-category-cancel { background: #efe3df; color: #9b7c72; }
 .wishlist-form { display: flex; gap: 8px; margin-bottom: 14px; }
 .wishlist-input { flex: 1; min-width: 0; border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 14px; outline: 0; background: #fff; color: #705b55; font-size: .92rem; }
 .wishlist-input::placeholder { color: #cbbcb7; font-size: .82rem; }
@@ -1543,6 +1568,10 @@ main { padding: 0 14px; }
 <div class="card"><span class="itinerary-icon btn-press-effect">🚌</span><div><span class="time-badge editable">15:15 - 15:40</span><div class="item-title editable">午後接駁回鳥羽站</div><div class="item-desc editable">午餐後搭接駁車回鳥羽站，帶著海風慢慢回程。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="二見浦車站"><span class="itinerary-icon btn-press-effect">🚆</span><div><span class="time-badge editable">傍晚</span><div class="item-title editable">從鳥羽前往二見浦</div><div class="item-desc editable">回到鳥羽站後移動到二見浦，準備明天早上的神社回合。</div></div></div>
+<div class="connector-line"></div>
+<div class="card" data-map-place-value="二見浦觀光案內所"><span class="itinerary-icon btn-press-effect">🎴</span><div><span class="time-badge editable">抵達後</span><div class="item-title editable">二見浦觀光案內所</div><div class="item-desc editable">先去觀光案內所拿水溝蓋卡，把二見浦小任務收進口袋。</div></div></div>
+<div class="connector-line"></div>
+<div class="card" data-map-place-value="赤福 二見店"><span class="itinerary-icon btn-press-effect">🍧</span><div><span class="time-badge editable">接著</span><div class="item-title editable">赤福 二見店</div><div class="item-desc editable">吃一碗赤福冰，讓傍晚的二見浦先甜一下。</div></div></div>
 <div class="connector-line" data-route-text="步行 15 分"></div>
 <div class="card" data-map-place-value="二見浦 大石屋"><span class="itinerary-icon btn-press-effect">🏨</span><div><span class="time-badge editable">住宿</span><div class="item-title editable">大石屋</div><div class="item-desc editable">第四晚住在二見浦，隔天早上夫妻岩和御朱印直接出發。</div></div></div>
 </section>
@@ -1554,6 +1583,10 @@ main { padding: 0 14px; }
 <div class="card" data-detail-fields="[{&quot;name&quot;:&quot;&quot;,&quot;blocks&quot;:[{&quot;html&quot;:&quot;\u003cb\u003e一、 核心靈魂：什麼是「濱參宮」？\u003c/b\u003e\u003cbr\u003e這不僅是地點，更是一場「淨身儀式」。其字面涵義如下：\u003cbr\u003e\u003cbr\u003e「濱」： 指的是二見浦的海邊（沙灘）。\u003cbr\u003e\u003cbr\u003e「參宮」： 指的是前往伊勢神宮參拜。\u003cbr\u003e\u003cbr\u003e合起來的意思： 在前往神宮參拜前，先到二見浦的海邊進行洗禮。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e傳統習俗與現代演變\u003c/b\u003e\u003cbr\u003e傳統習俗： 二見浦自古被尊為淨化之地。古人前往神宮前，有先到二見浦用海水洗淨身心（稱為「禊」）的習慣。\u003cbr\u003e\u003cbr\u003e現代演變： 現代已演變為不需進入海中，而是到二見興玉神社，由神職人員用「無垢鹽」或「無垢鹽草」進行祓除。\u003cbr\u003e\u003cbr\u003e道地順序： 這是伊勢參拜的第一站。完成此儀式才算達到「清淨」狀態，接著依序前往外宮、內宮參拜。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e二、 淨化之物：無垢鹽草 (Muku-shiogusa)\u003c/b\u003e\u003cbr\u003e由來： 採集當地海域的海草（大葉藻）曬乾製成，象徵海水淨化力量。\u003cbr\u003e\u003cbr\u003e三種體驗與領取方式：\u003cbr\u003e\u003cbr\u003e無垢鹽草護身符： 於授與所（賣御守處）購買。它是裝有乾燥海草的小布袋，方便隨身攜帶。\u003cbr\u003e\u003cbr\u003e無垢鹽： 現場販售的小包白色食鹽。可買回放在身上、撒在門口或加入浴缸，達到淨身效果。\u003cbr\u003e\u003cbr\u003e正式儀式（需付費）： 受理時間為 08:30 - 16:00，需前往神樂殿申請。由神職人員以海草製成的「大幣」在身上揮動淨化。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e三、 儀式第一步：手水舍（洗淨與祈願流程）\u003c/b\u003e\u003cbr\u003e二見興玉神社的手水舍內有許多青蛙石像，動作順序與一般神社不同，需遵循「先澆青蛙（淨神與祈願），後洗雙手（淨身）」的原則：\u003cbr\u003e\u003cbr\u003e\u003cb\u003e1. 第一階段：向神使祈願 (澆灌祈願蛙)\u003c/b\u003e\u003cbr\u003e取水： 右手拿起柄杓（水勺），舀滿一杓水。\u003cbr\u003e\u003cbr\u003e澆灌： 將水淋在水池中那隻綠色的「祈願蛙」身上（注意：是水裡的綠色小青蛙，而非後方大尊的石像）。\u003cbr\u003e\u003cbr\u003e祈願： 在澆水的同時心裡默念願望。青蛙 (Kaeru) 與「回家/歸來」同音，代表「平安歸來」、「財源回流」。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e2. 第二階段：洗淨身心 (標準手水順序)\u003c/b\u003e\u003cbr\u003e洗左手： 再次舀水，先洗左手。\u003cbr\u003e\u003cbr\u003e洗右手： 改用左手拿杓子，洗右手。\u003cbr\u003e\u003cbr\u003e漱口： 換回右手拿杓子，將水倒在左手掌心，湊近嘴巴漱口（不可直接對著杓子）。\u003cbr\u003e\u003cbr\u003e洗左手（二次）： 再次洗淨接觸過嘴巴的左手。\u003cbr\u003e\u003cbr\u003e洗杓柄： 將杓子直立，讓殘餘水流洗淨握把，最後口朝下歸位。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e四、 二見興玉神社：主社與青蛙文化\u003c/b\u003e\u003cbr\u003e主祭神：\u003cbr\u003e\u003cbr\u003e猿田彥大神： 「引導之神」，保佑交通安全、開運、夫婦圓滿。\u003cbr\u003e\u003cbr\u003e宇迦御魂大神： 掌管稻子，食衣住產業的守護神。\u003cbr\u003e\u003cbr\u003e神使「二見蛙」： 除了手水舍，推薦將青蛙護符放入錢包，據說花掉的錢也會回來（象徵財源回流）。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e五、 地標：夫婦岩 (Meoto Iwa) 與奇岩\u003c/b\u003e\u003cbr\u003e神聖意義： 作為「海上鳥居」，遙拜 700 公尺外的「興玉神石」與「太陽大神」。\u003cbr\u003e\u003cbr\u003e規格： 男岩 (9m) 與女岩 (4m)，由 35 公尺大注連繩連結，每年 5/5, 9/5 及 12 月中旬週六更換。\u003cbr\u003e\u003cbr\u003e周邊奇岩： 包含屏風岩、烏帽子岩、獅子岩與親子蛙岩。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e六、 龍宮社：隸屬關係與對比\u003c/b\u003e\u003cbr\u003e隸屬關係： 位於參道盡頭，走過夫婦岩即可抵達。\u003cbr\u003e\u003cbr\u003e主祭神： 綿津見大神（海之守護神）、八大龍王大神。\u003cbr\u003e\u003cbr\u003e特色對比： 這裡的手水舍噴水造型是「龍」，與主社的「青蛙」造型截然不同，且有獨立的龍神御朱印。\u003cbr\u003e\u003cbr\u003e\u003cb\u003e七、 攝影與實用資訊 (11月規劃參考)\u003c/b\u003e\u003cbr\u003e攝影亮點： 11月推薦觀看「滿月」從夫婦岩中間升起。最佳拍攝點為富士見橋的「義保住」，嚴禁使用三腳架。\u003cbr\u003e\u003cbr\u003e授予時間： 御朱印 07:00 - 16:45；正式儀式申請 08:30 - 16:00。\u003cbr\u003e\u003cbr\u003e限定日： 每月 23 日授予「限定復刻版」御朱印。\u003cbr\u003e\u003cbr\u003e光影數據： 11月滿月月出約為 17:00 - 19:00 間。&quot;,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;一、 核心靈魂：什麼是「濱參宮」？\n這不僅是地點，更是一場「淨身儀式」。其字面涵義如下：\n\n「濱」： 指的是二見浦的海邊（沙灘）。\n\n「參宮」： 指的是前往伊勢神宮參拜。\n\n合起來的意思： 在前往神宮參拜前，先到二見浦的海邊進行洗禮。\n\n傳統習俗與現代演變\n傳統習俗： 二見浦自古被尊為淨化之地。古人前往神宮前，有先到二見浦用海水洗淨身心（稱為「禊」）的習慣。\n\n現代演變： 現代已演變為不需進入海中，而是到二見興玉神社，由神職人員用「無垢鹽」或「無垢鹽草」進行祓除。\n\n道地順序： 這是伊勢參拜的第一站。完成此儀式才算達到「清淨」狀態，接著依序前往外宮、內宮參拜。\n\n二、 淨化之物：無垢鹽草 (Muku-shiogusa)\n由來： 採集當地海域的海草（大葉藻）曬乾製成，象徵海水淨化力量。\n\n三種體驗與領取方式：\n\n無垢鹽草護身符： 於授與所（賣御守處）購買。它是裝有乾燥海草的小布袋，方便隨身攜帶。\n\n無垢鹽： 現場販售的小包白色食鹽。可買回放在身上、撒在門口或加入浴缸，達到淨身效果。\n\n正式儀式（需付費）： 受理時間為 08:30 - 16:00，需前往神樂殿申請。由神職人員以海草製成的「大幣」在身上揮動淨化。\n\n三、 儀式第一步：手水舍（洗淨與祈願流程）\n二見興玉神社的手水舍內有許多青蛙石像，動作順序與一般神社不同，需遵循「先澆青蛙（淨神與祈願），後洗雙手（淨身）」的原則：\n\n1. 第一階段：向神使祈願 (澆灌祈願蛙)\n取水： 右手拿起柄杓（水勺），舀滿一杓水。\n\n澆灌： 將水淋在水池中那隻綠色的「祈願蛙」身上（注意：是水裡的綠色小青蛙，而非後方大尊的石像）。\n\n祈願： 在澆水的同時心裡默念願望。青蛙 (Kaeru) 與「回家/歸來」同音，代表「平安歸來」、「財源回流」。\n\n2. 第二階段：洗淨身心 (標準手水順序)\n洗左手： 再次舀水，先洗左手。\n\n洗右手： 改用左手拿杓子，洗右手。\n\n漱口： 換回右手拿杓子，將水倒在左手掌心，湊近嘴巴漱口（不可直接對著杓子）。\n\n洗左手（二次）： 再次洗淨接觸過嘴巴的左手。\n\n洗杓柄： 將杓子直立，讓殘餘水流洗淨握把，最後口朝下歸位。\n\n四、 二見興玉神社：主社與青蛙文化\n主祭神：\n\n猿田彥大神： 「引導之神」，保佑交通安全、開運、夫婦圓滿。\n\n宇迦御魂大神： 掌管稻子，食衣住產業的守護神。\n\n神使「二見蛙」： 除了手水舍，推薦將青蛙護符放入錢包，據說花掉的錢也會回來（象徵財源回流）。\n\n五、 地標：夫婦岩 (Meoto Iwa) 與奇岩\n神聖意義： 作為「海上鳥居」，遙拜 700 公尺外的「興玉神石」與「太陽大神」。\n\n規格： 男岩 (9m) 與女岩 (4m)，由 35 公尺大注連繩連結，每年 5/5, 9/5 及 12 月中旬週六更換。\n\n周邊奇岩： 包含屏風岩、烏帽子岩、獅子岩與親子蛙岩。\n\n六、 龍宮社：隸屬關係與對比\n隸屬關係： 位於參道盡頭，走過夫婦岩即可抵達。\n\n主祭神： 綿津見大神（海之守護神）、八大龍王大神。\n\n特色對比： 這裡的手水舍噴水造型是「龍」，與主社的「青蛙」造型截然不同，且有獨立的龍神御朱印。\n\n七、 攝影與實用資訊 (11月規劃參考)\n攝影亮點： 11月推薦觀看「滿月」從夫婦岩中間升起。最佳拍攝點為富士見橋的「義保住」，嚴禁使用三腳架。\n\n授予時間： 御朱印 07:00 - 16:45；正式儀式申請 08:30 - 16:00。\n\n限定日： 每月 23 日授予「限定復刻版」御朱印。\n\n光影數據： 11月滿月月出約為 17:00 - 19:00 間。&quot;}]}]" ><span class="itinerary-icon btn-press-effect">⛩️</span><div><span class="time-badge editable">08:10 - 08:30</span><div class="item-title editable">二見清晨參拜與夫妻岩</div><div class="item-desc editable">走訪二見興玉神社與龍宮社，順路看夫妻岩，記得買御朱印。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="大石屋"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">08:40</span><div class="item-title editable">飯店退房</div><div class="item-desc editable">整理好行李，向大石屋的早晨說再見。</div></div></div>
+<div class="connector-line"></div>
+<div class="card" data-map-place-value="伊勢市站 觀光案內所"><span class="itinerary-icon btn-press-effect">🎴</span><div><span class="time-badge editable">退房後</span><div class="item-title editable">伊勢市站觀光案內所</div><div class="item-desc editable">帶著行李前往伊勢市站，先到車站內觀光案內所拿水溝蓋卡。</div></div></div>
+<div class="connector-line"></div>
+<div class="card" data-map-place-value="伊勢市站 行李房"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">接著</span><div class="item-title editable">車站旁行李房</div><div class="item-desc editable">把行李放到車站旁行李房，輕裝去外宮參拜。</div></div></div>
 <div class="connector-line"></div>
 <div class="card"><span class="itinerary-icon btn-press-effect">⛩️</span><div><span class="time-badge editable">09:00 - 10:00</span><div class="item-title editable">伊勢神宮 外宮</div><div class="item-desc editable">最後一天先從外宮開始參拜。</div></div></div>
 <div class="connector-line"></div>
@@ -1661,7 +1694,7 @@ main { padding: 0 14px; }
 <div id="details-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費明細</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div id="settle-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div id="settle-content" class="panel-content settle-panel-content"></div></div></div></div></div>
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
-<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('wishlist-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-tabs" id="wishlist-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setWishlistCategory('超商必買')">超商必買</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setWishlistCategory('機場必買')">機場必買</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setWishlistCategory('伴手禮')">伴手禮</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
+<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('wishlist-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-tabs" id="wishlist-tabs"></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
@@ -1701,6 +1734,7 @@ let wishItems = [
 { id: 101, category: '超商必買', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false }
 ];
+let wishlistCategories = ['超商必買', '機場必買', '伴手禮'];
 let currentWishlistCategory = '超商必買';
 const WISHLIST_PLACEHOLDERS = {
 '超商必買': '新增超商想買...',
@@ -2564,6 +2598,9 @@ card.dataset.detail = normalizedFields.map(field => field.blocks.filter(block =>
 function escapeHtml(value) {
 return String(value || '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 }
+function escapeJsString(value) {
+return String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '');
+}
 function plainTextToHtml(value) {
 return escapeHtml(value).replace(/\n/g, '<br>');
 }
@@ -3199,10 +3236,59 @@ renderWishlist();
 openSimpleModal('wishlist-modal');
 setTimeout(() => document.getElementById('wishlist-input')?.focus(), 120);
 }
+function normalizeWishlistCategories() {
+const defaults = ['超商必買', '機場必買', '伴手禮'];
+const next = [];
+[...defaults, ...wishlistCategories, ...wishItems.map(item => item.category)].forEach(category => {
+const clean = String(category || '').trim();
+if (clean && !next.includes(clean)) next.push(clean);
+});
+wishlistCategories = next;
+if (!wishlistCategories.includes(currentWishlistCategory)) currentWishlistCategory = wishlistCategories[0] || '超商必買';
+return wishlistCategories;
+}
+function renderWishlistCategories() {
+const tabs = document.getElementById('wishlist-tabs');
+if (!tabs) return;
+normalizeWishlistCategories();
+tabs.innerHTML = wishlistCategories.map(category => `<button type="button" class="wishlist-tab btn-press-effect ${category === currentWishlistCategory ? 'active' : ''}" onclick="setWishlistCategory('${escapeJsString(category)}')">${escapeHtml(category)}</button>`).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button>`;
+}
 function setWishlistCategory(category) {
 currentWishlistCategory = category;
-document.querySelectorAll('#wishlist-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === category));
+toggleWishlistCategoryForm(false);
 renderWishlist();
+}
+function toggleWishlistCategoryForm(show) {
+const form = document.getElementById('wishlist-category-form');
+const input = document.getElementById('wishlist-category-input');
+if (!form) return;
+form.classList.toggle('show', Boolean(show));
+if (show) {
+if (input) input.value = '';
+setTimeout(() => input?.focus(), 80);
+}
+}
+function addWishlistCategory() {
+const input = document.getElementById('wishlist-category-input');
+const category = input?.value.trim();
+if (!category) return showAlert('先幫分類取個名字吧 🧺');
+normalizeWishlistCategories();
+if (!wishlistCategories.includes(category)) wishlistCategories.push(category);
+currentWishlistCategory = category;
+if (input) input.value = '';
+toggleWishlistCategoryForm(false);
+renderWishlist();
+queueTripCloudSave();
+}
+function handleWishlistCategoryKey(event) {
+if (event.key === 'Enter') {
+event.preventDefault();
+addWishlistCategory();
+}
+if (event.key === 'Escape') {
+event.preventDefault();
+toggleWishlistCategoryForm(false);
+}
 }
 function updateWishlistPlaceholder() {
 const input = document.getElementById('wishlist-input');
@@ -3276,8 +3362,8 @@ queueTripCloudSave();
 function renderWishlist() {
 const list = document.getElementById('wishlist-list');
 if (!list) return;
+renderWishlistCategories();
 updateWishlistPlaceholder();
-document.querySelectorAll('#wishlist-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === currentWishlistCategory));
 const items = wishItems.filter(wish => wish.category === currentWishlistCategory);
 if (!items.length) {
 list.innerHTML = `<div class="wishlist-empty">這裡還空空的<br>可以先把${escapeHtml(currentWishlistCategory)}寫進來</div>`;
@@ -4022,6 +4108,7 @@ function collectTripCloudData() {
 const data = {
 expenses,
 wishItems,
+wishlistCategories: normalizeWishlistCategories(),
 prepItems,
 currentDay,
 updatedAt: new Date().toISOString()
@@ -4125,6 +4212,8 @@ shouldRefreshCloudStatic = mergeCloudCardDataFromHTML(data.dayContentHTML);
 }
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
+wishlistCategories = Array.isArray(data.wishlistCategories) ? data.wishlistCategories : wishlistCategories;
+normalizeWishlistCategories();
 prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
 const addedDefaultPrepItems = normalizePrepItems();
 
