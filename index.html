@@ -1433,7 +1433,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="鳥羽站"><span class="itinerary-icon btn-press-effect">🛅</span><div><span class="time-badge editable">09:00</span><div class="item-title editable">鳥羽車站放行李</div><div class="item-desc editable">先把行李寄放在鳥羽車站，輕裝開啟水族館回合。</div></div></div>
 <div class="connector-line"></div>
-<div class="card"><span class="itinerary-icon btn-press-effect">🐬</span><div><span class="time-badge editable">09:00 - 12:15</span><div class="item-title editable">鳥羽水族館</div><div class="item-desc editable">把儒艮、海獺和 12:00 企鵝秀都收進上午的可愛清單。</div></div></div>
+<div class="card"><span class="itinerary-icon btn-press-effect">🐬</span><div><span class="time-badge editable">09:30 - 12:30</span><div class="item-title editable">鳥羽水族館</div><div class="item-desc editable">把儒艮、海獺和 12:00 企鵝秀都收進上午的可愛清單。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="鳥羽站"><span class="itinerary-icon btn-press-effect">🚌</span><div><span class="time-badge editable">12:45</span><div class="item-title editable">海女小屋接駁時光</div><div class="item-desc editable">水族館後回到鳥羽車站搭接駁車，往午餐和海邊風味前進。</div></div></div>
 <div class="connector-line"></div>
@@ -1694,7 +1694,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-06-day2-nagoya-station-v1';
+const STATIC_CONTENT_VERSION = '2026-05-06-editable-cloud-merge-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3935,6 +3935,40 @@ changed = true;
 });
 return changed;
 }
+function copyEditableTextFromCloud(targetCard, sourceCard) {
+if (!targetCard || !sourceCard) return false;
+let changed = false;
+['time-badge', 'item-title', 'item-desc'].forEach(className => {
+const targetEl = targetCard.querySelector(`.${className}`);
+const sourceEl = sourceCard.querySelector(`.${className}`);
+if (!targetEl || !sourceEl) return;
+const sourceHtml = sanitizeEditableInlineHtml(sourceEl.innerHTML || '');
+if (sourceHtml && targetEl.innerHTML !== sourceHtml) {
+targetEl.innerHTML = sourceHtml;
+changed = true;
+}
+});
+return changed;
+}
+function sanitizeEditableInlineHtml(value) {
+const template = document.createElement('template');
+template.innerHTML = value || '';
+function cleanNode(node) {
+if (node.nodeType === Node.TEXT_NODE) return document.createTextNode(node.textContent || '');
+if (node.nodeType !== Node.ELEMENT_NODE) return document.createTextNode('');
+const tag = node.tagName.toLowerCase();
+if (tag === 'span' && node.classList.contains('terminal-badge')) {
+const span = document.createElement('span');
+span.className = 'terminal-badge';
+span.textContent = node.textContent || '';
+return span;
+}
+return document.createTextNode(node.textContent || '');
+}
+const output = document.createElement('div');
+Array.from(template.content.childNodes).forEach(child => output.appendChild(cleanNode(child)));
+return output.innerHTML;
+}
 function mergeCloudCardDataFromHTML(cloudHTML) {
 const template = document.createElement('template');
 template.innerHTML = cloudHTML || '';
@@ -3950,11 +3984,12 @@ if (titleKey && !titleMap.has(titleKey)) titleMap.set(titleKey, card);
 });
 let changed = false;
 document.querySelectorAll('.day-section .card').forEach(targetCard => {
-if (cardHasDetailPayload(targetCard)) return;
 const exactSource = exactMap.get(getCloudMergeCardKey(targetCard));
 const titleSource = titleMap.get(getCloudMergeTitleKey(targetCard));
-const sourceCard = cardHasDetailPayload(exactSource) ? exactSource : titleSource;
-if (cardHasDetailPayload(sourceCard)) changed = copyCardCloudPayload(targetCard, sourceCard) || changed;
+const sourceCard = exactSource || titleSource;
+if (!sourceCard) return;
+changed = copyEditableTextFromCloud(targetCard, sourceCard) || changed;
+if (!cardHasDetailPayload(targetCard) && cardHasDetailPayload(sourceCard)) changed = copyCardCloudPayload(targetCard, sourceCard) || changed;
 });
 return changed;
 }
