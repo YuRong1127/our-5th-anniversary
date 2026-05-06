@@ -1246,10 +1246,10 @@ object-fit: contain;
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
 .wishlist-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; margin-bottom: 12px; padding: 4px; border-radius: 16px; background: #f5efec; }
-.prep-tabs { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.prep-tabs { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; padding: 6px; background: #f3ebe8; }
 .wishlist-tab { min-height: 38px; border: 0; border-radius: 13px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; }
-.prep-tabs .wishlist-tab { min-height: 42px; padding: 6px 2px; font-size: .66rem; line-height: 1.15; white-space: normal; }
-.wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 2px 8px rgba(141,110,99,.1); }
+.prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
+.wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
 .wishlist-form { display: flex; gap: 8px; margin-bottom: 14px; }
 .wishlist-input { flex: 1; min-width: 0; border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 14px; outline: 0; background: #fff; color: #705b55; font-size: .92rem; }
 .wishlist-input::placeholder { color: #cbbcb7; font-size: .82rem; }
@@ -1695,7 +1695,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-06-prep-beauty-category-v2';
+const STATIC_CONTENT_VERSION = '2026-05-06-prep-done-sort-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3256,7 +3256,9 @@ if (!list) return;
 normalizePrepItems();
 updatePrepPlaceholder();
 document.querySelectorAll('#prep-tabs .wishlist-tab').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === currentPrepCategory));
-const items = prepItems.filter(prep => prep.category === currentPrepCategory);
+const items = prepItems
+.filter(prep => prep.category === currentPrepCategory)
+.sort((a, b) => Number(a.done) - Number(b.done));
 if (!items.length) {
 list.innerHTML = `<div class="wishlist-empty">${escapeHtml(currentPrepCategory)}還沒有項目<br>想到什麼就先放進來</div>`;
 return;
