@@ -710,10 +710,10 @@ border-radius: 999px;
 font-size: .74rem;
 }
 body.edit-mode .more-info-btn {
-border-color: #f1c9c0;
-background: #fff1ee;
-color: #b87568;
-box-shadow: 0 4px 12px rgba(209,122,109,.12);
+border-color: #d17a6d;
+background: #d17a6d;
+color: #fff;
+box-shadow: 0 4px 12px rgba(209,122,109,.2);
 }
 body.edit-mode .more-info-btn.is-empty {
 border-color: #efd9ce;
@@ -782,6 +782,15 @@ width: 210px;
 height: 150px;
 margin: -4px 0 -18px;
 object-fit: contain;
+transform: translateX(-10px);
+}
+.boundary-modal-img {
+display: block;
+width: min(260px, 82vw);
+height: auto;
+margin: 2px auto 12px;
+object-fit: contain;
+filter: drop-shadow(0 5px 12px rgba(141,110,99,.1));
 }
 .settle-result {
 width: 100%;
@@ -1635,8 +1644,8 @@ main { padding: 0 14px; }
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
 <div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
-<div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><p>ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></p><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect">好啦，不小心滑到齁！</button></div></div></div>
-<div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><p>繼續上班存錢錢💛再一起出去玩</p><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg)">好啦 (乖乖回辦公室)</button></div></div></div>
+<div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><img class="boundary-modal-img" src="work-too-bad.png" alt="很壞提醒"><p>ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></p><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect">不小心滑到齁!</button></div></div></div>
+<div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><img class="boundary-modal-img" src="trip-finished-hug.png" alt="旅程結束陪你小圖"><p>繼續上班存錢錢💛再一起出去玩</p><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg)">沒有問題!</button></div></div></div>
 
 
 
@@ -2024,6 +2033,7 @@ document.getElementById(`tab-${day}`).classList.add('active');
 document.querySelectorAll('.day-section').forEach(el => el.classList.remove('active'));
 document.getElementById(`day-${day}`).classList.add('active');
 initFloatingBackground();
+if (!options.auto) window.scrollTo({ top: 0, behavior: 'smooth' });
 if (!options.skipHistory && !isHandlingAppHistory) pushAppHistory(day);
 }
 
