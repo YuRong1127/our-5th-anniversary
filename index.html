@@ -1246,7 +1246,7 @@ object-fit: contain;
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
 .wishlist-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 7px; margin-bottom: 12px; padding: 4px; border-radius: 16px; background: #f5efec; }
-.prep-tabs { grid-template-columns: repeat(5, minmax(0,1fr)); }
+.prep-tabs { grid-template-columns: repeat(3, minmax(0,1fr)); }
 .wishlist-tab { min-height: 38px; border: 0; border-radius: 13px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; }
 .prep-tabs .wishlist-tab { min-height: 42px; padding: 6px 2px; font-size: .66rem; line-height: 1.15; white-space: normal; }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 2px 8px rgba(141,110,99,.1); }
@@ -1561,7 +1561,7 @@ main { padding: 0 14px; }
 <div id="settle-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div id="settle-content" class="panel-content settle-panel-content"></div></div></div></div></div>
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
 <div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('wishlist-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-tabs" id="wishlist-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setWishlistCategory('超商必買')">超商必買</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setWishlistCategory('機場必買')">機場必買</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setWishlistCategory('伴手禮')">伴手禮</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
-<div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
+<div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 步行 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
@@ -1660,7 +1660,8 @@ const PREP_PLACEHOLDERS = {
 '生活日用': '新增日用品...',
 '衣服配飾': '新增衣物配件...',
 '藥品健康': '新增藥品用品...',
-'數位電器': '新增電器配件...'
+'數位電器': '新增電器配件...',
+'妝髮用品': '新增妝髮用品...'
 };
 let currentPrepCategory = '出行必備';
 let editingId = null;
@@ -1694,7 +1695,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-06-place-title-polish-v1';
+const STATIC_CONTENT_VERSION = '2026-05-06-prep-beauty-category-v2';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3208,7 +3209,7 @@ prepItemsChanged = true;
 }
 });
 prepItems.sort((a, b) => allowedPrepTitles.indexOf(a.title) - allowedPrepTitles.indexOf(b.title));
-if (!['出行必備', '生活日用', '衣服配飾', '藥品健康', '數位電器'].includes(currentPrepCategory)) currentPrepCategory = '出行必備';
+if (!['出行必備', '生活日用', '衣服配飾', '藥品健康', '數位電器', '妝髮用品'].includes(currentPrepCategory)) currentPrepCategory = '出行必備';
 return prepItemsChanged;
 }
 function setPrepCategory(category) {
