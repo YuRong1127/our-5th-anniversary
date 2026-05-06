@@ -1688,7 +1688,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-06-note-route-fixes-v2';
+const STATIC_CONTENT_VERSION = '2026-05-06-cloud-detail-backup-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3907,6 +3907,51 @@ data.staticContentVersion = STATIC_CONTENT_VERSION;
 }
 return data;
 }
+function getCloudMergeCardKey(card) {
+const title = normalizePlaceKey(card.querySelector('.item-title')?.textContent || '');
+const time = normalizePlaceKey(card.querySelector('.time-badge')?.textContent || '');
+return title ? `${title}|${time}` : '';
+}
+function getCloudMergeTitleKey(card) {
+return normalizePlaceKey(card.querySelector('.item-title')?.textContent || '');
+}
+function cardHasDetailPayload(card) {
+return Boolean(card?.dataset.detailFields || card?.dataset.detail);
+}
+function copyCardCloudPayload(targetCard, sourceCard) {
+if (!targetCard || !sourceCard) return false;
+let changed = false;
+['detailFields', 'detail', 'mapPlaceInput', 'mapPlaceValue'].forEach(key => {
+if (sourceCard.dataset[key] && !targetCard.dataset[key]) {
+targetCard.dataset[key] = sourceCard.dataset[key];
+changed = true;
+}
+});
+return changed;
+}
+function mergeCloudCardDataFromHTML(cloudHTML) {
+const template = document.createElement('template');
+template.innerHTML = cloudHTML || '';
+const sourceCards = Array.from(template.content.querySelectorAll('.day-section .card'));
+if (!sourceCards.length) return false;
+const exactMap = new Map();
+const titleMap = new Map();
+sourceCards.forEach(card => {
+const exactKey = getCloudMergeCardKey(card);
+const titleKey = getCloudMergeTitleKey(card);
+if (exactKey && !exactMap.has(exactKey)) exactMap.set(exactKey, card);
+if (titleKey && !titleMap.has(titleKey)) titleMap.set(titleKey, card);
+});
+let changed = false;
+document.querySelectorAll('.day-section .card').forEach(targetCard => {
+if (cardHasDetailPayload(targetCard)) return;
+const exactSource = exactMap.get(getCloudMergeCardKey(targetCard));
+const titleSource = titleMap.get(getCloudMergeTitleKey(targetCard));
+const sourceCard = cardHasDetailPayload(exactSource) ? exactSource : titleSource;
+if (cardHasDetailPayload(sourceCard)) changed = copyCardCloudPayload(targetCard, sourceCard) || changed;
+});
+return changed;
+}
 function applyTripCloudData(data) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (!data || isEditMode) return;
@@ -3916,7 +3961,7 @@ let shouldRefreshCloudStatic = false;
 if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim() && data.staticContentVersion === STATIC_CONTENT_VERSION) {
 document.getElementById('day-content').innerHTML = data.dayContentHTML;
 } else if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim()) {
-shouldRefreshCloudStatic = true;
+shouldRefreshCloudStatic = mergeCloudCardDataFromHTML(data.dayContentHTML);
 }
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
@@ -4028,6 +4073,23 @@ const tripRef = doc(db, 'trips', 'our-5th-anniversary');
 let saveTimer = null;
 let latestCloudUpdatedAt = '';
 
+async function backupCloudStaticBeforeOverwrite(nextPayload) {
+  if (!nextPayload.dayContentHTML) return;
+  const snapshot = await getDoc(tripRef);
+  if (!snapshot.exists()) return;
+  const current = snapshot.data();
+  if (!current.dayContentHTML || current.dayContentHTML === nextPayload.dayContentHTML) return;
+  const backupId = String(Date.now());
+  const backupRef = doc(db, 'trips', 'our-5th-anniversary', 'backups', backupId);
+  await setDoc(backupRef, {
+    dayContentHTML: current.dayContentHTML,
+    staticContentVersion: current.staticContentVersion || '',
+    updatedAt: current.updatedAt || '',
+    backedUpAt: serverTimestamp(),
+    reason: 'before-dayContentHTML-overwrite'
+  });
+}
+
 window.saveTripToCloud = (data) => {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async () => {
@@ -4039,6 +4101,7 @@ window.saveTripToCloud = (data) => {
       };
       if (!window.CLOUD_STATIC_SYNC_ENABLED) payload.dayContentHTML = deleteField();
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
+      if (window.CLOUD_STATIC_SYNC_ENABLED) await backupCloudStaticBeforeOverwrite(payload);
       await setDoc(tripRef, payload, { merge: true });
     } catch (error) {
       console.error('Firebase save failed:', error);
