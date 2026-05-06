@@ -710,10 +710,10 @@ border-radius: 999px;
 font-size: .74rem;
 }
 body.edit-mode .more-info-btn {
-border-color: #b9d9cf;
-background: #f0fbf5;
-color: #5f8d78;
-box-shadow: 0 4px 12px rgba(111,164,142,.14);
+border-color: #f1c9c0;
+background: #fff1ee;
+color: #b87568;
+box-shadow: 0 4px 12px rgba(209,122,109,.12);
 }
 body.edit-mode .more-info-btn.is-empty {
 border-color: #efd9ce;
@@ -776,6 +776,12 @@ width: 150px;
 height: 150px;
 object-fit: contain;
 filter: drop-shadow(0 5px 10px rgba(141,110,99,.12));
+}
+.alert-stack-pig.discard-pig {
+width: 210px;
+height: 150px;
+margin: -4px 0 -18px;
+object-fit: contain;
 }
 .settle-result {
 width: 100%;
@@ -3120,7 +3126,7 @@ enhanceRouteConnectors();
 queueTripCloudSave(true);
 }
 function discardEditChanges() {
-showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">要放棄這次編輯嗎？\n剛剛改的內容會不見喔</span><img class="alert-stack-pig" src="discard-unsaved-pig.png" alt="放棄編輯提醒小豬"></span>', confirmDiscardEditChanges);
+showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">要放棄這次編輯嗎？\n剛剛改的內容會不見喔</span><img class="alert-stack-pig discard-pig" src="discard-unsaved-pig.png" alt="放棄編輯提醒小豬"></span>', confirmDiscardEditChanges);
 }
 function confirmDiscardEditChanges() {
 if (editSnapshotHTML) document.getElementById('day-content').innerHTML = editSnapshotHTML;
