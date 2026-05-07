@@ -827,29 +827,31 @@ box-shadow: 0 4px 12px rgba(141,110,99,.06);
 .boundary-speech::after {
 content: '';
 position: absolute;
-background: #fffaf7;
 }
 .boundary-speech::before {
 left: 18px;
-top: -8px;
-width: 20px;
-height: 15px;
+top: -12px;
+z-index: 2;
+width: 26px;
+height: 24px;
 border-left: 1px solid #f1d9d2;
 border-top: 1px solid #f1d9d2;
-border-top-left-radius: 18px;
-border-bottom-left-radius: 12px;
-border-top-right-radius: 8px;
-transform: rotate(28deg);
-transform-origin: right bottom;
+border-top-left-radius: 26px;
+border-top-right-radius: 14px;
+border-bottom-left-radius: 18px;
+background: #fffaf7;
+transform: rotate(22deg);
+transform-origin: 74% 88%;
 }
 .boundary-speech::after {
 left: 28px;
 top: -1px;
-width: 16px;
+z-index: 3;
+width: 14px;
 height: 12px;
-border-top-left-radius: 16px;
-border-bottom-left-radius: 12px;
-transform: rotate(23deg);
+border-radius: 0 0 0 12px;
+background: #fffaf7;
+transform: rotate(18deg);
 }
 .settle-result {
 width: 100%;
@@ -1151,14 +1153,15 @@ text-align: center;
 }
 .note-format-toolbar {
 display: flex;
+flex-wrap: wrap;
 align-items: center;
 justify-content: center;
-gap: 8px;
+gap: 6px;
 position: sticky;
 top: 0;
 z-index: 8;
 margin: 0 0 12px;
-padding: 8px;
+padding: 7px 6px;
 border: 1px solid #f4e8e3;
 border-radius: 18px;
 background: rgba(255,253,251,.94);
@@ -1171,7 +1174,7 @@ display: inline-flex;
 align-items: center;
 justify-content: center;
 width: 34px;
-height: 32px;
+height: 30px;
 border: 1px solid #f0e2dd;
 border-radius: 12px;
 background: #fffaf7;
@@ -1179,14 +1182,14 @@ color: #8d6e63;
 font-weight: 900;
 }
 .note-format-btn {
-font-size: 1rem;
+width: 30px;
+font-size: .95rem;
 }
 .note-format-image-btn {
-width: auto;
-min-width: 44px;
-padding: 0 9px;
-font-size: .78rem;
-line-height: 30px;
+min-width: 30px;
+padding: 0;
+font-size: .92rem;
+line-height: 28px;
 cursor: pointer;
 }
 .note-highlight-btn {
@@ -1377,33 +1380,33 @@ object-fit: contain;
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
-.wishlist-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; padding: 6px; border-radius: 16px; background: #f5efec; }
+.wishlist-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 9px; padding: 5px; border-radius: 16px; background: #f5efec; }
 .prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; padding: 6px; background: #f3ebe8; overflow: visible; }
-.wishlist-tab { min-height: 36px; flex: 1 1 calc(33.333% - 8px); min-width: 86px; border: 0; border-radius: 13px; padding: 0 10px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.wishlist-tab { min-height: 32px; flex: 0 1 auto; min-width: 72px; border: 0; border-radius: 12px; padding: 0 10px; background: transparent; color: var(--light-brown); font-size: .76rem; font-weight: 900; white-space: nowrap; }
 .wishlist-tab.has-delete {
 display: inline-flex;
 align-items: center;
 justify-content: center;
-gap: 4px;
-padding-right: 6px;
+gap: 3px;
+padding-right: 5px;
 }
 .wishlist-category-delete {
 display: inline-flex;
 align-items: center;
 justify-content: center;
-width: 18px;
-height: 18px;
+width: 16px;
+height: 16px;
 border: 0;
 border-radius: 50%;
-background: rgba(209,122,109,.12);
-color: #d17a6d;
-font-size: .86rem;
+background: rgba(209,122,109,.1);
+color: #cf8a7f;
+font-size: .78rem;
 font-weight: 900;
 line-height: 1;
 }
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
-.wishlist-add-category-tab { border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
+.wishlist-add-category-tab { min-width: 70px; border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
 .wishlist-category-form {
 display: none;
 gap: 8px;
@@ -1584,7 +1587,7 @@ main { padding: 0 14px; }
 <main>
 <div id="day-content">
 <section id="day-1" class="day-section active">
-<div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT206 去程航班備忘</b><br>航班：IT206<br>票種：tigerlight<br>出發：TPE 台北（桃園）T1，08:45<br>抵達：NGO 名古屋 T2，12:25<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：無托運行李<br>小豬：15 公斤 <span class=\"flight-priority-badge\">優先</span>","text":"IT206 去程航班備忘\n航班：IT206\n票種：tigerlight\n出發：TPE 台北（桃園）T1，08:45\n抵達：NGO 名古屋 T2，12:25\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：15 公斤 優先"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">08:45</span><div class="item-title editable">桃園機場 TPE<span class="terminal-badge">T1</span></div><div class="item-desc editable">IT206，預計 12:25 抵達名古屋。</div></div></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT206 去程航班備忘</b><br>票種：tigerlight<br>出發：TPE 台北（桃園）T1，08:45<br>抵達：NGO 名古屋 T2，12:25<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：無托運行李<br>小豬：15 公斤 <span class=\"flight-priority-badge\">優先</span>","text":"IT206 去程航班備忘\n票種：tigerlight\n出發：TPE 台北（桃園）T1，08:45\n抵達：NGO 名古屋 T2，12:25\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：15 公斤 優先"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">08:45</span><div class="item-title editable">桃園機場 TPE<span class="terminal-badge">T1</span></div><div class="item-desc editable">IT206，預計 12:25 抵達名古屋。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable">12:25</span><div class="item-title editable">中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">名古屋中部機場入境，領行李後前往名古屋站。</div></div></div>
 <div class="connector-line"></div>
@@ -1676,7 +1679,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card"><span class="itinerary-icon btn-press-effect">🚆</span><div><span class="time-badge editable">14:30</span><div class="item-title editable">伊勢市站搭特急回名古屋</div><div class="item-desc editable">從伊勢市站搭特急回名古屋，給 つばめパン 留一個甜甜的回訪。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT207 回程航班備忘</b><br>航班：IT207<br>票種：tigersmart<br>出發：NGO 名古屋 T2，19:40<br>抵達：TPE 台北（桃園）T1，22:15<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：20 公斤 <span class=\"flight-priority-badge\">優先</span><br>小豬：25 公斤 <span class=\"flight-priority-badge\">優先</span>","text":"IT207 回程航班備忘\n航班：IT207\n票種：tigersmart\n出發：NGO 名古屋 T2，19:40\n抵達：TPE 台北（桃園）T1，22:15\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：20 公斤 優先\n小豬：25 公斤 優先"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">19:40</span><div class="item-title editable">中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">IT207，建議 17:10 前抵達機場。</div></div></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT207 回程航班備忘</b><br>票種：tigersmart<br>出發：NGO 名古屋 T2，19:40<br>抵達：TPE 台北（桃園）T1，22:15<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：20 公斤 <span class=\"flight-priority-badge\">優先</span><br>小豬：25 公斤 <span class=\"flight-priority-badge\">優先</span>","text":"IT207 回程航班備忘\n票種：tigersmart\n出發：NGO 名古屋 T2，19:40\n抵達：TPE 台北（桃園）T1，22:15\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：20 公斤 優先\n小豬：25 公斤 優先"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">19:40</span><div class="item-title editable">中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">IT207，建議 17:10 前抵達機場。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable">22:15</span><div class="item-title editable">抵達桃園機場 TPE<span class="terminal-badge">T1</span></div><div class="item-desc editable">回到台北（桃園），五週年旅行平安到家。</div></div></div>
 </section>
@@ -1918,7 +1921,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-tourist-house-icon-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-soft-bubble-tail-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2841,7 +2844,7 @@ const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#c86f77')" aria-label="粉紅色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#8d6e63" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#8d6e63')" aria-label="棕色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6d8f6b" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6d8f6b')" aria-label="柔綠色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6f7fa6" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6f7fa6')" aria-label="藍灰色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">＋圖<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#c86f77')" aria-label="粉紅色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#8d6e63" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#8d6e63')" aria-label="棕色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6d8f6b" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6d8f6b')" aria-label="柔綠色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6f7fa6" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6f7fa6')" aria-label="藍灰色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const insertTools = isEditMode ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${formatTools}${blocksHtml}${insertTools}</div>`;
 focusPendingNoteBlock();
