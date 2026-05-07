@@ -788,18 +788,28 @@ transform: translateX(-10px);
 display: block;
 width: min(260px, 82vw);
 height: auto;
-margin: 2px auto 12px;
+margin: -4px auto 10px;
 object-fit: contain;
 filter: drop-shadow(0 5px 12px rgba(141,110,99,.1));
+}
+#work-modal .modal-content,
+#finish-modal .modal-content {
+align-items: center;
+padding-top: 20px;
+}
+#work-modal .modal-title,
+#finish-modal .modal-title {
+margin-bottom: 6px;
+line-height: 1.12;
 }
 .boundary-speech {
 position: relative;
 display: inline-block;
 max-width: 88%;
-margin: 4px auto 12px;
+margin: 0 auto 8px;
 padding: 8px 12px;
 border: 1px solid #f1d9d2;
-border-radius: 16px;
+border-radius: 15px;
 background: #fffaf7;
 color: #9b6a61;
 font-size: .82rem;
@@ -810,14 +820,16 @@ box-shadow: 0 4px 12px rgba(141,110,99,.06);
 .boundary-speech::after {
 content: '';
 position: absolute;
-left: 22px;
-top: -7px;
-width: 12px;
-height: 12px;
+left: 30px;
+top: -8px;
+width: 18px;
+height: 13px;
 border-left: 1px solid #f1d9d2;
 border-top: 1px solid #f1d9d2;
+border-top-left-radius: 14px;
 background: #fffaf7;
-transform: rotate(45deg);
+transform: rotate(-28deg) skewX(-10deg);
+transform-origin: 0 100%;
 }
 .settle-result {
 width: 100%;
@@ -1569,7 +1581,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="二見浦車站"><span class="itinerary-icon btn-press-effect">🚆</span><div><span class="time-badge editable">傍晚</span><div class="item-title editable">從鳥羽前往二見浦</div><div class="item-desc editable">回到鳥羽站後移動到二見浦，準備明天早上的神社回合。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-value="二見浦觀光案內所"><span class="itinerary-icon btn-press-effect">🎴</span><div><span class="time-badge editable">抵達後</span><div class="item-title editable">二見浦觀光案內所</div><div class="item-desc editable">先去觀光案內所拿水溝蓋卡，把二見浦小任務收進口袋。</div></div></div>
+<div class="card" data-map-place-value="二見浦觀光案內所"><span class="itinerary-icon btn-press-effect">🗺️</span><div><span class="time-badge editable">抵達後</span><div class="item-title editable">二見浦觀光案內所</div><div class="item-desc editable">先去觀光案內所拿水溝蓋卡，把二見浦小任務收進口袋。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="赤福 二見店"><span class="itinerary-icon btn-press-effect">🍧</span><div><span class="time-badge editable">接著</span><div class="item-title editable">赤福 二見店</div><div class="item-desc editable">吃一碗赤福冰，讓傍晚的二見浦先甜一下。</div></div></div>
 <div class="connector-line" data-route-text="步行 15 分"></div>
@@ -1584,7 +1596,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="大石屋"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">08:40</span><div class="item-title editable">飯店退房</div><div class="item-desc editable">整理好行李，向大石屋的早晨說再見。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-value="伊勢市站 觀光案內所"><span class="itinerary-icon btn-press-effect">🎴</span><div><span class="time-badge editable">退房後</span><div class="item-title editable">伊勢市站觀光案內所</div><div class="item-desc editable">帶著行李前往伊勢市站，先到車站內觀光案內所拿水溝蓋卡。</div></div></div>
+<div class="card" data-map-place-value="伊勢市站 觀光案內所"><span class="itinerary-icon btn-press-effect">🗺️</span><div><span class="time-badge editable">退房後</span><div class="item-title editable">伊勢市站觀光案內所</div><div class="item-desc editable">帶著行李前往伊勢市站，先到車站內觀光案內所拿水溝蓋卡。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="伊勢市站 行李房"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">接著</span><div class="item-title editable">車站旁行李房</div><div class="item-desc editable">把行李放到車站旁行李房，輕裝去外宮參拜。</div></div></div>
 <div class="connector-line"></div>
@@ -1831,7 +1843,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-futami-detail-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-tourist-map-icon-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -1842,7 +1854,7 @@ const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry
 
 
 const ICON_GROUPS = {
-'常用': ['📍','⭐','✨','💖','💕','✅','📝','📸','🛍️','🎁','💰','🎫','🧺','🎒','🧳','🗺️','🧭','⏰'],
+'常用': ['📍','ℹ️','⭐','✨','💖','💕','✅','📝','📸','🛍️','🎁','💰','🎫','🧺','🎒','🧳','🗺️','🧭','⏰'],
 '交通': ['🚶','🚶‍♀️','🚶‍♂️','🏃','🚲','🛴','🚌','🚎','🚐','🚗','🚕','🚙','🚇','🚉','🚆','🚄','🚃','🚋','🚊','✈️','🛫','🛬','🚢','⛴️','🛥️','🚏','🅿️'],
 '吃喝': ['🍽️','🍴','🥢','🍜','🍣','🍱','🍙','🍘','🍡','🍢','🍤','🥩','🍗','🍖','🍛','🍲','🥘','🥟','🍞','🥐','🥞','🍰','🍮','🍦','🍧','🍓','🍇','🍎','☕','🍵','🧋','🥤','🍶','🍺','🥂'],
 '景點': ['⛩️','🏯','🏛️','🗿','🗽','🏰','🕍','⛪','🕌','🛕','🌅','🌄','🌃','🌉','🌁','🌊','🏞️','🏔️','⛰️','🌋','🏝️','🏖️','🌲','🌳','🍁','🌸','🌺','🌻','🎆','🎇','🪭','🏮'],
