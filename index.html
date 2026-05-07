@@ -344,6 +344,7 @@ box-shadow: 0 3px 10px rgba(141,110,99,.06);
 }
 body.edit-mode .route-edit-btn { display: inline-flex; align-items: center; justify-content: center; }
 .connector-line.flight-connector {
+width: auto;
 height: 120px;
 min-height: 120px;
 }
@@ -352,8 +353,9 @@ position: absolute;
 left: 14px;
 top: 50%;
 transform: translateY(-50%);
-right: 14px;
-width: auto;
+right: auto;
+box-sizing: border-box;
+width: calc(100% - 28px);
 max-width: 560px;
 padding: 10px 12px;
 border: 1px solid #ece4df;
@@ -818,7 +820,7 @@ display: inline-block;
 max-width: 88%;
 margin: 0 auto 0;
 padding: 8px 12px;
-border: 1px solid #f1d9d2;
+border: 1px solid #efb8ae;
 border-radius: 18px;
 background: #fffaf7;
 color: #9b6a61;
@@ -836,13 +838,12 @@ position: absolute;
 left: 18px;
 top: -8px;
 z-index: -1;
-width: 25px;
-height: 20px;
-border-radius: 18px 5px 18px 4px;
-background: #fffaf7;
-box-shadow: -1px -1px 0 #f1d9d2;
-transform: rotate(-34deg) skewX(-6deg);
-transform-origin: 72% 84%;
+width: 35px;
+height: 26px;
+background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='35' height='26' viewBox='0 0 35 26'%3E%3Cpath d='M33 23.5C24.5 22.8 15.5 18.2 4.2 4.2C4.6 12.8 8.8 21.1 16.8 24.7C21.4 23.1 27.2 22.7 33 23.5Z' fill='%23fffaf7' stroke='%23efb8ae' stroke-width='1.45' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+box-shadow: none;
+transform: none;
+transform-origin: center;
 }
 .boundary-speech::after {
 display: none;
@@ -1019,7 +1020,7 @@ font-weight: 800;
 .currency-switch.active-twd { background: #eaf6ff; color: #50a1df; border-color: #d1e9fb; }
 #both-input-area { display: none; margin-bottom: 10px; padding: 10px 12px; border: 1px dashed var(--heart-pink); border-radius: 15px; background: #fff; }
 .both-flex { display: flex; gap: 8px; }
-.summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; width: calc(100% - 18px); margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px dashed #eee; }
+.summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; width: 100%; margin-bottom: 12px; padding-bottom: 0; border-bottom: 0; }
 .summary-btn { min-height: 40px; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; color: var(--main-brown); font-size: .82rem; font-weight: 900; white-space: nowrap; }
 .fund-balance-card {
 position: static;
@@ -1392,9 +1393,11 @@ object-fit: contain;
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
-.wishlist-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 9px; padding: 5px; border-radius: 16px; background: #f5efec; }
-.prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; padding: 6px; background: #f3ebe8; overflow: visible; }
+.wishlist-category-wrap { position: relative; margin-bottom: 9px; padding-top: 8px; }
+.wishlist-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 0; padding: 5px; border-radius: 16px; background: #f5efec; }
+.prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; margin-bottom: 9px; padding: 6px; background: #f3ebe8; overflow: visible; }
 .wishlist-tab { min-height: 32px; min-width: 0; border: 0; border-radius: 12px; padding: 0 6px; background: transparent; color: var(--light-brown); font-size: .76rem; font-weight: 900; white-space: nowrap; }
+.wishlist-tab span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .wishlist-tab.has-delete {
 display: inline-flex;
 align-items: center;
@@ -1415,6 +1418,26 @@ color: #cf8a7f;
 font-size: .78rem;
 font-weight: 900;
 line-height: 1;
+}
+.wishlist-category-edit-btn {
+position: absolute;
+right: 8px;
+top: -13px;
+z-index: 2;
+height: 28px;
+border: 1px solid #efd8d1;
+border-radius: 999px;
+padding: 0 10px;
+background: #fffdfa;
+color: #b87568;
+font-size: .72rem;
+font-weight: 900;
+box-shadow: 0 4px 12px rgba(141,110,99,.08);
+}
+.wishlist-category-edit-btn.is-active {
+border-color: #e9c0b8;
+background: #fff4ef;
+color: var(--heart-pink);
 }
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
@@ -1793,7 +1816,7 @@ main { padding: 0 14px; }
 <div id="details-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費明細</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div id="settle-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div id="settle-content" class="panel-content settle-panel-content"></div></div></div></div></div>
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
-<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('wishlist-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-tabs" id="wishlist-tabs"></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
+<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('wishlist-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
@@ -1940,7 +1963,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-responsive-wishlist-flight-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-wishlist-clear-categories-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3438,30 +3461,34 @@ openSimpleModal('wishlist-modal');
 setTimeout(() => document.getElementById('wishlist-input')?.focus(), 120);
 }
 function normalizeWishlistCategories() {
-const defaults = ['全家', '7-11', 'Lawson', '機場必買', '伴手禮'];
 wishlistCategories = wishlistCategories.map(category => WISHLIST_CATEGORY_ALIASES[category] || category);
 wishItems.forEach(item => {
 if (item && WISHLIST_CATEGORY_ALIASES[item.category]) item.category = WISHLIST_CATEGORY_ALIASES[item.category];
 });
 if (WISHLIST_CATEGORY_ALIASES[currentWishlistCategory]) currentWishlistCategory = WISHLIST_CATEGORY_ALIASES[currentWishlistCategory];
 const next = [];
-[...defaults, ...wishlistCategories, ...wishItems.map(item => item.category)].forEach(category => {
+[...wishlistCategories, ...wishItems.map(item => item.category)].forEach(category => {
 const clean = String(category || '').trim();
 if (clean && !next.includes(clean)) next.push(clean);
 });
 wishlistCategories = next;
-if (!wishlistCategories.includes(currentWishlistCategory)) currentWishlistCategory = wishlistCategories[0] || '全家';
+if (!wishlistCategories.includes(currentWishlistCategory)) currentWishlistCategory = wishlistCategories[0] || '';
 return wishlistCategories;
 }
 function renderWishlistCategories() {
 const tabs = document.getElementById('wishlist-tabs');
 if (!tabs) return;
 normalizeWishlistCategories();
+const editBtn = document.getElementById('wishlist-category-edit-toggle');
+if (editBtn) {
+editBtn.textContent = wishlistCategoryEditMode ? '完成' : '編輯';
+editBtn.classList.toggle('is-active', wishlistCategoryEditMode);
+}
 tabs.classList.toggle('is-managing', wishlistCategoryEditMode);
 tabs.innerHTML = wishlistCategories.map(category => {
-const canDelete = wishlistCategoryEditMode && !DEFAULT_WISHLIST_CATEGORIES.includes(category);
+const canDelete = wishlistCategoryEditMode;
 return `<button type="button" class="wishlist-tab btn-press-effect ${canDelete ? 'has-delete' : ''} ${category === currentWishlistCategory ? 'active' : ''}" onclick="setWishlistCategory('${escapeJsString(category)}')"><span>${escapeHtml(category)}</span>${canDelete ? `<span class="wishlist-category-delete" onclick="deleteWishlistCategory(event, '${escapeJsString(category)}')" aria-label="刪除分類">×</span>` : ''}</button>`;
-}).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button><button type="button" class="wishlist-tab wishlist-category-edit-tab btn-press-effect" onclick="toggleWishlistCategoryEditMode()">${wishlistCategoryEditMode ? '完成' : '編輯'}</button>`;
+}).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button>`;
 }
 function setWishlistCategory(category) {
 currentWishlistCategory = category;
@@ -3483,6 +3510,7 @@ if (show) {
 if (input) input.value = '';
 setTimeout(() => input?.focus(), 80);
 }
+renderWishlistCategories();
 }
 function addWishlistCategory() {
 const input = document.getElementById('wishlist-category-input');
@@ -3502,13 +3530,12 @@ event.preventDefault();
 event.stopPropagation();
 }
 normalizeWishlistCategories();
-if (DEFAULT_WISHLIST_CATEGORIES.includes(category)) return showAlert('這個是固定分類，先留著比較好找喔 🧺');
 const count = wishItems.filter(item => item.category === category).length;
 const message = count ? `要刪掉「${category}」分類嗎？\n裡面的 ${count} 個願望也會一起刪掉喔` : `要刪掉「${category}」分類嗎？`;
 showConfirmAlert(message, () => {
 wishlistCategories = wishlistCategories.filter(item => item !== category);
 wishItems = wishItems.filter(item => item.category !== category);
-if (currentWishlistCategory === category) currentWishlistCategory = wishlistCategories[0] || DEFAULT_WISHLIST_CATEGORIES[0];
+if (currentWishlistCategory === category) currentWishlistCategory = wishlistCategories[0] || '';
 renderWishlist();
 queueTripCloudSave();
 });
@@ -3531,6 +3558,7 @@ function addWishlistItem() {
 const input = document.getElementById('wishlist-input');
 const title = input.value.trim();
 if (!title) return showAlert('先寫一個想買的小東西吧 🧺');
+if (!currentWishlistCategory) return showAlert('先新增一個分類，再把心動小物放進去喔 🧺');
 wishItems.unshift({
 id: Date.now(),
 category: currentWishlistCategory,
@@ -3597,6 +3625,10 @@ const list = document.getElementById('wishlist-list');
 if (!list) return;
 renderWishlistCategories();
 updateWishlistPlaceholder();
+if (!wishlistCategories.length) {
+list.innerHTML = `<div class="wishlist-empty">現在還沒有心動的耶<br>想重新分類就先按「＋分類」</div>`;
+return;
+}
 const items = wishItems.filter(wish => wish.category === currentWishlistCategory);
 if (!items.length) {
 list.innerHTML = `<div class="wishlist-empty">這裡還空空的<br>可以先把${escapeHtml(currentWishlistCategory)}寫進來</div>`;
