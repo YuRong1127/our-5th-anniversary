@@ -130,6 +130,17 @@ text-align: center;
 .date-item { min-width: 62px; padding: 10px 0; border-radius: 16px; text-align: center; color: var(--light-brown); flex-shrink: 0; }
 .date-item small { display: block; font-size: .72rem; margin-bottom: 2px; }
 .date-item.active { background: var(--accent-peach); color: var(--heart-pink); font-weight: 800; }
+body.edit-mode .date-item { touch-action: none; }
+.date-item.day-drag-source {
+opacity: .72;
+transform: scale(1.06);
+box-shadow: 0 8px 20px rgba(141,110,99,.16);
+}
+.date-item.day-drag-target {
+background: #fff4ef;
+color: var(--heart-pink);
+box-shadow: inset 0 0 0 2px rgba(209,122,109,.22);
+}
 
 
 
@@ -830,24 +841,7 @@ line-height: 1.35;
 box-shadow: 0 4px 12px rgba(141,110,99,.06);
 }
 .boundary-speech::before,
-.boundary-speech::after {
-content: '';
-position: absolute;
-}
-.boundary-speech::before {
-left: 18px;
-top: -8px;
-z-index: -1;
-width: 35px;
-height: 26px;
-background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='35' height='26' viewBox='0 0 35 26'%3E%3Cpath d='M33 23.5C24.5 22.8 15.5 18.2 4.2 4.2C4.6 12.8 8.8 21.1 16.8 24.7C21.4 23.1 27.2 22.7 33 23.5Z' fill='%23fffaf7' stroke='%23efb8ae' stroke-width='1.45' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
-box-shadow: none;
-transform: none;
-transform-origin: center;
-}
-.boundary-speech::after {
-display: none;
-}
+.boundary-speech::after { display: none; }
 .settle-result {
 width: 100%;
 padding: 22px 4px;
@@ -1020,7 +1014,7 @@ font-weight: 800;
 .currency-switch.active-twd { background: #eaf6ff; color: #50a1df; border-color: #d1e9fb; }
 #both-input-area { display: none; margin-bottom: 10px; padding: 10px 12px; border: 1px dashed var(--heart-pink); border-radius: 15px; background: #fff; }
 .both-flex { display: flex; gap: 8px; }
-.summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; width: 100%; margin-bottom: 12px; padding-bottom: 0; border-bottom: 0; }
+.summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; width: calc(100% - 10px); margin: 0 5px 12px; padding-bottom: 0; border-bottom: 0; }
 .summary-btn { min-height: 40px; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; color: var(--main-brown); font-size: .82rem; font-weight: 900; white-space: nowrap; }
 .fund-balance-card {
 position: static;
@@ -1208,17 +1202,31 @@ overflow: hidden;
 cursor: pointer;
 }
 .note-custom-color-btn::before {
-background: conic-gradient(#d96b86, #f0c96b, #76a886, #7c91c2, #b783b7, #d96b86);
+background: var(--swatch-color, #c86f77);
 box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.12);
 }
-.note-custom-color-btn input {
-position: absolute;
-inset: 0;
+.note-color-modal-content { align-items: stretch; max-width: 340px; padding: 24px 20px 20px; }
+.note-color-modal-content .modal-title { margin-bottom: 14px; font-size: 1.2rem; }
+.note-color-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 10px; border: 1px solid #f4e4df; border-radius: 22px; background: #fffaf7; }
+.note-color-option {
+height: 48px;
+border: 1px solid #f0e0da;
+border-radius: 15px;
+padding: 5px;
+background: #fff;
+box-shadow: 0 4px 12px rgba(141,110,99,.045);
+}
+.note-color-option::before {
+content: '';
+display: block;
 width: 100%;
 height: 100%;
-opacity: 0;
-cursor: pointer;
+border-radius: 11px;
+background: var(--swatch-color);
+box-shadow: inset 0 0 0 1px rgba(141,110,99,.1);
 }
+.note-color-option.is-selected { border-color: #d17a6d; box-shadow: 0 6px 16px rgba(209,122,109,.13); }
+.note-color-hint { margin: 10px 4px 0; color: #b79a91; font-size: .76rem; font-weight: 800; text-align: center; line-height: 1.5; }
 .note-text-input,
 .note-text-view {
 width: 100%;
@@ -1393,8 +1401,8 @@ object-fit: contain;
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
-.wishlist-category-wrap { position: relative; margin-bottom: 9px; padding-top: 8px; }
-.wishlist-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 0; padding: 5px; border-radius: 16px; background: #f5efec; }
+.wishlist-category-wrap { position: relative; margin-bottom: 9px; padding-top: 3px; }
+.wishlist-tabs { display: grid; grid-template-columns: repeat(var(--wishlist-cols, 4), minmax(0, 1fr)); gap: 6px; margin-bottom: 0; padding: 5px; border-radius: 16px; background: #f5efec; }
 .prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; margin-bottom: 9px; padding: 6px; background: #f3ebe8; overflow: visible; }
 .wishlist-tab { min-height: 32px; min-width: 0; border: 0; border-radius: 12px; padding: 0 6px; background: transparent; color: var(--light-brown); font-size: .76rem; font-weight: 900; white-space: nowrap; }
 .wishlist-tab span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
@@ -1422,21 +1430,22 @@ line-height: 1;
 .wishlist-category-edit-btn {
 position: absolute;
 right: 8px;
-top: -13px;
+top: -24px;
 z-index: 2;
-height: 28px;
-border: 1px solid #efd8d1;
-border-radius: 999px;
-padding: 0 10px;
-background: #fffdfa;
-color: #b87568;
-font-size: .72rem;
+height: 24px;
+border: 0;
+border-radius: 0;
+padding: 0 2px;
+background: transparent;
+color: #b99d95;
+font-size: .7rem;
 font-weight: 900;
-box-shadow: 0 4px 12px rgba(141,110,99,.08);
+text-decoration: underline;
+text-underline-offset: 3px;
+box-shadow: none;
 }
 .wishlist-category-edit-btn.is-active {
-border-color: #e9c0b8;
-background: #fff4ef;
+background: transparent;
 color: var(--heart-pink);
 }
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
@@ -1589,7 +1598,6 @@ opacity: .86;
 main { padding: 0 14px; }
 .summary-btn { font-size: .76rem; }
 .route-inline { width: calc(100vw - 95px); }
-.wishlist-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .wishlist-tab { font-size: .72rem; padding: 0 4px; }
 .pw-keypad { grid-template-columns: repeat(3, 68px); gap: 10px; }
 .pw-keypad button { width: 68px; height: 52px; }
@@ -1822,6 +1830,7 @@ main { padding: 0 14px; }
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 步行 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
+<div id="note-color-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div id="note-color-grid" class="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
@@ -1957,13 +1966,15 @@ let pendingNoteFocusIndex = null;
 let pendingNoteImageInsert = null;
 let savedNoteColorRange = null;
 let preloadedDiscardPig = null;
+let dayDragState = null;
+let dateClickSuppressedUntil = 0;
 let pendingAlertConfirm = null;
 let isApplyingCloudData = false;
 const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-wishlist-clear-categories-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-day-swap-drag-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2218,6 +2229,7 @@ closeModal('wallet-modal');
 
 function switchDay(day, options = {}) {
 if (isModalOpen) return;
+if (Date.now() < dateClickSuppressedUntil && !options.auto) return;
 if (!options.auto) hasManualDaySelection = true;
 currentDay = day;
 document.body.classList.toggle('day-3-theme', day === 3);
@@ -2228,6 +2240,114 @@ document.getElementById(`day-${day}`).classList.add('active');
 initFloatingBackground();
 if (!options.auto) window.scrollTo({ top: 0, behavior: 'smooth' });
 if (!options.skipHistory && !isHandlingAppHistory) pushAppHistory(day);
+}
+
+function getDayNumberFromTab(tab) {
+const match = tab?.id?.match(/^tab-(\d+)$/);
+return match ? Number(match[1]) : null;
+}
+function clearDayDragClasses() {
+document.querySelectorAll('.date-item').forEach(tab => tab.classList.remove('day-drag-source', 'day-drag-target'));
+}
+function startDayDrag(tab, pointerId) {
+if (!isEditMode || !tab) return;
+const fromDay = getDayNumberFromTab(tab);
+if (!fromDay) return;
+dayDragState = { fromDay, targetDay: fromDay, pointerId, active: true };
+dateClickSuppressedUntil = Date.now() + 900;
+tab.classList.add('day-drag-source');
+tab.classList.add('day-drag-target');
+if (navigator.vibrate) navigator.vibrate(18);
+}
+function updateDayDragTarget(x, y) {
+if (!dayDragState?.active) return;
+const target = document.elementFromPoint(x, y)?.closest?.('.date-item');
+const targetDay = getDayNumberFromTab(target);
+document.querySelectorAll('.date-item').forEach(tab => tab.classList.remove('day-drag-target'));
+if (target && targetDay) {
+dayDragState.targetDay = targetDay;
+target.classList.add('day-drag-target');
+}
+}
+function swapDayItineraries(fromDay, toDay) {
+if (!fromDay || !toDay || fromDay === toDay) return false;
+const fromSection = document.getElementById(`day-${fromDay}`);
+const toSection = document.getElementById(`day-${toDay}`);
+if (!fromSection || !toSection) return false;
+const fromHTML = fromSection.innerHTML;
+fromSection.innerHTML = toSection.innerHTML;
+toSection.innerHTML = fromHTML;
+enhanceRouteConnectors();
+enhanceItineraryCards();
+toggleEditMode(true);
+switchDay(toDay, { auto: true, skipHistory: true });
+queueTripCloudSave();
+showSaveStatus(`已交換第 ${fromDay} 天和第 ${toDay} 天行程`, 'success');
+return true;
+}
+function finishDayDrag() {
+if (!dayDragState) return;
+const { fromDay, targetDay, active } = dayDragState;
+dateClickSuppressedUntil = Date.now() + 900;
+dayDragState = null;
+clearDayDragClasses();
+if (active && targetDay && targetDay !== fromDay) swapDayItineraries(fromDay, targetDay);
+}
+function cancelDayDrag() {
+if (dayDragState) {
+dateClickSuppressedUntil = Date.now() + 600;
+dayDragState = null;
+clearDayDragClasses();
+}
+}
+function initDayDragSwap() {
+const nav = document.getElementById('app-nav');
+if (!nav) return;
+nav.addEventListener('click', event => {
+if (Date.now() < dateClickSuppressedUntil) {
+event.preventDefault();
+event.stopPropagation();
+if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+}
+}, true);
+nav.addEventListener('pointerdown', event => {
+const tab = event.target.closest('.date-item');
+if (!isEditMode || !tab || event.pointerType === 'mouse' && event.button !== 0) return;
+const pointerId = event.pointerId;
+const timer = setTimeout(() => startDayDrag(tab, pointerId), 480);
+dayDragState = {
+fromDay: getDayNumberFromTab(tab),
+targetDay: getDayNumberFromTab(tab),
+pointerId,
+active: false,
+timer,
+startX: event.clientX,
+startY: event.clientY
+};
+}, { passive: true });
+nav.addEventListener('pointermove', event => {
+if (!dayDragState || dayDragState.pointerId !== event.pointerId) return;
+const moved = Math.hypot(event.clientX - (dayDragState.startX || event.clientX), event.clientY - (dayDragState.startY || event.clientY));
+if (!dayDragState.active && moved > 12) {
+clearTimeout(dayDragState.timer);
+dayDragState = null;
+return;
+}
+if (dayDragState.active) {
+event.preventDefault();
+updateDayDragTarget(event.clientX, event.clientY);
+}
+}, { passive: false });
+nav.addEventListener('pointerup', event => {
+if (!dayDragState || dayDragState.pointerId !== event.pointerId) return;
+clearTimeout(dayDragState.timer);
+if (dayDragState.active) finishDayDrag();
+else dayDragState = null;
+}, { passive: true });
+nav.addEventListener('pointercancel', () => {
+if (dayDragState?.timer) clearTimeout(dayDragState.timer);
+cancelDayDrag();
+}, { passive: true });
 }
 
 
@@ -2748,6 +2868,20 @@ return (div.textContent || '').replace(/\n{3,}/g, '\n\n');
 function sanitizeNoteHtml(value) {
 const template = document.createElement('template');
 template.innerHTML = value || '';
+const NOTE_TEXT_COLORS = [
+{ name: '莓果粉', value: '#c86f77' },
+{ name: '奶茶棕', value: '#8d6e63' },
+{ name: '可可深棕', value: '#705b55' },
+{ name: '蜜桃橘', value: '#d98b72' },
+{ name: '焦糖杏', value: '#c59663' },
+{ name: '奶油黃', value: '#b99a45' },
+{ name: '鼠尾草綠', value: '#6d8f6b' },
+{ name: '湖水綠', value: '#5f9c92' },
+{ name: '藍灰', value: '#6f7fa6' },
+{ name: '霧紫', value: '#9a7fa6' },
+{ name: '玫瑰棕', value: '#a86f76' },
+{ name: '回到主色', value: '#705b55' }
+];
 const allowedColors = ['#705b55', 'rgb(112, 91, 85)', '#c86f77', 'rgb(200, 111, 119)', '#8d6e63', 'rgb(141, 110, 99)', '#6d8f6b', 'rgb(109, 143, 107)', '#6f7fa6', 'rgb(111, 127, 166)'];
 function isAllowedTextColor(value) {
 const color = String(value || '').trim().toLowerCase();
@@ -2890,7 +3024,7 @@ const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><label class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onpointerdown="saveNoteSelectionForColor()" aria-label="選擇文字顏色"><input type="color" value="#c86f77" oninput="this.parentElement.style.setProperty('--swatch-color', this.value); applyNoteColor(this.value)"></label><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onpointerdown="openNoteColorPalette(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const insertTools = isEditMode ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${formatTools}${blocksHtml}${insertTools}</div>`;
 focusPendingNoteBlock();
@@ -2949,6 +3083,24 @@ const editor = node?.closest?.('.note-text-input') || document.querySelector('.n
 if (!editor || !editor.contains(range.startContainer)) return;
 savedNoteColorRange = range.cloneRange();
 setActiveNoteEditor(editor);
+}
+function openNoteColorPalette(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+saveNoteSelectionForColor();
+const grid = document.getElementById('note-color-grid');
+if (grid) {
+const currentColor = (document.querySelector('.note-custom-color-btn')?.style.getPropertyValue('--swatch-color') || '#c86f77').trim().toLowerCase();
+grid.innerHTML = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === currentColor ? 'is-selected' : ''}" style="--swatch-color:${color.value}" onclick="chooseNoteColor('${color.value}')" aria-label="${escapeHtml(color.name)}"></button>`).join('');
+}
+openOverlayModal('note-color-modal');
+}
+function chooseNoteColor(value) {
+document.querySelectorAll('.note-custom-color-btn').forEach(btn => btn.style.setProperty('--swatch-color', value));
+applyNoteColor(value);
+closeOverlayModal('note-color-modal');
 }
 function applyNoteColor(value) {
 const editor = document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
@@ -3479,6 +3631,9 @@ function renderWishlistCategories() {
 const tabs = document.getElementById('wishlist-tabs');
 if (!tabs) return;
 normalizeWishlistCategories();
+const categoryButtonCount = wishlistCategories.length + 1;
+const wishlistCols = categoryButtonCount <= 4 ? categoryButtonCount || 1 : categoryButtonCount <= 6 ? 3 : 4;
+tabs.style.setProperty('--wishlist-cols', wishlistCols);
 const editBtn = document.getElementById('wishlist-category-edit-toggle');
 if (editBtn) {
 editBtn.textContent = wishlistCategoryEditMode ? '完成' : '編輯';
@@ -4552,6 +4707,7 @@ initCategoryMenu();
 initIconPicker();
 enhanceRouteConnectors();
 initDatePicker();
+initDayDragSwap();
 initAppBackButton();
 document.getElementById('both-big-pig').addEventListener('input', () => syncBothAmountSum('big'));
 document.getElementById('both-small-pig').addEventListener('input', () => syncBothAmountSum('small'));
