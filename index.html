@@ -352,7 +352,9 @@ position: absolute;
 left: 14px;
 top: 50%;
 transform: translateY(-50%);
-width: min(330px, calc(100vw - 108px));
+right: 14px;
+width: auto;
+max-width: 560px;
 padding: 10px 12px;
 border: 1px solid #ece4df;
 border-radius: 18px;
@@ -811,6 +813,7 @@ line-height: 1.12;
 .boundary-speech {
 position: relative;
 z-index: 1;
+isolation: isolate;
 display: inline-block;
 max-width: 88%;
 margin: 0 auto 0;
@@ -831,11 +834,15 @@ position: absolute;
 }
 .boundary-speech::before {
 left: 18px;
-top: -15px;
+top: -8px;
 z-index: -1;
-width: 34px;
-height: 28px;
-background: url("data:image/svg+xml,%3Csvg width='34' height='28' viewBox='0 0 34 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M27.5 25.2C17.6 24.8 9.7 20.8 9.3 13.7C8.9 7.2 14.2 2.8 22.4 2.1C17.4 6.1 16.9 11.6 20.6 16.5C23 19.7 26.7 21.5 31.1 22.2C30.8 24.1 29.6 25.1 27.5 25.2Z' fill='%23fffaf7' stroke='%23f1d9d2' stroke-width='1' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+width: 25px;
+height: 20px;
+border-radius: 18px 5px 18px 4px;
+background: #fffaf7;
+box-shadow: -1px -1px 0 #f1d9d2;
+transform: rotate(-34deg) skewX(-6deg);
+transform-origin: 72% 84%;
 }
 .boundary-speech::after {
 display: none;
@@ -1199,6 +1206,10 @@ position: relative;
 overflow: hidden;
 cursor: pointer;
 }
+.note-custom-color-btn::before {
+background: conic-gradient(#d96b86, #f0c96b, #76a886, #7c91c2, #b783b7, #d96b86);
+box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.12);
+}
 .note-custom-color-btn input {
 position: absolute;
 inset: 0;
@@ -1381,9 +1392,9 @@ object-fit: contain;
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
-.wishlist-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 9px; padding: 5px; border-radius: 16px; background: #f5efec; }
+.wishlist-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 9px; padding: 5px; border-radius: 16px; background: #f5efec; }
 .prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; padding: 6px; background: #f3ebe8; overflow: visible; }
-.wishlist-tab { min-height: 32px; flex: 0 1 auto; min-width: 72px; border: 0; border-radius: 12px; padding: 0 10px; background: transparent; color: var(--light-brown); font-size: .76rem; font-weight: 900; white-space: nowrap; }
+.wishlist-tab { min-height: 32px; min-width: 0; border: 0; border-radius: 12px; padding: 0 6px; background: transparent; color: var(--light-brown); font-size: .76rem; font-weight: 900; white-space: nowrap; }
 .wishlist-tab.has-delete {
 display: inline-flex;
 align-items: center;
@@ -1407,8 +1418,8 @@ line-height: 1;
 }
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
-.wishlist-add-category-tab { min-width: 70px; border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
-.wishlist-category-edit-tab { min-width: 62px; background: rgba(255,255,255,.72); color: #b89d95; }
+.wishlist-add-category-tab { border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
+.wishlist-category-edit-tab { background: rgba(255,255,255,.72); color: #b89d95; }
 .wishlist-tabs.is-managing .wishlist-category-edit-tab { background: #fff; color: var(--heart-pink); box-shadow: 0 3px 10px rgba(141,110,99,.08); }
 .wishlist-category-form {
 display: none;
@@ -1555,6 +1566,8 @@ opacity: .86;
 main { padding: 0 14px; }
 .summary-btn { font-size: .76rem; }
 .route-inline { width: calc(100vw - 95px); }
+.wishlist-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.wishlist-tab { font-size: .72rem; padding: 0 4px; }
 .pw-keypad { grid-template-columns: repeat(3, 68px); gap: 10px; }
 .pw-keypad button { width: 68px; height: 52px; }
 }
@@ -1927,7 +1940,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-preload-discard-pig-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-responsive-wishlist-flight-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
