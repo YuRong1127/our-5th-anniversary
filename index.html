@@ -806,10 +806,10 @@ line-height: 1.12;
 position: relative;
 display: inline-block;
 max-width: 88%;
-margin: 0 auto 8px;
+margin: 0 auto 2px;
 padding: 8px 12px;
 border: 1px solid #f1d9d2;
-border-radius: 15px;
+border-radius: 17px;
 background: #fffaf7;
 color: #9b6a61;
 font-size: .82rem;
@@ -820,16 +820,23 @@ box-shadow: 0 4px 12px rgba(141,110,99,.06);
 .boundary-speech::after {
 content: '';
 position: absolute;
-left: 30px;
-top: -8px;
-width: 18px;
-height: 13px;
+left: 20px;
+top: -7px;
+width: 17px;
+height: 17px;
 border-left: 1px solid #f1d9d2;
 border-top: 1px solid #f1d9d2;
-border-top-left-radius: 14px;
+border-top-left-radius: 15px;
+border-top-right-radius: 13px;
+border-bottom-left-radius: 13px;
+border-bottom-right-radius: 3px;
 background: #fffaf7;
-transform: rotate(-28deg) skewX(-10deg);
-transform-origin: 0 100%;
+transform: rotate(-38deg);
+transform-origin: 70% 70%;
+box-shadow: -1px -1px 0 rgba(255,250,247,.9);
+}
+#work-modal .boundary-modal-img {
+margin-top: -34px;
 }
 .settle-result {
 width: 100%;
@@ -1145,6 +1152,14 @@ font-weight: 900;
 }
 .note-format-btn {
 font-size: 1rem;
+}
+.note-format-image-btn {
+width: auto;
+min-width: 44px;
+padding: 0 9px;
+font-size: .78rem;
+line-height: 30px;
+cursor: pointer;
 }
 .note-highlight-btn {
 font-size: .86rem;
@@ -1743,13 +1758,18 @@ main { padding: 0 14px; }
 let currentDay = 1;
 let expenses = [];
 let wishItems = [
-{ id: 101, category: '超商必買', title: '限定甜點', done: false },
+{ id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false }
 ];
-let wishlistCategories = ['超商必買', '機場必買', '伴手禮'];
-let currentWishlistCategory = '超商必買';
+let wishlistCategories = ['全家', '7-11', 'Lawson', '機場必買', '伴手禮'];
+let currentWishlistCategory = '全家';
+const WISHLIST_CATEGORY_ALIASES = {
+'超商必買': '全家'
+};
 const WISHLIST_PLACEHOLDERS = {
-'超商必買': '新增超商想買...',
+'全家': '新增全家想買...',
+'7-11': '新增 7-11 想買...',
+'Lawson': '新增 Lawson 想買...',
 '機場必買': '新增機場想買...',
 '伴手禮': '新增伴手禮...'
 };
@@ -1837,13 +1857,14 @@ let lastBothEdited = null;
 let bothManualEdits = { big: false, small: false };
 let fp = null;
 let pendingNoteFocusIndex = null;
+let pendingNoteImageInsert = null;
 let pendingAlertConfirm = null;
 let isApplyingCloudData = false;
 const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-tourist-map-icon-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-boundary-soft-tail-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2765,13 +2786,54 @@ const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#c86f77')" aria-label="粉紅色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#8d6e63" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#8d6e63')" aria-label="棕色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6d8f6b" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6d8f6b')" aria-label="柔綠色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6f7fa6" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6f7fa6')" aria-label="藍灰色"></button></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#c86f77')" aria-label="粉紅色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#8d6e63" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#8d6e63')" aria-label="棕色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6d8f6b" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6d8f6b')" aria-label="柔綠色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6f7fa6" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6f7fa6')" aria-label="藍灰色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">＋圖<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const insertTools = isEditMode ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${formatTools}${blocksHtml}${insertTools}</div>`;
 focusPendingNoteBlock();
 }
 function setActiveNoteEditor(el) {
 document.querySelectorAll('.note-text-input').forEach(item => item.classList.toggle('is-active', item === el));
+}
+function getNoteRangeHtml(range) {
+const box = document.createElement('div');
+box.appendChild(range.cloneContents());
+return sanitizeNoteHtml(box.innerHTML);
+}
+function captureNoteImageInsertPoint() {
+pendingNoteImageInsert = null;
+const selection = window.getSelection();
+let editor = null;
+let selectedRange = null;
+if (selection && selection.rangeCount) {
+selectedRange = selection.getRangeAt(0);
+const node = selectedRange.startContainer.nodeType === Node.ELEMENT_NODE ? selectedRange.startContainer : selectedRange.startContainer.parentElement;
+editor = node?.closest?.('.note-text-input') || null;
+}
+editor = editor || document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
+if (!editor) return;
+setActiveNoteEditor(editor);
+const block = editor.closest('.note-block');
+const blockIndex = Number(block?.dataset.blockIndex);
+if (!Number.isInteger(blockIndex)) return;
+if (!selectedRange || !editor.contains(selectedRange.startContainer)) {
+selectedRange = document.createRange();
+selectedRange.selectNodeContents(editor);
+selectedRange.collapse(false);
+} else if (!editor.contains(selectedRange.endContainer)) {
+selectedRange = selectedRange.cloneRange();
+selectedRange.collapse(true);
+}
+const beforeRange = document.createRange();
+beforeRange.selectNodeContents(editor);
+beforeRange.setEnd(selectedRange.startContainer, selectedRange.startOffset);
+const afterRange = document.createRange();
+afterRange.selectNodeContents(editor);
+afterRange.setStart(selectedRange.endContainer, selectedRange.endOffset);
+pendingNoteImageInsert = {
+blockIndex,
+beforeHtml: getNoteRangeHtml(beforeRange),
+afterHtml: getNoteRangeHtml(afterRange)
+};
 }
 function formatNoteText(command, value = null) {
 const editor = document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
@@ -2870,18 +2932,31 @@ reader.onload = () => resolve(reader.result);
 reader.readAsDataURL(file);
 });
 }
-async function addDetailFieldPhotoFile(index, event) {
+async function addDetailFieldPhotoFile(index, event, insertMode = 'end') {
 if (!currentDetailCard || !isEditMode) return;
-saveFieldDraftsToCard();
 const files = Array.from(event.target.files || []).filter(file => file.type.startsWith('image/'));
 if (!files.length) return;
 const imageSources = await Promise.all(files.map(file => readImageFile(file)));
-const fields = getDetailFields(currentDetailCard);
+const fields = collectDetailFieldsFromModal();
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
+const imageBlocks = imageSources.map(src => ({ type: 'image', src }));
+const insertPoint = insertMode === 'cursor' ? pendingNoteImageInsert : null;
+if (insertPoint && Number.isInteger(insertPoint.blockIndex) && fields[0].blocks[insertPoint.blockIndex]?.type === 'text') {
+const replacement = [];
+const beforeHtml = sanitizeNoteHtml(insertPoint.beforeHtml || '');
+const afterHtml = sanitizeNoteHtml(insertPoint.afterHtml || '');
+if (stripHtml(beforeHtml).trim()) replacement.push({ type: 'text', text: stripHtml(beforeHtml), html: beforeHtml });
+replacement.push(...imageBlocks);
+replacement.push({ type: 'text', text: stripHtml(afterHtml).trim(), html: afterHtml });
+fields[0].blocks.splice(insertPoint.blockIndex, 1, ...replacement);
+pendingNoteFocusIndex = insertPoint.blockIndex + replacement.length - 1;
+} else {
 fields[0].blocks = fields[0].blocks.filter((block, blockIndex, blocks) => !(blockIndex === blocks.length - 1 && block.type === 'text' && !(block.text || '').trim()));
-imageSources.forEach(src => fields[0].blocks.push({ type: 'image', src }));
+fields[0].blocks.push(...imageBlocks);
 fields[0].blocks.push({ type: 'text', text: '' });
 pendingNoteFocusIndex = fields[0].blocks.length - 1;
+}
+pendingNoteImageInsert = null;
 setDetailFields(currentDetailCard, fields);
 event.target.value = '';
 renderDetailFields();
@@ -3249,14 +3324,19 @@ openSimpleModal('wishlist-modal');
 setTimeout(() => document.getElementById('wishlist-input')?.focus(), 120);
 }
 function normalizeWishlistCategories() {
-const defaults = ['超商必買', '機場必買', '伴手禮'];
+const defaults = ['全家', '7-11', 'Lawson', '機場必買', '伴手禮'];
+wishlistCategories = wishlistCategories.map(category => WISHLIST_CATEGORY_ALIASES[category] || category);
+wishItems.forEach(item => {
+if (item && WISHLIST_CATEGORY_ALIASES[item.category]) item.category = WISHLIST_CATEGORY_ALIASES[item.category];
+});
+if (WISHLIST_CATEGORY_ALIASES[currentWishlistCategory]) currentWishlistCategory = WISHLIST_CATEGORY_ALIASES[currentWishlistCategory];
 const next = [];
 [...defaults, ...wishlistCategories, ...wishItems.map(item => item.category)].forEach(category => {
 const clean = String(category || '').trim();
 if (clean && !next.includes(clean)) next.push(clean);
 });
 wishlistCategories = next;
-if (!wishlistCategories.includes(currentWishlistCategory)) currentWishlistCategory = wishlistCategories[0] || '超商必買';
+if (!wishlistCategories.includes(currentWishlistCategory)) currentWishlistCategory = wishlistCategories[0] || '全家';
 return wishlistCategories;
 }
 function renderWishlistCategories() {
