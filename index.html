@@ -26,6 +26,7 @@
 <link rel="preload" as="image" href="invalid-amount-pig-inline.png">
 <link rel="preload" as="image" href="fund-topup-success-pig-inline.png">
 <link rel="preload" as="image" href="wallet-unsaved-pig-inline.png">
+<link rel="preload" as="image" href="discard-unsaved-pig.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
@@ -829,21 +830,15 @@ content: '';
 position: absolute;
 }
 .boundary-speech::before {
-left: 21px;
-top: -18px;
-z-index: 2;
-width: 36px;
+left: 18px;
+top: -15px;
+z-index: -1;
+width: 34px;
 height: 28px;
-background: url("data:image/svg+xml,%3Csvg width='36' height='28' viewBox='0 0 36 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28.5 26.5C17.5 25.6 9.4 20.3 9.6 12.7C9.8 6.4 14.8 2.4 22.6 1.7C17.8 5.6 16.8 11.5 20.3 16.7C22.7 20.3 26.7 22.6 31.4 23.5C31.1 25.4 30.1 26.4 28.5 26.5Z' fill='%23fffaf7' stroke='%23f1d9d2' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+background: url("data:image/svg+xml,%3Csvg width='34' height='28' viewBox='0 0 34 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M27.5 25.2C17.6 24.8 9.7 20.8 9.3 13.7C8.9 7.2 14.2 2.8 22.4 2.1C17.4 6.1 16.9 11.6 20.6 16.5C23 19.7 26.7 21.5 31.1 22.2C30.8 24.1 29.6 25.1 27.5 25.2Z' fill='%23fffaf7' stroke='%23f1d9d2' stroke-width='1' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .boundary-speech::after {
-left: 35px;
-top: 0;
-z-index: 3;
-width: 18px;
-height: 10px;
-border-radius: 10px 10px 0 0;
-background: #fffaf7;
+display: none;
 }
 .settle-result {
 width: 100%;
@@ -1145,7 +1140,7 @@ text-align: center;
 }
 .note-format-toolbar {
 display: flex;
-flex-wrap: wrap;
+flex-wrap: nowrap;
 align-items: center;
 justify-content: center;
 gap: 6px;
@@ -1190,13 +1185,27 @@ background: #fff7cf;
 color: #8d6e63;
 box-shadow: inset 0 -8px 0 rgba(247,216,111,.42);
 }
-.note-color-btn::before {
+.note-color-btn::before,
+.note-custom-color-btn::before {
 content: '';
 width: 15px;
 height: 15px;
 border-radius: 50%;
 background: var(--swatch-color);
 box-shadow: inset 0 0 0 1px rgba(141,110,99,.12);
+}
+.note-custom-color-btn {
+position: relative;
+overflow: hidden;
+cursor: pointer;
+}
+.note-custom-color-btn input {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+opacity: 0;
+cursor: pointer;
 }
 .note-text-input,
 .note-text-view {
@@ -1399,6 +1408,8 @@ line-height: 1;
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
 .wishlist-add-category-tab { min-width: 70px; border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
+.wishlist-category-edit-tab { min-width: 62px; background: rgba(255,255,255,.72); color: #b89d95; }
+.wishlist-tabs.is-managing .wishlist-category-edit-tab { background: #fff; color: var(--heart-pink); box-shadow: 0 3px 10px rgba(141,110,99,.08); }
 .wishlist-category-form {
 display: none;
 gap: 8px;
@@ -1811,6 +1822,7 @@ let wishItems = [
 ];
 let wishlistCategories = ['全家', '7-11', 'Lawson', '機場必買', '伴手禮'];
 let currentWishlistCategory = '全家';
+let wishlistCategoryEditMode = false;
 const DEFAULT_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson', '機場必買', '伴手禮'];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家'
@@ -1907,13 +1919,15 @@ let bothManualEdits = { big: false, small: false };
 let fp = null;
 let pendingNoteFocusIndex = null;
 let pendingNoteImageInsert = null;
+let savedNoteColorRange = null;
+let preloadedDiscardPig = null;
 let pendingAlertConfirm = null;
 let isApplyingCloudData = false;
 const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-svg-bubble-tail-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-preload-discard-pig-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2699,6 +2713,10 @@ function sanitizeNoteHtml(value) {
 const template = document.createElement('template');
 template.innerHTML = value || '';
 const allowedColors = ['#705b55', 'rgb(112, 91, 85)', '#c86f77', 'rgb(200, 111, 119)', '#8d6e63', 'rgb(141, 110, 99)', '#6d8f6b', 'rgb(109, 143, 107)', '#6f7fa6', 'rgb(111, 127, 166)'];
+function isAllowedTextColor(value) {
+const color = String(value || '').trim().toLowerCase();
+return allowedColors.includes(color) || /^#[0-9a-f]{6}$/.test(color) || /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/.test(color);
+}
 function isAllowedBackground(value) {
 const bg = String(value || '').trim().toLowerCase();
 return bg === '#fff3b8' || bg === 'rgb(255, 243, 184)' || bg === 'rgba(255, 243, 184, 0.65)' || bg === 'rgb(255, 255, 0)' || bg === 'yellow';
@@ -2743,7 +2761,7 @@ const background = (node.style.backgroundColor || node.getAttribute('data-backgr
 const whiteSpace = (node.style.whiteSpace || '').trim();
 const span = document.createElement('span');
 if (node.classList?.contains('flight-priority-badge')) span.className = 'flight-priority-badge';
-if (allowedColors.includes(color.toLowerCase())) span.style.color = color;
+if (isAllowedTextColor(color)) span.style.color = color;
 if (isAllowedBackground(background)) span.style.backgroundColor = '#fff3b8';
 if (whiteSpace.toLowerCase() === 'nowrap') {
 span.style.whiteSpace = 'nowrap';
@@ -2836,7 +2854,7 @@ const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#c86f77')" aria-label="粉紅色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#8d6e63" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#8d6e63')" aria-label="棕色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6d8f6b" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6d8f6b')" aria-label="柔綠色"></button><button type="button" class="note-color-btn btn-press-effect" style="--swatch-color:#6f7fa6" onmousedown="event.preventDefault(); formatNoteText('foreColor', '#6f7fa6')" aria-label="藍灰色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><label class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onpointerdown="saveNoteSelectionForColor()" aria-label="選擇文字顏色"><input type="color" value="#c86f77" oninput="this.parentElement.style.setProperty('--swatch-color', this.value); applyNoteColor(this.value)"></label><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const insertTools = isEditMode ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${formatTools}${blocksHtml}${insertTools}</div>`;
 focusPendingNoteBlock();
@@ -2884,6 +2902,30 @@ blockIndex,
 beforeHtml: getNoteRangeHtml(beforeRange),
 afterHtml: getNoteRangeHtml(afterRange)
 };
+}
+function saveNoteSelectionForColor() {
+savedNoteColorRange = null;
+const selection = window.getSelection();
+if (!selection || !selection.rangeCount) return;
+const range = selection.getRangeAt(0);
+const node = range.startContainer.nodeType === Node.ELEMENT_NODE ? range.startContainer : range.startContainer.parentElement;
+const editor = node?.closest?.('.note-text-input') || document.querySelector('.note-text-input.is-active');
+if (!editor || !editor.contains(range.startContainer)) return;
+savedNoteColorRange = range.cloneRange();
+setActiveNoteEditor(editor);
+}
+function applyNoteColor(value) {
+const editor = document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
+if (!editor || !value) return;
+editor.focus();
+if (savedNoteColorRange) {
+const selection = window.getSelection();
+selection.removeAllRanges();
+selection.addRange(savedNoteColorRange);
+}
+setActiveNoteEditor(editor);
+document.execCommand('foreColor', false, value);
+savedNoteColorRange = null;
 }
 function formatNoteText(command, value = null) {
 const editor = document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
@@ -3313,6 +3355,7 @@ function toggleEditMode(isEdit) {
 if (isEdit && !isEditMode) {
 editSnapshotHTML = document.getElementById('day-content').innerHTML;
 editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML;
+warmDiscardPigImage();
 }
 isEditMode = isEdit;
 document.body.classList.toggle('edit-mode', isEdit);
@@ -3328,6 +3371,14 @@ btn.classList.toggle('flight-detail-btn', isFlight);
 btn.textContent = isEdit ? (isFlight ? '編輯搭機資訊' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
 });
 updateMoreInfoButtons();
+}
+function warmDiscardPigImage() {
+if (!preloadedDiscardPig) {
+preloadedDiscardPig = new Image();
+preloadedDiscardPig.decoding = 'async';
+preloadedDiscardPig.src = 'discard-unsaved-pig.png';
+}
+preloadedDiscardPig.decode?.().catch(() => {});
 }
 function saveEditChanges() {
 toggleEditMode(false);
@@ -3393,13 +3444,19 @@ function renderWishlistCategories() {
 const tabs = document.getElementById('wishlist-tabs');
 if (!tabs) return;
 normalizeWishlistCategories();
+tabs.classList.toggle('is-managing', wishlistCategoryEditMode);
 tabs.innerHTML = wishlistCategories.map(category => {
-const canDelete = !DEFAULT_WISHLIST_CATEGORIES.includes(category);
+const canDelete = wishlistCategoryEditMode && !DEFAULT_WISHLIST_CATEGORIES.includes(category);
 return `<button type="button" class="wishlist-tab btn-press-effect ${canDelete ? 'has-delete' : ''} ${category === currentWishlistCategory ? 'active' : ''}" onclick="setWishlistCategory('${escapeJsString(category)}')"><span>${escapeHtml(category)}</span>${canDelete ? `<span class="wishlist-category-delete" onclick="deleteWishlistCategory(event, '${escapeJsString(category)}')" aria-label="刪除分類">×</span>` : ''}</button>`;
-}).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button>`;
+}).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button><button type="button" class="wishlist-tab wishlist-category-edit-tab btn-press-effect" onclick="toggleWishlistCategoryEditMode()">${wishlistCategoryEditMode ? '完成' : '編輯'}</button>`;
 }
 function setWishlistCategory(category) {
 currentWishlistCategory = category;
+toggleWishlistCategoryForm(false);
+renderWishlist();
+}
+function toggleWishlistCategoryEditMode() {
+wishlistCategoryEditMode = !wishlistCategoryEditMode;
 toggleWishlistCategoryForm(false);
 renderWishlist();
 }
@@ -3408,6 +3465,7 @@ const form = document.getElementById('wishlist-category-form');
 const input = document.getElementById('wishlist-category-input');
 if (!form) return;
 form.classList.toggle('show', Boolean(show));
+if (show) wishlistCategoryEditMode = false;
 if (show) {
 if (input) input.value = '';
 setTimeout(() => input?.focus(), 80);
@@ -4612,11 +4670,13 @@ window.addEventListener('DOMContentLoaded', () => {
     'missing-title-pig-v2-inline.png',
     'invalid-amount-pig-inline.png',
     'fund-topup-success-pig-inline.png',
-    'wallet-unsaved-pig-inline.png'
+    'wallet-unsaved-pig-inline.png',
+    'discard-unsaved-pig.png'
   ].forEach((src) => {
     const img = new Image();
     img.decoding = 'async';
     img.src = src;
+    if (src === 'discard-unsaved-pig.png') preloadedDiscardPig = img;
   });
 });
 </script>
