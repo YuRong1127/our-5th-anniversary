@@ -243,7 +243,8 @@ body.day-3-theme #day-3 .item-title {
 color: #76545a;
 }
 body.edit-mode .card { padding-right: 156px; }
-body:not(.edit-mode) .card:has(.more-info-btn:not(.is-empty)) { padding-right: 126px; }
+body:not(.edit-mode) .card:has(.more-info-btn:not(.is-empty)) { padding-right: 20px; }
+body:not(.edit-mode) .card:has(.more-info-btn:not(.is-empty)) .item-title { padding-right: 104px; }
 .card > div:not(.card-extra-controls):not(.reorder-controls) { min-width: 0; flex: 1; }
 body.edit-mode .card > div:not(.card-extra-controls):not(.reorder-controls):not(.map-place-control) { padding-right: 42px; }
 body.edit-mode .card > div:has(.map-place-control) {
@@ -642,7 +643,11 @@ display: flex;
 gap: 6px;
 transform: translateY(-50%);
 }
-body:not(.edit-mode) .card-extra-controls { right: 16px; }
+body:not(.edit-mode) .card-extra-controls {
+right: 16px;
+top: 18px;
+transform: none;
+}
 body.edit-mode .card {
 padding-right: 20px;
 padding-bottom: 58px;
@@ -788,7 +793,7 @@ transform: translateX(-10px);
 display: block;
 width: min(260px, 82vw);
 height: auto;
-margin: -4px auto 10px;
+margin: -72px auto 2px;
 object-fit: contain;
 filter: drop-shadow(0 5px 12px rgba(141,110,99,.1));
 }
@@ -804,12 +809,13 @@ line-height: 1.12;
 }
 .boundary-speech {
 position: relative;
+z-index: 1;
 display: inline-block;
 max-width: 88%;
-margin: 0 auto 2px;
+margin: 0 auto 0;
 padding: 8px 12px;
 border: 1px solid #f1d9d2;
-border-radius: 17px;
+border-radius: 18px;
 background: #fffaf7;
 color: #9b6a61;
 font-size: .82rem;
@@ -817,26 +823,33 @@ font-weight: 900;
 line-height: 1.35;
 box-shadow: 0 4px 12px rgba(141,110,99,.06);
 }
+.boundary-speech::before,
 .boundary-speech::after {
 content: '';
 position: absolute;
-left: 20px;
-top: -7px;
-width: 17px;
-height: 17px;
+background: #fffaf7;
+}
+.boundary-speech::before {
+left: 18px;
+top: -8px;
+width: 20px;
+height: 15px;
 border-left: 1px solid #f1d9d2;
 border-top: 1px solid #f1d9d2;
-border-top-left-radius: 15px;
-border-top-right-radius: 13px;
-border-bottom-left-radius: 13px;
-border-bottom-right-radius: 3px;
-background: #fffaf7;
-transform: rotate(-38deg);
-transform-origin: 70% 70%;
-box-shadow: -1px -1px 0 rgba(255,250,247,.9);
+border-top-left-radius: 18px;
+border-bottom-left-radius: 12px;
+border-top-right-radius: 8px;
+transform: rotate(28deg);
+transform-origin: right bottom;
 }
-#work-modal .boundary-modal-img {
-margin-top: -34px;
+.boundary-speech::after {
+left: 28px;
+top: -1px;
+width: 16px;
+height: 12px;
+border-top-left-radius: 16px;
+border-bottom-left-radius: 12px;
+transform: rotate(23deg);
 }
 .settle-result {
 width: 100%;
@@ -1071,6 +1084,21 @@ line-height: 1.25;
 }
 .flight-detail-modal .note-text-view b:first-child {
 margin-top: 0;
+}
+.flight-priority-badge {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-width: 34px;
+margin-left: 5px;
+padding: 2px 7px;
+border-radius: 999px;
+background: #d17a6d;
+color: #fff;
+font-size: .72rem;
+font-weight: 900;
+line-height: 1.15;
+vertical-align: .08em;
 }
 .flight-detail-modal .note-text-view br {
 content: '';
@@ -1352,6 +1380,27 @@ object-fit: contain;
 .wishlist-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; padding: 6px; border-radius: 16px; background: #f5efec; }
 .prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; padding: 6px; background: #f3ebe8; overflow: visible; }
 .wishlist-tab { min-height: 36px; flex: 1 1 calc(33.333% - 8px); min-width: 86px; border: 0; border-radius: 13px; padding: 0 10px; background: transparent; color: var(--light-brown); font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.wishlist-tab.has-delete {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 4px;
+padding-right: 6px;
+}
+.wishlist-category-delete {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 18px;
+height: 18px;
+border: 0;
+border-radius: 50%;
+background: rgba(209,122,109,.12);
+color: #d17a6d;
+font-size: .86rem;
+font-weight: 900;
+line-height: 1;
+}
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
 .wishlist-add-category-tab { border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
@@ -1535,7 +1584,7 @@ main { padding: 0 14px; }
 <main>
 <div id="day-content">
 <section id="day-1" class="day-section active">
-<div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT206 去程航班備忘</b><br>航班：IT206<br>票種：tigerlight<br>出發：TPE 台北（桃園）T1，08:45<br>抵達：NGO 名古屋 T2，12:25<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：無托運行李<br>小豬：預付行李 15 公斤（優先行李）","text":"IT206 去程航班備忘\n航班：IT206\n票種：tigerlight\n出發：TPE 台北（桃園）T1，08:45\n抵達：NGO 名古屋 T2，12:25\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：預付行李 15 公斤（優先行李）"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">08:45</span><div class="item-title editable">桃園機場 TPE<span class="terminal-badge">T1</span></div><div class="item-desc editable">IT206，預計 12:25 抵達名古屋。</div></div></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT206 去程航班備忘</b><br>航班：IT206<br>票種：tigerlight<br>出發：TPE 台北（桃園）T1，08:45<br>抵達：NGO 名古屋 T2，12:25<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：無托運行李<br>小豬：15 公斤 <span class=\"flight-priority-badge\">優先</span>","text":"IT206 去程航班備忘\n航班：IT206\n票種：tigerlight\n出發：TPE 台北（桃園）T1，08:45\n抵達：NGO 名古屋 T2，12:25\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：15 公斤 優先"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">08:45</span><div class="item-title editable">桃園機場 TPE<span class="terminal-badge">T1</span></div><div class="item-desc editable">IT206，預計 12:25 抵達名古屋。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable">12:25</span><div class="item-title editable">中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">名古屋中部機場入境，領行李後前往名古屋站。</div></div></div>
 <div class="connector-line"></div>
@@ -1548,7 +1597,11 @@ main { padding: 0 14px; }
 <div class="card" data-map-place-input="https://maps.app.goo.gl/xh6U6thmf917PQAZ8" data-map-place-value="Hotel Actel Nagoya Nishiki"><span class="itinerary-icon btn-press-effect">🏨</span><div><span class="time-badge editable">住宿</span><div class="item-title editable">Hotel Actel Nagoya Nishiki</div><div class="item-desc editable">第一晚住進名古屋市區，逛完就能回飯店躺平充電。</div></div></div>
 </section>
 <section id="day-2" class="day-section">
-<div class="card" data-map-place-input="https://maps.app.goo.gl/xh6U6thmf917PQAZ8" data-map-place-value="Hotel Actel Nagoya Nishiki"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">上午</span><div class="item-title editable">從前一天飯店離開</div><div class="item-desc editable">收好行李，從名古屋市區出發，第二天正式開跑。</div></div></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/xh6U6thmf917PQAZ8" data-map-place-value="Hotel Actel Nagoya Nishiki"><span class="itinerary-icon btn-press-effect">💄</span><div><span class="time-badge editable">早上</span><div class="item-title editable">起床化妝</div><div class="item-desc editable">先把自己整理好，再帶著行李出門玩。</div></div></div>
+<div class="connector-line"></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/xh6U6thmf917PQAZ8" data-map-place-value="Hotel Actel Nagoya Nishiki"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">上午</span><div class="item-title editable">辦理飯店退房</div><div class="item-desc editable">收好行李，從名古屋市區出發，第二天正式開跑。</div></div></div>
+<div class="connector-line"></div>
+<div class="card" data-map-place-value="コンパル 栄東店"><span class="itinerary-icon btn-press-effect">☕</span><div><span class="time-badge editable">退房後</span><div class="item-title editable">コンパル 栄東店</div><div class="item-desc editable">先吃早餐，把今天的樂園電量補起來。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/b1zMWnM6M1ZFWKWt6" data-map-place-value="名古屋車站"><span class="itinerary-icon btn-press-effect">🚉</span><div><span class="time-badge editable">上午</span><div class="item-title editable">名古屋車站</div><div class="item-desc editable">到名古屋車站整理行李和交通，準備往鈴鹿賽車樂園前進。</div></div></div>
 <div class="connector-line"></div>
@@ -1596,7 +1649,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="二見浦車站"><span class="itinerary-icon btn-press-effect">🚆</span><div><span class="time-badge editable">傍晚</span><div class="item-title editable">從鳥羽前往二見浦</div><div class="item-desc editable">回到鳥羽站後移動到二見浦，準備明天早上的神社回合。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-value="二見浦觀光案內所"><span class="itinerary-icon btn-press-effect">🗺️</span><div><span class="time-badge editable">抵達後</span><div class="item-title editable">二見浦觀光案內所</div><div class="item-desc editable">先去觀光案內所拿水溝蓋卡，把二見浦小任務收進口袋。</div></div></div>
+<div class="card" data-map-place-value="二見浦觀光案內所"><span class="itinerary-icon btn-press-effect">🏠</span><div><span class="time-badge editable">抵達後</span><div class="item-title editable">二見浦觀光案內所</div><div class="item-desc editable">先去觀光案內所拿水溝蓋卡，把二見浦小任務收進口袋。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="赤福 二見店"><span class="itinerary-icon btn-press-effect">🍧</span><div><span class="time-badge editable">接著</span><div class="item-title editable">赤福 二見店</div><div class="item-desc editable">吃一碗赤福冰，讓傍晚的二見浦先甜一下。</div></div></div>
 <div class="connector-line" data-route-text="步行 15 分"></div>
@@ -1611,7 +1664,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="大石屋"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">08:40</span><div class="item-title editable">飯店退房</div><div class="item-desc editable">整理好行李，向大石屋的早晨說再見。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-value="伊勢市站 觀光案內所"><span class="itinerary-icon btn-press-effect">🗺️</span><div><span class="time-badge editable">退房後</span><div class="item-title editable">伊勢市站觀光案內所</div><div class="item-desc editable">帶著行李前往伊勢市站，先到車站內觀光案內所拿水溝蓋卡。</div></div></div>
+<div class="card" data-map-place-value="伊勢市站 觀光案內所"><span class="itinerary-icon btn-press-effect">🏠</span><div><span class="time-badge editable">退房後</span><div class="item-title editable">伊勢市站觀光案內所</div><div class="item-desc editable">帶著行李前往伊勢市站，先到車站內觀光案內所拿水溝蓋卡。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="伊勢市站 行李房"><span class="itinerary-icon btn-press-effect">🧳</span><div><span class="time-badge editable">接著</span><div class="item-title editable">車站旁行李房</div><div class="item-desc editable">把行李放到車站旁行李房，輕裝去外宮參拜。</div></div></div>
 <div class="connector-line"></div>
@@ -1623,7 +1676,7 @@ main { padding: 0 14px; }
 <div class="connector-line"></div>
 <div class="card"><span class="itinerary-icon btn-press-effect">🚆</span><div><span class="time-badge editable">14:30</span><div class="item-title editable">伊勢市站搭特急回名古屋</div><div class="item-desc editable">從伊勢市站搭特急回名古屋，給 つばめパン 留一個甜甜的回訪。</div></div></div>
 <div class="connector-line"></div>
-<div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT207 回程航班備忘</b><br>航班：IT207<br>票種：tigersmart<br>出發：NGO 名古屋 T2，19:40<br>抵達：TPE 台北（桃園）T1，22:15<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：預付行李 20 公斤（優先行李）<br>小豬：預付行李 25 公斤（優先行李）","text":"IT207 回程航班備忘\n航班：IT207\n票種：tigersmart\n出發：NGO 名古屋 T2，19:40\n抵達：TPE 台北（桃園）T1，22:15\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：預付行李 20 公斤（優先行李）\n小豬：預付行李 25 公斤（優先行李）"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">19:40</span><div class="item-title editable">中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">IT207，建議 17:10 前抵達機場。</div></div></div>
+<div class="card" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場" data-detail-fields='[{"name":"","blocks":[{"type":"text","html":"<b>IT207 回程航班備忘</b><br>航班：IT207<br>票種：tigersmart<br>出發：NGO 名古屋 T2，19:40<br>抵達：TPE 台北（桃園）T1，22:15<br><br><b>座位</b><br>大豬：虎舒適 1B<br>小豬：虎舒適 1A<br><br><b>行李</b><br>大豬：20 公斤 <span class=\"flight-priority-badge\">優先</span><br>小豬：25 公斤 <span class=\"flight-priority-badge\">優先</span>","text":"IT207 回程航班備忘\n航班：IT207\n票種：tigersmart\n出發：NGO 名古屋 T2，19:40\n抵達：TPE 台北（桃園）T1，22:15\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：20 公斤 優先\n小豬：25 公斤 優先"}]}]'><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable">19:40</span><div class="item-title editable">中部國際機場 NGO<span class="terminal-badge">T2</span></div><div class="item-desc editable">IT207，建議 17:10 前抵達機場。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/T5N2iixDQQBfotHKA" data-map-place-value="桃園國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable">22:15</span><div class="item-title editable">抵達桃園機場 TPE<span class="terminal-badge">T1</span></div><div class="item-desc editable">回到台北（桃園），五週年旅行平安到家。</div></div></div>
 </section>
@@ -1763,6 +1816,7 @@ let wishItems = [
 ];
 let wishlistCategories = ['全家', '7-11', 'Lawson', '機場必買', '伴手禮'];
 let currentWishlistCategory = '全家';
+const DEFAULT_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson', '機場必買', '伴手禮'];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家'
 };
@@ -1864,7 +1918,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-boundary-soft-tail-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-tourist-house-icon-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -1875,10 +1929,10 @@ const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry
 
 
 const ICON_GROUPS = {
-'常用': ['📍','ℹ️','⭐','✨','💖','💕','✅','📝','📸','🛍️','🎁','💰','🎫','🧺','🎒','🧳','🗺️','🧭','⏰'],
+'常用': ['📍','🏠','⭐','✨','💖','💕','✅','📝','📸','🛍️','🎁','💰','🎫','🧺','🎒','🧳','🗺️','🧭','⏰'],
 '交通': ['🚶','🚶‍♀️','🚶‍♂️','🏃','🚲','🛴','🚌','🚎','🚐','🚗','🚕','🚙','🚇','🚉','🚆','🚄','🚃','🚋','🚊','✈️','🛫','🛬','🚢','⛴️','🛥️','🚏','🅿️'],
 '吃喝': ['🍽️','🍴','🥢','🍜','🍣','🍱','🍙','🍘','🍡','🍢','🍤','🥩','🍗','🍖','🍛','🍲','🥘','🥟','🍞','🥐','🥞','🍰','🍮','🍦','🍧','🍓','🍇','🍎','☕','🍵','🧋','🥤','🍶','🍺','🥂'],
-'景點': ['⛩️','🏯','🏛️','🗿','🗽','🏰','🕍','⛪','🕌','🛕','🌅','🌄','🌃','🌉','🌁','🌊','🏞️','🏔️','⛰️','🌋','🏝️','🏖️','🌲','🌳','🍁','🌸','🌺','🌻','🎆','🎇','🪭','🏮'],
+'景點': ['⛩️','🏯','🏛️','🏠','🗿','🗽','🏰','🕍','⛪','🕌','🛕','🌅','🌄','🌃','🌉','🌁','🌊','🏞️','🏔️','⛰️','🌋','🏝️','🏖️','🌲','🌳','🍁','🌸','🌺','🌻','🎆','🎇','🪭','🏮'],
 '住宿': ['🏨','🏩','🏡','🏠','🛏️','🛌','♨️','🛁','🚿','🧴','🧖','🧖‍♀️','🧖‍♂️','🧳','🪞'],
 '購物': ['🛍️','🛒','🏬','🏪','💳','💴','💵','🧾','🎁','💝','👗','👚','👟','👒','💄','💍','🧸','📦'],
 '玩樂': ['🎡','🎢','🎠','🎮','🎲','🎯','🎳','🎤','🎧','🎵','🎬','🎨','🖼️','🏁','🏎️','🏟️','🎟️','🎫','🪄','🔮'],
@@ -2693,6 +2747,7 @@ const color = (node.style.color || node.getAttribute('color') || '').trim();
 const background = (node.style.backgroundColor || node.getAttribute('data-background') || '').trim();
 const whiteSpace = (node.style.whiteSpace || '').trim();
 const span = document.createElement('span');
+if (node.classList?.contains('flight-priority-badge')) span.className = 'flight-priority-badge';
 if (allowedColors.includes(color.toLowerCase())) span.style.color = color;
 if (isAllowedBackground(background)) span.style.backgroundColor = '#fff3b8';
 if (whiteSpace.toLowerCase() === 'nowrap') {
@@ -3343,7 +3398,10 @@ function renderWishlistCategories() {
 const tabs = document.getElementById('wishlist-tabs');
 if (!tabs) return;
 normalizeWishlistCategories();
-tabs.innerHTML = wishlistCategories.map(category => `<button type="button" class="wishlist-tab btn-press-effect ${category === currentWishlistCategory ? 'active' : ''}" onclick="setWishlistCategory('${escapeJsString(category)}')">${escapeHtml(category)}</button>`).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button>`;
+tabs.innerHTML = wishlistCategories.map(category => {
+const canDelete = !DEFAULT_WISHLIST_CATEGORIES.includes(category);
+return `<button type="button" class="wishlist-tab btn-press-effect ${canDelete ? 'has-delete' : ''} ${category === currentWishlistCategory ? 'active' : ''}" onclick="setWishlistCategory('${escapeJsString(category)}')"><span>${escapeHtml(category)}</span>${canDelete ? `<span class="wishlist-category-delete" onclick="deleteWishlistCategory(event, '${escapeJsString(category)}')" aria-label="刪除分類">×</span>` : ''}</button>`;
+}).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button>`;
 }
 function setWishlistCategory(category) {
 currentWishlistCategory = category;
@@ -3371,6 +3429,23 @@ if (input) input.value = '';
 toggleWishlistCategoryForm(false);
 renderWishlist();
 queueTripCloudSave();
+}
+function deleteWishlistCategory(event, category) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+normalizeWishlistCategories();
+if (DEFAULT_WISHLIST_CATEGORIES.includes(category)) return showAlert('這個是固定分類，先留著比較好找喔 🧺');
+const count = wishItems.filter(item => item.category === category).length;
+const message = count ? `要刪掉「${category}」分類嗎？\n裡面的 ${count} 個願望也會一起刪掉喔` : `要刪掉「${category}」分類嗎？`;
+showConfirmAlert(message, () => {
+wishlistCategories = wishlistCategories.filter(item => item !== category);
+wishItems = wishItems.filter(item => item.category !== category);
+if (currentWishlistCategory === category) currentWishlistCategory = wishlistCategories[0] || DEFAULT_WISHLIST_CATEGORIES[0];
+renderWishlist();
+queueTripCloudSave();
+});
 }
 function handleWishlistCategoryKey(event) {
 if (event.key === 'Enter') {
