@@ -132,14 +132,17 @@ text-align: center;
 .date-item.active { background: var(--accent-peach); color: var(--heart-pink); font-weight: 800; }
 body.edit-mode .date-item { touch-action: none; }
 .date-item.day-drag-source {
-opacity: .72;
-transform: scale(1.06);
-box-shadow: 0 8px 20px rgba(141,110,99,.16);
+position: relative;
+z-index: 4;
+opacity: .96;
+transform: translateY(-9px) scale(1.1);
+background: #fffaf7;
+box-shadow: 0 14px 28px rgba(141,110,99,.22), 0 0 0 3px rgba(209,122,109,.13);
 }
 .date-item.day-drag-target {
 background: #fff4ef;
 color: var(--heart-pink);
-box-shadow: inset 0 0 0 2px rgba(209,122,109,.22);
+box-shadow: inset 0 0 0 2px rgba(209,122,109,.28), 0 8px 18px rgba(209,122,109,.12);
 }
 
 
@@ -493,6 +496,7 @@ backdrop-filter: blur(12px); box-shadow: 0 -8px 20px rgba(141,110,99,.05);
 
 
 .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; background: rgba(141,110,99,.4); backdrop-filter: blur(4px); }
+#note-color-modal { z-index: 1200; }
 .save-status-toast {
 position: fixed;
 left: 50%;
@@ -809,18 +813,19 @@ transform: translateX(-10px);
 display: block;
 width: min(260px, 82vw);
 height: auto;
-margin: -72px auto 2px;
+margin: 0 auto;
 object-fit: contain;
 filter: drop-shadow(0 5px 12px rgba(141,110,99,.1));
 }
 #work-modal .modal-content,
 #finish-modal .modal-content {
 align-items: center;
-padding-top: 20px;
+padding-top: 22px;
+gap: 12px;
 }
 #work-modal .modal-title,
 #finish-modal .modal-title {
-margin-bottom: 6px;
+margin-bottom: 0;
 line-height: 1.12;
 }
 .boundary-speech {
@@ -829,7 +834,7 @@ z-index: 1;
 isolation: isolate;
 display: inline-block;
 max-width: 88%;
-margin: 0 auto 0;
+margin: 0 auto;
 padding: 8px 12px;
 border: 1px solid #efb8ae;
 border-radius: 18px;
@@ -840,6 +845,8 @@ font-weight: 900;
 line-height: 1.35;
 box-shadow: 0 4px 12px rgba(141,110,99,.06);
 }
+#work-modal .modal-btn-primary,
+#finish-modal .modal-btn-primary { margin-top: 0; }
 .boundary-speech::before,
 .boundary-speech::after { display: none; }
 .settle-result {
@@ -863,6 +870,7 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 .modal-close-btn { position: absolute; top: 2px; right: 2px; z-index: 1010; padding: 12px; }
 .modal-close-circle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: var(--heart-pink); box-shadow: 0 2px 10px rgba(0,0,0,.1); }
 .modal-btn-primary { width: 100%; border: 0; border-radius: 20px; padding: 18px 24px; background: var(--heart-pink); color: #fff; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.25); }
+#wallet-modal .modal-btn-primary { box-shadow: none; }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
 #alert-modal .modal-content { align-items: center; text-align: center; }
 #alert-modal .modal-title { margin-bottom: 0; }
@@ -1974,7 +1982,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-day-swap-drag-v1';
+const STATIC_CONTENT_VERSION = '2026-05-07-boundary-spacing-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3093,7 +3101,14 @@ saveNoteSelectionForColor();
 const grid = document.getElementById('note-color-grid');
 if (grid) {
 const currentColor = (document.querySelector('.note-custom-color-btn')?.style.getPropertyValue('--swatch-color') || '#c86f77').trim().toLowerCase();
-grid.innerHTML = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === currentColor ? 'is-selected' : ''}" style="--swatch-color:${color.value}" onclick="chooseNoteColor('${color.value}')" aria-label="${escapeHtml(color.name)}"></button>`).join('');
+grid.innerHTML = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === currentColor ? 'is-selected' : ''}" style="--swatch-color:${color.value}" data-note-color="${color.value}" aria-label="${escapeHtml(color.name)}"></button>`).join('');
+grid.querySelectorAll('.note-color-option').forEach(btn => {
+btn.addEventListener('pointerup', e => {
+e.preventDefault();
+e.stopPropagation();
+chooseNoteColor(btn.dataset.noteColor);
+}, { once: true });
+});
 }
 openOverlayModal('note-color-modal');
 }
@@ -3631,7 +3646,7 @@ function renderWishlistCategories() {
 const tabs = document.getElementById('wishlist-tabs');
 if (!tabs) return;
 normalizeWishlistCategories();
-const categoryButtonCount = wishlistCategories.length + 1;
+const categoryButtonCount = wishlistCategories.length + (wishlistCategoryEditMode ? 1 : 0);
 const wishlistCols = categoryButtonCount <= 4 ? categoryButtonCount || 1 : categoryButtonCount <= 6 ? 3 : 4;
 tabs.style.setProperty('--wishlist-cols', wishlistCols);
 const editBtn = document.getElementById('wishlist-category-edit-toggle');
@@ -3643,7 +3658,7 @@ tabs.classList.toggle('is-managing', wishlistCategoryEditMode);
 tabs.innerHTML = wishlistCategories.map(category => {
 const canDelete = wishlistCategoryEditMode;
 return `<button type="button" class="wishlist-tab btn-press-effect ${canDelete ? 'has-delete' : ''} ${category === currentWishlistCategory ? 'active' : ''}" onclick="setWishlistCategory('${escapeJsString(category)}')"><span>${escapeHtml(category)}</span>${canDelete ? `<span class="wishlist-category-delete" onclick="deleteWishlistCategory(event, '${escapeJsString(category)}')" aria-label="刪除分類">×</span>` : ''}</button>`;
-}).join('') + `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button>`;
+}).join('') + (wishlistCategoryEditMode ? `<button type="button" class="wishlist-tab wishlist-add-category-tab btn-press-effect" onclick="toggleWishlistCategoryForm(true)">＋分類</button>` : '');
 }
 function setWishlistCategory(category) {
 currentWishlistCategory = category;
