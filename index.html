@@ -133,16 +133,44 @@ text-align: center;
 body.edit-mode .date-item { touch-action: none; }
 .date-item.day-drag-source {
 position: relative;
-z-index: 4;
-opacity: .96;
-transform: translateY(-9px) scale(1.1);
-background: #fffaf7;
-box-shadow: 0 14px 28px rgba(141,110,99,.22), 0 0 0 3px rgba(209,122,109,.13);
+z-index: 1;
+opacity: .32;
+transform: scale(.96);
+background: #fff4ef;
+box-shadow: inset 0 0 0 2px rgba(209,122,109,.14);
 }
 .date-item.day-drag-target {
 background: #fff4ef;
 color: var(--heart-pink);
-box-shadow: inset 0 0 0 2px rgba(209,122,109,.28), 0 8px 18px rgba(209,122,109,.12);
+transform: translateY(-4px) scale(1.05);
+box-shadow: inset 0 0 0 2px rgba(209,122,109,.36), 0 10px 22px rgba(209,122,109,.16);
+}
+.day-drag-ghost {
+position: fixed;
+left: 0;
+top: 0;
+z-index: 2500;
+pointer-events: none;
+min-width: 62px;
+padding: 10px 0;
+border-radius: 16px;
+text-align: center;
+background: #fffdfb;
+color: var(--heart-pink);
+font-weight: 900;
+box-shadow: 0 22px 44px rgba(112,91,85,.28), 0 0 0 3px rgba(209,122,109,.14);
+transform: translate3d(-999px, -999px, 0) rotate(-2deg) scale(1.12);
+transition: box-shadow .16s ease;
+will-change: transform;
+}
+.day-drag-ghost small {
+display: block;
+font-size: .72rem;
+margin-bottom: 2px;
+}
+body.day-dragging {
+cursor: grabbing;
+user-select: none;
 }
 
 
@@ -1218,37 +1246,39 @@ z-index: 3;
 }
 .flight-corner-illustration {
 position: absolute;
-right: -7px;
-bottom: -10px;
+right: -16px;
+bottom: -18px;
 z-index: 2;
-width: 134px;
-max-width: 38%;
+width: 154px;
+max-width: 44%;
 opacity: .96;
 pointer-events: none;
 filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
 }
 .flight-corner-illustration.return-flight-corner {
-right: -16px;
-bottom: -14px;
-width: 148px;
+right: -24px;
+bottom: -20px;
+width: 166px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
-padding-right: 126px;
-min-height: 360px;
+padding-right: 16px;
+padding-bottom: 108px;
+min-height: 340px;
 }
 @media (max-width: 420px) {
 .flight-corner-illustration {
-right: -10px;
-bottom: -12px;
-width: 122px;
+right: -18px;
+bottom: -18px;
+width: 142px;
 }
 .flight-corner-illustration.return-flight-corner {
-right: -18px;
-bottom: -14px;
-width: 136px;
+right: -26px;
+bottom: -20px;
+width: 154px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
-padding-right: 112px;
+padding-right: 16px;
+padding-bottom: 102px;
 }
 }
 .note-page.is-editing {
@@ -1343,25 +1373,25 @@ background: var(--swatch-color, #c86f77);
 }
 .note-color-modal-content { align-items: stretch; max-width: 340px; padding: 24px 20px 20px; }
 .note-color-modal-content .modal-title { margin-bottom: 14px; font-size: 1.2rem; }
-.note-color-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 10px; border: 1px solid #f4e4df; border-radius: 22px; background: #fffaf7; }
+.note-color-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px 12px; padding: 9px 12px; border: 1px solid #f5e7e2; border-radius: 18px; background: #fffaf7; }
 .note-color-popover {
 display: none;
 position: fixed;
 left: 50%;
 top: 50%;
 z-index: 1800;
-width: min(330px, calc(100vw - 42px));
-padding: 18px 16px 16px;
+width: min(312px, calc(100vw - 46px));
+padding: 17px 15px 14px;
 border: 1px solid #f1ddd6;
-border-radius: 26px;
+border-radius: 24px;
 background: #fffdfb;
 box-shadow: 0 18px 46px rgba(112,91,85,.22);
 transform: translate(-50%, -50%);
 }
 .note-color-popover-title {
-margin: 0 0 12px;
+margin: 0 0 11px;
 color: var(--main-brown);
-font-size: 1rem;
+font-size: .95rem;
 font-weight: 900;
 text-align: center;
 }
@@ -1379,23 +1409,24 @@ font-size: 1rem;
 font-weight: 900;
 }
 .note-color-option {
-height: 48px;
-border: 1px solid #f0e0da;
-border-radius: 15px;
-padding: 5px;
+height: 40px;
+border: 1px solid #f3e5df;
+border-radius: 13px;
+padding: 4px;
 background: #fff;
-box-shadow: 0 4px 12px rgba(141,110,99,.045);
+box-shadow: 0 2px 8px rgba(141,110,99,.035);
 }
 .note-color-option::before {
 content: '';
 display: block;
 width: 100%;
 height: 100%;
-border-radius: 11px;
+border-radius: 9px;
 background: var(--swatch-color);
-box-shadow: inset 0 0 0 1px rgba(141,110,99,.1);
+box-shadow: inset 0 0 0 1px rgba(141,110,99,.08);
 }
-.note-color-option.is-selected { border-color: #d17a6d; box-shadow: 0 6px 16px rgba(209,122,109,.13); }
+.note-color-option.is-selected { border-color: #d98b7f; box-shadow: 0 4px 12px rgba(209,122,109,.11); }
+.note-color-option.is-selected::before { box-shadow: inset 0 0 0 2px rgba(255,255,255,.86), inset 0 0 0 3px rgba(209,122,109,.18); }
 .note-color-hint { margin: 10px 4px 0; color: #b79a91; font-size: .76rem; font-weight: 800; text-align: center; line-height: 1.5; }
 .note-text-input,
 .note-text-view {
@@ -2147,7 +2178,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-09-it207-flight-corner-v1';
+const STATIC_CONTENT_VERSION = '2026-05-09-live-note-color-button-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2426,18 +2457,46 @@ return match ? Number(match[1]) : null;
 function clearDayDragClasses() {
 document.querySelectorAll('.date-item').forEach(tab => tab.classList.remove('day-drag-source', 'day-drag-target'));
 }
-function startDayDrag(tab, pointerId) {
+function removeDayDragGhost() {
+if (dayDragState?.ghost) dayDragState.ghost.remove();
+document.body.classList.remove('day-dragging');
+}
+function moveDayDragGhost(x, y) {
+const ghost = dayDragState?.ghost;
+if (!ghost) return;
+const offsetX = dayDragState.ghostOffsetX || 0;
+const offsetY = dayDragState.ghostOffsetY || 0;
+ghost.style.transform = `translate3d(${Math.round(x - offsetX)}px, ${Math.round(y - offsetY)}px, 0) rotate(-2deg) scale(1.12)`;
+}
+function createDayDragGhost(tab, x, y) {
+const rect = tab.getBoundingClientRect();
+const ghost = tab.cloneNode(true);
+ghost.id = '';
+ghost.classList.remove('active', 'btn-press-effect', 'day-drag-source', 'day-drag-target');
+ghost.classList.add('day-drag-ghost');
+ghost.style.width = `${rect.width}px`;
+ghost.style.height = `${rect.height}px`;
+document.body.appendChild(ghost);
+dayDragState.ghost = ghost;
+dayDragState.ghostOffsetX = x - rect.left;
+dayDragState.ghostOffsetY = y - rect.top;
+document.body.classList.add('day-dragging');
+moveDayDragGhost(x, y);
+}
+function startDayDrag(tab, pointerId, x, y) {
 if (!isEditMode || !tab) return;
 const fromDay = getDayNumberFromTab(tab);
 if (!fromDay) return;
-dayDragState = { fromDay, targetDay: fromDay, pointerId, active: true };
+dayDragState = { fromDay, targetDay: fromDay, pointerId, active: true, sourceTab: tab };
 dateClickSuppressedUntil = Date.now() + 900;
 tab.classList.add('day-drag-source');
 tab.classList.add('day-drag-target');
+createDayDragGhost(tab, x, y);
 if (navigator.vibrate) navigator.vibrate(18);
 }
 function updateDayDragTarget(x, y) {
 if (!dayDragState?.active) return;
+moveDayDragGhost(x, y);
 const target = document.elementFromPoint(x, y)?.closest?.('.date-item');
 const targetDay = getDayNumberFromTab(target);
 document.querySelectorAll('.date-item').forEach(tab => tab.classList.remove('day-drag-target'));
@@ -2466,6 +2525,7 @@ function finishDayDrag() {
 if (!dayDragState) return;
 const { fromDay, targetDay, active } = dayDragState;
 dateClickSuppressedUntil = Date.now() + 900;
+removeDayDragGhost();
 dayDragState = null;
 clearDayDragClasses();
 if (active && targetDay && targetDay !== fromDay) swapDayItineraries(fromDay, targetDay);
@@ -2473,6 +2533,7 @@ if (active && targetDay && targetDay !== fromDay) swapDayItineraries(fromDay, ta
 function cancelDayDrag() {
 if (dayDragState) {
 dateClickSuppressedUntil = Date.now() + 600;
+removeDayDragGhost();
 dayDragState = null;
 clearDayDragClasses();
 }
@@ -2491,15 +2552,18 @@ nav.addEventListener('pointerdown', event => {
 const tab = event.target.closest('.date-item');
 if (!isEditMode || !tab || event.pointerType === 'mouse' && event.button !== 0) return;
 const pointerId = event.pointerId;
-const timer = setTimeout(() => startDayDrag(tab, pointerId), 480);
+try { tab.setPointerCapture(pointerId); } catch (error) {}
+const startX = event.clientX;
+const startY = event.clientY;
+const timer = setTimeout(() => startDayDrag(tab, pointerId, startX, startY), 430);
 dayDragState = {
 fromDay: getDayNumberFromTab(tab),
 targetDay: getDayNumberFromTab(tab),
 pointerId,
 active: false,
 timer,
-startX: event.clientX,
-startY: event.clientY
+startX,
+startY
 };
 }, { passive: true });
 nav.addEventListener('pointermove', event => {
@@ -3203,7 +3267,7 @@ const isAfterImageEmpty = prevBlock?.type === 'image' && !stripHtml(block.html |
 const placeholder = isAfterImageEmpty ? '可以繼續書寫文字，或再插入圖片' : '';
 const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
-return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
+return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)" oninput="setActiveNoteEditor(this)" ontouchend="setTimeout(() => setActiveNoteEditor(this), 0)">${visibleEditHtml}</div></div>`;
 }).join('');
 const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
 const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
@@ -3220,6 +3284,46 @@ focusPendingNoteBlock();
 }
 function setActiveNoteEditor(el) {
 document.querySelectorAll('.note-text-input').forEach(item => item.classList.toggle('is-active', item === el));
+syncNoteColorButtonFromSelection(el);
+}
+function normalizeNoteColorValue(value) {
+const color = String(value || '').trim().toLowerCase();
+if (!color || color === 'transparent') return '';
+const rgbMatch = color.match(/^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/);
+if (rgbMatch) {
+return `#${rgbMatch.slice(1).map(part => Math.max(0, Math.min(255, Number(part))).toString(16).padStart(2, '0')).join('')}`;
+}
+return /^#[0-9a-f]{6}$/.test(color) ? color : '';
+}
+function getSelectionTextColor(editor) {
+const selection = window.getSelection();
+let node = selection && selection.rangeCount ? selection.getRangeAt(0).startContainer : null;
+if (node && node.nodeType !== Node.ELEMENT_NODE) node = node.parentElement;
+if (!node || !editor?.contains(node)) node = editor;
+while (node && node !== editor.parentElement) {
+const inlineColor = node.style?.color;
+const color = normalizeNoteColorValue(inlineColor || '');
+if (color) return color;
+if (node === editor) break;
+node = node.parentElement;
+}
+return '';
+}
+function updateNoteColorButtons(color) {
+currentNoteTextColor = color || '';
+document.querySelectorAll('.note-custom-color-btn').forEach(btn => {
+if (currentNoteTextColor) {
+btn.style.setProperty('--swatch-color', currentNoteTextColor);
+btn.classList.add('has-selected-color');
+} else {
+btn.style.removeProperty('--swatch-color');
+btn.classList.remove('has-selected-color');
+}
+});
+}
+function syncNoteColorButtonFromSelection(editor = document.querySelector('.note-text-input.is-active')) {
+if (!editor) return;
+updateNoteColorButtons(getSelectionTextColor(editor));
 }
 function getNoteRangeHtml(range) {
 const box = document.createElement('div');
@@ -3293,6 +3397,10 @@ showNoteColorPaletteDirect(event);
 });
 }
 function initNoteToolbarTouchFix() {
+document.addEventListener('selectionchange', () => {
+const editor = document.querySelector('.note-text-input.is-active');
+if (editor && document.activeElement === editor) syncNoteColorButtonFromSelection(editor);
+});
 document.addEventListener('pointerdown', (event) => {
 const btn = event.target?.closest?.('.note-custom-color-btn');
 if (!btn) return;
@@ -3362,10 +3470,7 @@ return false;
 }
 function chooseNoteColor(value) {
 currentNoteTextColor = value;
-document.querySelectorAll('.note-custom-color-btn').forEach(btn => {
-btn.style.setProperty('--swatch-color', value);
-btn.classList.add('has-selected-color');
-});
+updateNoteColorButtons(value);
 applyNoteColor(value);
 closeOverlayModal('note-color-modal');
 closeNoteColorPopover();
@@ -3382,6 +3487,7 @@ selection.addRange(savedNoteColorRange);
 setActiveNoteEditor(editor);
 document.execCommand('foreColor', false, value);
 savedNoteColorRange = null;
+updateNoteColorButtons(value);
 }
 function formatNoteText(command, value = null) {
 if (command === 'openColor') {
