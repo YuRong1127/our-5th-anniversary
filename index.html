@@ -956,7 +956,9 @@ font-weight: 900;
 .wallet-label { display: block; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
 .wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
-.wallet-split-labels { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 8px; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
+.wallet-split-labels { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 8px; align-items: center; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; line-height: 1; }
+.wallet-split-labels > span:first-child { display: inline-flex; align-items: baseline; gap: 3px; white-space: nowrap; }
+.wallet-split-labels .wallet-label-hint { display: inline-flex; flex: 0 0 auto; margin: 0; font-size: .6rem; vertical-align: baseline; }
 .wallet-label-hint { display: block; margin-top: 1px; color: #c7aaa1; font-size: .62rem; line-height: 1; }
 .wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #eadbd4; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #705b55; font-size: .92rem; }
 .wallet-input::placeholder, .small-input::placeholder { color: #d8cbc6; font-weight: 500; }
