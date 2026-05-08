@@ -1036,43 +1036,71 @@ pointer-events: auto !important;
 font-weight: 400 !important;
 }
 #wallet-modal .flatpickr-time .numInputWrapper span {
-display: block;
-border-color: #c89a91 transparent transparent transparent !important;
-opacity: .76;
+right: 7px !important;
+width: 18px !important;
+height: 15px !important;
+border: 0 !important;
+border-radius: 999px !important;
+background: #f6e8e3 !important;
+opacity: .9;
 }
 #wallet-modal .flatpickr-time .numInputWrapper span.arrowDown {
-border-color: #c89a91 transparent transparent transparent !important;
+top: 21px !important;
+border: 0 !important;
+background: #f6e8e3 !important;
+opacity: .9;
+}
+#wallet-modal .flatpickr-time .numInputWrapper span:hover {
+background: #efd8d0 !important;
+}
+#wallet-modal .flatpickr-time .numInputWrapper span::after {
+left: 5px !important;
+border-left-width: 4px !important;
+border-right-width: 4px !important;
+}
+#wallet-modal .flatpickr-time .numInputWrapper span.arrowUp::after {
+top: 4px !important;
+border-bottom-color: #bf8178 !important;
+}
+#wallet-modal .flatpickr-time .numInputWrapper span.arrowDown::after {
+top: 5px !important;
+border-top-color: #bf8178 !important;
 }
 #wallet-modal .flatpickr-time {
-height: 42px !important;
+height: 58px !important;
 display: flex !important;
 align-items: center !important;
-justify-content: center !important;
-gap: 0;
+justify-content: stretch !important;
+gap: 8px;
+box-sizing: border-box;
+padding: 8px 10px;
 border-top-color: #f0e6e2 !important;
-background: #fffaf7;
+background: #fff7f3;
 }
 #wallet-modal .flatpickr-time .numInputWrapper {
-height: 34px !important;
-flex: 0 0 54px !important;
-border: 0;
-border-radius: 0;
-background: transparent;
+height: 42px !important;
+flex: 1 1 0 !important;
+min-width: 0;
+border: 1px solid #eadbd4;
+border-radius: 16px;
+background: #fffdfb;
+box-shadow: 0 2px 8px rgba(141,110,99,.07), inset 0 1px 0 rgba(255,255,255,.9);
+overflow: hidden;
 }
 #wallet-modal .flatpickr-time input {
-height: 34px !important;
-line-height: 34px !important;
-padding: 0 !important;
+height: 40px !important;
+line-height: 40px !important;
+padding: 0 32px 0 12px !important;
 border: 0 !important;
 background: transparent !important;
 color: #705b55 !important;
-font-size: 1rem !important;
+font-size: 1.02rem !important;
 font-weight: 700 !important;
 text-align: center !important;
 }
 #wallet-modal .flatpickr-time .flatpickr-time-separator {
-height: 34px !important;
-flex: 0 0 12px !important;
+height: 42px !important;
+flex: 0 0 16px !important;
 display: flex !important;
 align-items: center !important;
 justify-content: center !important;
