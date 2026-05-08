@@ -1317,7 +1317,7 @@ white-space: nowrap;
 .flight-route-cards {
 display: grid;
 grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-gap: 20px;
+gap: 18px;
 position: relative;
 padding-bottom: 13px;
 border-bottom: 1px dashed #eadbd4;
@@ -1365,11 +1365,26 @@ margin-bottom: 0;
 }
 .flight-route-place {
 color: #6f5952;
-font-size: .88rem;
 font-weight: 900;
 line-height: 1.35;
 word-break: normal;
 overflow-wrap: anywhere;
+}
+.flight-airport-code {
+display: block;
+color: #6f5952;
+font-size: 1.18rem;
+font-weight: 900;
+line-height: 1.08;
+letter-spacing: 0;
+}
+.flight-airport-detail {
+display: block;
+margin-top: 4px;
+color: #8d7068;
+font-size: .74rem;
+font-weight: 800;
+line-height: 1.35;
 }
 .flight-route-time {
 margin-top: 5px;
@@ -1379,13 +1394,38 @@ font-weight: 800;
 line-height: 1.35;
 white-space: nowrap;
 }
-.flight-info-card-grid {
+.flight-info-table {
 display: grid;
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 16px;
+grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
+gap: 0;
+align-items: center;
 }
-.flight-info-soft-card {
-padding: 0;
+.flight-table-head,
+.flight-table-label,
+.flight-table-cell {
+min-width: 0;
+padding: 7px 6px;
+border-bottom: 1px dashed #eadbd4;
+font-size: .8rem;
+line-height: 1.35;
+}
+.flight-table-head {
+color: #8d6e63;
+font-weight: 900;
+text-align: center;
+}
+.flight-table-label {
+color: #b87568;
+font-weight: 900;
+}
+.flight-table-cell {
+color: #6f5952;
+font-weight: 900;
+text-align: center;
+word-break: break-word;
+}
+.flight-info-table > :nth-last-child(-n+3) {
+border-bottom: 0;
 }
 .flight-info-line {
 display: flex;
@@ -3456,6 +3496,13 @@ function splitFlightRoute(value) {
 const match = String(value || '').match(/^(.+?)，(.+)$/);
 return match ? { place: match[1], time: match[2] } : { place: value || '', time: '' };
 }
+function formatFlightAirportPlace(value) {
+const text = String(value || '').trim();
+const match = text.match(/^([A-Z]{3})\s*(.*)$/);
+if (!match) return escapeHtml(text);
+const detail = match[2].trim();
+return `<span class="flight-airport-code">${escapeHtml(match[1])}</span>${detail ? `<span class="flight-airport-detail">${escapeHtml(detail)}</span>` : ''}`;
+}
 function renderFlightInfoRows(lines, editable = false) {
 return lines.map(line => {
 const parts = line.split(/[:：]/);
@@ -3466,6 +3513,31 @@ const value = escapeHtml(rawValue.replace('優先', '').trim());
 return `<div class="flight-info-line" data-priority="${hasPriority ? 'true' : 'false'}"><span class="flight-info-name" ${editable ? 'contenteditable="true"' : ''}>${name}</span><span class="flight-info-data" ${editable ? 'contenteditable="true"' : ''}>${value}${hasPriority ? '<span class="flight-priority-badge">優先</span>' : ''}</span></div>`;
 }).join('');
 }
+function getFlightPersonValues(lines) {
+return lines.reduce((result, line) => {
+const parts = String(line || '').split(/[:：]/);
+const name = (parts.shift() || '').trim();
+const value = parts.join('：').trim();
+if (name.includes('大豬')) result.big = value;
+if (name.includes('小豬')) result.small = value;
+return result;
+}, { big: '', small: '' });
+}
+function renderFlightInfoTable(info, editable = false) {
+const seats = getFlightPersonValues(info.seats);
+const luggage = getFlightPersonValues(info.luggage);
+const canEdit = editable ? 'contenteditable="true"' : '';
+const cell = (group, person, value) => {
+const hasPriority = String(value || '').includes('優先');
+const cleanValue = String(value || '').replace('優先', '').trim();
+return `<div class="flight-table-cell" data-flight-table="${group}" data-flight-person="${person}" data-priority="${hasPriority ? 'true' : 'false'}" ${canEdit}>${escapeHtml(cleanValue)}${hasPriority ? '<span class="flight-priority-badge">優先</span>' : ''}</div>`;
+};
+return `<div class="flight-info-table">
+<div class="flight-table-head"></div><div class="flight-table-head">大豬</div><div class="flight-table-head">小豬</div>
+<div class="flight-table-label">座位</div>${cell('seats', 'big', seats.big)}${cell('seats', 'small', seats.small)}
+<div class="flight-table-label">行李</div>${cell('luggage', 'big', luggage.big)}${cell('luggage', 'small', luggage.small)}
+</div>`;
+}
 function getFlightDetailViewHtml(blocks, editable = false) {
 const info = parseFlightDetailBlocks(blocks);
 if (!info.flightNo || !info.departure || !info.arrival) return '';
@@ -3475,13 +3547,10 @@ const canEdit = editable ? 'contenteditable="true"' : '';
 return `<div class="flight-ticket-view ${editable ? 'is-editing' : ''}">
 <div class="flight-ticket-hero"><div><div class="flight-ticket-no" data-flight-field="flightNo" ${canEdit}>${escapeHtml(info.flightNo)}</div></div>${info.fare ? `<div class="flight-ticket-fare" data-flight-field="fare" ${canEdit}>${escapeHtml(info.fare)}</div>` : ''}</div>
 <div class="flight-route-cards">
-<div class="flight-route-card"><div class="flight-route-label">出發</div><div class="flight-route-place" data-flight-field="departurePlace" ${canEdit}>${escapeHtml(departure.place)}</div><div class="flight-route-time" data-flight-field="departureTime" ${canEdit}>${escapeHtml(departure.time)}</div></div>
-<div class="flight-route-card"><div class="flight-route-label">抵達</div><div class="flight-route-place" data-flight-field="arrivalPlace" ${canEdit}>${escapeHtml(arrival.place)}</div><div class="flight-route-time" data-flight-field="arrivalTime" ${canEdit}>${escapeHtml(arrival.time)}</div></div>
+<div class="flight-route-card"><div class="flight-route-label">出發</div><div class="flight-route-place" data-flight-field="departurePlace" ${canEdit}>${formatFlightAirportPlace(departure.place)}</div><div class="flight-route-time" data-flight-field="departureTime" ${canEdit}>${escapeHtml(departure.time)}</div></div>
+<div class="flight-route-card"><div class="flight-route-label">抵達</div><div class="flight-route-place" data-flight-field="arrivalPlace" ${canEdit}>${formatFlightAirportPlace(arrival.place)}</div><div class="flight-route-time" data-flight-field="arrivalTime" ${canEdit}>${escapeHtml(arrival.time)}</div></div>
 </div>
-<div class="flight-info-card-grid">
-<div class="flight-info-soft-card" data-flight-group="seats"><div class="flight-section-title">座位</div>${renderFlightInfoRows(info.seats, editable)}</div>
-<div class="flight-info-soft-card" data-flight-group="luggage"><div class="flight-section-title">行李</div>${renderFlightInfoRows(info.luggage, editable)}</div>
-</div>
+${renderFlightInfoTable(info, editable)}
 </div>`;
 }
 function renderDetailFields() {
@@ -3795,11 +3864,11 @@ const titleNote = flightPairKey === 'IT207' ? '回程航班備忘' : '去程航�
 const fare = read('[data-flight-field="fare"]');
 const departure = `${read('[data-flight-field="departurePlace"]')}，${read('[data-flight-field="departureTime"]')}`.replace(/^，|，$/g, '');
 const arrival = `${read('[data-flight-field="arrivalPlace"]')}，${read('[data-flight-field="arrivalTime"]')}`.replace(/^，|，$/g, '');
-const readLines = (group) => Array.from(flightEditor.querySelectorAll(`[data-flight-group="${group}"] .flight-info-line`)).map(line => {
-const name = (line.querySelector('.flight-info-name')?.textContent || '').replace(/\s+/g, ' ').trim();
-const value = (line.querySelector('.flight-info-data')?.textContent || '').replace(/\s+/g, ' ').trim();
-if (!name && !value) return '';
-return `${name}：${value}`;
+const readTable = (group) => ['big', 'small'].map(person => {
+const label = person === 'big' ? '大豬' : '小豬';
+const cell = flightEditor.querySelector(`[data-flight-table="${group}"][data-flight-person="${person}"]`);
+const value = (cell?.textContent || '').replace(/\s+/g, ' ').trim();
+return value ? `${label}：${value}` : '';
 }).filter(Boolean);
 const lines = [
 `${flightNo} ${titleNote}`.trim(),
@@ -3808,10 +3877,10 @@ departure ? `出發：${departure}` : '',
 arrival ? `抵達：${arrival}` : '',
 '',
 '座位',
-...readLines('seats'),
+...readTable('seats'),
 '',
 '行李',
-...readLines('luggage')
+...readTable('luggage')
 ];
 const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 return [normalizeDetailField({ name: '', blocks: [{ type: 'text', text, html: plainTextToHtml(text).replace(/優先/g, '<span class="flight-priority-badge">優先</span>') }] })];
