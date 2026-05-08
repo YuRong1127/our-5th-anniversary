@@ -967,7 +967,10 @@ width: auto !important;
 min-width: 92px;
 padding: 0 22px 0 8px !important;
 color: var(--main-brown) !important;
+font-family: inherit !important;
+font-size: 1.04rem !important;
 font-weight: 400 !important;
+line-height: 28px !important;
 text-align: center;
 }
 #wallet-modal .flatpickr-month { color: var(--main-brown) !important; }
@@ -1013,10 +1016,10 @@ border: 0;
 border-radius: 0;
 background: transparent;
 color: var(--main-brown);
-font-size: 135%;
-font-weight: 300;
-line-height: 1;
 font-family: inherit;
+font-size: 1.04rem;
+font-weight: 400;
+line-height: 28px;
 text-align: center;
 outline: 0;
 }
@@ -2014,7 +2017,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-08-flight-detail-compact-v1';
+const STATIC_CONTENT_VERSION = '2026-05-08-note-color-event-fallback-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3148,9 +3151,22 @@ btn.dataset.boundColorButton = '1';
 btn.addEventListener('pointerdown', (event) => {
 saveNoteSelectionForColor();
 }, { passive: true });
+['pointerup', 'touchend', 'click'].forEach(type => {
+btn.addEventListener(type, openNoteColorPalette, { passive: false });
+});
 });
 }
 function initNoteToolbarTouchFix() {
+document.addEventListener('pointerup', (event) => {
+const btn = event.target?.closest?.('.note-custom-color-btn');
+if (!btn) return;
+openNoteColorPalette(event);
+}, true);
+document.addEventListener('click', (event) => {
+const btn = event.target?.closest?.('.note-custom-color-btn');
+if (!btn) return;
+openNoteColorPalette(event);
+}, true);
 }
 function openNoteColorPalette(event) {
 if (event) {
@@ -3164,6 +3180,11 @@ const grid = document.getElementById('note-color-grid');
 if (grid) {
 const currentColor = (currentNoteTextColor || '').trim().toLowerCase();
 grid.innerHTML = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === currentColor ? 'is-selected' : ''}" style="--swatch-color:${color.value}" data-note-color="${color.value}" ontouchend="return chooseNoteColorFromEvent(event, this)" onclick="return chooseNoteColorFromEvent(event, this)" aria-label="${escapeHtml(color.name)}"></button>`).join('');
+grid.querySelectorAll('.note-color-option').forEach(btn => {
+['pointerup', 'touchend', 'click'].forEach(type => {
+btn.addEventListener(type, (colorEvent) => chooseNoteColorFromEvent(colorEvent, btn), { passive: false });
+});
+});
 }
 openOverlayModal('note-color-modal');
 return false;
