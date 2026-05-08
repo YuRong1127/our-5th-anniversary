@@ -1188,14 +1188,11 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 24px rgba(141,110,99,.06);
 .flight-detail-modal .note-page {
 position: relative;
 margin: 8px 2px 2px;
-padding: 20px 16px 16px;
-border: 0;
-border-radius: 6px;
-background:
-linear-gradient(#fffdfb, #fffdfb) padding-box,
-repeating-linear-gradient(135deg, #ffc400 0 12px, #fff 12px 20px) border-box;
-border: 7px solid transparent;
-box-shadow: 0 10px 28px rgba(255,170,0,.14), inset 0 1px 0 rgba(255,255,255,.96);
+padding: 16px;
+border: 1px solid #f2ded8;
+border-radius: 26px;
+background: linear-gradient(180deg, #fffdfb 0%, #fff8f4 100%);
+box-shadow: 0 12px 30px rgba(141,110,99,.1), inset 0 1px 0 rgba(255,255,255,.96);
 }
 .flight-detail-modal .panel-modal-content {
 max-height: calc(96vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -1248,6 +1245,7 @@ white-space: normal !important;
 .flight-detail-modal .note-page::after {
 content: '';
 position: absolute;
+display: none;
 z-index: 2;
 width: 112px;
 height: 42px;
@@ -1274,41 +1272,164 @@ transform: rotate(8deg);
 position: relative;
 z-index: 3;
 }
+.flight-ticket-view {
+position: relative;
+z-index: 3;
+display: grid;
+gap: 12px;
+color: #775f58;
+}
+.flight-ticket-hero {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 10px;
+padding: 12px 14px;
+border: 1px solid #f2ded8;
+border-radius: 22px;
+background: #fff7f2;
+box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+}
+.flight-ticket-no {
+color: #b87568;
+font-size: 1.08rem;
+font-weight: 900;
+line-height: 1.15;
+}
+.flight-ticket-sub {
+margin-top: 3px;
+color: #b79a91;
+font-size: .72rem;
+font-weight: 800;
+}
+.flight-ticket-fare {
+flex: 0 0 auto;
+padding: 5px 9px;
+border-radius: 999px;
+background: #f3dfd8;
+color: #a56f64;
+font-size: .72rem;
+font-weight: 900;
+white-space: nowrap;
+}
+.flight-route-cards {
+display: grid;
+grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+gap: 10px;
+}
+.flight-route-card,
+.flight-info-soft-card {
+min-width: 0;
+padding: 11px 12px;
+border: 1px solid #f2e3de;
+border-radius: 20px;
+background: rgba(255,255,255,.82);
+box-shadow: 0 5px 14px rgba(141,110,99,.06);
+}
+.flight-route-label,
+.flight-section-title {
+display: inline-flex;
+align-items: center;
+margin-bottom: 7px;
+padding: 3px 8px;
+border-radius: 999px;
+background: #fff0ea;
+color: #b87568;
+font-size: .72rem;
+font-weight: 900;
+line-height: 1.15;
+}
+.flight-route-place {
+color: #6f5952;
+font-size: .9rem;
+font-weight: 900;
+line-height: 1.35;
+word-break: keep-all;
+}
+.flight-route-time {
+margin-top: 4px;
+color: #a98b83;
+font-size: .78rem;
+font-weight: 800;
+line-height: 1.35;
+}
+.flight-info-card-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 10px;
+}
+.flight-info-soft-card {
+padding: 10px 11px;
+}
+.flight-info-line {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+padding: 6px 0;
+border-bottom: 1px dashed #eadbd4;
+font-size: .82rem;
+font-weight: 800;
+line-height: 1.35;
+}
+.flight-info-line:last-child {
+border-bottom: 0;
+}
+.flight-info-name {
+color: #8d6e63;
+white-space: nowrap;
+}
+.flight-info-data {
+min-width: 0;
+color: #6f5952;
+font-weight: 900;
+text-align: right;
+word-break: break-word;
+}
+.flight-ticket-view .flight-priority-badge {
+margin-left: 4px;
+padding: 2px 6px;
+font-size: .66rem;
+}
 .flight-corner-illustration {
 position: absolute;
-right: -16px;
-bottom: -18px;
+right: -10px;
+bottom: -14px;
 z-index: 2;
-width: 154px;
-max-width: 44%;
+width: 128px;
+max-width: 36%;
 opacity: .96;
 pointer-events: none;
 filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
 }
 .flight-corner-illustration.return-flight-corner {
-right: -24px;
-bottom: -20px;
-width: 166px;
+right: -18px;
+bottom: -16px;
+width: 138px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 16px;
-padding-bottom: 108px;
-min-height: 340px;
+padding-bottom: 92px;
+min-height: 0;
 }
 @media (max-width: 420px) {
+.flight-route-cards,
+.flight-info-card-grid {
+grid-template-columns: 1fr;
+}
 .flight-corner-illustration {
-right: -18px;
-bottom: -18px;
-width: 142px;
+right: -14px;
+bottom: -16px;
+width: 118px;
 }
 .flight-corner-illustration.return-flight-corner {
-right: -26px;
-bottom: -20px;
-width: 154px;
+right: -20px;
+bottom: -18px;
+width: 128px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 16px;
-padding-bottom: 102px;
+padding-bottom: 84px;
 }
 }
 .note-page.is-editing {
@@ -3279,6 +3400,55 @@ return blocks.length ? blocks : [{ type: 'text', text: '' }];
 function noteHasContent(card) {
 return getNoteBlocks(card).some(block => block.type === 'image' ? block.src : (block.text || '').trim());
 }
+function parseFlightDetailBlocks(blocks) {
+const text = blocks
+.filter(block => block.type !== 'image')
+.map(block => block.text || stripHtml(block.html || ''))
+.join('\n')
+.replace(/\r/g, '');
+const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
+const title = lines[0] || '';
+const flightNo = (title.match(/IT\d+/) || [''])[0];
+const fare = (lines.find(line => line.startsWith('票種')) || '').split(/[:：]/).slice(1).join('：').trim();
+const departure = (lines.find(line => line.startsWith('出發')) || '').split(/[:：]/).slice(1).join('：').trim();
+const arrival = (lines.find(line => line.startsWith('抵達')) || '').split(/[:：]/).slice(1).join('：').trim();
+const seatIndex = lines.indexOf('座位');
+const luggageIndex = lines.indexOf('行李');
+const seats = seatIndex >= 0 ? lines.slice(seatIndex + 1, luggageIndex >= 0 ? luggageIndex : lines.length) : [];
+const luggage = luggageIndex >= 0 ? lines.slice(luggageIndex + 1) : [];
+return { title, flightNo, fare, departure, arrival, seats, luggage };
+}
+function splitFlightRoute(value) {
+const match = String(value || '').match(/^(.+?)，(.+)$/);
+return match ? { place: match[1], time: match[2] } : { place: value || '', time: '' };
+}
+function renderFlightInfoRows(lines) {
+return lines.map(line => {
+const parts = line.split(/[:：]/);
+const name = escapeHtml(parts.shift() || '');
+const rawValue = parts.join('：').trim();
+const hasPriority = rawValue.includes('優先');
+const value = escapeHtml(rawValue.replace('優先', '').trim());
+return `<div class="flight-info-line"><span class="flight-info-name">${name}</span><span class="flight-info-data">${value}${hasPriority ? '<span class="flight-priority-badge">優先</span>' : ''}</span></div>`;
+}).join('');
+}
+function getFlightDetailViewHtml(blocks) {
+const info = parseFlightDetailBlocks(blocks);
+if (!info.flightNo || !info.departure || !info.arrival) return '';
+const departure = splitFlightRoute(info.departure);
+const arrival = splitFlightRoute(info.arrival);
+return `<div class="flight-ticket-view">
+<div class="flight-ticket-hero"><div><div class="flight-ticket-no">${escapeHtml(info.flightNo)}</div><div class="flight-ticket-sub">${escapeHtml(info.title.replace(info.flightNo, '').trim() || '航班備忘')}</div></div>${info.fare ? `<div class="flight-ticket-fare">${escapeHtml(info.fare)}</div>` : ''}</div>
+<div class="flight-route-cards">
+<div class="flight-route-card"><div class="flight-route-label">出發</div><div class="flight-route-place">${escapeHtml(departure.place)}</div><div class="flight-route-time">${escapeHtml(departure.time)}</div></div>
+<div class="flight-route-card"><div class="flight-route-label">抵達</div><div class="flight-route-place">${escapeHtml(arrival.place)}</div><div class="flight-route-time">${escapeHtml(arrival.time)}</div></div>
+</div>
+<div class="flight-info-card-grid">
+<div class="flight-info-soft-card"><div class="flight-section-title">座位</div>${renderFlightInfoRows(info.seats)}</div>
+<div class="flight-info-soft-card"><div class="flight-section-title">行李</div>${renderFlightInfoRows(info.luggage)}</div>
+</div>
+</div>`;
+}
 function renderDetailFields() {
 const host = document.getElementById('itinerary-detail-fields');
 if (!host || !currentDetailCard) return;
@@ -3308,7 +3478,8 @@ const insertTools = '';
 const flightPairKey = isFlightNote ? getLockedFlightPairKey(currentDetailCard) : '';
 const flightCornerSrc = flightPairKey === 'IT206' ? 'wallet-corner-friends.png' : flightPairKey === 'IT207' ? 'flight-return-corner-friends.png' : '';
 const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration ${flightPairKey === 'IT207' ? 'return-flight-corner' : ''}" src="${flightCornerSrc}" alt="" aria-hidden="true">` : '';
-host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${blocksHtml}${insertTools}${flightCorner}</div>`;
+const flightViewHtml = isFlightNote && !isEditMode ? getFlightDetailViewHtml(blocks) : '';
+host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${flightViewHtml || blocksHtml}${insertTools}${flightCorner}</div>`;
 bindNoteToolbarButtons(host);
 focusPendingNoteBlock();
 }
