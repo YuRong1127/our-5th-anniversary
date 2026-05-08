@@ -558,13 +558,24 @@ background-image: url("data:image/svg+xml,%3Csvg width='108' height='48' viewBox
 #wallet-modal .modal-container { padding-top: 20px; padding-bottom: 20px; }
 #wallet-modal .modal-content { max-height: 96vh; padding-top: 16px; padding-bottom: 16px; }
 #wallet-modal .modal-title { margin-bottom: 8px; }
+#wallet-modal {
+--wallet-inner-inset: 5px;
+}
+#wallet-modal .wallet-title-row,
+#wallet-modal .summary-actions,
+#wallet-modal .modal-scroll-area,
+#wallet-modal #submit-exp-btn,
+#wallet-modal #cancel-edit-btn {
+width: calc(100% - (var(--wallet-inner-inset) * 2));
+margin-left: var(--wallet-inner-inset);
+margin-right: var(--wallet-inner-inset);
+}
 .wallet-title-row {
 position: relative;
 display: grid;
 grid-template-columns: minmax(0, 1fr) auto;
 align-items: center;
 column-gap: 8px;
-width: calc(100% - 18px);
 min-height: 42px;
 margin-bottom: 8px;
 }
@@ -577,6 +588,10 @@ line-height: 1;
 white-space: nowrap;
 }
 #wallet-modal .modal-content { max-height: calc(100vh - 40px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+#wallet-modal .modal-scroll-area {
+padding-left: 0;
+padding-right: 0;
+}
 .panel-modal-content { height: auto; max-height: 84vh; border-radius: 35px; background: #fdfaf8; }
 .panel-modal-content.compact-empty-modal {
 max-height: 86vh;
@@ -1015,7 +1030,9 @@ color: #fff;
 font-size: .9rem;
 font-weight: 800;
 }
-.category-select { width: 48px; height: 48px; flex: 0 0 48px; border: 1px solid var(--card-border); border-radius: 16px; background: #fef9f6; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.category-select { min-width: 92px; height: 48px; flex: 0 0 auto; border: 1px solid var(--card-border); border-radius: 16px; padding: 5px 10px 5px 5px; background: #fef9f6; display: inline-flex; align-items: center; justify-content: center; gap: 7px; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.category-select .cat-icon-sm { width: 36px; height: 36px; flex: 0 0 36px; }
+.category-select-label { line-height: 1; }
 .category-menu { position: absolute; top: 100%; left: 0; z-index: 100; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 250px; max-width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--card-border); border-radius: 20px; background: #fffbf9; box-shadow: 0 10px 30px rgba(141,110,99,.15); }
 .cat-item { aspect-ratio: 1/1; border: 0; border-radius: 14px; background: transparent; padding: 0; overflow: hidden; }
 .cat-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; line-height: 1; filter: saturate(.72); }
@@ -1030,7 +1047,7 @@ font-weight: 800;
 .currency-switch.active-twd { background: #eaf6ff; color: #50a1df; border-color: #d1e9fb; }
 #both-input-area { display: none; margin-bottom: 10px; padding: 10px 12px; border: 1px dashed var(--heart-pink); border-radius: 15px; background: #fff; }
 .both-flex { display: flex; gap: 8px; }
-.summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; width: calc(100% - 10px); margin: 0 5px 12px; padding-bottom: 0; border-bottom: 0; }
+.summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; margin-top: 0; margin-bottom: 12px; padding-bottom: 0; border-bottom: 0; }
 .summary-btn { min-height: 40px; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; color: var(--main-brown); font-size: .82rem; font-weight: 900; white-space: nowrap; }
 .fund-balance-card {
 position: static;
@@ -1522,14 +1539,14 @@ width: 28px;
 height: 28px;
 }
 .wishlist-photo-btn {
-width: 40px;
-height: 40px;
-border: 1px solid #f0e2dd;
-border-radius: 14px;
+width: 32px;
+height: 32px;
+border: 1px solid #f5e9e5;
+border-radius: 11px;
 padding: 0;
-background: #fffaf7;
-color: #c07d6d;
-font-size: 1rem;
+background: rgba(255,250,247,.68);
+color: #caa79d;
+font-size: .82rem;
 font-weight: 900;
 line-height: 1;
 overflow: hidden;
@@ -1544,7 +1561,7 @@ appearance: none;
 .wishlist-photo-btn.has-image {
 border-color: #efd5cd;
 background: #fff;
-box-shadow: 0 4px 12px rgba(141,110,99,.08);
+box-shadow: 0 3px 8px rgba(141,110,99,.06);
 }
 .wishlist-photo-btn img {
 width: 100%;
@@ -1816,10 +1833,10 @@ main { padding: 0 14px; }
 <div><label class="wallet-label" style="font-size:9px;margin-top:0">小豬花了</label><input type="tel" id="both-small-pig" class="small-input" placeholder="0"></div>
 </div>
 </div>
-<label class="wallet-label">金額</label>
+<label class="wallet-label">幣別（點選切換）／金額</label>
 <div class="wallet-input-group">
 <div id="currency-switch" class="currency-switch active-jpy btn-press-effect" onclick="toggleCurrency()">¥ JPY</div>
-<input type="tel" id="exp-amount" class="wallet-input" placeholder="0">
+<input type="tel" id="exp-amount" class="wallet-input" placeholder="請輸入花費金額">
 </div>
 </div>
 <button type="button" id="submit-exp-btn" onclick="addExpense()" class="modal-btn-primary btn-press-effect">確認新增此筆</button>
@@ -1836,7 +1853,7 @@ main { padding: 0 14px; }
 <div id="details-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費明細</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div id="settle-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div id="settle-content" class="panel-content settle-panel-content"></div></div></div></div></div>
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
-<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('wishlist-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
+<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 小豬願望清單</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
@@ -1987,7 +2004,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-08-sticker-highlight-fix-v1';
+const STATIC_CONTENT_VERSION = '2026-05-08-wallet-input-hints-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2117,6 +2134,7 @@ function closeTopModalFromBackButton() {
 const topModal = getTopOpenModal();
 if (!topModal) return false;
 if (topModal.id === 'alert-modal') closeAlertModal(false);
+else if (topModal.id === 'wishlist-modal') closeWishlistModal();
 else if (topModal.id === 'details-modal' || topModal.id === 'settle-modal' || topModal.id === 'stats-modal') closeNestedModal(topModal.id);
 else closeModal(topModal.id);
 return true;
@@ -3046,8 +3064,10 @@ const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
 const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteColorButton(event)" onclick="handleNoteColorButton(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
-const insertTools = isEditMode ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
-host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${formatTools}${blocksHtml}${insertTools}</div>`;
+const isFlightNote = isFlightDetailCard(currentDetailCard);
+const visibleFormatTools = isFlightNote ? formatTools.replace(/<label class="note-format-btn note-format-image-btn[\s\S]*?<\/label>/, '') : formatTools;
+const insertTools = isEditMode && !isFlightNote ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
+host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${visibleFormatTools}${blocksHtml}${insertTools}</div>`;
 focusPendingNoteBlock();
 }
 function setActiveNoteEditor(el) {
@@ -3110,10 +3130,20 @@ if (event) {
 event.preventDefault();
 event.stopPropagation();
 if (event.stopImmediatePropagation) event.stopImmediatePropagation();
-if (event.type === 'click' && Date.now() - noteColorPaletteOpenedAt < 500) return false;
+if (Date.now() - noteColorPaletteOpenedAt < 350) return false;
 }
 openNoteColorPalette();
 return false;
+}
+function interceptNoteColorButton(event) {
+const btn = event.target?.closest?.('.note-custom-color-btn');
+if (!btn) return;
+handleNoteColorButton(event);
+}
+function initNoteToolbarTouchFix() {
+document.addEventListener('touchstart', interceptNoteColorButton, { capture: true, passive: false });
+document.addEventListener('pointerdown', interceptNoteColorButton, { capture: true });
+document.addEventListener('click', interceptNoteColorButton, true);
 }
 function openNoteColorPalette(event) {
 if (event) {
@@ -3661,7 +3691,7 @@ if (menu.style.display === 'grid' && !event.target.closest('.category-select') &
 }
 function selectCategory(cat) {
 currentCategory = cat;
-document.getElementById('selected-cat').innerHTML = getCategoryIconHtml(cat, 'cat-icon-sm');
+document.getElementById('selected-cat').innerHTML = `${getCategoryIconHtml(cat, 'cat-icon-sm')}<span class="category-select-label">${escapeHtml(cat)}</span>`;
 document.getElementById('cat-menu').style.display = 'none';
 }
 function openWishlist() {
@@ -3669,6 +3699,22 @@ closeMenu();
 renderWishlist();
 openSimpleModal('wishlist-modal');
 setTimeout(() => document.getElementById('wishlist-input')?.focus(), 120);
+}
+function resetWishlistEditState() {
+wishlistCategoryEditMode = false;
+toggleWishlistCategoryForm(false);
+}
+function closeWishlistModal() {
+const categoryFormOpen = document.getElementById('wishlist-category-form')?.classList.contains('show');
+if (wishlistCategoryEditMode || categoryFormOpen) {
+showConfirmAlert('要結束願望清單的分類編輯嗎？\n關閉後會回到一般瀏覽模式喔', () => {
+wishlistCategoryEditMode = false;
+toggleWishlistCategoryForm(false);
+closeModal('wishlist-modal');
+});
+return;
+}
+closeModal('wishlist-modal');
 }
 function normalizeWishlistCategories() {
 wishlistCategories = wishlistCategories.map(category => WISHLIST_CATEGORY_ALIASES[category] || category);
@@ -4763,6 +4809,7 @@ switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();
 initCategoryMenu();
 initIconPicker();
+initNoteToolbarTouchFix();
 enhanceRouteConnectors();
 initDatePicker();
 initDayDragSwap();
