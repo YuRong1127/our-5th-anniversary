@@ -1316,8 +1316,8 @@ white-space: nowrap;
 }
 .flight-route-cards {
 display: grid;
-grid-template-columns: 1fr;
-gap: 9px;
+grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+gap: 20px;
 position: relative;
 padding-bottom: 13px;
 border-bottom: 1px dashed #eadbd4;
@@ -1325,10 +1325,10 @@ border-bottom: 1px dashed #eadbd4;
 .flight-route-cards::before {
 content: '';
 position: absolute;
-left: 16px;
-top: calc(50% - 10px);
-width: 2px;
-height: 20px;
+left: calc(50% - 6px);
+top: 29px;
+width: 12px;
+height: 2px;
 border-radius: 999px;
 background: #eadbd4;
 transform: none;
@@ -1343,10 +1343,8 @@ background: transparent;
 box-shadow: none;
 }
 .flight-route-card {
-display: grid;
-grid-template-columns: 48px minmax(0, 1fr) auto;
-align-items: center;
-column-gap: 10px;
+display: block;
+min-width: 0;
 }
 .flight-route-label,
 .flight-section-title {
@@ -1367,13 +1365,14 @@ margin-bottom: 0;
 }
 .flight-route-place {
 color: #6f5952;
-font-size: .92rem;
+font-size: .88rem;
 font-weight: 900;
 line-height: 1.35;
-word-break: keep-all;
+word-break: normal;
+overflow-wrap: anywhere;
 }
 .flight-route-time {
-margin-top: 0;
+margin-top: 5px;
 color: #a98b83;
 font-size: .78rem;
 font-weight: 800;
@@ -1450,11 +1449,7 @@ min-height: 0;
 }
 @media (max-width: 420px) {
 .flight-route-card {
-grid-template-columns: 48px minmax(0, 1fr);
-row-gap: 3px;
-}
-.flight-route-time {
-grid-column: 2;
+display: block;
 }
 .flight-corner-illustration {
 right: -14px;
@@ -3478,7 +3473,7 @@ const departure = splitFlightRoute(info.departure);
 const arrival = splitFlightRoute(info.arrival);
 const canEdit = editable ? 'contenteditable="true"' : '';
 return `<div class="flight-ticket-view ${editable ? 'is-editing' : ''}">
-<div class="flight-ticket-hero"><div><div class="flight-ticket-no" data-flight-field="flightNo" ${canEdit}>${escapeHtml(info.flightNo)}</div><div class="flight-ticket-sub" data-flight-field="titleNote" ${canEdit}>${escapeHtml(info.title.replace(info.flightNo, '').trim() || '航班備忘')}</div></div>${info.fare ? `<div class="flight-ticket-fare" data-flight-field="fare" ${canEdit}>${escapeHtml(info.fare)}</div>` : ''}</div>
+<div class="flight-ticket-hero"><div><div class="flight-ticket-no" data-flight-field="flightNo" ${canEdit}>${escapeHtml(info.flightNo)}</div></div>${info.fare ? `<div class="flight-ticket-fare" data-flight-field="fare" ${canEdit}>${escapeHtml(info.fare)}</div>` : ''}</div>
 <div class="flight-route-cards">
 <div class="flight-route-card"><div class="flight-route-label">出發</div><div class="flight-route-place" data-flight-field="departurePlace" ${canEdit}>${escapeHtml(departure.place)}</div><div class="flight-route-time" data-flight-field="departureTime" ${canEdit}>${escapeHtml(departure.time)}</div></div>
 <div class="flight-route-card"><div class="flight-route-label">抵達</div><div class="flight-route-place" data-flight-field="arrivalPlace" ${canEdit}>${escapeHtml(arrival.place)}</div><div class="flight-route-time" data-flight-field="arrivalTime" ${canEdit}>${escapeHtml(arrival.time)}</div></div>
@@ -3795,7 +3790,8 @@ const flightEditor = page.querySelector('.flight-ticket-view.is-editing');
 if (flightEditor) {
 const read = (selector) => (flightEditor.querySelector(selector)?.textContent || '').replace(/\s+/g, ' ').trim();
 const flightNo = read('[data-flight-field="flightNo"]');
-const titleNote = read('[data-flight-field="titleNote"]') || '航班備忘';
+const flightPairKey = getLockedFlightPairKey(currentDetailCard);
+const titleNote = flightPairKey === 'IT207' ? '回程航班備忘' : '去程航班備忘';
 const fare = read('[data-flight-field="fare"]');
 const departure = `${read('[data-flight-field="departurePlace"]')}，${read('[data-flight-field="departureTime"]')}`.replace(/^，|，$/g, '');
 const arrival = `${read('[data-flight-field="arrivalPlace"]')}，${read('[data-flight-field="arrivalTime"]')}`.replace(/^，|，$/g, '');
