@@ -1226,8 +1226,11 @@ content: '';
 width: 18px;
 height: 18px;
 border-radius: 50%;
-background: var(--swatch-color, #c86f77);
+background: conic-gradient(#c86f77, #d98b72, #d6b55a, #6d8f6b, #5f9c92, #6f7fa6, #9a7fa6, #c86f77);
 box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.14);
+}
+.note-custom-color-btn.has-selected-color::before {
+background: var(--swatch-color, #c86f77);
 }
 .note-custom-color-btn {
 position: relative;
@@ -1995,6 +1998,7 @@ let pendingNoteFocusIndex = null;
 let pendingNoteImageInsert = null;
 let savedNoteColorRange = null;
 let noteColorPaletteOpenedAt = 0;
+let currentNoteTextColor = '';
 let preloadedDiscardPig = null;
 let dayDragState = null;
 let dateClickSuppressedUntil = 0;
@@ -2004,7 +2008,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-08-wallet-input-hints-v1';
+const STATIC_CONTENT_VERSION = '2026-05-08-note-color-palette-v2';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3063,11 +3067,14 @@ const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteColorButton(event)" onclick="handleNoteColorButton(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
+const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const isFlightNote = isFlightDetailCard(currentDetailCard);
 const visibleFormatTools = isFlightNote ? formatTools.replace(/<label class="note-format-btn note-format-image-btn[\s\S]*?<\/label>/, '') : formatTools;
 const insertTools = isEditMode && !isFlightNote ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${visibleFormatTools}${blocksHtml}${insertTools}</div>`;
+bindNoteToolbarButtons(host);
 focusPendingNoteBlock();
 }
 function setActiveNoteEditor(el) {
@@ -3135,6 +3142,19 @@ if (Date.now() - noteColorPaletteOpenedAt < 350) return false;
 openNoteColorPalette();
 return false;
 }
+function bindNoteToolbarButtons(root = document) {
+root.querySelectorAll('.note-custom-color-btn').forEach(btn => {
+if (btn.dataset.boundColorButton === '1') return;
+btn.dataset.boundColorButton = '1';
+['touchend', 'pointerup', 'click'].forEach(type => {
+btn.addEventListener(type, handleNoteColorButton, { passive: false });
+});
+btn.addEventListener('pointerdown', (event) => {
+event.preventDefault();
+saveNoteSelectionForColor();
+}, { passive: false });
+});
+}
 function interceptNoteColorButton(event) {
 const btn = event.target?.closest?.('.note-custom-color-btn');
 if (!btn) return;
@@ -3155,7 +3175,7 @@ noteColorPaletteOpenedAt = Date.now();
 saveNoteSelectionForColor();
 const grid = document.getElementById('note-color-grid');
 if (grid) {
-const currentColor = (document.querySelector('.note-custom-color-btn')?.style.getPropertyValue('--swatch-color') || '#c86f77').trim().toLowerCase();
+const currentColor = (currentNoteTextColor || '').trim().toLowerCase();
 grid.innerHTML = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === currentColor ? 'is-selected' : ''}" style="--swatch-color:${color.value}" data-note-color="${color.value}" aria-label="${escapeHtml(color.name)}"></button>`).join('');
 grid.querySelectorAll('.note-color-option').forEach(btn => {
 btn.addEventListener('pointerup', e => {
@@ -3168,7 +3188,11 @@ chooseNoteColor(btn.dataset.noteColor);
 openOverlayModal('note-color-modal');
 }
 function chooseNoteColor(value) {
-document.querySelectorAll('.note-custom-color-btn').forEach(btn => btn.style.setProperty('--swatch-color', value));
+currentNoteTextColor = value;
+document.querySelectorAll('.note-custom-color-btn').forEach(btn => {
+btn.style.setProperty('--swatch-color', value);
+btn.classList.add('has-selected-color');
+});
 applyNoteColor(value);
 closeOverlayModal('note-color-modal');
 }
@@ -3696,20 +3720,27 @@ document.getElementById('cat-menu').style.display = 'none';
 }
 function openWishlist() {
 closeMenu();
+if (!document.getElementById('wishlist-modal') || document.getElementById('wishlist-modal').style.display !== 'flex') resetWishlistEditState();
 renderWishlist();
 openSimpleModal('wishlist-modal');
 setTimeout(() => document.getElementById('wishlist-input')?.focus(), 120);
 }
+function isWishlistCategoryEditing() {
+const categoryFormOpen = document.getElementById('wishlist-category-form')?.classList.contains('show');
+const tabsManaging = document.getElementById('wishlist-tabs')?.classList.contains('is-managing');
+const editBtnActive = document.getElementById('wishlist-category-edit-toggle')?.classList.contains('is-active');
+const hasAddCategoryTab = Boolean(document.querySelector('#wishlist-tabs .wishlist-add-category-tab'));
+return Boolean(wishlistCategoryEditMode || categoryFormOpen || tabsManaging || editBtnActive || hasAddCategoryTab);
+}
 function resetWishlistEditState() {
 wishlistCategoryEditMode = false;
 toggleWishlistCategoryForm(false);
+renderWishlist();
 }
 function closeWishlistModal() {
-const categoryFormOpen = document.getElementById('wishlist-category-form')?.classList.contains('show');
-if (wishlistCategoryEditMode || categoryFormOpen) {
+if (isWishlistCategoryEditing()) {
 showConfirmAlert('要結束願望清單的分類編輯嗎？\n關閉後會回到一般瀏覽模式喔', () => {
-wishlistCategoryEditMode = false;
-toggleWishlistCategoryForm(false);
+resetWishlistEditState();
 closeModal('wishlist-modal');
 });
 return;
