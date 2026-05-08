@@ -1198,20 +1198,28 @@ box-shadow: inset 0 -8px 0 rgba(247,216,111,.42);
 .note-color-btn::before,
 .note-custom-color-btn::before {
 content: '';
-width: 15px;
-height: 15px;
+width: 18px;
+height: 18px;
 border-radius: 50%;
-background: var(--swatch-color);
-box-shadow: inset 0 0 0 1px rgba(141,110,99,.12);
+background: conic-gradient(#c86f77, #d98b72, #d6b55a, #6d8f6b, #6f91a6, #7f86b8, #a86f9a, #c86f77);
+box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.14);
 }
 .note-custom-color-btn {
 position: relative;
 overflow: hidden;
 cursor: pointer;
 }
-.note-custom-color-btn::before {
+.note-custom-color-btn::after {
+content: '';
+position: absolute;
+left: 50%;
+bottom: 4px;
+width: 15px;
+height: 3px;
+border-radius: 999px;
 background: var(--swatch-color, #c86f77);
-box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.12);
+transform: translateX(-50%);
+box-shadow: 0 0 0 1px rgba(255,255,255,.72);
 }
 .note-color-modal-content { align-items: stretch; max-width: 340px; padding: 24px 20px 20px; }
 .note-color-modal-content .modal-title { margin-bottom: 14px; font-size: 1.2rem; }
@@ -1973,6 +1981,7 @@ let fp = null;
 let pendingNoteFocusIndex = null;
 let pendingNoteImageInsert = null;
 let savedNoteColorRange = null;
+let noteColorPaletteOpenedAt = 0;
 let preloadedDiscardPig = null;
 let dayDragState = null;
 let dateClickSuppressedUntil = 0;
@@ -1982,7 +1991,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-07-boundary-spacing-v1';
+const STATIC_CONTENT_VERSION = '2026-05-08-note-color-mobile-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3032,7 +3041,7 @@ const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onpointerdown="openNoteColorPalette(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onpointerup="openNoteColorPalette(event)" onclick="openNoteColorPalette(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const insertTools = isEditMode ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${formatTools}${blocksHtml}${insertTools}</div>`;
 focusPendingNoteBlock();
@@ -3096,7 +3105,9 @@ function openNoteColorPalette(event) {
 if (event) {
 event.preventDefault();
 event.stopPropagation();
+if (event.type === 'click' && Date.now() - noteColorPaletteOpenedAt < 350) return;
 }
+noteColorPaletteOpenedAt = Date.now();
 saveNoteSelectionForColor();
 const grid = document.getElementById('note-color-grid');
 if (grid) {
@@ -3817,8 +3828,8 @@ closeMenu();
 const addedDefaultPrepItems = normalizePrepItems();
 renderPrepList();
 if (addedDefaultPrepItems) queueTripCloudSave();
+document.activeElement?.blur?.();
 openSimpleModal('prep-modal');
-setTimeout(() => document.getElementById('prep-input')?.focus(), 120);
 }
 function updatePrepPlaceholder() {
 const input = document.getElementById('prep-input');
