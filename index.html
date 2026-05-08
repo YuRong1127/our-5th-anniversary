@@ -1278,17 +1278,13 @@ box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.14);
 position: relative;
 overflow: hidden;
 cursor: pointer;
+font-size: .86rem;
+background: conic-gradient(from 20deg, #c86f77, #d98b72, #d6b55a, #6d8f6b, #5f9c92, #6f7fa6, #9a7fa6, #c86f77);
+color: #fff;
+text-shadow: 0 1px 2px rgba(112,91,85,.36);
+box-shadow: inset 0 0 0 2px rgba(255,255,255,.75);
 }
-.note-color-wheel {
-display: block;
-width: 18px;
-height: 18px;
-border-radius: 50%;
-background: conic-gradient(#c86f77, #d98b72, #d6b55a, #6d8f6b, #5f9c92, #6f7fa6, #9a7fa6, #c86f77);
-box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.14);
-pointer-events: none;
-}
-.note-custom-color-btn.has-selected-color .note-color-wheel {
+.note-custom-color-btn.has-selected-color {
 background: var(--swatch-color, #c86f77);
 }
 .note-color-modal-content { align-items: stretch; max-width: 340px; padding: 24px 20px 20px; }
@@ -2062,7 +2058,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-09-wallet-time-currency-contrast-v1';
+const STATIC_CONTENT_VERSION = '2026-05-09-note-color-text-button-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3123,7 +3119,7 @@ return `<div class="note-block" data-block-index="${blockIndex}" data-block-type
 }).join('');
 const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
 const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="saveNoteSelectionForColor()" onpointerup="return openNoteColorPalette(event)" ontouchstart="saveNoteSelectionForColor()" ontouchend="return openNoteColorPalette(event)" onclick="return openNoteColorPalette(event)" aria-label="選擇文字顏色"><span class="note-color-wheel" aria-hidden="true"></span></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteColorButton(event)" onclick="handleNoteColorButton(event)" aria-label="選擇文字顏色">色</button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const isFlightNote = isFlightDetailCard(currentDetailCard);
 const visibleFormatTools = isFlightNote ? formatTools.replace(/<label class="note-format-btn note-format-image-btn[\s\S]*?<\/label>/, '') : formatTools;
 const insertTools = isEditMode && !isFlightNote ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
@@ -3217,7 +3213,7 @@ function openNoteColorPalette(event) {
 if (event) {
 event.preventDefault();
 event.stopPropagation();
-if (event.type === 'click' && Date.now() - noteColorPaletteOpenedAt < 350) return;
+if (event.stopImmediatePropagation) event.stopImmediatePropagation();
 }
 noteColorPaletteOpenedAt = Date.now();
 saveNoteSelectionForColor();
