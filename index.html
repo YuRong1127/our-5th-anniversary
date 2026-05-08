@@ -924,7 +924,19 @@ font-weight: 900;
 
 
 
-.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 12px 13px 13px; border: 1px solid #e9d3cb; border-radius: 18px; background: linear-gradient(180deg, #fff6f1 0%, #fff0ea 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 6px 18px rgba(141,110,99,.055); }
+.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; position: relative; overflow: hidden; padding: 12px 13px 13px; border: 1px solid #e9d3cb; border-radius: 18px; background: linear-gradient(180deg, #fff6f1 0%, #fff0ea 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 6px 18px rgba(141,110,99,.055); }
+.wallet-card > *:not(.wallet-corner-illustration) { position: relative; z-index: 1; }
+.wallet-corner-illustration {
+position: absolute;
+right: -4px;
+bottom: -8px;
+z-index: 0;
+width: 122px;
+max-width: 34%;
+opacity: .9;
+pointer-events: none;
+filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
+}
 .wallet-label { display: block; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
 .wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
@@ -1945,6 +1957,7 @@ main { padding: 0 14px; }
 <input type="tel" id="exp-amount" class="wallet-input" placeholder="請輸入花費金額">
 </div>
 </div>
+<img class="wallet-corner-illustration" src="wallet-corner-friends.png" alt="" aria-hidden="true">
 <button type="button" id="submit-exp-btn" onclick="addExpense()" class="modal-btn-primary btn-press-effect">確認新增此筆</button>
 <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;width:100%;margin-top:12px;border:0;background:transparent;color:#999;text-decoration:underline">取消編輯</button>
 </div>
@@ -2112,7 +2125,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-09-color-popover-time-arrows-v1';
+const STATIC_CONTENT_VERSION = '2026-05-09-wallet-corner-friends-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
