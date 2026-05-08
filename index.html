@@ -1189,11 +1189,13 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 24px rgba(141,110,99,.06);
 .flight-detail-modal .note-page {
 position: relative;
 margin: 8px 2px 2px;
-padding: 16px;
-border: 1px solid #f2ded8;
-border-radius: 26px;
-background: linear-gradient(180deg, #fffdfb 0%, #fff8f4 100%);
-box-shadow: 0 12px 30px rgba(141,110,99,.1), inset 0 1px 0 rgba(255,255,255,.96);
+padding: 22px 18px 60px;
+border: 7px solid transparent;
+border-radius: 13px;
+background:
+linear-gradient(#fffdfb, #fffdfb) padding-box,
+repeating-linear-gradient(135deg, #ffc400 0 12px, #fff 12px 20px) border-box;
+box-shadow: 0 10px 28px rgba(255,170,0,.14), inset 0 1px 0 rgba(255,255,255,.96);
 }
 .flight-detail-modal .panel-modal-content {
 max-height: calc(96vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -1277,7 +1279,7 @@ z-index: 3;
 position: relative;
 z-index: 3;
 display: grid;
-gap: 12px;
+gap: 14px;
 color: #775f58;
 }
 .flight-ticket-hero {
@@ -1285,11 +1287,10 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 gap: 10px;
-padding: 12px 14px;
-border: 1px solid #f2ded8;
-border-radius: 22px;
-background: #fff7f2;
-box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+padding: 0 0 12px;
+border-bottom: 1px dashed #eadbd4;
+background: transparent;
+box-shadow: none;
 }
 .flight-ticket-no {
 color: #b87568;
@@ -1305,7 +1306,7 @@ font-weight: 800;
 }
 .flight-ticket-fare {
 flex: 0 0 auto;
-padding: 5px 9px;
+padding: 5px 10px;
 border-radius: 999px;
 background: #f3dfd8;
 color: #a56f64;
@@ -1317,15 +1318,29 @@ white-space: nowrap;
 display: grid;
 grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 gap: 10px;
+position: relative;
+padding-bottom: 13px;
+border-bottom: 1px dashed #eadbd4;
+}
+.flight-route-cards::before {
+content: '';
+position: absolute;
+left: calc(50% - 18px);
+right: calc(50% - 18px);
+top: 50%;
+height: 2px;
+border-radius: 999px;
+background: #eadbd4;
+transform: translateY(-7px);
 }
 .flight-route-card,
 .flight-info-soft-card {
 min-width: 0;
-padding: 11px 12px;
-border: 1px solid #f2e3de;
-border-radius: 20px;
-background: rgba(255,255,255,.82);
-box-shadow: 0 5px 14px rgba(141,110,99,.06);
+padding: 0;
+border: 0;
+border-radius: 0;
+background: transparent;
+box-shadow: none;
 }
 .flight-route-label,
 .flight-section-title {
@@ -1342,7 +1357,7 @@ line-height: 1.15;
 }
 .flight-route-place {
 color: #6f5952;
-font-size: .9rem;
+font-size: .92rem;
 font-weight: 900;
 line-height: 1.35;
 word-break: keep-all;
@@ -1357,10 +1372,10 @@ line-height: 1.35;
 .flight-info-card-grid {
 display: grid;
 grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 10px;
+gap: 16px;
 }
 .flight-info-soft-card {
-padding: 10px 11px;
+padding: 0;
 }
 .flight-info-line {
 display: flex;
@@ -1394,11 +1409,11 @@ font-size: .66rem;
 }
 .flight-corner-illustration {
 position: absolute;
-right: -10px;
-bottom: -14px;
+right: -12px;
+bottom: -15px;
 z-index: 2;
-width: 128px;
-max-width: 36%;
+width: 118px;
+max-width: 34%;
 opacity: .96;
 pointer-events: none;
 filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
@@ -1406,31 +1421,27 @@ filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
 .flight-corner-illustration.return-flight-corner {
 right: -18px;
 bottom: -16px;
-width: 138px;
-}
-.flight-detail-modal .note-page.has-flight-corner {
-padding-right: 16px;
-padding-bottom: 92px;
-min-height: 0;
-}
-@media (max-width: 420px) {
-.flight-route-cards,
-.flight-info-card-grid {
-grid-template-columns: 1fr;
-}
-.flight-corner-illustration {
-right: -14px;
-bottom: -16px;
-width: 118px;
-}
-.flight-corner-illustration.return-flight-corner {
-right: -20px;
-bottom: -18px;
 width: 128px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 16px;
-padding-bottom: 84px;
+padding-bottom: 62px;
+min-height: 0;
+}
+@media (max-width: 420px) {
+.flight-corner-illustration {
+right: -14px;
+bottom: -16px;
+width: 106px;
+}
+.flight-corner-illustration.return-flight-corner {
+right: -20px;
+bottom: -18px;
+width: 114px;
+}
+.flight-detail-modal .note-page.has-flight-corner {
+padding-right: 16px;
+padding-bottom: 58px;
 }
 }
 .note-page.is-editing {
