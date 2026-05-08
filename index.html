@@ -924,15 +924,15 @@ font-weight: 900;
 
 
 
-.wallet-card { padding: 11px 12px 12px; border: 1px solid #edded8; border-radius: 18px; background: linear-gradient(180deg, #fffaf7 0%, #fff6f2 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
+.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 11px 12px 12px; border: 1px solid #edded8; border-radius: 18px; background: linear-gradient(180deg, #fffaf7 0%, #fff6f2 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
 .wallet-label { display: block; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
-.wallet-input-group { position: relative; display: flex; min-width: 0; gap: 7px; margin-bottom: 7px; }
-.wallet-split-labels { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 7px; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
-.wallet-input, .small-input { width: 100%; min-width: 0; border: 1px solid #eadbd4; border-radius: 13px; padding: 9px 11px; outline: 0; background: #fffdfb; color: #705b55; font-size: .92rem; }
+.wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
+.wallet-split-labels { display: grid; grid-template-columns: 94px minmax(0, 1fr); gap: 8px; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
+.wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #eadbd4; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #705b55; font-size: .92rem; }
 .wallet-input::placeholder, .small-input::placeholder { color: #d8cbc6; font-weight: 500; }
-.small-input { padding: 8px 9px; border-radius: 10px; font-size: .84rem; }
-.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; padding: 10px 13px; border: 1px solid #eadbd4; border-radius: 15px; background: #fffdfb; color: #705b55; font-weight: 800; }
+.small-input { padding: 0 11px; font-size: .84rem; }
+.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 0 13px; border: 1px solid #eadbd4; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #705b55; font-weight: 800; }
 .calendar-icon-styled { width: 30px; height: 30px; flex: 0 0 30px; display: flex; align-items: center; justify-content: center; }
 .calendar-icon-styled svg { display: block; width: 26px; height: 26px; }
 #exp-time-picker-host { width: 100%; }
@@ -1013,8 +1013,11 @@ border: 0;
 border-radius: 0;
 background: transparent;
 color: var(--main-brown);
-font-size: 13px;
-font-weight: 400;
+font-size: 135%;
+font-weight: 300;
+line-height: 1;
+font-family: inherit;
+text-align: center;
 outline: 0;
 }
 #wallet-modal .fp-confirm-wrap {
@@ -1032,8 +1035,8 @@ color: #fff;
 font-size: .9rem;
 font-weight: 800;
 }
-.category-select { width: 48px; height: 48px; flex: 0 0 48px; border: 1px solid var(--card-border); border-radius: 16px; padding: 5px; background: #fef9f6; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; }
-.category-select .cat-icon-sm { width: 36px; height: 36px; flex: 0 0 36px; }
+.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid var(--card-border); border-radius: var(--wallet-control-radius); padding: 0; background: #fef9f6; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.category-select .cat-icon-sm { width: 100%; height: 100%; flex: 0 0 100%; border-radius: calc(var(--wallet-control-radius) - 1px); }
 .category-menu { position: absolute; top: 100%; left: 0; z-index: 100; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 250px; max-width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--card-border); border-radius: 20px; background: #fffbf9; box-shadow: 0 10px 30px rgba(141,110,99,.15); }
 .cat-item { min-height: 66px; border: 0; border-radius: 14px; background: transparent; padding: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #9a7b72; font-size: .68rem; font-weight: 900; }
 .cat-item .cat-icon-sm { width: 38px; height: 38px; flex: 0 0 38px; }
@@ -1042,10 +1045,10 @@ font-weight: 800;
 .cat-icon-sm, .cat-icon-md { width: 100%; height: 100%; font-size: 1.45rem; }
 .tone-eat { background: #ffe9e6; } .tone-stay { background: #efe7ff; } .tone-traffic { background: #e8f2ff; } .tone-ticket { background: #fff2de; }
 .tone-gift { background: #ffe8f2; } .tone-shopping { background: #e9f7f5; } .tone-fun { background: #fff0e5; } .tone-other { background: #f2eefb; }
-.toggle-group { display: flex; margin-bottom: 8px; padding: 3px; border-radius: 13px; background: #f1e7e2; }
-.toggle-btn { flex: 1; min-height: 36px; padding: 8px 4px; border-radius: 10px; color: #b89d95; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #f1e7e2; }
+.toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #b89d95; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .toggle-btn.active { background: #fffdfb; color: var(--heart-pink); font-weight: 900; box-shadow: 0 2px 7px rgba(141,110,99,.08); }
-.currency-switch { width: 84px; flex: 0 0 84px; display: flex; align-items: center; justify-content: center; border: 1px solid #eadbd4; border-radius: 12px; background: #fffdfb; color: #9b6a61; font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.currency-switch { width: 94px; height: var(--wallet-control-height); flex: 0 0 94px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #eadbd4; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #9b6a61; font-size: .78rem; font-weight: 900; white-space: nowrap; }
 .currency-switch.active-jpy { background: #fff1f1; color: var(--heart-pink); border-color: #f9dcdc; }
 .currency-switch.active-twd { background: #f0f7f3; color: #6d8f6b; border-color: #d8eadf; }
 #both-input-area { display: none; margin-bottom: 8px; padding: 8px 10px; border: 1px dashed #e3b7ae; border-radius: 13px; background: #fffdfb; }
@@ -1078,8 +1081,8 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 24px rgba(141,110,99,.06);
 }
 .flight-detail-modal .note-page {
 position: relative;
-margin: 12px 8px 8px;
-padding: 28px 18px 24px;
+margin: 8px 2px 2px;
+padding: 20px 16px 16px;
 border: 0;
 border-radius: 6px;
 background:
@@ -1090,18 +1093,18 @@ box-shadow: 0 10px 28px rgba(255,170,0,.14), inset 0 1px 0 rgba(255,255,255,.96)
 }
 .flight-detail-modal .panel-modal-content {
 max-height: calc(96vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-padding: 18px 16px;
+padding: 16px 14px 14px;
 }
 .flight-detail-modal .modal-scroll-area {
 overflow-y: visible;
 }
 .flight-detail-modal .note-text-view {
 font-size: .86rem;
-line-height: 1.72;
+line-height: 1.58;
 }
 .flight-detail-modal .note-text-view b {
 display: inline-block;
-margin: 12px 0 5px;
+margin: 9px 0 4px;
 padding: 3px 8px;
 border-radius: 999px;
 background: #fff4ee;
@@ -1130,7 +1133,7 @@ vertical-align: .08em;
 .flight-detail-modal .note-text-view br {
 content: '';
 display: block;
-margin: 3px 0;
+margin: 1px 0;
 }
 .flight-detail-modal .note-text-view span[style*="white-space:nowrap"] {
 white-space: normal !important;
@@ -2011,7 +2014,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-08-wallet-year-select-clean-v1';
+const STATIC_CONTENT_VERSION = '2026-05-08-flight-detail-compact-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3072,7 +3075,7 @@ return `<div class="note-block" data-block-index="${blockIndex}" data-block-type
 }).join('');
 const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
 const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="saveNoteSelectionForColor()" ontouchend="return handleNoteColorButton(event)" onclick="return handleNoteColorButton(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="saveNoteSelectionForColor()" ontouchend="return openNoteColorPalette(event)" onclick="return openNoteColorPalette(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const isFlightNote = isFlightDetailCard(currentDetailCard);
 const visibleFormatTools = isFlightNote ? formatTools.replace(/<label class="note-format-btn note-format-image-btn[\s\S]*?<\/label>/, '') : formatTools;
 const insertTools = isEditMode && !isFlightNote ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
@@ -3136,32 +3139,18 @@ savedNoteColorRange = range.cloneRange();
 setActiveNoteEditor(editor);
 }
 function handleNoteColorButton(event) {
-if (event) {
-event.preventDefault();
-event.stopPropagation();
-if (event.stopImmediatePropagation) event.stopImmediatePropagation();
-if (Date.now() - noteColorPaletteOpenedAt < 350) return false;
-}
-openNoteColorPalette();
-return false;
+return openNoteColorPalette(event);
 }
 function bindNoteToolbarButtons(root = document) {
 root.querySelectorAll('.note-custom-color-btn').forEach(btn => {
 if (btn.dataset.boundColorButton === '1') return;
 btn.dataset.boundColorButton = '1';
 btn.addEventListener('pointerdown', (event) => {
-event.preventDefault();
 saveNoteSelectionForColor();
-}, { passive: false });
+}, { passive: true });
 });
 }
-function interceptNoteColorButton(event) {
-const btn = event.target?.closest?.('.note-custom-color-btn');
-if (!btn) return;
-handleNoteColorButton(event);
-}
 function initNoteToolbarTouchFix() {
-document.addEventListener('click', interceptNoteColorButton, true);
 }
 function openNoteColorPalette(event) {
 if (event) {
@@ -3177,6 +3166,7 @@ const currentColor = (currentNoteTextColor || '').trim().toLowerCase();
 grid.innerHTML = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === currentColor ? 'is-selected' : ''}" style="--swatch-color:${color.value}" data-note-color="${color.value}" ontouchend="return chooseNoteColorFromEvent(event, this)" onclick="return chooseNoteColorFromEvent(event, this)" aria-label="${escapeHtml(color.name)}"></button>`).join('');
 }
 openOverlayModal('note-color-modal');
+return false;
 }
 function chooseNoteColorFromEvent(event, btn) {
 if (event) {
