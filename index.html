@@ -1,4 +1,4 @@
-
+﻿
 
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -924,19 +924,7 @@ font-weight: 900;
 
 
 
-.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; position: relative; overflow: hidden; padding: 12px 13px 13px; border: 1px solid #e9d3cb; border-radius: 18px; background: linear-gradient(180deg, #fff6f1 0%, #fff0ea 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 6px 18px rgba(141,110,99,.055); }
-.wallet-card > *:not(.wallet-corner-illustration) { position: relative; z-index: 1; }
-.wallet-corner-illustration {
-position: absolute;
-right: -4px;
-bottom: -8px;
-z-index: 0;
-width: 122px;
-max-width: 34%;
-opacity: .9;
-pointer-events: none;
-filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
-}
+.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 12px 13px 13px; border: 1px solid #e9d3cb; border-radius: 18px; background: linear-gradient(180deg, #fff6f1 0%, #fff0ea 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 6px 18px rgba(141,110,99,.055); }
 .wallet-label { display: block; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
 .wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
@@ -1227,6 +1215,41 @@ transform: rotate(8deg);
 .flight-detail-modal .note-text-view {
 position: relative;
 z-index: 3;
+}
+.flight-corner-illustration {
+position: absolute;
+right: -7px;
+bottom: -10px;
+z-index: 2;
+width: 134px;
+max-width: 38%;
+opacity: .96;
+pointer-events: none;
+filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
+}
+.flight-corner-illustration.return-flight-corner {
+right: -16px;
+bottom: -14px;
+width: 148px;
+}
+.flight-detail-modal .note-page.has-flight-corner {
+padding-right: 126px;
+min-height: 360px;
+}
+@media (max-width: 420px) {
+.flight-corner-illustration {
+right: -10px;
+bottom: -12px;
+width: 122px;
+}
+.flight-corner-illustration.return-flight-corner {
+right: -18px;
+bottom: -14px;
+width: 136px;
+}
+.flight-detail-modal .note-page.has-flight-corner {
+padding-right: 112px;
+}
 }
 .note-page.is-editing {
 padding-bottom: 12px;
@@ -1957,7 +1980,6 @@ main { padding: 0 14px; }
 <input type="tel" id="exp-amount" class="wallet-input" placeholder="請輸入花費金額">
 </div>
 </div>
-<img class="wallet-corner-illustration" src="wallet-corner-friends.png" alt="" aria-hidden="true">
 <button type="button" id="submit-exp-btn" onclick="addExpense()" class="modal-btn-primary btn-press-effect">確認新增此筆</button>
 <button type="button" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;width:100%;margin-top:12px;border:0;background:transparent;color:#999;text-decoration:underline">取消編輯</button>
 </div>
@@ -1979,7 +2001,7 @@ main { padding: 0 14px; }
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 步行 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="note-color-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div id="note-color-grid" class="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
-<div id="note-color-popover" class="note-color-popover"><button type="button" class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid"><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c86f77" data-note-color="#c86f77" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="莓果粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#8d6e63" data-note-color="#8d6e63" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="奶茶棕"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#705b55" data-note-color="#705b55" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="可可深棕"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d98b72" data-note-color="#d98b72" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="蜜桃橘"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#b88968" data-note-color="#b88968" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="焦糖"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6d8f6b" data-note-color="#6d8f6b" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="抹茶綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#5f9c92" data-note-color="#5f9c92" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="湖水綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6f7fa6" data-note-color="#6f7fa6" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="霧藍"></button></div></div>
+<div id="note-color-popover" class="note-color-popover"><button type="button" class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid"><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c86f77" data-note-color="#c86f77" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="莓果粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d96d7f" data-note-color="#d96d7f" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="玫瑰紅"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d98b72" data-note-color="#d98b72" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="蜜桃橘"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#e6a19a" data-note-color="#e6a19a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="珊瑚粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c9a64a" data-note-color="#c9a64a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="奶油黃"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6d8f6b" data-note-color="#6d8f6b" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="鼠尾草綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#5f9c92" data-note-color="#5f9c92" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="湖水綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6f7fa6" data-note-color="#6f7fa6" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="霧藍紫"></button></div></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
@@ -2125,7 +2147,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-09-direct-static-color-palette-v1';
+const STATIC_CONTENT_VERSION = '2026-05-09-it207-flight-corner-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2149,8 +2171,8 @@ const ICON_GROUPS = {
 '符號': ['❤️','🧡','💛','💚','💙','💜','🤍','🤎','💔','❣️','💯','⭕','❌','❗','❓','➕','➡️','⬅️','⬆️','⬇️']
 };
 const CATEGORY_META = {
-'吃': { icon: '🍴', tone: 'tone-eat' },
-'住': { icon: '🏠', tone: 'tone-stay' },
+'吃': { icon: '🍴', tone: 'tone-eat', label: '吃飯' },
+'住': { icon: '🏠', tone: 'tone-stay', label: '住宿' },
 '交通': { icon: '🚆', tone: 'tone-traffic' },
 '門票': { icon: '🎟️', tone: 'tone-ticket' },
 '禮物': { icon: '🎁', tone: 'tone-gift' },
@@ -2165,6 +2187,9 @@ const CATEGORY_META = {
 function getCategoryIconHtml(category, sizeClass) {
 const meta = CATEGORY_META[category] || CATEGORY_META['其他'];
 return `<span class="cat-icon ${sizeClass} ${meta.tone}" title="${category}">${meta.icon}</span>`;
+}
+function getCategoryLabel(category) {
+return CATEGORY_META[category]?.label || category;
 }
 
 
@@ -3022,19 +3047,15 @@ const template = document.createElement('template');
 template.innerHTML = value || '';
 const NOTE_TEXT_COLORS = [
 { name: '莓果粉', value: '#c86f77' },
-{ name: '奶茶棕', value: '#8d6e63' },
-{ name: '可可深棕', value: '#705b55' },
+{ name: '玫瑰紅', value: '#d96d7f' },
 { name: '蜜桃橘', value: '#d98b72' },
-{ name: '焦糖杏', value: '#c59663' },
-{ name: '奶油黃', value: '#b99a45' },
+{ name: '珊瑚粉', value: '#e6a19a' },
+{ name: '奶油黃', value: '#c9a64a' },
 { name: '鼠尾草綠', value: '#6d8f6b' },
 { name: '湖水綠', value: '#5f9c92' },
-{ name: '藍灰', value: '#6f7fa6' },
-{ name: '霧紫', value: '#9a7fa6' },
-{ name: '玫瑰棕', value: '#a86f76' },
-{ name: '回到主色', value: '#705b55' }
+{ name: '霧藍紫', value: '#6f7fa6' }
 ];
-const allowedColors = ['#705b55', 'rgb(112, 91, 85)', '#c86f77', 'rgb(200, 111, 119)', '#8d6e63', 'rgb(141, 110, 99)', '#6d8f6b', 'rgb(109, 143, 107)', '#6f7fa6', 'rgb(111, 127, 166)'];
+const allowedColors = ['#705b55', 'rgb(112, 91, 85)', '#c86f77', 'rgb(200, 111, 119)', '#d96d7f', 'rgb(217, 109, 127)', '#d98b72', 'rgb(217, 139, 114)', '#e6a19a', 'rgb(230, 161, 154)', '#c9a64a', 'rgb(201, 166, 74)', '#6d8f6b', 'rgb(109, 143, 107)', '#5f9c92', 'rgb(95, 156, 146)', '#6f7fa6', 'rgb(111, 127, 166)'];
 function isAllowedTextColor(value) {
 const color = String(value || '').trim().toLowerCase();
 return allowedColors.includes(color) || /^#[0-9a-f]{6}$/.test(color) || /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/.test(color);
@@ -3189,8 +3210,11 @@ const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${curr
 const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="return showNoteColorPaletteDirect(event)" onmousedown="return showNoteColorPaletteDirect(event)" ontouchstart="return showNoteColorPaletteDirect(event)" onclick="return showNoteColorPaletteDirect(event)" aria-label="選擇文字顏色"><span class="note-color-wheel" aria-hidden="true"></span></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const isFlightNote = isFlightDetailCard(currentDetailCard);
 const visibleFormatTools = isFlightNote ? formatTools.replace(/<label class="note-format-btn note-format-image-btn[\s\S]*?<\/label>/, '') : formatTools;
-const insertTools = isEditMode && !isFlightNote ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
-host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${visibleFormatTools}${blocksHtml}${insertTools}</div>`;
+const insertTools = '';
+const flightPairKey = isFlightNote ? getLockedFlightPairKey(currentDetailCard) : '';
+const flightCornerSrc = flightPairKey === 'IT206' ? 'wallet-corner-friends.png' : flightPairKey === 'IT207' ? 'flight-return-corner-friends.png' : '';
+const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration ${flightPairKey === 'IT207' ? 'return-flight-corner' : ''}" src="${flightCornerSrc}" alt="" aria-hidden="true">` : '';
+host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${blocksHtml}${insertTools}${flightCorner}</div>`;
 bindNoteToolbarButtons(host);
 focusPendingNoteBlock();
 }
@@ -3856,7 +3880,7 @@ enhanceRouteConnectors();
 
 
 function initCategoryMenu() {
-document.getElementById('cat-menu').innerHTML = Object.keys(CATEGORY_META).map(cat => `<button type="button" class="cat-item btn-press-effect" title="${cat}" onclick="selectCategory('${cat}')">${getCategoryIconHtml(cat, 'cat-icon-sm')}<span class="cat-item-label">${escapeHtml(cat)}</span></button>`).join('');
+document.getElementById('cat-menu').innerHTML = Object.keys(CATEGORY_META).map(cat => `<button type="button" class="cat-item btn-press-effect" title="${getCategoryLabel(cat)}" onclick="selectCategory('${cat}')">${getCategoryIconHtml(cat, 'cat-icon-sm')}<span class="cat-item-label">${escapeHtml(getCategoryLabel(cat))}</span></button>`).join('');
 selectCategory('吃');
 }
 function toggleCategoryMenu(event) {

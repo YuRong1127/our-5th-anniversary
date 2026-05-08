@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'mie-anniversary-v20260504-1';
+const CACHE_VERSION = 'mie-anniversary-v20260509-7';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
