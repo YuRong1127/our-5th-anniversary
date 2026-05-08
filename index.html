@@ -821,6 +821,10 @@ filter: drop-shadow(0 5px 12px rgba(141,110,99,.1));
 margin-top: -68px;
 margin-bottom: -10px;
 }
+.boundary-modal-img.work-sticker {
+margin-top: -72px;
+margin-bottom: -10px;
+}
 #work-modal .modal-content,
 #finish-modal .modal-content {
 align-items: center;
@@ -1205,25 +1209,13 @@ content: '';
 width: 18px;
 height: 18px;
 border-radius: 50%;
-background: conic-gradient(#c86f77, #d98b72, #d6b55a, #6d8f6b, #6f91a6, #7f86b8, #a86f9a, #c86f77);
+background: var(--swatch-color, #c86f77);
 box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.14);
 }
 .note-custom-color-btn {
 position: relative;
 overflow: hidden;
 cursor: pointer;
-}
-.note-custom-color-btn::after {
-content: '';
-position: absolute;
-left: 50%;
-bottom: 4px;
-width: 15px;
-height: 3px;
-border-radius: 999px;
-background: var(--swatch-color, #c86f77);
-transform: translateX(-50%);
-box-shadow: 0 0 0 1px rgba(255,255,255,.72);
 }
 .note-color-modal-content { align-items: stretch; max-width: 340px; padding: 24px 20px 20px; }
 .note-color-modal-content .modal-title { margin-bottom: 14px; font-size: 1.2rem; }
@@ -1855,7 +1847,7 @@ main { padding: 0 14px; }
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
 <div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
-<div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><div class="boundary-speech">ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></div><img class="boundary-modal-img" src="work-too-bad.png" alt="很壞提醒"><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect">不小心滑到齁!</button></div></div></div>
+<div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><div class="boundary-speech">ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></div><img class="boundary-modal-img work-sticker" src="work-too-bad.png" alt="很壞提醒"><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect">不小心滑到齁!</button></div></div></div>
 <div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><div class="boundary-speech">繼續上班存錢錢💛再一起出去玩</div><img class="boundary-modal-img finish-sticker" src="trip-finished-hug.png" alt="旅程結束陪你小圖"><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg)">沒有問題!</button></div></div></div>
 
 
@@ -1995,7 +1987,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-08-finish-sticker-spacing-v1';
+const STATIC_CONTENT_VERSION = '2026-05-08-sticker-highlight-fix-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -2912,6 +2904,24 @@ function isAllowedBackground(value) {
 const bg = String(value || '').trim().toLowerCase();
 return bg === '#fff3b8' || bg === 'rgb(255, 243, 184)' || bg === 'rgba(255, 243, 184, 0.65)' || bg === 'rgb(255, 255, 0)' || bg === 'yellow';
 }
+function keepNoteInlineStyles(node, content) {
+const color = (node.style.color || node.getAttribute('color') || '').trim();
+const background = (node.style.backgroundColor || node.getAttribute('data-background') || node.getAttribute('bgcolor') || '').trim();
+const whiteSpace = (node.style.whiteSpace || '').trim();
+const hasPriority = node.classList?.contains('flight-priority-badge');
+const hasStyle = hasPriority || isAllowedTextColor(color) || isAllowedBackground(background) || whiteSpace.toLowerCase() === 'nowrap';
+if (!hasStyle) return content;
+const span = document.createElement('span');
+if (hasPriority) span.className = 'flight-priority-badge';
+if (isAllowedTextColor(color)) span.style.color = color;
+if (isAllowedBackground(background)) span.style.backgroundColor = '#fff3b8';
+if (whiteSpace.toLowerCase() === 'nowrap') {
+span.style.whiteSpace = 'nowrap';
+span.className = 'note-nowrap';
+}
+span.appendChild(content);
+return span;
+}
 function appendBreak(fragment) {
 const last = fragment.lastChild;
 if (!last || last.nodeName !== 'BR') fragment.appendChild(document.createElement('br'));
@@ -2932,13 +2942,15 @@ return item;
 }
 if (['ul', 'ol'].includes(tag)) return fragment;
 if (['div', 'p'].includes(tag)) {
-appendBreak(fragment);
-return fragment;
+const block = document.createDocumentFragment();
+block.appendChild(keepNoteInlineStyles(node, fragment));
+appendBreak(block);
+return block;
 }
 if (['b', 'strong'].includes(tag)) {
 const b = document.createElement('b');
 b.appendChild(fragment);
-return b;
+return keepNoteInlineStyles(node, b);
 }
 if (tag === 'mark') {
 const mark = document.createElement('span');
@@ -2947,19 +2959,7 @@ mark.appendChild(fragment);
 return mark;
 }
 if (tag === 'span' || tag === 'font') {
-const color = (node.style.color || node.getAttribute('color') || '').trim();
-const background = (node.style.backgroundColor || node.getAttribute('data-background') || '').trim();
-const whiteSpace = (node.style.whiteSpace || '').trim();
-const span = document.createElement('span');
-if (node.classList?.contains('flight-priority-badge')) span.className = 'flight-priority-badge';
-if (isAllowedTextColor(color)) span.style.color = color;
-if (isAllowedBackground(background)) span.style.backgroundColor = '#fff3b8';
-if (whiteSpace.toLowerCase() === 'nowrap') {
-span.style.whiteSpace = 'nowrap';
-span.className = 'note-nowrap';
-}
-span.appendChild(fragment);
-return span;
+return keepNoteInlineStyles(node, fragment);
 }
 return fragment;
 }
@@ -3045,7 +3045,7 @@ const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)">${visibleEditHtml}</div></div>`;
 }).join('');
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); toggleNoteHighlight()" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onpointerup="openNoteColorPalette(event)" onclick="openNoteColorPalette(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn btn-press-effect" style="--swatch-color:#c86f77" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteColorButton(event)" onclick="handleNoteColorButton(event)" aria-label="選擇文字顏色"></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const insertTools = isEditMode ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''}" data-field-index="0">${formatTools}${blocksHtml}${insertTools}</div>`;
 focusPendingNoteBlock();
@@ -3105,6 +3105,16 @@ if (!editor || !editor.contains(range.startContainer)) return;
 savedNoteColorRange = range.cloneRange();
 setActiveNoteEditor(editor);
 }
+function handleNoteColorButton(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+if (event.type === 'click' && Date.now() - noteColorPaletteOpenedAt < 500) return false;
+}
+openNoteColorPalette();
+return false;
+}
 function openNoteColorPalette(event) {
 if (event) {
 event.preventDefault();
@@ -3153,14 +3163,32 @@ setActiveNoteEditor(editor);
 document.execCommand(command, false, value);
 setActiveNoteEditor(editor);
 }
+function handleNoteHighlightButton(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+if (event.type === 'click' && Date.now() - noteColorPaletteOpenedAt < 500) return false;
+}
+noteColorPaletteOpenedAt = Date.now();
+toggleNoteHighlight();
+return false;
+}
 function toggleNoteHighlight() {
 const editor = document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
 if (!editor) return;
 editor.focus();
+if (savedNoteColorRange) {
+const selection = window.getSelection();
+selection.removeAllRanges();
+selection.addRange(savedNoteColorRange);
+}
 setActiveNoteEditor(editor);
 const current = String(document.queryCommandValue('backColor') || document.queryCommandValue('hiliteColor') || '').toLowerCase();
 const isHighlighted = current.includes('255, 243, 184') || current.includes('fff3b8');
-document.execCommand('backColor', false, isHighlighted ? '#ffffff' : '#fff3b8');
+const nextColor = isHighlighted ? '#ffffff' : '#fff3b8';
+if (!document.execCommand('hiliteColor', false, nextColor)) document.execCommand('backColor', false, nextColor);
+savedNoteColorRange = null;
 setActiveNoteEditor(editor);
 }
 function focusPendingNoteBlock() {
