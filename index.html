@@ -929,6 +929,7 @@ font-weight: 900;
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
 .wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
 .wallet-split-labels { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 8px; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
+.wallet-label-hint { display: block; margin-top: 1px; color: #c7aaa1; font-size: .62rem; line-height: 1; }
 .wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #eadbd4; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #705b55; font-size: .92rem; }
 .wallet-input::placeholder, .small-input::placeholder { color: #d8cbc6; font-weight: 500; }
 .small-input { padding: 0 11px; font-size: .84rem; }
@@ -1005,7 +1006,12 @@ pointer-events: auto !important;
 font-weight: 400 !important;
 }
 #wallet-modal .flatpickr-time .numInputWrapper span {
-display: none;
+display: block;
+border-color: #c89a91 transparent transparent transparent !important;
+opacity: .76;
+}
+#wallet-modal .flatpickr-time .numInputWrapper span.arrowDown {
+border-color: #c89a91 transparent transparent transparent !important;
 }
 #wallet-modal .flatpickr-time {
 height: 42px !important;
@@ -1303,6 +1309,40 @@ background: var(--swatch-color, #c86f77);
 .note-color-modal-content { align-items: stretch; max-width: 340px; padding: 24px 20px 20px; }
 .note-color-modal-content .modal-title { margin-bottom: 14px; font-size: 1.2rem; }
 .note-color-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 10px; border: 1px solid #f4e4df; border-radius: 22px; background: #fffaf7; }
+.note-color-popover {
+display: none;
+position: fixed;
+left: 50%;
+top: 50%;
+z-index: 1800;
+width: min(330px, calc(100vw - 42px));
+padding: 18px 16px 16px;
+border: 1px solid #f1ddd6;
+border-radius: 26px;
+background: #fffdfb;
+box-shadow: 0 18px 46px rgba(112,91,85,.22);
+transform: translate(-50%, -50%);
+}
+.note-color-popover-title {
+margin: 0 0 12px;
+color: var(--main-brown);
+font-size: 1rem;
+font-weight: 900;
+text-align: center;
+}
+.note-color-popover-close {
+position: absolute;
+top: 10px;
+right: 11px;
+width: 30px;
+height: 30px;
+border: 0;
+border-radius: 50%;
+background: #fff5f2;
+color: var(--heart-pink);
+font-size: 1rem;
+font-weight: 900;
+}
 .note-color-option {
 height: 48px;
 border: 1px solid #f0e0da;
@@ -1863,7 +1903,7 @@ main { padding: 0 14px; }
 <div class="toggle-btn btn-press-effect" onclick="setWalletMode('topup')">公費儲值</div>
 </div>
 <div id="topup-area" class="topup-area">
-<label class="wallet-label">儲值幣別</label>
+<label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
 <div class="wallet-input-group">
 <div id="topup-currency-switch" class="currency-switch active-jpy btn-press-effect" onclick="toggleCurrency()">¥ JPY</div>
 </div>
@@ -1899,7 +1939,7 @@ main { padding: 0 14px; }
 <div><label class="wallet-label" style="font-size:9px;margin-top:0">小豬花了</label><input type="tel" id="both-small-pig" class="small-input" placeholder="0"></div>
 </div>
 </div>
-<div class="wallet-split-labels"><span>幣別</span><span>花費金額</span></div>
+<div class="wallet-split-labels"><span>幣別<span class="wallet-label-hint">點選切換</span></span><span>花費金額</span></div>
 <div class="wallet-input-group">
 <div id="currency-switch" class="currency-switch active-jpy btn-press-effect" onclick="toggleCurrency()">¥ JPY</div>
 <input type="tel" id="exp-amount" class="wallet-input" placeholder="請輸入花費金額">
@@ -1926,6 +1966,7 @@ main { padding: 0 14px; }
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 步行 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="note-color-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div id="note-color-grid" class="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
+<div id="note-color-popover" class="note-color-popover"></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
@@ -2071,7 +2112,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-09-note-color-down-time-pill-v1';
+const STATIC_CONTENT_VERSION = '2026-05-09-color-popover-time-arrows-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3132,7 +3173,7 @@ return `<div class="note-block" data-block-index="${blockIndex}" data-block-type
 }).join('');
 const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
 const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="return openNoteColorPalette(event)" onmousedown="return openNoteColorPalette(event)" ontouchstart="return openNoteColorPalette(event)" onclick="return openNoteColorPalette(event)" aria-label="選擇文字顏色"><span class="note-color-wheel" aria-hidden="true"></span></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onmousedown="event.preventDefault(); formatNoteText('openColor')" ontouchstart="event.preventDefault(); formatNoteText('openColor')" onclick="event.preventDefault(); formatNoteText('openColor')" aria-label="選擇文字顏色"><span class="note-color-wheel" aria-hidden="true"></span></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const isFlightNote = isFlightDetailCard(currentDetailCard);
 const visibleFormatTools = isFlightNote ? formatTools.replace(/<label class="note-format-btn note-format-image-btn[\s\S]*?<\/label>/, '') : formatTools;
 const insertTools = isEditMode && !isFlightNote ? `<div class="note-toolbar"><label class="mini-btn note-image-btn btn-press-effect">＋ 插入圖片<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event)"></label></div>` : '';
@@ -3203,10 +3244,14 @@ root.querySelectorAll('.note-custom-color-btn').forEach(btn => {
 if (btn.dataset.boundColorButton === '1') return;
 btn.dataset.boundColorButton = '1';
 btn.addEventListener('pointerdown', (event) => {
-openNoteColorPalette(event);
+event.preventDefault();
+formatNoteText('openColor');
 }, { passive: false });
 ['touchstart', 'click'].forEach(type => {
-btn.addEventListener(type, openNoteColorPalette, { passive: false });
+btn.addEventListener(type, (event) => {
+event.preventDefault();
+formatNoteText('openColor');
+}, { passive: false });
 });
 });
 }
@@ -3229,20 +3274,31 @@ event.stopPropagation();
 }
 noteColorPaletteOpenedAt = Date.now();
 saveNoteSelectionForColor();
+const colorOptionsHtml = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === (currentNoteTextColor || '').trim().toLowerCase() ? 'is-selected' : ''}" style="--swatch-color:${color.value}" data-note-color="${color.value}" ontouchend="return chooseNoteColorFromEvent(event, this)" onclick="return chooseNoteColorFromEvent(event, this)" aria-label="${escapeHtml(color.name)}"></button>`).join('');
 const grid = document.getElementById('note-color-grid');
 if (grid) {
-const currentColor = (currentNoteTextColor || '').trim().toLowerCase();
-grid.innerHTML = NOTE_TEXT_COLORS.map(color => `<button type="button" class="note-color-option btn-press-effect ${color.value.toLowerCase() === currentColor ? 'is-selected' : ''}" style="--swatch-color:${color.value}" data-note-color="${color.value}" ontouchend="return chooseNoteColorFromEvent(event, this)" onclick="return chooseNoteColorFromEvent(event, this)" aria-label="${escapeHtml(color.name)}"></button>`).join('');
+grid.innerHTML = colorOptionsHtml;
 grid.querySelectorAll('.note-color-option').forEach(btn => {
 ['pointerup', 'touchend', 'click'].forEach(type => {
 btn.addEventListener(type, (colorEvent) => chooseNoteColorFromEvent(colorEvent, btn), { passive: false });
 });
 });
 }
-openOverlayModal('note-color-modal');
-const modal = document.getElementById('note-color-modal');
-if (modal) modal.style.display = 'flex';
+const popover = document.getElementById('note-color-popover');
+if (popover) {
+popover.innerHTML = `<button type="button" class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid">${colorOptionsHtml}</div>`;
+popover.style.display = 'block';
+popover.querySelectorAll('.note-color-option').forEach(btn => {
+['pointerdown', 'touchstart', 'click'].forEach(type => {
+btn.addEventListener(type, (colorEvent) => chooseNoteColorFromEvent(colorEvent, btn), { passive: false });
+});
+});
+}
 return false;
+}
+function closeNoteColorPopover() {
+const popover = document.getElementById('note-color-popover');
+if (popover) popover.style.display = 'none';
 }
 function chooseNoteColorFromEvent(event, btn) {
 if (event) {
@@ -3260,6 +3316,7 @@ btn.classList.add('has-selected-color');
 });
 applyNoteColor(value);
 closeOverlayModal('note-color-modal');
+closeNoteColorPopover();
 }
 function applyNoteColor(value) {
 const editor = document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
@@ -3275,6 +3332,10 @@ document.execCommand('foreColor', false, value);
 savedNoteColorRange = null;
 }
 function formatNoteText(command, value = null) {
+if (command === 'openColor') {
+openNoteColorPalette();
+return;
+}
 const editor = document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
 if (!editor) return;
 editor.focus();
@@ -3510,6 +3571,7 @@ closeModal('map-place-modal');
 }
 function closeItineraryDetailModal() {
 currentDetailCard = null;
+closeNoteColorPopover();
 closeModal('itinerary-detail-modal');
 }
 function saveItineraryDetail() {
