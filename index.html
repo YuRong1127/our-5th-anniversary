@@ -560,6 +560,10 @@ background: rgba(209,122,109,.96);
 .modal-content { width: 100%; max-height: 86vh; overflow: hidden; display: flex; flex-direction: column; padding: 30px 20px; border: 1px solid #f9f0ed; border-radius: 30px; background: var(--modal-bg); box-shadow: 0 10px 40px rgba(141,110,99,.1); }
 .modal-scroll-area { min-height: 0; flex: 1; overflow-y: auto; padding: 5px; -webkit-overflow-scrolling: touch; }
 .modal-title { margin-bottom: 15px; color: var(--main-brown); font-size: 1.4rem; font-weight: 900; text-align: center; }
+.wishlist-title-basket {
+display: inline-block;
+transform: translateY(-2px);
+}
 .itinerary-detail-title {
 display: flex;
 align-items: center;
@@ -1296,7 +1300,7 @@ border-bottom: none;
 position: absolute;
 left: 0;
 right: 0;
-top: -49px;
+top: -56px;
 padding: 0 10px;
 z-index: 10;
 }
@@ -1335,18 +1339,18 @@ order: 2;
 display: flex;
 align-items: flex-start;
 justify-content: flex-start;
-gap: 10px;
+gap: 18px;
 position: relative;
 width: 100%;
 min-height: 108px;
 box-sizing: border-box;
-padding: 0 150px 11px 0;
+padding: 0 124px 11px 0;
 border-bottom: 1px dashed #eadbd4;
 }
 .flight-route-cards::before {
 content: '';
 position: absolute;
-left: 81px;
+left: 87px;
 top: 46px;
 width: 30px;
 height: 2px;
@@ -1366,8 +1370,8 @@ box-shadow: none;
 .flight-route-card {
 display: block;
 min-width: 0;
-width: 76px;
-max-width: 76px;
+width: 92px;
+max-width: 92px;
 text-align: center;
 }
 .flight-route-cards .flight-route-card:first-child {
@@ -1430,7 +1434,7 @@ display: grid;
 grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
 gap: 0;
 align-items: center;
-margin-top: 3px;
+margin-top: 8px;
 }
 .flight-table-head,
 .flight-table-label,
@@ -1512,7 +1516,7 @@ right: 8px;
 top: 26px;
 bottom: auto;
 z-index: 2;
-width: 142px;
+width: 132px;
 max-width: 38%;
 opacity: .96;
 pointer-events: none;
@@ -1521,7 +1525,7 @@ filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
 .flight-corner-illustration.return-flight-corner {
 right: 4px;
 bottom: auto;
-width: 146px;
+width: 136px;
 top: 24px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
@@ -1532,17 +1536,26 @@ min-height: 0;
 @media (max-width: 420px) {
 .flight-route-card {
 display: block;
+width: 88px;
+max-width: 88px;
+}
+.flight-route-cards {
+gap: 14px;
+padding-right: 116px;
+}
+.flight-route-cards::before {
+left: 80px;
 }
 .flight-corner-illustration {
 right: 4px;
 top: 28px;
 bottom: auto;
-width: 138px;
+width: 124px;
 }
 .flight-corner-illustration.return-flight-corner {
 right: 0;
 bottom: auto;
-width: 140px;
+width: 126px;
 top: 26px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
@@ -2308,7 +2321,7 @@ main { padding: 0 14px; }
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
 <div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 想買的哩哩扣扣</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
-<div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('docs-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📁 重要資料夾</div><div class="docs-hint">飯店預訂憑證、VJW 截圖、交通票券都可以先放這裡</div><div class="wishlist-form"><input type="text" id="docs-input" class="wishlist-input" placeholder="例如：名古屋飯店訂房憑證" onkeydown="handleDocsKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addDocItem()">＋</button><input type="file" id="docs-new-file-input" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="attachNewDocFile(event)"></div><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
+<div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('docs-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📁 重要資料夾</div><div class="wishlist-form"><input type="text" id="docs-input" class="wishlist-input" placeholder="例如：名古屋飯店訂房憑證" onkeydown="handleDocsKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addDocItem()">＋</button><input type="file" id="docs-new-file-input" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="attachNewDocFile(event)"></div><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 步行 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
