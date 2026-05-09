@@ -25,8 +25,12 @@
 <link rel="preload" as="image" href="missing-title-pig-v2-inline.png">
 <link rel="preload" as="image" href="invalid-amount-pig-inline.png">
 <link rel="preload" as="image" href="fund-topup-success-pig-inline.png">
-<link rel="preload" as="image" href="wallet-unsaved-pig-inline.png">
+<link rel="preload" as="image" href="wallet-unsaved-pig-inline-hd.png">
 <link rel="preload" as="image" href="discard-unsaved-pig.png">
+<link rel="preload" as="image" href="wallet-corner-friends.png">
+<link rel="preload" as="image" href="flight-return-corner-friends.png">
+<link rel="preload" as="image" href="goodboy.png">
+<link rel="preload" as="image" href="goodgirl.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
@@ -848,6 +852,13 @@ height: 150px;
 object-fit: contain;
 filter: drop-shadow(0 5px 10px rgba(141,110,99,.12));
 }
+.alert-stack-pig.wallet-unsaved-pig {
+width: 190px;
+height: 190px;
+margin: -6px 0 -16px;
+image-rendering: auto;
+filter: drop-shadow(0 7px 14px rgba(93,120,112,.16));
+}
 .alert-stack-pig.discard-pig {
 width: 210px;
 height: 150px;
@@ -857,8 +868,8 @@ transform: translateX(-10px);
 }
 .boundary-modal-img {
 display: block;
-width: min(260px, 82vw);
-height: auto;
+width: min(210px, 68vw) !important;
+height: 150px !important;
 margin: 0 auto;
 object-fit: contain;
 filter: drop-shadow(0 5px 12px rgba(141,110,99,.1));
@@ -924,7 +935,7 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 .modal-close-btn { position: absolute; top: 2px; right: 2px; z-index: 1010; padding: 12px; }
 .modal-close-circle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: var(--heart-pink); box-shadow: 0 2px 10px rgba(0,0,0,.1); }
 .modal-btn-primary { width: 100%; border: 0; border-radius: 20px; padding: 18px 24px; background: var(--heart-pink); color: #fff; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.25); }
-#wallet-modal .modal-btn-primary { background: #d9786d; box-shadow: none; }
+#wallet-modal .modal-btn-primary { background: #1f7a72; box-shadow: 0 5px 14px rgba(31,122,114,.16); }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
 #alert-modal .modal-content { align-items: center; text-align: center; }
 #alert-modal .modal-title { margin-bottom: 0; }
@@ -956,18 +967,18 @@ font-weight: 900;
 
 
 
-.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 12px 13px 13px; border: 1px solid #f2ddd6; border-radius: 18px; background: linear-gradient(180deg, #fffaf7 0%, #fff5f1 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 6px 18px rgba(209,122,109,.045); }
-.wallet-label { display: block; margin: 7px 0 4px 3px; color: #a9776f; font-size: .73rem; font-weight: 900; }
+.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 12px 13px 13px; border: 1px solid #e7eee9; border-radius: 18px; background: linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 8px 20px rgba(92,128,117,.07); }
+.wallet-label { display: block; margin: 7px 0 4px 3px; color: #5f8278; font-size: .73rem; font-weight: 900; }
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
 .wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
-.wallet-split-labels { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 8px; align-items: center; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; line-height: 1; }
+.wallet-split-labels { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 8px; align-items: center; margin: 7px 0 4px 3px; color: #5f8278; font-size: .73rem; font-weight: 900; line-height: 1; }
 .wallet-split-labels > span:first-child { display: inline-flex; align-items: baseline; gap: 3px; white-space: nowrap; }
 .wallet-split-labels .wallet-label-hint { display: inline-flex; flex: 0 0 auto; margin: 0; font-size: .6rem; vertical-align: baseline; }
-.wallet-label-hint { display: block; margin-top: 1px; color: #c7aaa1; font-size: .62rem; line-height: 1; }
-.wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #6f5a54; font-size: .92rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.86); }
-.wallet-input::placeholder, .small-input::placeholder { color: #d3c3be; font-weight: 500; }
+.wallet-label-hint { display: block; margin-top: 1px; color: #8facaa; font-size: .62rem; line-height: 1; }
+.wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #dcebe5; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #ffffff; color: #3f5f58; font-size: .92rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
+.wallet-input::placeholder, .small-input::placeholder { color: #aebfba; font-weight: 500; }
 .small-input { padding: 0 11px; font-size: .84rem; }
-.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 0 13px; border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #6f5a54; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.86); }
+.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 0 13px; border: 1px solid #dcebe5; border-radius: var(--wallet-control-radius); background: #ffffff; color: #3f5f58; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
 .calendar-icon-styled { width: 30px; height: 30px; flex: 0 0 30px; display: flex; align-items: center; justify-content: center; }
 .calendar-icon-styled svg { display: block; width: 26px; height: 26px; }
 #exp-time-picker-host { width: 100%; }
@@ -1146,23 +1157,29 @@ color: #fff;
 font-size: .9rem;
 font-weight: 800;
 }
-.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #eecfc6; border-radius: var(--wallet-control-radius); padding: 0; background: #fff7f2; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.7), 0 2px 7px rgba(209,122,109,.07); }
+.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #d8e8e1; border-radius: var(--wallet-control-radius); padding: 0; background: #ffffff; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #426b61; font-size: .78rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82), 0 3px 9px rgba(92,128,117,.08); }
 .category-select .cat-icon-sm { width: 100%; height: 100%; flex: 0 0 100%; border-radius: calc(var(--wallet-control-radius) - 1px); }
-.category-menu { position: absolute; top: 100%; left: 0; z-index: 100; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 250px; max-width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--card-border); border-radius: 20px; background: #fffbf9; box-shadow: 0 10px 30px rgba(141,110,99,.15); }
-.cat-item { min-height: 66px; border: 0; border-radius: 14px; background: transparent; padding: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #9a7b72; font-size: .68rem; font-weight: 900; }
+.category-menu { position: absolute; top: 100%; left: 0; z-index: 100; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 250px; max-width: 100%; margin-top: 8px; padding: 12px; border: 1px solid #d8e8e1; border-radius: 20px; background: #fbfffd; box-shadow: 0 12px 30px rgba(74,111,101,.14); }
+.cat-item { min-height: 66px; border: 0; border-radius: 14px; background: transparent; padding: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #426b61; font-size: .68rem; font-weight: 900; }
 .cat-item .cat-icon-sm { width: 38px; height: 38px; flex: 0 0 38px; }
 .cat-item-label { line-height: 1; }
-.cat-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; line-height: 1; filter: saturate(.72); }
+.cat-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; line-height: 1; filter: saturate(1.08); }
 .cat-icon-sm, .cat-icon-md { width: 100%; height: 100%; font-size: 1.45rem; }
-.tone-eat { background: #ffe9e6; } .tone-stay { background: #efe7ff; } .tone-traffic { background: #e8f2ff; } .tone-ticket { background: #fff2de; }
+.tone-eat { background: linear-gradient(180deg, #fff3b0 0%, #ffd66b 100%); box-shadow: inset 0 0 0 1px rgba(163,109,20,.16); } .tone-stay { background: #efe7ff; } .tone-traffic { background: #e8f2ff; } .tone-ticket { background: #fff2de; }
 .tone-gift { background: #ffe8f2; } .tone-shopping { background: #e9f7f5; } .tone-fun { background: #fff0e5; } .tone-other { background: #f2eefb; }
-.toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #f6e9e4; }
-.toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #b89a92; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
-.toggle-btn.active { background: #fffdfb; color: #d37469; font-weight: 900; box-shadow: 0 2px 7px rgba(209,122,109,.07); }
-.currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #eecfc6; border-radius: var(--wallet-control-radius); background: #fff8f4; color: #9b6a61; font-size: .86rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.72), 0 2px 7px rgba(209,122,109,.07); }
-.currency-switch.active-jpy { background: #fff1ea; color: #c96c62; border-color: #eabdb4; }
+.toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #edf5f1; }
+.toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #78958d; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.toggle-btn.active { background: #ffffff; color: #1f7a72; font-weight: 900; box-shadow: 0 3px 9px rgba(58,126,115,.1); }
+.currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #d5e8e2; border-radius: var(--wallet-control-radius); background: #ffffff; color: #426b61; font-size: .86rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82), 0 3px 9px rgba(92,128,117,.08); }
+.currency-switch.active-jpy { background: linear-gradient(180deg, #e6faf5 0%, #c9f0e8 100%); color: #0f6f68; border-color: #7bc6b7; box-shadow: inset 0 0 0 1px rgba(255,255,255,.75), 0 4px 10px rgba(31,122,114,.14); }
+#topup-area .currency-switch.active-jpy {
+background: linear-gradient(180deg, #1f8f83 0%, #0f6f68 100%);
+color: #ffffff;
+border-color: #0b5f59;
+box-shadow: inset 0 0 0 1px rgba(255,255,255,.22), 0 5px 14px rgba(15,111,104,.22);
+}
 .currency-switch.active-twd { background: #f0f7f3; color: #6d8f6b; border-color: #d8eadf; }
-#both-input-area { display: none; margin-bottom: 8px; padding: 8px 10px; border: 1px dashed #e8bbb2; border-radius: 13px; background: #fffaf7; }
+#both-input-area { display: none; margin-bottom: 8px; padding: 8px 10px; border: 1px dashed #9ed2c6; border-radius: 13px; background: #f4fbf8; }
 .both-flex { display: flex; gap: 8px; }
 .summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; margin-top: 0; margin-bottom: 12px; padding-bottom: 0; border-bottom: 0; }
 .summary-btn { min-height: 40px; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; color: var(--main-brown); font-size: .82rem; font-weight: 900; white-space: nowrap; }
@@ -1171,15 +1188,15 @@ position: static;
 flex: 0 0 auto;
 min-width: 104px;
 padding: 7px 10px;
-border: 1px solid #f2e2dc;
+border: 1px solid #d5e8e2;
 border-radius: 15px;
-background: #fffaf7;
-color: #8d6e63;
+background: #f4fbf8;
+color: #426b61;
 text-align: center;
 align-self: center;
 }
 .fund-balance-label { display: none; }
-.fund-balance-main { margin-top: 0; color: #6d8f6b; font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.fund-balance-main { margin-top: 0; color: #1f7a72; font-size: .78rem; font-weight: 900; white-space: nowrap; }
 .fund-balance-sub { display: none; }
 .topup-area { display: none; }
 .topup-flex { display: flex; gap: 8px; margin-bottom: 10px; }
@@ -1400,21 +1417,38 @@ word-break: normal;
 overflow-wrap: anywhere;
 }
 .flight-airport-code {
-display: block;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
 color: #6f5952;
 font-size: 1.18rem;
 font-weight: 900;
 line-height: 1.08;
 letter-spacing: 0;
 }
+.flight-airport-terminal {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-width: 24px;
+padding: 2px 6px;
+border-radius: 999px;
+background: #fff0ea;
+color: #b87568;
+font-size: .68rem;
+font-weight: 900;
+line-height: 1;
+vertical-align: .12em;
+}
 .flight-airport-detail {
 display: block;
-margin-top: 5px;
+margin-top: 6px;
 color: #8d7068;
 font-size: .72rem;
 font-weight: 800;
 line-height: 1.25;
-white-space: nowrap;
+white-space: normal;
 }
 .flight-route-time {
 margin-top: 5px;
@@ -1435,9 +1469,9 @@ margin-top: 8px;
 .flight-table-label,
 .flight-table-cell {
 min-width: 0;
-padding: 5px 6px;
+padding: 3px 6px;
 font-size: .8rem;
-line-height: 1.35;
+line-height: 1.22;
 }
 .flight-table-head {
 color: #8d6e63;
@@ -1813,6 +1847,21 @@ margin: 8px 0 8px;
 }
 .photo-preview-item img { width: 100%; max-height: 320px; object-fit: cover; display: block; }
 body:not(.edit-mode) .photo-preview-item {
+cursor: zoom-in;
+}
+.note-inline-image {
+margin: 12px 0 14px;
+overflow: hidden;
+border: 1px solid #f0e6e2;
+border-radius: 18px;
+background: #fff;
+box-shadow: 0 8px 18px rgba(141,110,99,.08);
+}
+.note-inline-image img {
+display: block;
+width: 100%;
+max-height: 320px;
+object-fit: cover;
 cursor: zoom-in;
 }
 .photo-remove-btn {
@@ -2471,6 +2520,8 @@ let savedNoteColorRange = null;
 let noteColorPaletteOpenedAt = 0;
 let currentNoteTextColor = '';
 let preloadedDiscardPig = null;
+const preloadedImages = new Map();
+const FLIGHT_DETAIL_IMAGE_SOURCES = ['wallet-corner-friends.png', 'flight-return-corner-friends.png', 'goodboy.png', 'goodgirl.png'];
 let dayDragState = null;
 let dateClickSuppressedUntil = 0;
 let pendingAlertConfirm = null;
@@ -2724,7 +2775,7 @@ return Boolean(editingId || title || amount || big || small || topupBig || topup
 }
 function closeWalletModal() {
 if (hasWalletDraft()) {
-showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">這筆還沒存～\n退出會清空內容喔</span><img class="alert-stack-pig" src="wallet-unsaved-pig-inline.png" alt="未存檔提醒小豬"></span>', () => {
+showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">這筆還沒存～\n退出會清空內容喔</span><img class="alert-stack-pig wallet-unsaved-pig" src="wallet-unsaved-pig-inline-hd.png" alt="未存檔提醒小豬"></span>', () => {
 resetExpenseForm();
 closeModal('wallet-modal');
 });
@@ -3547,6 +3598,14 @@ walk(child);
 walk(wrapper);
 return wrapper.innerHTML;
 }
+function renderNoteTextViewHtml(block) {
+let html = linkifyRichHtml(block.html || plainTextToHtml(block.text));
+if (html.includes('三、 儀式第一步：手水舍') && html.includes('1. 第一階段：向神使祈願') && !html.includes('washhandforge.jpg')) {
+const imageHtml = '<figure class="note-inline-image"><img src="washhandforge.jpg" alt="二見興玉神社手水舍祈願蛙" onclick="openImagePreview(event, this)"></figure>';
+html = html.replace('原則：<br><br><b>1. 第一階段：向神使祈願', `原則：<br><br>${imageHtml}<b>1. 第一階段：向神使祈願`);
+}
+return html;
+}
 function getNoteBlocks(card) {
 const fields = getDetailFields(card);
 const blocks = [];
@@ -3591,8 +3650,12 @@ function formatFlightAirportPlace(value) {
 const text = String(value || '').trim();
 const match = text.match(/^([A-Z]{3})\s*(.*)$/);
 if (!match) return escapeHtml(text);
-const detail = match[2].trim().replace(/\s*(T\d+)$/, ' $1');
-return `<span class="flight-airport-code">${escapeHtml(match[1])}</span>${detail ? `<span class="flight-airport-detail">${escapeHtml(detail)}</span>` : ''}`;
+const detailRaw = match[2].trim();
+const terminalMatch = detailRaw.match(/\s*(T\d+)$/i);
+const terminal = terminalMatch ? terminalMatch[1].toUpperCase() : '';
+const detail = terminal ? detailRaw.slice(0, terminalMatch.index).trim() : detailRaw;
+const terminalHtml = terminal ? `<span class="flight-airport-terminal">${escapeHtml(terminal)}</span>` : '';
+return `<span class="flight-airport-code">${escapeHtml(match[1])}${terminalHtml}</span>${detail ? `<span class="flight-airport-detail">${escapeHtml(detail)}</span>` : ''}`;
 }
 function renderFlightInfoRows(lines, editable = false) {
 return lines.map(line => {
@@ -3657,7 +3720,7 @@ return;
 }
 const blocksHtml = blocks.map((block, blockIndex) => {
 if (block.type === 'image') return `<div class="note-block photo-preview-item" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}"><img src="${escapeHtml(block.src)}" alt="行程照片" onclick="openImagePreview(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button>` : ''}</div>`;
-if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${linkifyRichHtml(block.html || plainTextToHtml(block.text))}</div></div>`;
+if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
 const isAfterImageEmpty = prevBlock?.type === 'image' && !stripHtml(block.html || '').trim();
 const placeholder = isAfterImageEmpty ? '可以繼續書寫文字，或再插入圖片' : '';
@@ -4076,7 +4139,7 @@ setDetailFields(currentDetailCard, fields);
 renderDetailFields();
 updateMoreInfoButtons();
 }
-function openItineraryDetail(event, btn) {
+async function openItineraryDetail(event, btn) {
 if (event) {
 event.preventDefault();
 event.stopPropagation();
@@ -4094,6 +4157,7 @@ const flightPairKey = isFlight ? getLockedFlightPairKey(currentDetailCard) : '';
 detailTitle.textContent = isFlight ? (flightPairKey === 'IT207' ? '回程航班備忘' : '去程航班備忘') : '行程介紹';
 document.querySelector('#itinerary-detail-modal .modal-btn-primary').textContent = '儲存介紹';
 document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode && !isFlight ? 'block' : 'none';
+if (isFlight) await warmFlightDetailImages(flightPairKey);
 renderDetailFields();
 openSimpleModal('itinerary-detail-modal');
 resetItineraryDetailScroll();
@@ -4387,12 +4451,26 @@ btn.textContent = isEdit ? (isFlight ? '' : '寫點什麼吧') : (isFlight ? '�
 updateMoreInfoButtons();
 }
 function warmDiscardPigImage() {
-if (!preloadedDiscardPig) {
-preloadedDiscardPig = new Image();
-preloadedDiscardPig.decoding = 'async';
-preloadedDiscardPig.src = 'discard-unsaved-pig.png';
-}
+if (!preloadedDiscardPig) preloadedDiscardPig = warmImage('discard-unsaved-pig.png');
 preloadedDiscardPig.decode?.().catch(() => {});
+}
+function warmImage(src) {
+if (preloadedImages.has(src)) return preloadedImages.get(src);
+const img = new Image();
+img.decoding = 'async';
+img.loading = 'eager';
+img.src = src;
+preloadedImages.set(src, img);
+return img;
+}
+function warmImages(sources) {
+return Promise.all(sources.map(src => warmImage(src).decode?.().catch(() => {}) || Promise.resolve()));
+}
+function warmFlightDetailImages(flightPairKey = '') {
+const sources = ['goodboy.png', 'goodgirl.png'];
+if (flightPairKey === 'IT206') sources.push('wallet-corner-friends.png');
+if (flightPairKey === 'IT207') sources.push('flight-return-corner-friends.png');
+return warmImages(sources);
 }
 function saveEditChanges() {
 toggleEditMode(false);
@@ -5840,12 +5918,13 @@ window.addEventListener('DOMContentLoaded', () => {
     'missing-title-pig-v2-inline.png',
     'invalid-amount-pig-inline.png',
     'fund-topup-success-pig-inline.png',
-    'wallet-unsaved-pig-inline.png',
+    'wallet-unsaved-pig-inline-hd.png',
     'discard-unsaved-pig.png'
-  ].forEach((src) => {
-    const img = new Image();
-    img.decoding = 'async';
-    img.src = src;
+  ].concat(FLIGHT_DETAIL_IMAGE_SOURCES)
+  .filter((src, index, list) => list.indexOf(src) === index)
+  .forEach((src) => {
+    const img = warmImage(src);
+    img.decode?.().catch(() => {});
     if (src === 'discard-unsaved-pig.png') preloadedDiscardPig = img;
   });
 });
