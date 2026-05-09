@@ -1288,7 +1288,7 @@ color: #775f58;
 .flight-ticket-hero {
 display: flex;
 align-items: center;
-justify-content: flex-start;
+justify-content: center;
 gap: 8px;
 background: transparent;
 box-shadow: none;
@@ -1328,12 +1328,12 @@ order: 2;
 }
 .flight-route-cards {
     display: flex;       /* 改成 flex 佈局 */
-    align-items: center; /* 讓內容通通垂直置中對齊 */
+    align-items: flex-start;
     justify-content: flex-start;
-    gap: 9px;            /* 控制文字與線的間距 */
+    gap: 10px;           /* 控制文字與線的間距 */
     position: relative;
     width: 58%;
-    min-height: 116px;
+    min-height: 122px;
     box-sizing: border-box;
     padding-bottom: 13px;
     border-bottom: 1px dashed #eadbd4;
@@ -1342,7 +1342,7 @@ order: 2;
     content: '';
     position: static;    /* 拿掉絕對定位 */
     order: 2;            /* 讓它排在第 2 位（中間） */
-    width: 25px;         /* 橫線寬度 */
+    width: 20px;         /* 橫線寬度 */
     height: 2px;         /* 橫線厚度 */
     background: #eadbd4;
     border-radius: 999px;
@@ -1360,7 +1360,8 @@ box-shadow: none;
 .flight-route-card {
 display: block;
 min-width: 0;
-max-width: 84px;
+max-width: 88px;
+text-align: center;
 }
 .flight-route-cards .flight-route-card:first-child {
     order: 1;
@@ -1383,7 +1384,7 @@ font-weight: 900;
 line-height: 1.15;
 }
 .flight-route-label {
-margin-bottom: 0;
+margin-bottom: 7px;
 }
 .flight-route-place {
 color: #6f5952;
@@ -1402,11 +1403,12 @@ letter-spacing: 0;
 }
 .flight-airport-detail {
 display: block;
-margin-top: 4px;
+margin-top: 5px;
 color: #8d7068;
-font-size: .74rem;
+font-size: .72rem;
 font-weight: 800;
-line-height: 1.35;
+line-height: 1.25;
+white-space: nowrap;
 }
 .flight-route-time {
 margin-top: 5px;
@@ -1488,7 +1490,7 @@ outline: 2px solid rgba(209,122,109,.34);
 .flight-corner-illustration {
 position: absolute;
 right: 0;
-top: 66px;
+top: 58px;
 bottom: auto;
 z-index: 2;
 width: 136px;
@@ -1513,7 +1515,7 @@ display: block;
 }
 .flight-corner-illustration {
 right: -2px;
-top: 66px;
+top: 58px;
 bottom: auto;
 width: 128px;
 }
@@ -2304,8 +2306,8 @@ main { padding: 0 14px; }
 <div id="floating-menu" class="floating-menu">
 <div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon">✏️</div></div>
 <div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon">🎒</div></div>
-<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon">📁</div></div>
 <div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon">🧺</div></div>
+<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon">📁</div></div>
 <div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon">👛</div></div>
 </div>
 <button id="main-btn" class="float-icon main-piggy btn-press-effect" type="button" aria-label="開啟小豬選單" onpointerup="handlePiggyMenuPointer(event)" onclick="handlePiggyMenuClick(event)"><img src="piggy-main.png" alt="小豬選單"></button>
@@ -3533,7 +3535,7 @@ function formatFlightAirportPlace(value) {
 const text = String(value || '').trim();
 const match = text.match(/^([A-Z]{3})\s*(.*)$/);
 if (!match) return escapeHtml(text);
-const detail = match[2].trim();
+const detail = match[2].trim().replace(/\s*(T\d+)$/, ' $1');
 return `<span class="flight-airport-code">${escapeHtml(match[1])}</span>${detail ? `<span class="flight-airport-detail">${escapeHtml(detail)}</span>` : ''}`;
 }
 function renderFlightInfoRows(lines, editable = false) {
