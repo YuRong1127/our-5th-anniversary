@@ -999,7 +999,7 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 }
 .modal-close-btn { position: absolute; top: 2px; right: 2px; z-index: 1010; padding: 12px; }
 .modal-close-circle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: var(--heart-pink); box-shadow: 0 2px 10px rgba(0,0,0,.1); }
-.modal-btn-primary { width: 100%; border: 0; border-radius: 20px; padding: 18px 24px; background: var(--heart-pink); color: #fff; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.25); }
+.modal-btn-primary { width: 100%; border: 0; border-radius: 20px; padding: 18px 24px; appearance: none; -webkit-appearance: none; background: var(--heart-pink); background-clip: padding-box; color: #fff; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.25); overflow: hidden; }
 #wallet-modal .modal-btn-primary { background: #b87568; box-shadow: 0 5px 14px rgba(184,117,104,.18); }
 #password-modal .modal-content {
 border-color: #f5dfd9;
@@ -1045,23 +1045,34 @@ display: none;
 border: 0;
 border-radius: 20px;
 padding: 18px 18px;
+appearance: none;
+-webkit-appearance: none;
 background: var(--cancel-bg);
+background-clip: padding-box;
 color: var(--main-brown);
 font-size: 1.05rem;
 font-weight: 900;
+overflow: hidden;
+}
+#alert-primary-btn::before,
+#alert-primary-btn::after,
+#alert-cancel-btn::before,
+#alert-cancel-btn::after {
+content: none;
+display: none;
 }
 
 
 
 
 .wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 12px 13px 13px; border: 1px solid #f0ded8; border-radius: 18px; background: linear-gradient(180deg, #fffefd 0%, #fff8f4 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 8px 20px rgba(141,110,99,.07); }
-.wallet-label { display: block; margin: 7px 0 4px 3px; color: #9b6a61; font-size: .73rem; font-weight: 900; }
+.wallet-label { display: flex; align-items: baseline; gap: 3px; margin: 7px 0 4px 3px; color: #9b6a61; font-size: .73rem; font-weight: 900; white-space: nowrap; }
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
 .wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
 .wallet-split-labels { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 8px; align-items: center; margin: 7px 0 4px 3px; color: #9b6a61; font-size: .73rem; font-weight: 900; line-height: 1; }
 .wallet-split-labels > span:first-child { display: inline-flex; align-items: baseline; gap: 3px; white-space: nowrap; }
 .wallet-split-labels .wallet-label-hint { display: inline-flex; flex: 0 0 auto; margin: 0; font-size: .6rem; vertical-align: baseline; }
-.wallet-label-hint { display: block; margin-top: 1px; color: #c7aaa1; font-size: .62rem; line-height: 1; }
+.wallet-label-hint { display: inline-flex; flex: 0 0 auto; margin-top: 0; color: #c7aaa1; font-size: .62rem; line-height: 1; }
 .wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #6f5a54; font-size: .92rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
 .wallet-input::placeholder, .small-input::placeholder { color: #d3c3be; font-weight: 500; }
 .small-input { padding: 0 11px; font-size: .84rem; }
@@ -1280,7 +1291,10 @@ align-self: center;
 .fund-balance-main { margin-top: 0; color: #8f817a; font-size: .78rem; font-weight: 900; white-space: nowrap; }
 .fund-balance-sub { display: none; }
 .topup-area { display: none; }
-.topup-flex { display: flex; gap: 8px; margin-bottom: 10px; }
+.topup-flex { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 2px 0 12px; }
+.topup-flex > div { min-width: 0; }
+.topup-flex .wallet-label { margin: 0 0 5px 2px !important; font-size: .66rem !important; }
+.topup-flex .small-input { height: 40px; padding: 0 12px; }
 .note-page {
 padding: 16px 14px 18px;
 border: 1px solid #f2e6e1;
