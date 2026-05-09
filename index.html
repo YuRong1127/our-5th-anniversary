@@ -1317,25 +1317,23 @@ font-weight: 900;
 white-space: nowrap;
 }
 .flight-route-cards {
-display: grid;
-grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-gap: 18px;
-position: relative;
-padding-bottom: 13px;
-border-bottom: 1px dashed #eadbd4;
+    display: flex;       /* 改成 flex 佈局 */
+    align-items: center; /* 讓內容通通垂直置中對齊 */
+    justify-content: center;
+    gap: 12px;           /* 控制文字與線的間距 */
+    position: relative;
+    padding-bottom: 13px;
+    border-bottom: 1px dashed #eadbd4;
 }
 .flight-route-cards::before {
     content: '';
-    position: absolute;
-    /* 修正單位錯誤，並微調位置 */
-    left: 50%;
-    transform: translateX(-50%); /* 讓線條水平絕對置中 */
-    top: 35px;
-    width: 30px; /* 橫線的長度 */
-    height: 2px;
-    border-radius: 999px;
+    position: static;    /* 拿掉絕對定位 */
+    order: 2;            /* 讓它排在第 2 位（中間） */
+    width: 25px;         /* 橫線寬度 */
+    height: 2px;         /* 橫線厚度 */
     background: #eadbd4;
-    z-index: 1;
+    border-radius: 999px;
+    flex-shrink: 0;      /* 防止橫線被文字壓扁 */
 }
 .flight-route-card,
 .flight-info-soft-card {
@@ -1350,7 +1348,12 @@ box-shadow: none;
 display: block;
 min-width: 0;
 max-width: 100px;
-margin: 0 auto;
+}
+.flight-route-cards .flight-route-card:first-child {
+    order: 1;
+}
+.flight-route-cards .flight-route-card:last-child {
+    order: 3;
 }
 .flight-route-label,
 .flight-section-title {
