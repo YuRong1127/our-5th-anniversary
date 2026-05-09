@@ -927,7 +927,7 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 .modal-close-btn { position: absolute; top: 2px; right: 2px; z-index: 1010; padding: 12px; }
 .modal-close-circle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: var(--heart-pink); box-shadow: 0 2px 10px rgba(0,0,0,.1); }
 .modal-btn-primary { width: 100%; border: 0; border-radius: 20px; padding: 18px 24px; background: var(--heart-pink); color: #fff; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.25); }
-#wallet-modal .modal-btn-primary { box-shadow: none; }
+#wallet-modal .modal-btn-primary { background: #d9786d; box-shadow: none; }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
 #alert-modal .modal-content { align-items: center; text-align: center; }
 #alert-modal .modal-title { margin-bottom: 0; }
@@ -959,18 +959,18 @@ font-weight: 900;
 
 
 
-.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 12px 13px 13px; border: 1px solid #ecd8d1; border-radius: 18px; background: linear-gradient(180deg, #fff7f3 0%, #fff3ee 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.82), 0 6px 18px rgba(141,110,99,.045); }
-.wallet-label { display: block; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; }
+.wallet-card { --wallet-control-height: 46px; --wallet-control-radius: 16px; padding: 12px 13px 13px; border: 1px solid #f2ddd6; border-radius: 18px; background: linear-gradient(180deg, #fffaf7 0%, #fff5f1 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 6px 18px rgba(209,122,109,.045); }
+.wallet-label { display: block; margin: 7px 0 4px 3px; color: #a9776f; font-size: .73rem; font-weight: 900; }
 .wallet-card > .wallet-label:first-child { margin-top: 0; }
 .wallet-input-group { position: relative; display: flex; align-items: stretch; min-width: 0; gap: 8px; margin-bottom: 8px; }
 .wallet-split-labels { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 8px; align-items: center; margin: 7px 0 4px 3px; color: #a67c71; font-size: .73rem; font-weight: 900; line-height: 1; }
 .wallet-split-labels > span:first-child { display: inline-flex; align-items: baseline; gap: 3px; white-space: nowrap; }
 .wallet-split-labels .wallet-label-hint { display: inline-flex; flex: 0 0 auto; margin: 0; font-size: .6rem; vertical-align: baseline; }
 .wallet-label-hint { display: block; margin-top: 1px; color: #c7aaa1; font-size: .62rem; line-height: 1; }
-.wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #efdcd5; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fff9f5; color: #705b55; font-size: .92rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.72); }
-.wallet-input::placeholder, .small-input::placeholder { color: #cdb9b2; font-weight: 500; }
+.wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #6f5a54; font-size: .92rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.86); }
+.wallet-input::placeholder, .small-input::placeholder { color: #d3c3be; font-weight: 500; }
 .small-input { padding: 0 11px; font-size: .84rem; }
-.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 0 13px; border: 1px solid #efdcd5; border-radius: var(--wallet-control-radius); background: #fff9f5; color: #705b55; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.72); }
+.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 0 13px; border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #6f5a54; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.86); }
 .calendar-icon-styled { width: 30px; height: 30px; flex: 0 0 30px; display: flex; align-items: center; justify-content: center; }
 .calendar-icon-styled svg { display: block; width: 26px; height: 26px; }
 #exp-time-picker-host { width: 100%; }
@@ -979,15 +979,15 @@ position: static !important;
 width: 100% !important;
 max-width: 100% !important;
 margin: 8px 0 18px;
-border: 1px solid #efdcd5 !important;
+border: 1px solid #f0ded8 !important;
 border-radius: 24px !important;
-background: #fff8f4 !important;
-box-shadow: 0 10px 30px rgba(141,110,99,.10) !important;
+background: #fffaf7 !important;
+box-shadow: 0 10px 28px rgba(209,122,109,.08) !important;
 font-family: 'Noto Sans TC', sans-serif;
 font-size: 13px !important;
 }
 #wallet-modal .flatpickr-calendar:not(.open) { display: none; }
-#wallet-modal .flatpickr-months { background: #fff0ea !important; border-radius: 24px 24px 0 0; }
+#wallet-modal .flatpickr-months { background: #fff3ef !important; border-radius: 24px 24px 0 0; }
 #wallet-modal .flatpickr-months .flatpickr-month {
 height: 48px !important;
 }
@@ -1081,8 +1081,8 @@ justify-content: center !important;
 gap: 6px;
 box-sizing: border-box;
 padding: 6px 14px;
-border-top-color: #efdcd5 !important;
-background: #fff5f0;
+border-top-color: #f0ded8 !important;
+background: #fff7f3;
 }
 #wallet-modal .flatpickr-time .numInputWrapper {
 height: 38px !important;
@@ -1136,8 +1136,8 @@ outline: 0;
 }
 #wallet-modal .fp-confirm-wrap {
 padding: 10px 12px 12px;
-border-top: 1px solid #efdcd5;
-background: #fff8f4;
+border-top: 1px solid #f0ded8;
+background: #fffaf7;
 }
 #wallet-modal .fp-confirm-btn {
 width: 100%;
@@ -1149,7 +1149,7 @@ color: #fff;
 font-size: .9rem;
 font-weight: 800;
 }
-.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #efdcd5; border-radius: var(--wallet-control-radius); padding: 0; background: #fff9f5; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); padding: 0; background: #fffdfb; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; }
 .category-select .cat-icon-sm { width: 100%; height: 100%; flex: 0 0 100%; border-radius: calc(var(--wallet-control-radius) - 1px); }
 .category-menu { position: absolute; top: 100%; left: 0; z-index: 100; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 250px; max-width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--card-border); border-radius: 20px; background: #fffbf9; box-shadow: 0 10px 30px rgba(141,110,99,.15); }
 .cat-item { min-height: 66px; border: 0; border-radius: 14px; background: transparent; padding: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #9a7b72; font-size: .68rem; font-weight: 900; }
@@ -1159,13 +1159,13 @@ font-weight: 800;
 .cat-icon-sm, .cat-icon-md { width: 100%; height: 100%; font-size: 1.45rem; }
 .tone-eat { background: #ffe9e6; } .tone-stay { background: #efe7ff; } .tone-traffic { background: #e8f2ff; } .tone-ticket { background: #fff2de; }
 .tone-gift { background: #ffe8f2; } .tone-shopping { background: #e9f7f5; } .tone-fun { background: #fff0e5; } .tone-other { background: #f2eefb; }
-.toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #f3e4de; }
-.toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #b89d95; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
-.toggle-btn.active { background: #fff9f5; color: var(--heart-pink); font-weight: 900; box-shadow: 0 2px 7px rgba(141,110,99,.06); }
-.currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #efdcd5; border-radius: var(--wallet-control-radius); background: #fff9f5; color: #9b6a61; font-size: .86rem; font-weight: 900; white-space: nowrap; }
-.currency-switch.active-jpy { background: #fff4ef; color: var(--heart-pink); border-color: #efcfc8; }
+.toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #f6e9e4; }
+.toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #b89a92; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.toggle-btn.active { background: #fffdfb; color: #d37469; font-weight: 900; box-shadow: 0 2px 7px rgba(209,122,109,.07); }
+.currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #9b6a61; font-size: .86rem; font-weight: 900; white-space: nowrap; }
+.currency-switch.active-jpy { background: #fff7f3; color: #d37469; border-color: #f0d1ca; }
 .currency-switch.active-twd { background: #f0f7f3; color: #6d8f6b; border-color: #d8eadf; }
-#both-input-area { display: none; margin-bottom: 8px; padding: 8px 10px; border: 1px dashed #e3b7ae; border-radius: 13px; background: #fff8f4; }
+#both-input-area { display: none; margin-bottom: 8px; padding: 8px 10px; border: 1px dashed #e8bbb2; border-radius: 13px; background: #fffaf7; }
 .both-flex { display: flex; gap: 8px; }
 .summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; margin-top: 0; margin-bottom: 12px; padding-bottom: 0; border-bottom: 0; }
 .summary-btn { min-height: 40px; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; color: var(--main-brown); font-size: .82rem; font-weight: 900; white-space: nowrap; }
@@ -1339,24 +1339,13 @@ order: 2;
 display: flex;
 align-items: flex-start;
 justify-content: flex-start;
-gap: 18px;
+gap: 9px;
 position: relative;
 width: 100%;
 min-height: 108px;
 box-sizing: border-box;
 padding: 0 124px 11px 0;
 border-bottom: 1px dashed #eadbd4;
-}
-.flight-route-cards::before {
-content: '';
-position: absolute;
-left: 87px;
-top: 31px;
-width: 30px;
-height: 2px;
-background: #eadbd4;
-border-radius: 999px;
-flex-shrink: 0;
 }
 .flight-route-card,
 .flight-info-soft-card {
@@ -1373,6 +1362,15 @@ min-width: 0;
 width: 92px;
 max-width: 92px;
 text-align: center;
+}
+.flight-route-line {
+order: 2;
+width: 30px;
+height: 2px;
+flex: 0 0 30px;
+margin-top: 38px;
+border-radius: 999px;
+background: #eadbd4;
 }
 .flight-route-cards .flight-route-card:first-child {
     order: 1;
@@ -1540,12 +1538,13 @@ width: 88px;
 max-width: 88px;
 }
 .flight-route-cards {
-gap: 14px;
+gap: 6px;
 padding-right: 116px;
 }
-.flight-route-cards::before {
-left: 80px;
-top: 31px;
+.flight-route-line {
+width: 24px;
+flex-basis: 24px;
+margin-top: 38px;
 }
 .flight-corner-illustration {
 right: 4px;
@@ -1994,6 +1993,9 @@ width: 28px;
 height: 28px;
 }
 .docs-hint { margin: -4px 2px 12px; color: #b79a91; font-size: .78rem; font-weight: 800; line-height: 1.55; text-align: center; }
+.docs-add-form { justify-content: center; margin-bottom: 16px; }
+.docs-add-btn { width: auto; min-width: 134px; height: 48px; flex: 0 0 auto; padding: 0 20px; border-radius: 18px; font-size: .92rem; display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.docs-add-btn .docs-add-plus { font-size: 1.25rem; line-height: 1; }
 .docs-list .wishlist-item { grid-template-columns: 42px minmax(0,1fr) 34px; cursor: pointer; position: relative; }
 .docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
 .docs-thumb.has-image { padding: 0; }
@@ -2322,7 +2324,7 @@ main { padding: 0 14px; }
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
 <div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 想買的哩哩扣扣</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
-<div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('docs-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📁 重要資料夾</div><div class="wishlist-form"><input type="text" id="docs-input" class="wishlist-input" placeholder="例如：名古屋飯店訂房憑證" onkeydown="handleDocsKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addDocItem()">＋</button><input type="file" id="docs-new-file-input" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="attachNewDocFile(event)"></div><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
+<div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('docs-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📁 重要資料夾</div><div class="wishlist-form docs-add-form"><button type="button" class="wishlist-add-btn docs-add-btn btn-press-effect" onclick="addDocItem()"><span class="docs-add-plus">＋</span><span>新增資料</span></button><input type="file" id="docs-new-file-input" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="attachNewDocFile(event)"></div><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 步行 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
@@ -3624,6 +3626,7 @@ return `<div class="flight-ticket-view ${editable ? 'is-editing' : ''}">
 <div class="flight-ticket-hero">${info.fare ? `<div class="flight-ticket-fare" data-flight-field="fare" ${canEdit}>${escapeHtml(info.fare)}</div>` : ''}<div class="flight-ticket-no" data-flight-field="flightNo" ${canEdit}>${escapeHtml(info.flightNo)}</div></div>
 <div class="flight-route-cards">
 <div class="flight-route-card"><div class="flight-route-label">出發</div><div class="flight-route-place" data-flight-field="departurePlace" ${canEdit}>${formatFlightAirportPlace(departure.place)}</div><div class="flight-route-time" data-flight-field="departureTime" ${canEdit}>${escapeHtml(departure.time)}</div></div>
+<div class="flight-route-line" aria-hidden="true"></div>
 <div class="flight-route-card"><div class="flight-route-label">抵達</div><div class="flight-route-place" data-flight-field="arrivalPlace" ${canEdit}>${formatFlightAirportPlace(arrival.place)}</div><div class="flight-route-time" data-flight-field="arrivalTime" ${canEdit}>${escapeHtml(arrival.time)}</div></div>
 </div>
 ${renderFlightInfoTable(info, editable)}
@@ -4570,6 +4573,10 @@ item.done = !item.done;
 renderWishlist();
 queueTripCloudSave();
 }
+function handleWishlistItemClick(event, id) {
+if (event.target.closest('button, input, label')) return;
+toggleWishlistItem(id);
+}
 function deleteWishlistItem(id) {
 const item = wishItems.find(wish => wish.id === id);
 if (!item) return;
@@ -4586,6 +4593,7 @@ function openWishlistImage(event, id) {
 if (event) {
 event.preventDefault();
 event.stopPropagation();
+if (event.stopImmediatePropagation) event.stopImmediatePropagation();
 }
 const item = wishItems.find(wish => wish.id === id);
 const src = item ? getWishlistImageSrc(item) : '';
@@ -4597,7 +4605,10 @@ document.getElementById('image-preview-img').src = src;
 openOverlayModal('image-preview-modal');
 }
 async function attachWishlistImage(id, event) {
-if (event) event.stopPropagation();
+if (event) {
+event.stopPropagation();
+if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+}
 const file = event.target.files && event.target.files[0];
 if (!file || !file.type.startsWith('image/')) return;
 const item = wishItems.find(wish => wish.id === id);
@@ -4621,11 +4632,11 @@ if (!items.length) {
 list.innerHTML = `<div class="wishlist-empty">這裡還空空的<br>可以先把${escapeHtml(currentWishlistCategory)}寫進來</div>`;
 return;
 }
-list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}" onclick="toggleWishlistItem(${item.id})">
+list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}" onclick="handleWishlistItemClick(event, ${item.id})">
 <button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${item.id})">${item.done ? '✓' : ''}</button>
 <div class="wishlist-name">${escapeHtml(item.title)}</div>
 <button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${item.id})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(getWishlistImageSrc(item))}" alt="${escapeHtml(item.title)}圖片">` : '📷'}</button>
-<input type="file" id="wishlist-photo-input-${item.id}" accept="image/*" style="display:none" onchange="attachWishlistImage(${item.id}, event)">
+<input type="file" id="wishlist-photo-input-${item.id}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistImage(${item.id}, event)">
 <button type="button" class="wishlist-delete btn-press-effect" onclick="event.stopPropagation(); deleteWishlistItem(${item.id})">×</button>
 </div>`).join('');
 }
@@ -4639,11 +4650,10 @@ function addDocItem() {
 document.getElementById('docs-new-file-input')?.click();
 }
 async function attachNewDocFile(event) {
-const input = document.getElementById('docs-input');
 const fileInput = event.target;
 const file = fileInput.files && fileInput.files[0];
 if (!file) return;
-const title = input.value.trim() || file.name.replace(/\.[^.]+$/, '');
+const title = file.name.replace(/\.[^.]+$/, '');
 const fileSrc = await readImageFile(file);
 docItems.unshift({
 id: Date.now(),
@@ -4653,17 +4663,9 @@ fileType: file.type || '',
 fileSrc,
 imageSrc: file.type.startsWith('image/') ? fileSrc : ''
 });
-input.value = '';
 fileInput.value = '';
 renderDocsFolder();
 queueTripCloudSave();
-input.focus();
-}
-function handleDocsKey(event) {
-if (event.key === 'Enter') {
-event.preventDefault();
-addDocItem();
-}
 }
 function deleteDocItem(id) {
 closeDocMenus();
