@@ -1289,14 +1289,14 @@ color: #775f58;
 display: flex;
 align-items: center;
 justify-content: center;
-gap: 10px;
+gap: 12px;
 background: transparent;
 box-shadow: none;
 border-bottom: none;
 position: absolute;
 left: 0;
 right: 0;
-top: -57px;
+top: -49px;
 padding: 0 10px;
 z-index: 10;
 }
@@ -1332,28 +1332,27 @@ white-space: nowrap;
 order: 2;
 }
 .flight-route-cards {
-    display: flex;       /* 改成 flex 佈局 */
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 8px;            /* 控制文字與線的間距 */
-    position: relative;
-    width: 58%;
-    min-height: 122px;
-    box-sizing: border-box;
-    padding-bottom: 13px;
-    border-bottom: 1px dashed #eadbd4;
+display: flex;
+align-items: flex-start;
+justify-content: flex-start;
+gap: 10px;
+position: relative;
+width: 100%;
+min-height: 108px;
+box-sizing: border-box;
+padding: 0 150px 11px 0;
+border-bottom: 1px dashed #eadbd4;
 }
 .flight-route-cards::before {
-    content: '';
-    position: absolute;
-    order: 2;            /* 讓它排在第 2 位（中間） */
-    left: 84px;
-    top: 47px;
-    width: 24px;         /* 橫線寬度 */
-    height: 2px;         /* 橫線厚度 */
-    background: #eadbd4;
-    border-radius: 999px;
-    flex-shrink: 0;      /* 防止橫線被文字壓扁 */
+content: '';
+position: absolute;
+left: 81px;
+top: 46px;
+width: 30px;
+height: 2px;
+background: #eadbd4;
+border-radius: 999px;
+flex-shrink: 0;
 }
 .flight-route-card,
 .flight-info-soft-card {
@@ -1431,7 +1430,7 @@ display: grid;
 grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
 gap: 0;
 align-items: center;
-margin-top: 4px;
+margin-top: 3px;
 }
 .flight-table-head,
 .flight-table-label,
@@ -1447,13 +1446,13 @@ font-weight: 900;
 text-align: center;
 }
 .flight-table-head.has-pig-img {
-padding-top: 2px;
-padding-bottom: 3px;
+padding-top: 0;
+padding-bottom: 1px;
 }
 .flight-table-head-img {
 display: block;
-width: 58px;
-height: 32px;
+width: 44px;
+height: 24px;
 object-fit: contain;
 margin: 0 auto;
 filter: drop-shadow(0 3px 6px rgba(112,91,85,.08));
@@ -1510,7 +1509,7 @@ outline: 2px solid rgba(209,122,109,.34);
 .flight-corner-illustration {
 position: absolute;
 right: 8px;
-top: 46px;
+top: 26px;
 bottom: auto;
 z-index: 2;
 width: 142px;
@@ -1523,6 +1522,7 @@ filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
 right: 4px;
 bottom: auto;
 width: 146px;
+top: 24px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 18px;
@@ -1535,7 +1535,7 @@ display: block;
 }
 .flight-corner-illustration {
 right: 4px;
-top: 48px;
+top: 28px;
 bottom: auto;
 width: 138px;
 }
@@ -1543,6 +1543,7 @@ width: 138px;
 right: 0;
 bottom: auto;
 width: 140px;
+top: 26px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 16px;
