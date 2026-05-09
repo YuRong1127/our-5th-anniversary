@@ -287,6 +287,53 @@ color: #d96b86;
 body.day-3-theme #day-3 .item-title {
 color: #76545a;
 }
+body.day-3-theme #wallet-modal .modal-content {
+border-color: #f7d8df;
+background: linear-gradient(180deg, #fff 0%, #fff7fa 100%);
+box-shadow: 0 14px 38px rgba(217,107,134,.14);
+}
+body.day-3-theme #wallet-modal .wallet-title-row .modal-title {
+color: #c95272;
+}
+body.day-3-theme #wallet-modal .wallet-card,
+body.day-3-theme #wallet-modal .fund-balance-card {
+border-color: #f6d4dc;
+background: linear-gradient(180deg, #fffefd 0%, #fff5f8 100%);
+box-shadow: inset 0 1px 0 rgba(255,255,255,.96), 0 10px 24px rgba(217,107,134,.1);
+}
+body.day-3-theme #wallet-modal .wallet-label,
+body.day-3-theme #wallet-modal .wallet-split-labels,
+body.day-3-theme #wallet-modal .fund-balance-main {
+color: #b76173;
+}
+body.day-3-theme #wallet-modal .wallet-input,
+body.day-3-theme #wallet-modal .small-input,
+body.day-3-theme #wallet-modal .custom-datetime-container,
+body.day-3-theme #wallet-modal .category-select {
+border-color: #f1cfd7;
+background: #fffdfd;
+color: #76545a;
+}
+body.day-3-theme #wallet-modal .toggle-group {
+background: #f8e5eb;
+}
+body.day-3-theme #wallet-modal .toggle-btn.active,
+body.day-3-theme #wallet-modal .currency-switch.active-jpy {
+background: #fffdfd;
+color: #c95272;
+border-color: #efcbd5;
+box-shadow: 0 3px 10px rgba(217,107,134,.1);
+}
+body.day-3-theme #wallet-modal .currency-switch.active-twd {
+background: #fff2f6;
+color: #b76173;
+border-color: #efcbd5;
+}
+body.day-3-theme #wallet-modal .modal-btn-primary,
+body.day-3-theme #wallet-modal .fp-confirm-btn {
+background: #d96b86;
+box-shadow: 0 5px 14px rgba(217,107,134,.22);
+}
 body.edit-mode .card { padding-right: 156px; }
 body:not(.edit-mode) .card:has(.more-info-btn:not(.is-empty)) { padding-right: 20px; }
 body:not(.edit-mode) .card:has(.more-info-btn:not(.is-empty)) .item-title { padding-right: 104px; }
@@ -1188,19 +1235,13 @@ font-weight: 800;
 .cat-item-label { line-height: 1; }
 .cat-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; line-height: 1; filter: saturate(1.08); }
 .cat-icon-sm, .cat-icon-md { width: 100%; height: 100%; font-size: 1.45rem; }
-.tone-eat { background: linear-gradient(180deg, #fff3b0 0%, #ffd66b 100%); box-shadow: inset 0 0 0 1px rgba(163,109,20,.16); } .tone-stay { background: #efe7ff; } .tone-traffic { background: #e8f2ff; } .tone-ticket { background: #fff2de; }
+.tone-eat { background: #fff2de; box-shadow: inset 0 0 0 1px rgba(216,180,126,.18); } .tone-stay { background: #efe7ff; } .tone-traffic { background: #e8f2ff; } .tone-ticket { background: #fff2de; }
 .tone-gift { background: #ffe8f2; } .tone-shopping { background: #e9f7f5; } .tone-fun { background: #fff0e5; } .tone-other { background: #f2eefb; }
 .toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #f6e9e4; }
 .toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #b89a92; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .toggle-btn.active { background: #fffdfb; color: #b55f63; font-weight: 900; box-shadow: 0 3px 9px rgba(181,95,99,.1); }
 .currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #8d6e63; font-size: .86rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82), 0 3px 9px rgba(141,110,99,.08); }
-.currency-switch.active-jpy { background: linear-gradient(180deg, #fff6d8 0%, #f5d88f 100%); color: #7a4e22; border-color: #dfbd75; box-shadow: inset 0 0 0 1px rgba(255,255,255,.72), 0 4px 10px rgba(159,107,35,.12); }
-#topup-area .currency-switch.active-jpy {
-background: linear-gradient(180deg, #b87568 0%, #8f5c55 100%);
-color: #ffffff;
-border-color: #7c4f49;
-box-shadow: inset 0 0 0 1px rgba(255,255,255,.2), 0 5px 14px rgba(143,92,85,.2);
-}
+.currency-switch.active-jpy { background: #fff1ef; color: #b87568; border-color: #f0d3cc; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82); }
 .currency-switch.active-twd { background: #f0f7f3; color: #6d8f6b; border-color: #d8eadf; }
 #both-input-area { display: none; margin-bottom: 8px; padding: 8px 10px; border: 1px dashed #e8bbb2; border-radius: 13px; background: #fffaf7; }
 .both-flex { display: flex; gap: 8px; }
@@ -1437,33 +1478,35 @@ color: #6f5952;
 font-weight: 900;
 line-height: 1.35;
 word-break: normal;
-overflow-wrap: anywhere;
+overflow-wrap: normal;
 }
 .flight-airport-code {
 display: inline-flex;
 align-items: center;
 justify-content: center;
-gap: 5px;
+gap: 4px;
 color: #6f5952;
 font-size: 1.18rem;
 font-weight: 900;
 line-height: 1.08;
 letter-spacing: 0;
+white-space: nowrap;
+word-break: keep-all;
 }
 .flight-airport-terminal {
-display: inline-flex;
+display: inline;
 align-items: center;
 justify-content: center;
-min-width: 24px;
-padding: 2px 6px;
-border-radius: 999px;
-border: 1px solid #ead7cf;
-background: #fff8f4;
-color: #8d6e63;
-font-size: .68rem;
+min-width: 0;
+padding: 0;
+border-radius: 0;
+border: 0;
+background: transparent;
+color: #b59a92;
+font-size: .58rem;
 font-weight: 900;
 line-height: 1;
-vertical-align: .12em;
+vertical-align: .18em;
 }
 .flight-airport-detail {
 display: block;
@@ -3629,8 +3672,10 @@ function renderNoteTextViewHtml(block) {
 let html = linkifyRichHtml(block.html || plainTextToHtml(block.text));
 return html;
 }
-function injectFutamiWashhandImageBlock(blocks) {
-if (!blocks.some(block => block.type === 'text' && String(block.text || stripHtml(block.html || '')).includes('三、 儀式第一步：手水舍'))) return blocks;
+function injectFutamiWashhandImageBlock(blocks, card) {
+const cardTitle = card?.querySelector('.item-title')?.textContent || '';
+if (!cardTitle.includes('二見清晨參拜') && !cardTitle.includes('夫妻岩')) return blocks;
+if (!blocks.some(block => block.type === 'text' && String(block.text || stripHtml(block.html || '')).includes('手水舍'))) return blocks;
 if (blocks.some(block => block.type === 'image' && String(block.src || '').includes('washhandforge.jpg'))) return blocks;
 const nextBlocks = [];
 let inserted = false;
@@ -3645,8 +3690,14 @@ const htmlIndex = html.indexOf(htmlMarker);
 const text = block.text || stripHtml(html);
 const textMarker = '1. 第一階段：向神使祈願';
 const textIndex = text.indexOf(textMarker);
-if (htmlIndex < 0 || textIndex < 0 || !html.includes('三、 儀式第一步：手水舍')) {
+if (!text.includes('手水舍')) {
 nextBlocks.push(block);
+return;
+}
+if (htmlIndex < 0 || textIndex < 0) {
+nextBlocks.push(block);
+nextBlocks.push({ type: 'image', src: 'washhandforge.jpg' });
+inserted = true;
 return;
 }
 const beforeHtml = html.slice(0, htmlIndex).replace(/(?:<br>\s*){0,2}$/i, '<br><br>');
@@ -3673,7 +3724,7 @@ if (fieldIndex < fields.length - 1 && fieldBlocks.length) {
 blocks.push({ type: 'text', text: '' });
 }
 });
-return blocks.length ? injectFutamiWashhandImageBlock(blocks) : [{ type: 'text', text: '' }];
+return blocks.length ? injectFutamiWashhandImageBlock(blocks, card) : [{ type: 'text', text: '' }];
 }
 function noteHasContent(card) {
 return getNoteBlocks(card).some(block => block.type === 'image' ? block.src : (block.text || '').trim());
