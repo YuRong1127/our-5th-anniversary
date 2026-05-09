@@ -505,6 +505,7 @@ box-shadow: 0 8px 20px rgba(141,110,99,.12);
 .floating-menu.show .menu-action:nth-child(2) { transition-delay: .05s; }
 .floating-menu.show .menu-action:nth-child(3) { transition-delay: .07s; }
 .floating-menu.show .menu-action:nth-child(4) { transition-delay: .09s; }
+.floating-menu.show .menu-action:nth-child(5) { transition-delay: .11s; }
 .add-itinerary-btn {
 position: fixed; right: 20px; bottom: 108px; z-index: 101;
 display: none; align-items: center; justify-content: center;
@@ -1190,8 +1191,8 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 24px rgba(141,110,99,.06);
 }
 .flight-detail-modal .note-page {
 position: relative;
-margin: 36px 2px 2px;
-padding: 22px 18px 52px;
+margin: 20px 2px 2px;
+padding: 22px 18px 18px;
 border: 7px solid transparent;
 border-radius: 13px;
 background:
@@ -1281,20 +1282,21 @@ z-index: 3;
 position: relative;
 z-index: 3;
 display: block;
+min-height: 350px;
 color: #775f58;
 }
 .flight-ticket-hero {
 display: flex;
 align-items: center;
-justify-content: space-between;
-gap: 10px;
+justify-content: flex-start;
+gap: 8px;
 background: transparent;
 box-shadow: none;
 border-bottom: none;
 position: absolute;
 left: 0;
 right: 0;
-top: -54px;
+top: -42px;
 padding: 0 8px;
 z-index: 10;
 }
@@ -1311,6 +1313,7 @@ font-size: .72rem;
 font-weight: 800;
 }
 .flight-ticket-fare {
+order: 1;
 flex: 0 0 auto;
 padding: 5px 10px;
 border-radius: 999px;
@@ -1320,6 +1323,9 @@ font-size: .72rem;
 font-weight: 900;
 white-space: nowrap;
 }
+.flight-ticket-no {
+order: 2;
+}
 .flight-route-cards {
     display: flex;       /* 改成 flex 佈局 */
     align-items: center; /* 讓內容通通垂直置中對齊 */
@@ -1327,7 +1333,7 @@ white-space: nowrap;
     gap: 9px;            /* 控制文字與線的間距 */
     position: relative;
     width: 58%;
-    min-height: 112px;
+    min-height: 126px;
     box-sizing: border-box;
     padding-bottom: 13px;
     border-bottom: 1px dashed #eadbd4;
@@ -1415,7 +1421,7 @@ display: grid;
 grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr);
 gap: 0;
 align-items: center;
-margin-top: 14px;
+margin-top: 8px;
 }
 .flight-table-head,
 .flight-table-label,
@@ -1482,7 +1488,7 @@ outline: 2px solid rgba(209,122,109,.34);
 .flight-corner-illustration {
 position: absolute;
 right: 0;
-top: 80px;
+top: 72px;
 bottom: auto;
 z-index: 2;
 width: 136px;
@@ -1498,7 +1504,7 @@ width: 142px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 18px;
-padding-bottom: 52px;
+padding-bottom: 18px;
 min-height: 0;
 }
 @media (max-width: 420px) {
@@ -1507,7 +1513,7 @@ display: block;
 }
 .flight-corner-illustration {
 right: -2px;
-top: 84px;
+top: 74px;
 bottom: auto;
 width: 128px;
 }
@@ -1518,7 +1524,7 @@ width: 132px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 16px;
-padding-bottom: 50px;
+padding-bottom: 18px;
 }
 }
 .note-page.is-editing {
@@ -1950,6 +1956,12 @@ line-height: 1.2;
 width: 28px;
 height: 28px;
 }
+.docs-hint { margin: -4px 2px 12px; color: #b79a91; font-size: .78rem; font-weight: 800; line-height: 1.55; text-align: center; }
+.docs-list .wishlist-item { grid-template-columns: 42px minmax(0,1fr) 42px 32px; cursor: default; }
+.docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1.05rem; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; }
+.docs-thumb.has-image { padding: 0; }
+.docs-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.docs-view-btn { width: 36px; height: 36px; border: 1px solid #f0d9d2; border-radius: 12px; background: #fff4ee; color: #b87568; font-size: .78rem; font-weight: 900; }
 .wishlist-photo-btn {
 width: 32px;
 height: 32px;
@@ -2267,6 +2279,7 @@ main { padding: 0 14px; }
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📊 統計</div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
 <div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 想買的哩哩扣扣</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
+<div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('docs-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📁 重要資料夾</div><div class="docs-hint">飯店預訂憑證、VJW 截圖、交通票券都可以先放這裡</div><div class="wishlist-form"><input type="text" id="docs-input" class="wishlist-input" placeholder="例如：名古屋飯店訂房憑證" onkeydown="handleDocsKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addDocItem()">＋</button></div><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><input type="text" id="route-plan-text" class="wishlist-input" placeholder="例如：近鐵特急 / 步行 8 分 / 巴士轉乘"><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
@@ -2291,6 +2304,7 @@ main { padding: 0 14px; }
 <div id="floating-menu" class="floating-menu">
 <div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon">✏️</div></div>
 <div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon">🎒</div></div>
+<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon">📁</div></div>
 <div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon">🧺</div></div>
 <div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon">👛</div></div>
 </div>
@@ -2345,6 +2359,10 @@ let prepItems = [
 { id: 206, category: '出行必備', title: '旅平險 / 不便險', done: false },
 { id: 207, category: '出行必備', title: '門票 / 交通卡', done: false },
 { id: 208, category: '出行必備', title: '填寫Visit Japan Web', done: false }
+];
+let docItems = [
+{ id: 301, title: 'VJW 截圖', imageSrc: '' },
+{ id: 302, title: '飯店預訂憑證', imageSrc: '' }
 ];
 const DEFAULT_PREP_ITEMS = [
 { id: 201, category: '出行必備', title: '護照 / ESIM', done: false },
@@ -4568,6 +4586,77 @@ list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'don
 <button type="button" class="wishlist-delete btn-press-effect" onclick="event.stopPropagation(); deleteWishlistItem(${item.id})">×</button>
 </div>`).join('');
 }
+function openDocsFolder() {
+closeMenu();
+renderDocsFolder();
+document.activeElement?.blur?.();
+openSimpleModal('docs-modal');
+}
+function addDocItem() {
+const input = document.getElementById('docs-input');
+const title = input.value.trim();
+if (!title) return showAlert('先幫這份資料取個名字吧 📁');
+docItems.unshift({ id: Date.now(), title, imageSrc: '' });
+input.value = '';
+renderDocsFolder();
+queueTripCloudSave();
+input.focus();
+}
+function handleDocsKey(event) {
+if (event.key === 'Enter') {
+event.preventDefault();
+addDocItem();
+}
+}
+function deleteDocItem(id) {
+const item = docItems.find(doc => doc.id === id);
+if (!item) return;
+showConfirmAlert(`要刪掉「${item.title}」嗎？\n裡面的截圖也會一起移除喔`, () => {
+docItems = docItems.filter(doc => doc.id !== id);
+renderDocsFolder();
+queueTripCloudSave();
+});
+}
+function openDocImage(event, id) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const item = docItems.find(doc => doc.id === id);
+if (!item) return;
+if (!item.imageSrc) {
+document.getElementById(`doc-photo-input-${id}`)?.click();
+return;
+}
+document.getElementById('image-preview-img').src = item.imageSrc;
+openOverlayModal('image-preview-modal');
+}
+async function attachDocImage(id, event) {
+if (event) event.stopPropagation();
+const file = event.target.files && event.target.files[0];
+if (!file || !file.type.startsWith('image/')) return;
+const item = docItems.find(doc => doc.id === id);
+if (!item) return;
+item.imageSrc = await readImageFile(file);
+event.target.value = '';
+renderDocsFolder();
+queueTripCloudSave();
+}
+function renderDocsFolder() {
+const list = document.getElementById('docs-list');
+if (!list) return;
+if (!docItems.length) {
+list.innerHTML = `<div class="wishlist-empty">重要資料夾還空空的<br>可以先新增飯店憑證或 VJW 截圖</div>`;
+return;
+}
+list.innerHTML = docItems.map(item => `<div class="wishlist-item">
+<button type="button" class="docs-thumb ${item.imageSrc ? 'has-image' : ''} btn-press-effect" aria-label="${item.imageSrc ? '查看圖片' : '新增圖片'}" onclick="openDocImage(event, ${item.id})">${item.imageSrc ? `<img src="${escapeHtml(item.imageSrc)}" alt="${escapeHtml(item.title)}">` : '📎'}</button>
+<div class="wishlist-name">${escapeHtml(item.title)}</div>
+<button type="button" class="docs-view-btn btn-press-effect" onclick="openDocImage(event, ${item.id})">${item.imageSrc ? '查看' : '上傳'}</button>
+<input type="file" id="doc-photo-input-${item.id}" accept="image/*" style="display:none" onchange="attachDocImage(${item.id}, event)">
+<button type="button" class="wishlist-delete btn-press-effect" onclick="deleteDocItem(${item.id})">×</button>
+</div>`).join('');
+}
 function openPrepList() {
 closeMenu();
 const addedDefaultPrepItems = normalizePrepItems();
@@ -5301,6 +5390,7 @@ expenses,
 wishItems,
 wishlistCategories: normalizeWishlistCategories(),
 prepItems,
+docItems,
 currentDay,
 updatedAt: new Date().toISOString()
 };
@@ -5406,6 +5496,7 @@ wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 wishlistCategories = Array.isArray(data.wishlistCategories) ? data.wishlistCategories : wishlistCategories;
 normalizeWishlistCategories();
 prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
+docItems = Array.isArray(data.docItems) ? data.docItems : docItems;
 const addedDefaultPrepItems = normalizePrepItems();
 
 if (Number.isInteger(data.currentDay) && hasManualDaySelection && isTripInProgress()) currentDay = data.currentDay;
@@ -5419,6 +5510,7 @@ updatePublicFundDisplay();
 renderExpenses();
 renderWishlist();
 renderPrepList();
+renderDocsFolder();
 
 editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
 editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
