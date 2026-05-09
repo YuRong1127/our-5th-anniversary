@@ -1325,16 +1325,17 @@ padding-bottom: 13px;
 border-bottom: 1px dashed #eadbd4;
 }
 .flight-route-cards::before {
-content: '';
-position: absolute;
-left:45%px;
-top: 35px;
-width: 10px;
-height: 2px;
-border-radius: 999px;
-background: #eadbd4;
-transform: none;
-z-index: 1;
+    content: '';
+    position: absolute;
+    /* 修正單位錯誤，並微調位置 */
+    left: 50%;
+    transform: translateX(-50%); /* 讓線條水平絕對置中 */
+    top: 35px;
+    width: 30px; /* 橫線的長度 */
+    height: 2px;
+    border-radius: 999px;
+    background: #eadbd4;
+    z-index: 1;
 }
 .flight-route-card,
 .flight-info-soft-card {
