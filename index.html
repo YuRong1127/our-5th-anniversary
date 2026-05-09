@@ -3578,7 +3578,7 @@ const departure = splitFlightRoute(info.departure);
 const arrival = splitFlightRoute(info.arrival);
 const canEdit = editable ? 'contenteditable="true"' : '';
 return `<div class="flight-ticket-view ${editable ? 'is-editing' : ''}">
-<div class="flight-ticket-hero"><div><div class="flight-ticket-no" data-flight-field="flightNo" ${canEdit}>${escapeHtml(info.flightNo)}</div></div>${info.fare ? `<div class="flight-ticket-fare" data-flight-field="fare" ${canEdit}>${escapeHtml(info.fare)}</div>` : ''}</div>
+<div class="flight-ticket-hero">${info.fare ? `<div class="flight-ticket-fare" data-flight-field="fare" ${canEdit}>${escapeHtml(info.fare)}</div>` : ''}<div class="flight-ticket-no" data-flight-field="flightNo" ${canEdit}>${escapeHtml(info.flightNo)}</div></div>
 <div class="flight-route-cards">
 <div class="flight-route-card"><div class="flight-route-label">出發</div><div class="flight-route-place" data-flight-field="departurePlace" ${canEdit}>${formatFlightAirportPlace(departure.place)}</div><div class="flight-route-time" data-flight-field="departureTime" ${canEdit}>${escapeHtml(departure.time)}</div></div>
 <div class="flight-route-card"><div class="flight-route-label">抵達</div><div class="flight-route-place" data-flight-field="arrivalPlace" ${canEdit}>${formatFlightAirportPlace(arrival.place)}</div><div class="flight-route-time" data-flight-field="arrivalTime" ${canEdit}>${escapeHtml(arrival.time)}</div></div>
