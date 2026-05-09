@@ -1289,7 +1289,7 @@ color: #775f58;
 display: flex;
 align-items: center;
 justify-content: center;
-gap: 8px;
+gap: 10px;
 background: transparent;
 box-shadow: none;
 border-bottom: none;
@@ -1302,9 +1302,9 @@ z-index: 10;
 }
 .flight-ticket-no {
 color: #b87568;
-font-size: 1.08rem;
+font-size: .98rem;
 font-weight: 900;
-line-height: 1.15;
+line-height: 24px;
 }
 .flight-ticket-sub {
 margin-top: 3px;
@@ -1315,12 +1315,17 @@ font-weight: 800;
 .flight-ticket-fare {
 order: 1;
 flex: 0 0 auto;
-padding: 5px 10px;
+height: 24px;
+box-sizing: border-box;
+display: inline-flex;
+align-items: center;
+padding: 0 10px;
 border-radius: 999px;
 background: #f3dfd8;
 color: #a56f64;
 font-size: .72rem;
 font-weight: 900;
+line-height: 24px;
 white-space: nowrap;
 }
 .flight-ticket-no {
@@ -1330,7 +1335,7 @@ order: 2;
     display: flex;       /* 改成 flex 佈局 */
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 10px;           /* 控制文字與線的間距 */
+    gap: 8px;            /* 控制文字與線的間距 */
     position: relative;
     width: 58%;
     min-height: 122px;
@@ -1340,9 +1345,11 @@ order: 2;
 }
 .flight-route-cards::before {
     content: '';
-    position: static;    /* 拿掉絕對定位 */
+    position: absolute;
     order: 2;            /* 讓它排在第 2 位（中間） */
-    width: 20px;         /* 橫線寬度 */
+    left: 84px;
+    top: 47px;
+    width: 24px;         /* 橫線寬度 */
     height: 2px;         /* 橫線厚度 */
     background: #eadbd4;
     border-radius: 999px;
@@ -1360,7 +1367,8 @@ box-shadow: none;
 .flight-route-card {
 display: block;
 min-width: 0;
-max-width: 88px;
+width: 76px;
+max-width: 76px;
 text-align: center;
 }
 .flight-route-cards .flight-route-card:first-child {
@@ -1489,20 +1497,20 @@ outline: 2px solid rgba(209,122,109,.34);
 }
 .flight-corner-illustration {
 position: absolute;
-right: 0;
-top: 58px;
+right: 8px;
+top: 46px;
 bottom: auto;
 z-index: 2;
-width: 136px;
+width: 142px;
 max-width: 38%;
 opacity: .96;
 pointer-events: none;
 filter: drop-shadow(0 6px 10px rgba(112,91,85,.08));
 }
 .flight-corner-illustration.return-flight-corner {
-right: -4px;
+right: 4px;
 bottom: auto;
-width: 142px;
+width: 146px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 18px;
@@ -1514,15 +1522,15 @@ min-height: 0;
 display: block;
 }
 .flight-corner-illustration {
-right: -2px;
-top: 58px;
+right: 4px;
+top: 48px;
 bottom: auto;
-width: 128px;
+width: 138px;
 }
 .flight-corner-illustration.return-flight-corner {
-right: -8px;
+right: 0;
 bottom: auto;
-width: 132px;
+width: 140px;
 }
 .flight-detail-modal .note-page.has-flight-corner {
 padding-right: 16px;
