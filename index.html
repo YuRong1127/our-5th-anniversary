@@ -1149,7 +1149,7 @@ color: #fff;
 font-size: .9rem;
 font-weight: 800;
 }
-.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); padding: 0; background: #fffdfb; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #eecfc6; border-radius: var(--wallet-control-radius); padding: 0; background: #fff7f2; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.7), 0 2px 7px rgba(209,122,109,.07); }
 .category-select .cat-icon-sm { width: 100%; height: 100%; flex: 0 0 100%; border-radius: calc(var(--wallet-control-radius) - 1px); }
 .category-menu { position: absolute; top: 100%; left: 0; z-index: 100; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 250px; max-width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--card-border); border-radius: 20px; background: #fffbf9; box-shadow: 0 10px 30px rgba(141,110,99,.15); }
 .cat-item { min-height: 66px; border: 0; border-radius: 14px; background: transparent; padding: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #9a7b72; font-size: .68rem; font-weight: 900; }
@@ -1162,8 +1162,8 @@ font-weight: 800;
 .toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #f6e9e4; }
 .toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #b89a92; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .toggle-btn.active { background: #fffdfb; color: #d37469; font-weight: 900; box-shadow: 0 2px 7px rgba(209,122,109,.07); }
-.currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #f0ded8; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #9b6a61; font-size: .86rem; font-weight: 900; white-space: nowrap; }
-.currency-switch.active-jpy { background: #fff7f3; color: #d37469; border-color: #f0d1ca; }
+.currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #eecfc6; border-radius: var(--wallet-control-radius); background: #fff8f4; color: #9b6a61; font-size: .86rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.72), 0 2px 7px rgba(209,122,109,.07); }
+.currency-switch.active-jpy { background: #fff1ea; color: #c96c62; border-color: #eabdb4; }
 .currency-switch.active-twd { background: #f0f7f3; color: #6d8f6b; border-color: #d8eadf; }
 #both-input-area { display: none; margin-bottom: 8px; padding: 8px 10px; border: 1px dashed #e8bbb2; border-radius: 13px; background: #fffaf7; }
 .both-flex { display: flex; gap: 8px; }
@@ -1300,7 +1300,7 @@ border-bottom: none;
 position: absolute;
 left: 0;
 right: 0;
-top: -62px;
+top: -66px;
 padding: 0 10px;
 z-index: 10;
 }
@@ -1339,12 +1339,12 @@ order: 2;
 display: flex;
 align-items: flex-start;
 justify-content: flex-start;
-gap: 9px;
+gap: 6px;
 position: relative;
 width: 100%;
 min-height: 108px;
 box-sizing: border-box;
-padding: 0 124px 11px 0;
+padding: 0 108px 11px 0;
 border-bottom: 1px dashed #eadbd4;
 }
 .flight-route-card,
@@ -1359,15 +1359,15 @@ box-shadow: none;
 .flight-route-card {
 display: block;
 min-width: 0;
-width: 92px;
-max-width: 92px;
+width: 104px;
+max-width: 104px;
 text-align: center;
 }
 .flight-route-line {
 order: 2;
-width: 30px;
+width: 22px;
 height: 2px;
-flex: 0 0 30px;
+flex: 0 0 22px;
 margin-top: 38px;
 border-radius: 999px;
 background: #eadbd4;
@@ -1438,7 +1438,7 @@ margin-top: 8px;
 .flight-table-label,
 .flight-table-cell {
 min-width: 0;
-padding: 7px 6px;
+padding: 5px 6px;
 font-size: .8rem;
 line-height: 1.35;
 }
@@ -1534,16 +1534,16 @@ min-height: 0;
 @media (max-width: 420px) {
 .flight-route-card {
 display: block;
-width: 88px;
-max-width: 88px;
+width: 100px;
+max-width: 100px;
 }
 .flight-route-cards {
-gap: 6px;
-padding-right: 116px;
+gap: 4px;
+padding-right: 104px;
 }
 .flight-route-line {
-width: 24px;
-flex-basis: 24px;
+width: 20px;
+flex-basis: 20px;
 margin-top: 38px;
 }
 .flight-corner-illustration {
@@ -1993,9 +1993,9 @@ width: 28px;
 height: 28px;
 }
 .docs-hint { margin: -4px 2px 12px; color: #b79a91; font-size: .78rem; font-weight: 800; line-height: 1.55; text-align: center; }
-.docs-add-form { justify-content: center; margin-bottom: 16px; }
-.docs-add-btn { width: auto; min-width: 134px; height: 48px; flex: 0 0 auto; padding: 0 20px; border-radius: 18px; font-size: .92rem; display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
-.docs-add-btn .docs-add-plus { font-size: 1.25rem; line-height: 1; }
+.docs-add-form { justify-content: center; margin: -2px 0 16px; }
+.docs-add-btn { width: auto; min-width: 104px; height: 36px; flex: 0 0 auto; padding: 0 14px; border: 1px solid #f0d9d2; border-radius: 999px; background: #fff5f0; color: #c47b72; font-size: .78rem; display: inline-flex; align-items: center; justify-content: center; gap: 5px; box-shadow: none; }
+.docs-add-btn .docs-add-plus { font-size: .98rem; line-height: 1; }
 .docs-list .wishlist-item { grid-template-columns: 42px minmax(0,1fr) 34px; cursor: pointer; position: relative; }
 .docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
 .docs-thumb.has-image { padding: 0; }
@@ -3235,7 +3235,8 @@ if (moreBtn) {
 const isFlight = isFlightDetailCard(card);
 moreBtn.classList.toggle('flight-detail-btn', isFlight);
 moreBtn.setAttribute('aria-label', isFlight ? '班機詳細資料' : '行程介紹');
-moreBtn.textContent = isEditMode ? (isFlight ? '查看搭機資訊' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
+moreBtn.style.display = isEditMode && isFlight ? 'none' : '';
+moreBtn.textContent = isEditMode ? (isFlight ? '' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
 }
 });
 updateReorderButtons();
@@ -3246,7 +3247,7 @@ return noteHasContent(card);
 }
 function getMoreInfoButtonText(card, hasMoreInfo) {
 const isFlight = isFlightDetailCard(card);
-if (isEditMode) return isFlight ? (hasMoreInfo ? '航班記好了!' : '還沒補航班資料耶') : (hasMoreInfo ? '有偷偷記惹' : '寫點什麼吧!');
+if (isEditMode) return isFlight ? '' : (hasMoreInfo ? '有偷偷記惹' : '寫點什麼吧!');
 return isFlight ? '🐯✈️' : '點我看更多';
 }
 function updateMoreInfoButtons() {
@@ -3254,7 +3255,9 @@ document.querySelectorAll('.day-section .card').forEach(card => {
 const moreBtn = card.querySelector('.more-info-btn');
 const hasMoreInfo = cardHasMoreInfo(card);
 if (moreBtn) {
+const isFlight = isFlightDetailCard(card);
 moreBtn.classList.toggle('is-empty', !hasMoreInfo);
+moreBtn.style.display = isEditMode && isFlight ? 'none' : '';
 moreBtn.textContent = getMoreInfoButtonText(card, hasMoreInfo);
 }
 const mapBtn = card.querySelector('.map-place-btn');
@@ -4368,7 +4371,8 @@ document.querySelectorAll('.editable').forEach(el => el.contentEditable = isEdit
 document.querySelectorAll('.more-info-btn').forEach(btn => {
 const isFlight = isFlightDetailCard(btn.closest('.card'));
 btn.classList.toggle('flight-detail-btn', isFlight);
-btn.textContent = isEdit ? (isFlight ? '查看搭機資訊' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
+btn.style.display = isEdit && isFlight ? 'none' : '';
+btn.textContent = isEdit ? (isFlight ? '' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
 });
 updateMoreInfoButtons();
 }
