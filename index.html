@@ -1446,6 +1446,18 @@ color: #8d6e63;
 font-weight: 900;
 text-align: center;
 }
+.flight-table-head.has-pig-img {
+padding-top: 2px;
+padding-bottom: 3px;
+}
+.flight-table-head-img {
+display: block;
+width: 58px;
+height: 32px;
+object-fit: contain;
+margin: 0 auto;
+filter: drop-shadow(0 3px 6px rgba(112,91,85,.08));
+}
 .flight-table-label {
 color: #b87568;
 font-weight: 900;
@@ -1968,7 +1980,7 @@ height: 28px;
 }
 .docs-hint { margin: -4px 2px 12px; color: #b79a91; font-size: .78rem; font-weight: 800; line-height: 1.55; text-align: center; }
 .docs-list .wishlist-item { grid-template-columns: 42px minmax(0,1fr) 42px 32px; cursor: default; }
-.docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1.05rem; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; }
+.docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
 .docs-thumb.has-image { padding: 0; }
 .docs-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .docs-view-btn { width: 36px; height: 36px; border: 1px solid #f0d9d2; border-radius: 12px; background: #fff4ee; color: #b87568; font-size: .78rem; font-weight: 900; }
@@ -3576,7 +3588,7 @@ const cleanValue = String(value || '').replace('優先', '').trim();
 return `<div class="flight-table-cell" data-flight-table="${group}" data-flight-person="${person}" data-priority="${hasPriority ? 'true' : 'false'}" ${canEdit}>${escapeHtml(cleanValue)}${hasPriority ? '<span class="flight-priority-badge">優先</span>' : ''}</div>`;
 };
 return `<div class="flight-info-table">
-<div class="flight-table-head"></div><div class="flight-table-head">大豬</div><div class="flight-table-head">小豬</div>
+<div class="flight-table-head"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="Screenshot_20260509_063050_Chrome.png" alt="大豬"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="Screenshot_20260509_063056_Chrome.png" alt="小豬"></div>
 <div class="flight-table-label">座位</div>${cell('seats', 'big', seats.big)}${cell('seats', 'small', seats.small)}
 <div class="flight-table-label">行李</div>${cell('luggage', 'big', luggage.big)}${cell('luggage', 'small', luggage.small)}
 </div>`;
@@ -4660,7 +4672,7 @@ list.innerHTML = `<div class="wishlist-empty">重要資料夾還空空的<br>可
 return;
 }
 list.innerHTML = docItems.map(item => `<div class="wishlist-item">
-<button type="button" class="docs-thumb ${item.imageSrc ? 'has-image' : ''} btn-press-effect" aria-label="${item.imageSrc ? '查看圖片' : '新增圖片'}" onclick="openDocImage(event, ${item.id})">${item.imageSrc ? `<img src="${escapeHtml(item.imageSrc)}" alt="${escapeHtml(item.title)}">` : '📎'}</button>
+<div class="docs-thumb ${item.imageSrc ? 'has-image' : ''}" aria-hidden="true">${item.imageSrc ? `<img src="${escapeHtml(item.imageSrc)}" alt="">` : '🗂️'}</div>
 <div class="wishlist-name">${escapeHtml(item.title)}</div>
 <button type="button" class="docs-view-btn btn-press-effect" onclick="openDocImage(event, ${item.id})">${item.imageSrc ? '查看' : '上傳'}</button>
 <input type="file" id="doc-photo-input-${item.id}" accept="image/*" style="display:none" onchange="attachDocImage(${item.id}, event)">
