@@ -3588,7 +3588,7 @@ const cleanValue = String(value || '').replace('優先', '').trim();
 return `<div class="flight-table-cell" data-flight-table="${group}" data-flight-person="${person}" data-priority="${hasPriority ? 'true' : 'false'}" ${canEdit}>${escapeHtml(cleanValue)}${hasPriority ? '<span class="flight-priority-badge">優先</span>' : ''}</div>`;
 };
 return `<div class="flight-info-table">
-<div class="flight-table-head"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="Screenshot_20260509_063050_Chrome.png" alt="大豬"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="Screenshot_20260509_063056_Chrome.png" alt="小豬"></div>
+<div class="flight-table-head"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="goodboy.png" alt="大豬"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="goodgirl.png" alt="小豬"></div>
 <div class="flight-table-label">座位</div>${cell('seats', 'big', seats.big)}${cell('seats', 'small', seats.small)}
 <div class="flight-table-label">行李</div>${cell('luggage', 'big', luggage.big)}${cell('luggage', 'small', luggage.small)}
 </div>`;
