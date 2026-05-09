@@ -864,18 +864,18 @@ object-fit: contain;
 filter: drop-shadow(0 5px 12px rgba(141,110,99,.1));
 }
 .boundary-modal-img.finish-sticker {
-margin-top: -68px;
-margin-bottom: -10px;
+margin-top: 8px !important;
+margin-bottom: 8px !important;
 }
 .boundary-modal-img.work-sticker {
-margin-top: -72px;
-margin-bottom: -10px;
+margin-top: 8px !important;
+margin-bottom: 8px !important;
 }
 #work-modal .modal-content,
 #finish-modal .modal-content {
 align-items: center;
 padding-top: 22px;
-gap: 12px;
+gap: 10px;
 }
 #work-modal .modal-title,
 #finish-modal .modal-title {
@@ -2927,13 +2927,21 @@ return card.dataset.mapPlaceValue || card.querySelector('.item-title')?.textCont
 function normalizePlaceKey(value) {
 return String(value || '').trim().replace(/\s+/g, '').toLowerCase();
 }
+function getCardSamePlaceKeys(card) {
+if (!card) return [];
+const keys = [
+card.dataset.mapPlaceValue,
+card.querySelector('.item-title')?.textContent || ''
+].map(normalizePlaceKey).filter(Boolean);
+return [...new Set(keys)];
+}
 function isSamePlaceConnector(connector) {
 const prevCard = connector.previousElementSibling?.classList.contains('card') ? connector.previousElementSibling : null;
 const nextCard = connector.nextElementSibling?.classList.contains('card') ? connector.nextElementSibling : null;
 if (!prevCard || !nextCard) return false;
-const prevPlace = normalizePlaceKey(getCardRoutePoint(prevCard));
-const nextPlace = normalizePlaceKey(getCardRoutePoint(nextCard));
-return Boolean(prevPlace && nextPlace && prevPlace === nextPlace);
+const prevPlaces = getCardSamePlaceKeys(prevCard);
+const nextPlaces = getCardSamePlaceKeys(nextCard);
+return prevPlaces.some(place => nextPlaces.includes(place));
 }
 function refreshRouteHref(connector) {
 const prevCard = connector.previousElementSibling;
@@ -3245,7 +3253,7 @@ return noteHasContent(card);
 }
 function getMoreInfoButtonText(card, hasMoreInfo) {
 const isFlight = isFlightDetailCard(card);
-if (isEditMode) return isFlight ? '' : (hasMoreInfo ? '有偷偷記惹' : '寫點什麼吧!');
+if (isEditMode) return isFlight ? '' : (hasMoreInfo ? '有小筆記' : '寫點什麼吧!');
 return isFlight ? '🐯✈️' : '點我看更多';
 }
 function updateMoreInfoButtons() {
@@ -3492,7 +3500,11 @@ return keepNoteInlineStyles(node, fragment);
 return fragment;
 }
 const output = document.createElement('div');
-Array.from(template.content.childNodes).forEach(child => output.appendChild(cleanNode(child)));
+Array.from(template.content.childNodes).forEach(child => {
+const tag = child.nodeType === Node.ELEMENT_NODE ? child.tagName.toLowerCase() : '';
+if (['div', 'p', 'li'].includes(tag) && output.childNodes.length) appendBreak(output);
+output.appendChild(cleanNode(child));
+});
 return output.innerHTML;
 }
 function linkifyText(value) {
