@@ -1351,7 +1351,7 @@ border-bottom: 1px dashed #eadbd4;
 content: '';
 position: absolute;
 left: 87px;
-top: 38px;
+top: 31px;
 width: 30px;
 height: 2px;
 background: #eadbd4;
@@ -1545,7 +1545,7 @@ padding-right: 116px;
 }
 .flight-route-cards::before {
 left: 80px;
-top: 38px;
+top: 31px;
 }
 .flight-corner-illustration {
 right: 4px;
@@ -3233,7 +3233,7 @@ if (moreBtn) {
 const isFlight = isFlightDetailCard(card);
 moreBtn.classList.toggle('flight-detail-btn', isFlight);
 moreBtn.setAttribute('aria-label', isFlight ? '班機詳細資料' : '行程介紹');
-moreBtn.textContent = isEditMode ? (isFlight ? '編輯搭機資訊' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
+moreBtn.textContent = isEditMode ? (isFlight ? '查看搭機資訊' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
 }
 });
 updateReorderButtons();
@@ -3653,12 +3653,12 @@ const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
 const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
 const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="return showNoteColorPaletteDirect(event)" onmousedown="return showNoteColorPaletteDirect(event)" ontouchstart="return showNoteColorPaletteDirect(event)" onclick="return showNoteColorPaletteDirect(event)" aria-label="選擇文字顏色"><span class="note-color-wheel" aria-hidden="true"></span></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const isFlightNote = isFlightDetailCard(currentDetailCard);
-const visibleFormatTools = isFlightNote ? formatTools.replace(/<label class="note-format-btn note-format-image-btn[\s\S]*?<\/label>/, '') : formatTools;
+const visibleFormatTools = isFlightNote ? '' : formatTools;
 const insertTools = '';
 const flightPairKey = isFlightNote ? getLockedFlightPairKey(currentDetailCard) : '';
 const flightCornerSrc = flightPairKey === 'IT206' ? 'wallet-corner-friends.png' : flightPairKey === 'IT207' ? 'flight-return-corner-friends.png' : '';
 const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration ${flightPairKey === 'IT207' ? 'return-flight-corner' : ''}" src="${flightCornerSrc}" alt="" aria-hidden="true">` : '';
-const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, isEditMode) : '';
+const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, false) : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${flightViewHtml || blocksHtml}${insertTools}${flightCorner}</div>`;
 bindNoteToolbarButtons(host);
 focusPendingNoteBlock();
@@ -4076,8 +4076,8 @@ document.getElementById('itinerary-detail-modal').classList.toggle('flight-detai
 const detailTitle = document.querySelector('#itinerary-detail-modal .modal-title');
 const flightPairKey = isFlight ? getLockedFlightPairKey(currentDetailCard) : '';
 detailTitle.textContent = isFlight ? (flightPairKey === 'IT207' ? '回程航班備忘' : '去程航班備忘') : '行程介紹';
-document.querySelector('#itinerary-detail-modal .modal-btn-primary').textContent = isFlight ? '儲存搭機資訊' : '儲存介紹';
-document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode ? 'block' : 'none';
+document.querySelector('#itinerary-detail-modal .modal-btn-primary').textContent = '儲存介紹';
+document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode && !isFlight ? 'block' : 'none';
 renderDetailFields();
 openSimpleModal('itinerary-detail-modal');
 resetItineraryDetailScroll();
@@ -4365,7 +4365,7 @@ document.querySelectorAll('.editable').forEach(el => el.contentEditable = isEdit
 document.querySelectorAll('.more-info-btn').forEach(btn => {
 const isFlight = isFlightDetailCard(btn.closest('.card'));
 btn.classList.toggle('flight-detail-btn', isFlight);
-btn.textContent = isEdit ? (isFlight ? '編輯搭機資訊' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
+btn.textContent = isEdit ? (isFlight ? '查看搭機資訊' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
 });
 updateMoreInfoButtons();
 }
