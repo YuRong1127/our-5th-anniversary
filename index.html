@@ -1019,7 +1019,7 @@ padding: 12px;
 }
 #password-modal .modal-title {
 margin-bottom: 10px;
-font-size: 1.22rem;
+font-size: 1.36rem;
 }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
 #alert-modal .modal-content { align-items: center; text-align: center; }
@@ -2502,22 +2502,22 @@ display: block;
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 0; min-height: 42px; margin: 0 0 6px; color: #a88980; font-size: 1rem; font-weight: 700; text-align: center; line-height: 1.2; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 0; min-height: 48px; margin: 0 0 6px; color: #a88980; font-size: 1.12rem; font-weight: 700; text-align: center; line-height: 1.2; }
 .pw-hint-pig {
 display: block;
-width: 72px;
-height: 42px;
+width: auto;
+height: 48px;
 flex: 0 0 auto;
 align-self: center;
-margin-left: -18px;
+margin-left: -12px;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
 }
 .pw-hint-pig.angry {
 width: auto;
-height: 1.35em;
+height: 48px;
 margin-left: 2px;
-transform: translateY(-2px);
+transform: translateY(0);
 vertical-align: -0.2em;
 }
 .pw-keypad {
@@ -2530,9 +2530,9 @@ margin: 4px 0 12px;
 .pw-keypad button {
 width: 74px;
 height: 48px;
-border: 1px solid #ead0c7;
+border: 1px solid #dfb8ad;
 border-radius: 15px;
-background: rgba(255,250,247,.92);
+background: #f3d9d0;
 color: var(--main-brown);
 font-size: 1.18rem;
 font-weight: 900;
@@ -2541,7 +2541,7 @@ transition: transform .08s ease, box-shadow .08s ease, background .08s ease;
 }
 .pw-keypad button:active {
 transform: scale(.94);
-background: #f9ece7;
+background: #e9c5ba;
 box-shadow: inset 0 3px 8px rgba(141,110,99,.13);
 opacity: .86;
 }
