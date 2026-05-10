@@ -2809,7 +2809,10 @@ main { padding: 0 14px; }
 </div>
 <div class="wallet-split-labels"><span>幣別<span class="wallet-label-hint">點選切換</span></span><span>花費金額</span></div>
 <div class="wallet-input-group">
-<div id="currency-switch" class="currency-switch active-jpy btn-press-effect" onclick="toggleCurrency()">¥ JPY</div>
+<div id="currency-switch" class="currency-switch active-jpy btn-press-effect" onclick="toggleCurrency()" style="flex-direction: column; line-height: 1.2; height: auto; padding: 5px 0;">
+    <div id="currency-label">¥ JPY</div>
+    <div id="live-fx-display" style="font-size: 0.6rem; opacity: 0.8; font-weight: normal;">(匯率: --)</div>
+</div>
 <input type="tel" id="exp-amount" class="wallet-input" placeholder="請輸入花費金額">
 </div>
 </div>
@@ -3015,23 +3018,24 @@ let currentFX = 0.21;
 // 2. 建立自動連網抓取功能
 async function updateLiveFX() {
     try {
-        // 向 API 請求日幣對台幣的最新匯率
         const response = await fetch('https://open.er-api.com/v6/latest/JPY');
         const data = await response.json();
-        
         if (data && data.rates && data.rates.TWD) {
             currentFX = data.rates.TWD;
             console.log("今日即時匯率已更新為: " + currentFX);
-            
-            // 抓到匯率後，自動叫錢包重新計算一次台幣金額
+
+            // 💡 這幾行就是妳要的：把匯率顯示在按鈕格子裡
+            const fxDisplay = document.getElementById('live-fx-display');
+            if (fxDisplay) {
+                fxDisplay.textContent = `(匯率: ${currentFX.toFixed(4)})`;
+            }
+
             if (typeof updatePublicFundDisplay === 'function') updatePublicFundDisplay();
         }
     } catch (e) {
-        console.log("目前無法連線至匯率伺服器，使用預設值 0.21");
+        console.log("網路不穩，使用預設值 0.21");
     }
 }
-
-// 3. 執行抓取
 updateLiveFX();
 
 
@@ -6243,13 +6247,23 @@ if (s !== '都有啦') bothManualEdits = { big: false, small: false };
 if (s === '都有啦') syncBothAmountSum('mode');
 }
 function toggleCurrency() {
-const btn = document.getElementById('currency-switch');
-currentCurrency = currentCurrency === 'JPY' ? 'TWD' : 'JPY';
-document.querySelectorAll('#currency-switch, #topup-currency-switch').forEach(btn => {
-btn.textContent = currentCurrency === 'JPY' ? '¥ JPY' : '$ TWD';
-btn.classList.toggle('active-jpy', currentCurrency === 'JPY');
-btn.classList.toggle('active-twd', currentCurrency === 'TWD');
-});
+    currentCurrency = currentCurrency === 'JPY' ? 'TWD' : 'JPY';
+    const label = document.getElementById('currency-label');
+    const fxDisplay = document.getElementById('live-fx-display');
+    
+    document.querySelectorAll('#currency-switch, #topup-currency-switch').forEach(btn => {
+        if (currentCurrency === 'JPY') {
+            if (label) label.textContent = '¥ JPY';
+            if (fxDisplay) fxDisplay.style.display = 'block'; // 顯示日幣匯率
+            btn.classList.add('active-jpy');
+            btn.classList.remove('active-twd');
+        } else {
+            if (label) label.textContent = '$ TWD';
+            if (fxDisplay) fxDisplay.style.display = 'none'; // 台幣時隱藏
+            btn.classList.add('active-twd');
+            btn.classList.remove('active-jpy');
+        }
+    });
 }
 function parseMoneyValue(value) {
 const n = parseFloat(String(value || '').replace(/,/g, '').trim());
