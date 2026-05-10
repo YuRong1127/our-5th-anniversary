@@ -1962,6 +1962,46 @@ max-height: 320px;
 object-fit: cover;
 cursor: zoom-in;
 }
+.note-block[data-block-type="image"] {
+position: relative;
+}
+body.edit-mode .note-block[data-block-type="image"] img {
+cursor: grab;
+touch-action: none;
+}
+.note-block.note-image-drag-source {
+opacity: .34;
+transform: scale(.98);
+}
+.note-block.note-image-drop-target {
+outline: 2px dashed #e6b0a5;
+outline-offset: 5px;
+border-radius: 18px;
+}
+.note-image-drag-ghost {
+position: fixed;
+left: 0;
+top: 0;
+z-index: 2600;
+width: min(230px, 56vw);
+border: 2px solid #fff;
+border-radius: 18px;
+overflow: hidden;
+box-shadow: 0 14px 34px rgba(141,110,99,.24);
+pointer-events: none;
+transform: translate3d(-9999px, -9999px, 0);
+}
+.note-image-drag-ghost img {
+display: block;
+width: 100%;
+height: auto;
+max-height: 220px;
+object-fit: cover;
+}
+body.note-image-dragging {
+cursor: grabbing;
+user-select: none;
+}
 .photo-remove-btn {
 position: absolute;
 right: 6px;
@@ -2631,6 +2671,7 @@ let preloadedDiscardPig = null;
 const preloadedImages = new Map();
 const FLIGHT_DETAIL_IMAGE_SOURCES = ['wallet-corner-friends.png', 'flight-return-corner-friends.png', 'goodboy.png', 'goodgirl.png'];
 let dayDragState = null;
+let noteImageDragState = null;
 let dateClickSuppressedUntil = 0;
 let pendingAlertConfirm = null;
 let isApplyingCloudData = false;
@@ -2638,7 +2679,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-09-live-note-color-button-v1';
+const STATIC_CONTENT_VERSION = '2026-05-10-itinerary-stations-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -4299,6 +4340,101 @@ setDetailFields(currentDetailCard, fields);
 renderDetailFields();
 updateMoreInfoButtons();
 }
+function clearNoteImageDropTargets() {
+document.querySelectorAll('.note-image-drop-target').forEach(block => block.classList.remove('note-image-drop-target'));
+}
+function moveNoteImageDragGhost(x, y) {
+const ghost = noteImageDragState?.ghost;
+if (!ghost) return;
+ghost.style.transform = `translate3d(${Math.round(x - 36)}px, ${Math.round(y - 34)}px, 0) rotate(-2deg)`;
+}
+function startNoteImageDrag(block, pointerId, x, y) {
+if (!isEditMode || !block || block.dataset.blockType !== 'image') return;
+const img = block.querySelector('img');
+if (!img) return;
+const ghost = document.createElement('div');
+ghost.className = 'note-image-drag-ghost';
+ghost.innerHTML = `<img src="${escapeHtml(img.src)}" alt="">`;
+document.body.appendChild(ghost);
+noteImageDragState = { ...(noteImageDragState || {}), block, pointerId, active: true, ghost };
+block.classList.add('note-image-drag-source');
+document.body.classList.add('note-image-dragging');
+moveNoteImageDragGhost(x, y);
+if (navigator.vibrate) navigator.vibrate(18);
+}
+function updateNoteImageDragTarget(x, y) {
+if (!noteImageDragState?.active) return;
+moveNoteImageDragGhost(x, y);
+clearNoteImageDropTargets();
+const source = noteImageDragState.block;
+source.style.pointerEvents = 'none';
+const target = document.elementFromPoint(x, y)?.closest?.('.note-block');
+source.style.pointerEvents = '';
+const page = source.closest('.note-page');
+if (!target || !page?.contains(target) || target === source) return;
+target.classList.add('note-image-drop-target');
+const rect = target.getBoundingClientRect();
+const insertAfter = y > rect.top + rect.height / 2;
+if (insertAfter) target.insertAdjacentElement('afterend', source);
+else target.insertAdjacentElement('beforebegin', source);
+}
+function finishNoteImageDrag() {
+if (!noteImageDragState) return;
+const wasActive = noteImageDragState.active;
+const source = noteImageDragState.block;
+if (noteImageDragState.timer) clearTimeout(noteImageDragState.timer);
+noteImageDragState.ghost?.remove();
+source?.classList.remove('note-image-drag-source');
+clearNoteImageDropTargets();
+document.body.classList.remove('note-image-dragging');
+noteImageDragState = null;
+if (wasActive && currentDetailCard) {
+const fields = collectDetailFieldsFromModal();
+setDetailFields(currentDetailCard, fields);
+renderDetailFields();
+updateMoreInfoButtons();
+}
+}
+function cancelNoteImageDrag() {
+if (!noteImageDragState) return;
+if (noteImageDragState.timer) clearTimeout(noteImageDragState.timer);
+noteImageDragState.ghost?.remove();
+noteImageDragState.block?.classList.remove('note-image-drag-source');
+clearNoteImageDropTargets();
+document.body.classList.remove('note-image-dragging');
+noteImageDragState = null;
+}
+function initNoteImageReorder() {
+const host = document.getElementById('itinerary-detail-fields');
+if (!host) return;
+host.addEventListener('pointerdown', event => {
+const block = event.target.closest('.note-block[data-block-type="image"]');
+if (!isEditMode || !block || event.target.closest('.photo-remove-btn')) return;
+if (event.pointerType === 'mouse' && event.button !== 0) return;
+try { block.setPointerCapture(event.pointerId); } catch (error) {}
+const startX = event.clientX;
+const startY = event.clientY;
+const timer = setTimeout(() => startNoteImageDrag(block, event.pointerId, startX, startY), 420);
+noteImageDragState = { block, pointerId: event.pointerId, active: false, timer, startX, startY };
+}, { passive: true });
+host.addEventListener('pointermove', event => {
+if (!noteImageDragState || noteImageDragState.pointerId !== event.pointerId) return;
+const moved = Math.hypot(event.clientX - noteImageDragState.startX, event.clientY - noteImageDragState.startY);
+if (!noteImageDragState.active && moved > 10) {
+cancelNoteImageDrag();
+return;
+}
+if (noteImageDragState.active) {
+event.preventDefault();
+updateNoteImageDragTarget(event.clientX, event.clientY);
+}
+}, { passive: false });
+host.addEventListener('pointerup', event => {
+if (!noteImageDragState || noteImageDragState.pointerId !== event.pointerId) return;
+finishNoteImageDrag();
+}, { passive: true });
+host.addEventListener('pointercancel', cancelNoteImageDrag, { passive: true });
+}
 async function openItineraryDetail(event, btn) {
 if (event) {
 event.preventDefault();
@@ -5920,6 +6056,7 @@ initFloatingBackground();
 initCategoryMenu();
 initIconPicker();
 initNoteToolbarTouchFix();
+initNoteImageReorder();
 enhanceRouteConnectors();
 initDatePicker();
 initDayDragSwap();
