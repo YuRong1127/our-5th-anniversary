@@ -6250,20 +6250,33 @@ function toggleCurrency() {
     currentCurrency = currentCurrency === 'JPY' ? 'TWD' : 'JPY';
     const label = document.getElementById('currency-label');
     const fxDisplay = document.getElementById('live-fx-display');
-    
-    document.querySelectorAll('#currency-switch, #topup-currency-switch').forEach(btn => {
+    const topupLabel = document.getElementById('topup-currency-label');
+    const mainBtn = document.getElementById('currency-switch');
+    if (mainBtn) {
         if (currentCurrency === 'JPY') {
             if (label) label.textContent = '¥ JPY';
-            if (fxDisplay) fxDisplay.style.display = 'block'; // 顯示日幣匯率
-            btn.classList.add('active-jpy');
-            btn.classList.remove('active-twd');
+            if (fxDisplay) fxDisplay.style.display = 'block';
+            mainBtn.classList.add('active-jpy');
+            mainBtn.classList.remove('active-twd');
         } else {
             if (label) label.textContent = '$ TWD';
-            if (fxDisplay) fxDisplay.style.display = 'none'; // 台幣時隱藏
-            btn.classList.add('active-twd');
-            btn.classList.remove('active-jpy');
+            if (fxDisplay) fxDisplay.style.display = 'none';
+            mainBtn.classList.add('active-twd');
+            mainBtn.classList.remove('active-jpy');
         }
-    });
+    }
+    const topupBtn = document.getElementById('topup-currency-switch');
+    if (topupBtn) {
+        if (currentCurrency === 'JPY') {
+            if (topupLabel) topupLabel.textContent = '¥ JPY';
+            topupBtn.classList.add('active-jpy');
+            topupBtn.classList.remove('active-twd');
+        } else {
+            if (topupLabel) topupLabel.textContent = '$ TWD'; 
+            topupBtn.classList.add('active-twd');
+            topupBtn.classList.remove('active-jpy');
+        }
+    }
 }
 function parseMoneyValue(value) {
 const n = parseFloat(String(value || '').replace(/,/g, '').trim());
