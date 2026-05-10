@@ -2773,7 +2773,9 @@ main { padding: 0 14px; }
 <div id="topup-area" class="topup-area">
 <label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
 <div class="wallet-input-group">
-<div id="topup-currency-switch" class="currency-switch active-jpy btn-press-effect" onclick="toggleCurrency()">¥ JPY</div>
+<div id="topup-currency-switch" class="..." onclick="toggleCurrency()">
+    <span id="topup-currency-label">¥ JPY</span>
+</div>
 </div>
 <label class="wallet-label">公費由誰投入</label>
 <div class="topup-flex">
@@ -6248,35 +6250,39 @@ if (s === '都有啦') syncBothAmountSum('mode');
 }
 function toggleCurrency() {
     currentCurrency = currentCurrency === 'JPY' ? 'TWD' : 'JPY';
-    const label = document.getElementById('currency-label');
+    const mainLabel = document.getElementById('currency-label');
     const fxDisplay = document.getElementById('live-fx-display');
-    const topupLabel = document.getElementById('topup-currency-label');
     const mainBtn = document.getElementById('currency-switch');
+    
     if (mainBtn) {
         if (currentCurrency === 'JPY') {
-            if (label) label.textContent = '¥ JPY';
+            if (mainLabel) mainLabel.textContent = '¥ JPY';
             if (fxDisplay) fxDisplay.style.display = 'block';
             mainBtn.classList.add('active-jpy');
             mainBtn.classList.remove('active-twd');
         } else {
-            if (label) label.textContent = '$ TWD';
+            if (mainLabel) mainLabel.textContent = '$ TWD';
             if (fxDisplay) fxDisplay.style.display = 'none';
             mainBtn.classList.add('active-twd');
             mainBtn.classList.remove('active-jpy');
         }
     }
+
+    const topupLabel = document.getElementById('topup-currency-label');
     const topupBtn = document.getElementById('topup-currency-switch');
+    
     if (topupBtn) {
         if (currentCurrency === 'JPY') {
             if (topupLabel) topupLabel.textContent = '¥ JPY';
             topupBtn.classList.add('active-jpy');
             topupBtn.classList.remove('active-twd');
         } else {
-            if (topupLabel) topupLabel.textContent = '$ TWD'; 
+            if (topupLabel) topupLabel.textContent = '$ TWD';
             topupBtn.classList.add('active-twd');
             topupBtn.classList.remove('active-jpy');
         }
     }
+    if (typeof updatePublicFundDisplay === 'function') updatePublicFundDisplay();
 }
 function parseMoneyValue(value) {
 const n = parseFloat(String(value || '').replace(/,/g, '').trim());
