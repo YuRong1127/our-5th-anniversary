@@ -1006,9 +1006,20 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 .modal-btn-primary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 58px; border: 0; border-radius: 20px; padding: 14px 24px; appearance: none; -webkit-appearance: none; background: var(--heart-pink); background-clip: padding-box; color: #fff; font-size: 1.05rem; font-weight: 900; line-height: 1.15; text-align: center; box-shadow: 0 4px 12px rgba(209,122,109,.25); overflow: hidden; }
 #wallet-modal .modal-btn-primary { background: #b87568; box-shadow: 0 5px 14px rgba(184,117,104,.18); }
 #password-modal .modal-content {
-border-color: #f5dfd9;
-background: linear-gradient(180deg, #fffaf8 0%, #fff1ee 100%);
-box-shadow: 0 12px 36px rgba(141,110,99,.12);
+max-height: none;
+padding: 22px 18px 16px;
+border-color: #edcfc6;
+border-radius: 26px;
+background: linear-gradient(180deg, #fff0e8 0%, #f7ddd3 100%);
+box-shadow: 0 14px 34px rgba(141,110,99,.18);
+}
+#password-modal .modal-container {
+max-width: 344px;
+padding: 12px;
+}
+#password-modal .modal-title {
+margin-bottom: 10px;
+font-size: 1.22rem;
 }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
 #alert-modal .modal-content { align-items: center; text-align: center; }
@@ -2066,7 +2077,7 @@ font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.22);
 }
 .note-image-crop-handle {
-right: -8px;
+right: 0;
 top: 50%;
 width: 28px;
 height: 44px;
@@ -2085,8 +2096,8 @@ content: '';
 position: absolute;
 display: block;
 border-radius: 2px;
-background: rgba(103,82,76,.78);
-box-shadow: 0 1px 3px rgba(255,255,255,.72);
+background: #d75f6f;
+box-shadow: 0 0 0 1.5px rgba(255,255,255,.96), 0 2px 5px rgba(76,54,49,.22);
 }
 .note-image-crop-handle::before {
 right: 7px;
@@ -2102,7 +2113,7 @@ height: 3px;
 transform: translateY(-50%);
 }
 .note-image-crop-handle.crop-left {
-left: -8px;
+left: 0;
 right: auto;
 }
 .note-image-crop-handle.crop-left::before {
@@ -2117,7 +2128,7 @@ right: auto;
 left: 50%;
 right: auto;
 top: auto;
-bottom: -8px;
+bottom: 0;
 width: 44px;
 height: 28px;
 transform: translateX(-50%);
@@ -2484,18 +2495,18 @@ display: block;
 .wishlist-item.done .wishlist-check { background: var(--heart-pink); color: #fff; border-color: var(--heart-pink); }
 .wishlist-delete { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #fff7f6; color: #e57373; font-weight: 900; }
 .wishlist-empty { margin: 18px auto; padding: 22px 18px; border: 1px solid #f7e6e1; border-radius: 22px; background: #fffaf7; color: var(--light-brown); text-align: center; font-size: .9rem; font-weight: 800; line-height: 1.7; }
-.heart-row { display: flex; justify-content: center; margin-bottom: 24px; cursor: pointer; }
-.heart-slot { position: relative; width: 30px; height: 30px; margin: 0 3px; font-size: 1.6rem; }
+.heart-row { display: flex; justify-content: center; margin-bottom: 14px; cursor: pointer; }
+.heart-slot { position: relative; width: 28px; height: 28px; margin: 0 2px; font-size: 1.48rem; }
 .h-empty, .h-full { position: absolute; left: 0; top: 0; }
 .h-empty { color: #a78980; }
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 0; min-height: 48px; margin: 0 0 8px; color: #bcaaaa; font-size: 1.08rem; font-weight: 700; text-align: center; line-height: 1.2; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 0; min-height: 42px; margin: 0 0 6px; color: #a88980; font-size: 1rem; font-weight: 700; text-align: center; line-height: 1.2; }
 .pw-hint-pig {
 display: block;
 width: 72px;
-height: 48px;
+height: 42px;
 flex: 0 0 auto;
 align-self: center;
 margin-left: -18px;
@@ -2506,26 +2517,26 @@ object-fit: contain;
 width: auto;
 height: 1.35em;
 margin-left: 2px;
-transform: translateY(-4px);
+transform: translateY(-2px);
 vertical-align: -0.2em;
 }
 .pw-keypad {
 display: grid;
 grid-template-columns: repeat(3, 74px);
-gap: 12px;
+gap: 9px;
 justify-content: center;
-margin: 8px 0 18px;
+margin: 4px 0 12px;
 }
 .pw-keypad button {
 width: 74px;
-height: 54px;
-border: 1px solid #f0e6e2;
-border-radius: 18px;
-background: #fffaf7;
+height: 48px;
+border: 1px solid #ead0c7;
+border-radius: 15px;
+background: rgba(255,250,247,.92);
 color: var(--main-brown);
 font-size: 1.18rem;
 font-weight: 900;
-box-shadow: 0 5px 14px rgba(141,110,99,.1);
+box-shadow: 0 4px 10px rgba(141,110,99,.1);
 transition: transform .08s ease, box-shadow .08s ease, background .08s ease;
 }
 .pw-keypad button:active {
@@ -2534,7 +2545,7 @@ background: #f9ece7;
 box-shadow: inset 0 3px 8px rgba(141,110,99,.13);
 opacity: .86;
 }
-.auth-cancel-btn { border: 0; background: transparent; color: #b7aaa5; text-decoration: underline; font-size: .78rem; font-weight: 700; }
+.auth-cancel-btn { border: 0; background: transparent; color: #a88980; text-decoration: underline; font-size: .76rem; font-weight: 700; }
 .kaomoji-fix { display: inline-block; margin-left: 2px; transform: translateY(-2px); white-space: nowrap; letter-spacing: 0; }
 .hidden-input { position: absolute; opacity: 0; pointer-events: none; }
 @media (max-width: 370px) {
@@ -2542,8 +2553,8 @@ main { padding: 0 14px; }
 .summary-btn { font-size: .76rem; }
 .route-inline { width: calc(100vw - 95px); }
 .wishlist-tab { font-size: .72rem; padding: 0 4px; }
-.pw-keypad { grid-template-columns: repeat(3, 68px); gap: 10px; }
-.pw-keypad button { width: 68px; height: 52px; }
+.pw-keypad { grid-template-columns: repeat(3, 68px); gap: 8px; }
+.pw-keypad button { width: 68px; height: 46px; }
 }
 </style>
 </head>
@@ -4256,7 +4267,7 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onpointerdown="event.preventDefault(); event.stopPropagation();" onclick="removeDetailBlockFromButton(event)">×</button>` : ''}</div>${isEditMode ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onpointerdown="event.stopPropagation();" onpointerup="removeDetailBlockFromButton(event)" onclick="event.preventDefault(); event.stopPropagation();">×</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -5011,7 +5022,8 @@ if (event?.stopImmediatePropagation) event.stopImmediatePropagation();
 if (!currentDetailCard || !isEditMode) return;
 const blockEl = event?.currentTarget?.closest('.note-block[data-block-type="image"]');
 const page = blockEl?.closest('.note-page');
-const blockIndex = page ? Array.from(page.querySelectorAll('.note-block')).indexOf(blockEl) : -1;
+let blockIndex = page ? Array.from(page.querySelectorAll('.note-block')).indexOf(blockEl) : -1;
+if (blockIndex < 0 && Number.isInteger(currentNoteImageBlockIndex)) blockIndex = currentNoteImageBlockIndex;
 if (blockIndex < 0) return;
 const fields = collectDetailFieldsFromModal();
 if (!fields[0]?.blocks) return;
