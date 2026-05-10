@@ -105,8 +105,8 @@ button, input { font: inherit; }
 .sticky-top-container, main { position: relative; z-index: 2; }
 .sticky-top-container { position: sticky; top: 0; z-index: 50; background: var(--bg-color); padding-bottom: 2px; }
 header {
-min-height: 120px;
-padding: 20px 20px 12px;
+min-height: 132px;
+padding: 28px 20px 12px;
 border-radius: 0 0 40px 40px;
 background: #fff;
 box-shadow: 0 4px 25px rgba(141,110,99,.08);
@@ -119,9 +119,10 @@ text-align: center;
 .header-subtitle-container { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
 .header-line { width: 30px; height: 1px; background: #ede2db; }
 .header-subtitle { font-family: 'Dancing Script', cursive; font-size: 1rem; color: var(--heart-pink); }
-.header-title { margin: 2px 0; color: #a67c71; font-size: 1.6rem; font-weight: 700; letter-spacing: .12em; }
-.header-title-with-art { display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: .08em; }
-.header-title-divider-art { width: 100px; height: auto; object-fit: contain; flex: 0 0 auto; transform: translateY(-4px); }
+.header-title { margin: 2px 0; color: #a67c71; font-size: 1.6rem; font-weight: 700; letter-spacing: .12em; line-height: 1.28; }
+.header-title-with-art { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; letter-spacing: .08em; }
+.header-title-with-art span { display: inline-flex; align-items: center; min-height: 52px; }
+.header-title-divider-art { width: 100px; max-height: 52px; height: auto; object-fit: contain; flex: 0 0 auto; transform: none; }
 .quote-single-line { color: var(--light-brown); font-size: .85rem; font-style: italic; white-space: nowrap; }
 #edit-mode-title { display: none; color: #a67c71; font-size: 1.1rem; font-weight: 600; }
 
@@ -999,7 +1000,7 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 }
 .modal-close-btn { position: absolute; top: 2px; right: 2px; z-index: 1010; padding: 12px; }
 .modal-close-circle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: var(--heart-pink); box-shadow: 0 2px 10px rgba(0,0,0,.1); }
-.modal-btn-primary { width: 100%; border: 0; border-radius: 20px; padding: 18px 24px; appearance: none; -webkit-appearance: none; background: var(--heart-pink); background-clip: padding-box; color: #fff; font-size: 1.05rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.25); overflow: hidden; }
+.modal-btn-primary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 58px; border: 0; border-radius: 20px; padding: 14px 24px; appearance: none; -webkit-appearance: none; background: var(--heart-pink); background-clip: padding-box; color: #fff; font-size: 1.05rem; font-weight: 900; line-height: 1.15; text-align: center; box-shadow: 0 4px 12px rgba(209,122,109,.25); overflow: hidden; }
 #wallet-modal .modal-btn-primary { background: #b87568; box-shadow: 0 5px 14px rgba(184,117,104,.18); }
 #password-modal .modal-content {
 border-color: #f5dfd9;
@@ -1942,8 +1943,40 @@ background: #fff;
 border: 1px solid #f0e6e2;
 box-shadow: 0 6px 18px rgba(141,110,99,.08);
 margin: 8px 0 8px;
+-webkit-touch-callout: none;
+user-select: none;
+-webkit-user-select: none;
 }
 .photo-preview-item img { width: 100%; max-height: 320px; object-fit: cover; display: block; }
+.photo-preview-item.note-image-size-small img { width: 62%; margin: 0 auto; }
+.photo-preview-item.note-image-size-medium img { width: 82%; margin: 0 auto; }
+.photo-preview-item.note-image-size-full img { width: 100%; }
+.photo-preview-item.is-selected {
+border-color: #e6b0a5;
+box-shadow: 0 8px 22px rgba(209,122,109,.16), inset 0 0 0 2px rgba(209,122,109,.1);
+}
+.note-image-inline-tools {
+display: grid;
+grid-template-columns: repeat(6, minmax(0, 1fr));
+gap: 6px;
+padding: 8px;
+border-top: 1px dashed #efd9d2;
+background: #fff8f4;
+}
+.note-image-inline-tools button {
+height: 34px;
+border: 1px solid #efd9d2;
+border-radius: 999px;
+background: #fffdfb;
+color: #a7675d;
+font-size: .72rem;
+font-weight: 900;
+}
+.note-image-inline-tools button.is-active {
+background: #d77b70;
+border-color: #d77b70;
+color: #fff;
+}
 body:not(.edit-mode) .photo-preview-item {
 cursor: zoom-in;
 }
@@ -1966,8 +1999,11 @@ cursor: zoom-in;
 position: relative;
 }
 body.edit-mode .note-block[data-block-type="image"] img {
-cursor: grab;
+cursor: pointer;
 touch-action: none;
+-webkit-touch-callout: none;
+user-select: none;
+-webkit-user-select: none;
 }
 .note-block.note-image-drag-source {
 opacity: .34;
@@ -2001,6 +2037,50 @@ object-fit: cover;
 body.note-image-dragging {
 cursor: grabbing;
 user-select: none;
+}
+.note-image-tools-content {
+gap: 12px;
+}
+.note-image-tools-preview {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 210px;
+padding: 10px;
+border: 1px solid #f2e3de;
+border-radius: 22px;
+background: #fffdfb;
+overflow: hidden;
+}
+#note-image-edit-canvas {
+display: block;
+max-width: 100%;
+max-height: 52vh;
+border-radius: 16px;
+touch-action: none;
+box-shadow: 0 8px 20px rgba(141,110,99,.08);
+}
+.note-image-tools-row {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 8px;
+}
+.note-image-tools-row.size-row {
+grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.note-image-tool-btn {
+height: 42px;
+border: 1px solid #efd9d2;
+border-radius: 16px;
+background: #fff8f4;
+color: #a7675d;
+font-weight: 900;
+}
+.note-image-tool-btn.is-active {
+background: #d77b70;
+color: #fff;
+border-color: #d77b70;
 }
 .photo-remove-btn {
 position: absolute;
@@ -2525,6 +2605,7 @@ main { padding: 0 14px; }
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="note-color-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div id="note-color-grid" class="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
 <div id="note-color-popover" class="note-color-popover"><button type="button" class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid"><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c86f77" data-note-color="#c86f77" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="莓果粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d96d7f" data-note-color="#d96d7f" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="玫瑰紅"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d98b72" data-note-color="#d98b72" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="蜜桃橘"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#e6a19a" data-note-color="#e6a19a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="珊瑚粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c9a64a" data-note-color="#c9a64a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="奶油黃"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6d8f6b" data-note-color="#6d8f6b" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="鼠尾草綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#5f9c92" data-note-color="#5f9c92" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="湖水綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6f7fa6" data-note-color="#6f7fa6" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="霧藍紫"></button></div></div>
+<div id="note-image-tools-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNoteImageTools()"><div class="modal-close-circle">✕</div></div><div class="modal-content note-image-tools-content"><div class="modal-title">畫筆標記</div><div class="note-image-tools-preview"><canvas id="note-image-edit-canvas"></canvas></div><div class="note-image-tools-row"><button type="button" id="note-image-draw-toggle" class="note-image-tool-btn btn-press-effect is-active" onclick="toggleNoteImageDrawMode()">畫筆開啟</button><button type="button" class="note-image-tool-btn btn-press-effect" onclick="resetNoteImageCanvas()">清除標記</button></div><button type="button" onclick="saveNoteImageEdits()" class="modal-btn-primary btn-press-effect">套用標記</button></div></div></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
@@ -2657,6 +2738,11 @@ let editSnapshotHTML = '';
 let editSnapshotHeaderHTML = '';
 let currentIconTarget = null;
 let currentDetailCard = null;
+let currentNoteImageBlockIndex = null;
+let currentNoteImageOriginalSrc = '';
+let noteImageDrawMode = false;
+let noteImageDrawing = false;
+let noteImageCanvasImage = null;
 let currentMapPlaceCard = null;
 let currentRouteConnector = null;
 let lastBothEdited = null;
@@ -2679,7 +2765,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-10-itinerary-stations-v1';
+const STATIC_CONTENT_VERSION = '2026-05-10-itinerary-stations-note-merge-v2';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 const FX = 0.21;
 const correctPw = '20211127';
@@ -3920,7 +4006,12 @@ host.innerHTML = `<div class="note-page"><div class="note-empty">這個行程還
 return;
 }
 const blocksHtml = blocks.map((block, blockIndex) => {
-if (block.type === 'image') return `<div class="note-block photo-preview-item" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}"><img src="${escapeHtml(block.src)}" alt="行程照片" onclick="openImagePreview(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button>` : ''}</div>`;
+if (block.type === 'image') {
+const size = ['small', 'medium', 'full'].includes(block.size) ? block.size : 'full';
+const selected = currentNoteImageBlockIndex === blockIndex;
+const inlineTools = isEditMode && selected ? `<div class="note-image-inline-tools"><button type="button" class="btn-press-effect" onclick="moveCurrentNoteImage(-1)">上移</button><button type="button" class="btn-press-effect" onclick="moveCurrentNoteImage(1)">下移</button><button type="button" class="btn-press-effect ${size === 'small' ? 'is-active' : ''}" onclick="setCurrentNoteImageSize('small')">小</button><button type="button" class="btn-press-effect ${size === 'medium' ? 'is-active' : ''}" onclick="setCurrentNoteImageSize('medium')">中</button><button type="button" class="btn-press-effect ${size === 'full' ? 'is-active' : ''}" onclick="setCurrentNoteImageSize('full')">大</button><button type="button" class="btn-press-effect" onclick="openNoteImageEditor()">畫筆</button></div>` : '';
+return `<div class="note-block photo-preview-item note-image-size-${size} ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-size="${size}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button>` : ''}${inlineTools}</div>`;
+}
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
 const isAfterImageEmpty = prevBlock?.type === 'image' && !stripHtml(block.html || '').trim();
@@ -4242,7 +4333,7 @@ const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 return [normalizeDetailField({ name: '', blocks: [{ type: 'text', text, html: plainTextToHtml(text).replace(/優先/g, '<span class="flight-priority-badge">優先</span>') }] })];
 }
 const blocks = Array.from(page.querySelectorAll('.note-block')).map(block => {
-if (block.dataset.blockType === 'image') return { type: 'image', src: block.dataset.src || '' };
+if (block.dataset.blockType === 'image') return { type: 'image', src: block.dataset.src || '', size: block.dataset.size || 'full' };
 const html = sanitizeNoteHtml(block.querySelector('.note-text-input')?.innerHTML || '');
 return { type: 'text', text: stripHtml(html).trim(), html };
 }).filter(block => block.type === 'image' ? block.src : true);
@@ -4264,6 +4355,155 @@ event.stopPropagation();
 }
 document.getElementById('image-preview-img').src = '';
 closeOverlayModal('image-preview-modal');
+}
+function openNoteImageFromClick(event, img) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+if (!isEditMode) {
+openImagePreview(event, img);
+return;
+}
+const block = img?.closest?.('.note-block[data-block-type="image"]');
+const blockIndex = Number(block?.dataset.blockIndex);
+if (!Number.isInteger(blockIndex)) return;
+currentNoteImageBlockIndex = currentNoteImageBlockIndex === blockIndex ? null : blockIndex;
+saveFieldDraftsToCard();
+renderDetailFields();
+}
+function getCurrentNoteImageFields() {
+saveFieldDraftsToCard();
+const fields = getDetailFields(currentDetailCard);
+if (!fields[0]) fields[0] = { name: '', blocks: [] };
+if (!Array.isArray(fields[0].blocks)) fields[0].blocks = [];
+return fields;
+}
+function moveCurrentNoteImage(direction) {
+if (!currentDetailCard || !isEditMode || !Number.isInteger(currentNoteImageBlockIndex)) return;
+const fields = getCurrentNoteImageFields();
+const blocks = fields[0].blocks;
+const from = currentNoteImageBlockIndex;
+const to = from + direction;
+if (from < 0 || from >= blocks.length || to < 0 || to >= blocks.length || blocks[from]?.type !== 'image') return;
+const [moved] = blocks.splice(from, 1);
+blocks.splice(to, 0, moved);
+currentNoteImageBlockIndex = to;
+setDetailFields(currentDetailCard, fields);
+renderDetailFields();
+updateMoreInfoButtons();
+}
+function setCurrentNoteImageSize(size) {
+if (!['small', 'medium', 'full'].includes(size)) return;
+if (!currentDetailCard || !isEditMode || !Number.isInteger(currentNoteImageBlockIndex)) return;
+const fields = getCurrentNoteImageFields();
+const block = fields[0].blocks[currentNoteImageBlockIndex];
+if (!block || block.type !== 'image') return;
+block.size = size;
+setDetailFields(currentDetailCard, fields);
+renderDetailFields();
+updateMoreInfoButtons();
+}
+function drawNoteImageCanvas(src) {
+return new Promise((resolve) => {
+const canvas = document.getElementById('note-image-edit-canvas');
+const ctx = canvas?.getContext('2d');
+if (!canvas || !ctx) return resolve(false);
+const img = new Image();
+img.onload = () => {
+const maxWidth = 900;
+const scale = Math.min(1, maxWidth / img.naturalWidth);
+canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+noteImageCanvasImage = img;
+resolve(true);
+};
+img.onerror = () => resolve(false);
+img.src = src;
+});
+}
+async function openNoteImageEditor() {
+if (!currentDetailCard || !isEditMode || !Number.isInteger(currentNoteImageBlockIndex)) return;
+const fields = getCurrentNoteImageFields();
+const block = fields[0].blocks[currentNoteImageBlockIndex];
+if (!block || block.type !== 'image' || !block.src) return;
+currentNoteImageOriginalSrc = block.src;
+noteImageDrawMode = true;
+await drawNoteImageCanvas(block.src);
+document.getElementById('note-image-draw-toggle')?.classList.add('is-active');
+document.getElementById('note-image-draw-toggle').textContent = '畫筆開啟';
+openOverlayModal('note-image-tools-modal');
+}
+function closeNoteImageTools() {
+noteImageDrawing = false;
+noteImageDrawMode = false;
+closeOverlayModal('note-image-tools-modal');
+}
+function toggleNoteImageDrawMode() {
+noteImageDrawMode = !noteImageDrawMode;
+const btn = document.getElementById('note-image-draw-toggle');
+if (btn) {
+btn.classList.toggle('is-active', noteImageDrawMode);
+btn.textContent = noteImageDrawMode ? '畫筆開啟' : '畫筆關閉';
+}
+}
+function resetNoteImageCanvas() {
+if (currentNoteImageOriginalSrc) drawNoteImageCanvas(currentNoteImageOriginalSrc);
+}
+function saveNoteImageEdits() {
+if (!currentDetailCard || !Number.isInteger(currentNoteImageBlockIndex)) return;
+const canvas = document.getElementById('note-image-edit-canvas');
+if (!canvas) return;
+const fields = getCurrentNoteImageFields();
+const block = fields[0].blocks[currentNoteImageBlockIndex];
+if (!block || block.type !== 'image') return;
+block.src = canvas.toDataURL('image/png');
+setDetailFields(currentDetailCard, fields);
+closeNoteImageTools();
+renderDetailFields();
+updateMoreInfoButtons();
+}
+function getCanvasPoint(event, canvas) {
+const rect = canvas.getBoundingClientRect();
+return {
+x: (event.clientX - rect.left) * (canvas.width / rect.width),
+y: (event.clientY - rect.top) * (canvas.height / rect.height)
+};
+}
+function initNoteImageCanvasEditor() {
+const canvas = document.getElementById('note-image-edit-canvas');
+if (!canvas) return;
+const drawAt = (event, start = false) => {
+if (!noteImageDrawMode) return;
+event.preventDefault();
+const ctx = canvas.getContext('2d');
+const point = getCanvasPoint(event, canvas);
+ctx.lineWidth = Math.max(5, canvas.width * 0.012);
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+ctx.strokeStyle = '#e2566d';
+if (start) {
+ctx.beginPath();
+ctx.moveTo(point.x, point.y);
+} else {
+ctx.lineTo(point.x, point.y);
+ctx.stroke();
+}
+};
+canvas.addEventListener('pointerdown', event => {
+noteImageDrawing = true;
+try { canvas.setPointerCapture(event.pointerId); } catch (error) {}
+drawAt(event, true);
+}, { passive: false });
+canvas.addEventListener('pointermove', event => {
+if (!noteImageDrawing) return;
+drawAt(event);
+}, { passive: false });
+['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+canvas.addEventListener(type, () => { noteImageDrawing = false; }, { passive: true });
+});
 }
 function addDetailField() {
 if (!currentDetailCard || !isEditMode) return;
@@ -4441,6 +4681,7 @@ event.preventDefault();
 event.stopPropagation();
 }
 currentDetailCard = btn.closest('.card');
+currentNoteImageBlockIndex = null;
 if (!currentDetailCard) return;
 const isFlight = isFlightDetailCard(currentDetailCard);
 if (!isEditMode && !noteHasContent(currentDetailCard)) {
@@ -4452,7 +4693,7 @@ const detailTitle = document.querySelector('#itinerary-detail-modal .modal-title
 const flightPairKey = isFlight ? getLockedFlightPairKey(currentDetailCard) : '';
 detailTitle.textContent = isFlight ? (flightPairKey === 'IT207' ? '回程航班備忘' : '去程航班備忘') : '行程介紹';
 document.querySelector('#itinerary-detail-modal .modal-btn-primary').textContent = '儲存介紹';
-document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode && !isFlight ? 'block' : 'none';
+document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode && !isFlight ? 'flex' : 'none';
 if (isFlight) await warmFlightDetailImages(flightPairKey);
 renderDetailFields();
 openSimpleModal('itinerary-detail-modal');
@@ -4517,6 +4758,8 @@ closeModal('map-place-modal');
 }
 function closeItineraryDetailModal() {
 currentDetailCard = null;
+currentNoteImageBlockIndex = null;
+closeNoteImageTools();
 closeNoteColorPopover();
 closeModal('itinerary-detail-modal');
 }
@@ -5900,7 +6143,13 @@ return Boolean(card?.dataset.detailFields || card?.dataset.detail);
 function copyCardCloudPayload(targetCard, sourceCard) {
 if (!targetCard || !sourceCard) return false;
 let changed = false;
-['detailFields', 'detail', 'mapPlaceInput', 'mapPlaceValue'].forEach(key => {
+['detailFields', 'detail'].forEach(key => {
+if (sourceCard.dataset[key] && targetCard.dataset[key] !== sourceCard.dataset[key]) {
+targetCard.dataset[key] = sourceCard.dataset[key];
+changed = true;
+}
+});
+['mapPlaceInput', 'mapPlaceValue'].forEach(key => {
 if (sourceCard.dataset[key] && !targetCard.dataset[key]) {
 targetCard.dataset[key] = sourceCard.dataset[key];
 changed = true;
@@ -5962,7 +6211,7 @@ const titleSource = titleMap.get(getCloudMergeTitleKey(targetCard));
 const sourceCard = exactSource || titleSource;
 if (!sourceCard) return;
 changed = copyEditableTextFromCloud(targetCard, sourceCard) || changed;
-if (!cardHasDetailPayload(targetCard) && cardHasDetailPayload(sourceCard)) changed = copyCardCloudPayload(targetCard, sourceCard) || changed;
+if (cardHasDetailPayload(sourceCard)) changed = copyCardCloudPayload(targetCard, sourceCard) || changed;
 });
 return changed;
 }
@@ -5975,7 +6224,8 @@ let shouldRefreshCloudStatic = false;
 if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim() && data.staticContentVersion === STATIC_CONTENT_VERSION) {
 document.getElementById('day-content').innerHTML = data.dayContentHTML;
 } else if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim()) {
-shouldRefreshCloudStatic = mergeCloudCardDataFromHTML(data.dayContentHTML);
+shouldRefreshCloudStatic = true;
+mergeCloudCardDataFromHTML(data.dayContentHTML);
 }
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
@@ -6056,7 +6306,7 @@ initFloatingBackground();
 initCategoryMenu();
 initIconPicker();
 initNoteToolbarTouchFix();
-initNoteImageReorder();
+initNoteImageCanvasEditor();
 enhanceRouteConnectors();
 initDatePicker();
 initDayDragSwap();
