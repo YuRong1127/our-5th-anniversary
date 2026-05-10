@@ -1945,7 +1945,8 @@ border-radius: 18px;
 background: #fff;
 border: 1px solid #f0e6e2;
 box-shadow: 0 6px 18px rgba(141,110,99,.08);
-margin: 8px 0 8px;
+margin: 12px 0 14px;
+padding: 0;
 -webkit-touch-callout: none;
 user-select: none;
 -webkit-user-select: none;
@@ -1979,11 +1980,18 @@ object-fit: cover;
 border-color: #e6b0a5;
 box-shadow: 0 8px 22px rgba(209,122,109,.16), inset 0 0 0 2px rgba(209,122,109,.1);
 }
-.note-image-edit-chip {
+.note-image-action-bar {
+display: none;
 position: absolute;
 left: 8px;
 top: 8px;
 z-index: 2;
+gap: 6px;
+}
+.photo-preview-item.is-selected .note-image-action-bar {
+display: flex;
+}
+.note-image-action-btn {
 height: 32px;
 padding: 0 12px;
 border: 1px solid #efd9d2;
@@ -1993,6 +2001,11 @@ color: #a7675d;
 font-size: .72rem;
 font-weight: 900;
 box-shadow: 0 4px 12px rgba(141,110,99,.12);
+}
+.note-image-action-btn.is-active {
+background: rgba(215,123,112,.96);
+border-color: rgba(215,123,112,.96);
+color: #fff;
 }
 .note-image-resize-handle,
 .note-image-crop-handle {
@@ -2021,30 +2034,22 @@ font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.22);
 }
 .note-image-crop-handle {
-left: 50%;
-bottom: -13px;
-height: 24px;
-min-width: 58px;
-padding: 0 10px;
-transform: translateX(-50%);
+right: -11px;
+top: 50%;
+width: 28px;
+height: 46px;
+padding: 0;
+transform: translateY(-50%);
 border: 2px solid #fff;
 border-radius: 999px;
 background: #fff8f4;
 color: #a7675d;
-font-size: .68rem;
+font-size: .66rem;
 font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.16);
 }
 .note-image-drag-hint {
-display: none;
-margin-top: 7px;
-color: #b79a91;
-font-size: .68rem;
-font-weight: 900;
-text-align: center;
-}
-.photo-preview-item.is-selected .note-image-drag-hint {
-display: block;
+display: none !important;
 }
 body:not(.edit-mode) .photo-preview-item {
 cursor: zoom-in;
@@ -2384,19 +2389,19 @@ display: block;
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 8px; min-height: 54px; margin: 0 0 10px; color: #bcaaaa; font-size: 1.12rem; font-weight: 700; text-align: center; line-height: 1.2; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 4px; min-height: 48px; margin: 0 0 8px; color: #bcaaaa; font-size: 1.08rem; font-weight: 700; text-align: center; line-height: 1.2; }
 .pw-hint-pig {
 display: block;
-width: 64px;
-height: 52px;
+width: 72px;
+height: 48px;
 flex: 0 0 auto;
 align-self: center;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
 }
 .pw-hint-pig.angry {
-width: 64px;
-height: 52px;
+width: 58px;
+height: 46px;
 transform: none;
 }
 .pw-keypad {
@@ -3761,7 +3766,16 @@ if ((field.text || '').trim()) blocks.push({ type: 'text', text: field.text });
 photos.forEach(src => blocks.push({ type: 'image', src }));
 }
 blocks = blocks.map(block => {
-if (block.type === 'image') return { type: 'image', src: block.src || block.url || '' };
+if (block.type === 'image') {
+const width = Number(block.width || 0);
+const cropHeight = Number(block.cropHeight || 0);
+return {
+type: 'image',
+src: block.src || block.url || '',
+width: Number.isFinite(width) && width ? Math.max(35, Math.min(100, Math.round(width))) : undefined,
+cropHeight: Number.isFinite(cropHeight) && cropHeight ? Math.max(0, Math.min(520, Math.round(cropHeight))) : 0
+};
+}
 const html = block.html || (block.text ? plainTextToHtml(block.text) : '');
 return { type: 'text', text: stripHtml(html), html: sanitizeNoteHtml(html) };
 }).filter(block => block.type === 'image' ? block.src : true);
@@ -3931,6 +3945,29 @@ function renderNoteTextViewHtml(block) {
 let html = linkifyRichHtml(block.html || plainTextToHtml(block.text));
 return html;
 }
+function splitNoteBlocksForEditing(blocks) {
+const nextBlocks = [];
+blocks.forEach(block => {
+if (block.type !== 'text') {
+nextBlocks.push(block);
+return;
+}
+const html = sanitizeNoteHtml(block.html || plainTextToHtml(block.text || ''));
+const parts = html
+.split(/(?:<br\s*\/?>\s*){2,}/i)
+.map(part => part.trim())
+.filter(part => stripHtml(part).trim());
+if (parts.length <= 1) {
+nextBlocks.push(block);
+return;
+}
+parts.forEach((part, index) => {
+nextBlocks.push({ type: 'text', text: stripHtml(part), html: part });
+if (index < parts.length - 1) nextBlocks.push({ type: 'text', text: '', html: '' });
+});
+});
+return nextBlocks;
+}
 function injectFutamiWashhandImageBlock(blocks, card) {
 const cardTitle = card?.querySelector('.item-title')?.textContent || '';
 if (!cardTitle.includes('二見清晨參拜') && !cardTitle.includes('夫妻岩')) return blocks;
@@ -4076,6 +4113,7 @@ function renderDetailFields() {
 const host = document.getElementById('itinerary-detail-fields');
 if (!host || !currentDetailCard) return;
 let blocks = getNoteBlocks(currentDetailCard);
+if (isEditMode) blocks = splitNoteBlocksForEditing(blocks);
 if (!isEditMode) blocks = blocks.filter(block => block.type === 'image' ? block.src : (block.text || '').trim());
 if (isEditMode && !blocks.length) blocks = [{ type: 'text', text: '' }];
 if (!isEditMode && !blocks.length) {
@@ -4089,7 +4127,7 @@ const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 :
 const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
 const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
 const frameStyle = `--note-image-width:${width}%;${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-width="${width}" data-crop-height="${cropHeight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button><button type="button" class="note-image-edit-chip btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle" aria-label="裁剪圖片高度" onpointerdown="startCurrentNoteImageCrop(event)">裁剪</button><div class="note-image-drag-hint">拖曳圖片可移到文字前後，拉右下角可調大小</div>` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-width="${width}" data-crop-height="${cropHeight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button><div class="note-image-action-bar"><button type="button" class="note-image-action-btn is-active btn-press-effect" onclick="event.stopPropagation(); selectNoteImageForEditing(this)">編輯</button><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle" aria-label="裁剪圖片高度" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -4452,7 +4490,13 @@ return;
 const block = img?.closest?.('.note-block[data-block-type="image"]');
 const blockIndex = Number(block?.dataset.blockIndex);
 if (!Number.isInteger(blockIndex)) return;
-currentNoteImageBlockIndex = currentNoteImageBlockIndex === blockIndex ? null : blockIndex;
+currentNoteImageBlockIndex = blockIndex;
+saveFieldDraftsToCard();
+renderDetailFields();
+}
+function selectNoteImageForEditing(btn) {
+const block = btn?.closest?.('.note-block[data-block-type="image"]');
+if (!selectCurrentNoteImageBlock(block)) return;
 saveFieldDraftsToCard();
 renderDetailFields();
 }
@@ -4783,17 +4827,24 @@ const host = document.getElementById('itinerary-detail-fields');
 if (!host) return;
 host.addEventListener('pointerdown', event => {
 const block = event.target.closest('.note-block[data-block-type="image"]');
-if (!isEditMode || !block || event.target.closest('.photo-remove-btn') || event.target.closest('.note-image-resize-handle') || event.target.closest('.note-image-crop-handle') || event.target.closest('.note-image-edit-chip')) return;
+if (!isEditMode || !block || event.target.closest('.photo-remove-btn') || event.target.closest('.note-image-resize-handle') || event.target.closest('.note-image-crop-handle') || event.target.closest('.note-image-action-bar')) return;
 if (event.pointerType === 'mouse' && event.button !== 0) return;
 try { block.setPointerCapture(event.pointerId); } catch (error) {}
 const startX = event.clientX;
 const startY = event.clientY;
-noteImageDragState = { block, pointerId: event.pointerId, active: false, startX, startY };
+const timer = setTimeout(() => {
+if (!noteImageDragState || noteImageDragState.pointerId !== event.pointerId) return;
+startNoteImageDrag(block, event.pointerId, startX, startY);
+}, 420);
+noteImageDragState = { block, pointerId: event.pointerId, active: false, startX, startY, timer };
 }, { passive: true });
 host.addEventListener('pointermove', event => {
 if (!noteImageDragState || noteImageDragState.pointerId !== event.pointerId) return;
 const moved = Math.hypot(event.clientX - noteImageDragState.startX, event.clientY - noteImageDragState.startY);
-if (!noteImageDragState.active && moved > 9) startNoteImageDrag(noteImageDragState.block, event.pointerId, event.clientX, event.clientY);
+if (!noteImageDragState.active && moved > 13) {
+clearTimeout(noteImageDragState.timer);
+noteImageDragState.timer = null;
+}
 if (noteImageDragState?.active) {
 event.preventDefault();
 updateNoteImageDragTarget(event.clientX, event.clientY);
@@ -4803,6 +4854,7 @@ host.addEventListener('pointerup', event => {
 if (!noteImageDragState || noteImageDragState.pointerId !== event.pointerId) return;
 if (noteImageDragState.active) finishNoteImageDrag();
 else {
+if (noteImageDragState.timer) clearTimeout(noteImageDragState.timer);
 selectCurrentNoteImageBlock(noteImageDragState.block);
 noteImageDragState = null;
 saveFieldDraftsToCard();
