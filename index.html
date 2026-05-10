@@ -1976,6 +1976,7 @@ user-select: none;
 -webkit-user-select: none;
 }
 .note-image-frame {
+position: relative;
 width: calc(100% * var(--note-crop-width, 100) / 100);
 max-width: 100%;
 max-height: 320px;
@@ -2065,31 +2066,77 @@ font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.22);
 }
 .note-image-crop-handle {
-right: -11px;
+right: -8px;
 top: 50%;
 width: 28px;
-height: 46px;
+height: 44px;
 padding: 0;
 transform: translateY(-50%);
-border: 2px solid #fff;
-border-radius: 999px;
-background: #fff8f4;
-color: #a7675d;
-font-size: .66rem;
-font-weight: 900;
-box-shadow: 0 6px 14px rgba(141,110,99,.16);
+border: 0;
+border-radius: 0;
+background: transparent;
+color: transparent;
+font-size: 0;
+box-shadow: none;
+}
+.note-image-crop-handle::before,
+.note-image-crop-handle::after {
+content: '';
+position: absolute;
+display: block;
+border-radius: 2px;
+background: rgba(103,82,76,.78);
+box-shadow: 0 1px 3px rgba(255,255,255,.72);
+}
+.note-image-crop-handle::before {
+right: 7px;
+top: 9px;
+width: 3px;
+height: 26px;
+}
+.note-image-crop-handle::after {
+right: 7px;
+top: 50%;
+width: 15px;
+height: 3px;
+transform: translateY(-50%);
 }
 .note-image-crop-handle.crop-left {
-left: -11px;
+left: -8px;
+right: auto;
+}
+.note-image-crop-handle.crop-left::before {
+left: 7px;
+right: auto;
+}
+.note-image-crop-handle.crop-left::after {
+left: 7px;
 right: auto;
 }
 .note-image-crop-handle.crop-bottom {
 left: 50%;
 right: auto;
 top: auto;
-bottom: -11px;
-width: 52px;
-height: 26px;
+bottom: -8px;
+width: 44px;
+height: 28px;
+transform: translateX(-50%);
+}
+.note-image-crop-handle.crop-bottom::before {
+left: 9px;
+right: auto;
+top: auto;
+bottom: 7px;
+width: 26px;
+height: 3px;
+}
+.note-image-crop-handle.crop-bottom::after {
+left: 50%;
+right: auto;
+top: auto;
+bottom: 7px;
+width: 3px;
+height: 15px;
 transform: translateX(-50%);
 }
 .note-image-drag-hint {
@@ -2214,6 +2261,7 @@ border-color: #d77b70;
 position: absolute;
 right: 6px;
 top: 6px;
+z-index: 4;
 border: 0;
 border-radius: 50%;
 width: 26px;
@@ -2458,7 +2506,7 @@ object-fit: contain;
 width: auto;
 height: 1.35em;
 margin-left: 2px;
-transform: none;
+transform: translateY(-4px);
 vertical-align: -0.2em;
 }
 .pw-keypad {
@@ -4208,7 +4256,7 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button><div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onpointerdown="event.preventDefault(); event.stopPropagation();" onclick="removeDetailBlockFromButton(event)">×</button>` : ''}</div>${isEditMode ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -4956,6 +5004,24 @@ setDetailFields(currentDetailCard, fields);
 renderDetailFields();
 updateMoreInfoButtons();
 }
+function removeDetailBlockFromButton(event) {
+event?.preventDefault();
+event?.stopPropagation();
+if (event?.stopImmediatePropagation) event.stopImmediatePropagation();
+if (!currentDetailCard || !isEditMode) return;
+const blockEl = event?.currentTarget?.closest('.note-block[data-block-type="image"]');
+const page = blockEl?.closest('.note-page');
+const blockIndex = page ? Array.from(page.querySelectorAll('.note-block')).indexOf(blockEl) : -1;
+if (blockIndex < 0) return;
+const fields = collectDetailFieldsFromModal();
+if (!fields[0]?.blocks) return;
+fields[0].blocks.splice(blockIndex, 1);
+if (!fields[0].blocks.length) fields[0].blocks.push({ type: 'text', text: '' });
+currentNoteImageBlockIndex = null;
+setDetailFields(currentDetailCard, fields);
+renderDetailFields();
+updateMoreInfoButtons();
+}
 function clearNoteImageDropTargets() {
 document.querySelectorAll('.note-image-drop-target').forEach(block => block.classList.remove('note-image-drop-target'));
 document.querySelectorAll('.note-image-drop-caret').forEach(marker => marker.remove());
@@ -5446,6 +5512,8 @@ cancelPasswordAuth();
 }
 }
 function toggleEditMode(isEdit) {
+const shouldScrollToDayTop = isEdit && !isEditMode;
+const previousScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 if (isEdit && !isEditMode) {
 editSnapshotHTML = document.getElementById('day-content').innerHTML;
 editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML;
@@ -5466,6 +5534,7 @@ btn.style.display = isEdit && isFlight ? 'none' : '';
 btn.textContent = isEdit ? (isFlight ? '' : '寫點什麼吧') : (isFlight ? '🐯✈️' : '點我看更多');
 });
 updateMoreInfoButtons();
+if (shouldScrollToDayTop) scrollDaySectionToTop(currentDay, previousScrollTop);
 }
 function warmDiscardPigImage() {
 if (!preloadedDiscardPig) preloadedDiscardPig = warmImage('discard-unsaved-pig.png');
