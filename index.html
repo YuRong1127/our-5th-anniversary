@@ -3004,24 +3004,35 @@ const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
 const STATIC_CONTENT_VERSION = '2026-05-10-itinerary-stations-note-merge-v3';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
-let currentFX = parseFloat(localStorage.getItem('mie_trip_fx')) || 0.21;
-function updateGlobalFX() {
-    const input = document.getElementById('fx-rate-input');
-    const newRate = parseFloat(input.value);
-    if (newRate > 0) {
-        currentFX = newRate;
-        localStorage.setItem('mie_trip_fx', newRate); // 存進瀏覽器大腦
-        showAlert(`匯率已更新為 ${newRate}！🐽`);
-        updatePublicFundDisplay(); // 叫錢包重新計算台幣
-    } else {
-        showAlert("請輸入正確數字喔！");
-    }
-}
+
 const correctPw = '20211127';
 const passwordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬">';
 const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="angry-pig-inline.png" alt="生氣小豬">';
 
+// 1. 設定初始匯率（預設 0.21）
+let currentFX = 0.21; 
 
+// 2. 建立自動連網抓取功能
+async function updateLiveFX() {
+    try {
+        // 向 API 請求日幣對台幣的最新匯率
+        const response = await fetch('https://open.er-api.com/v6/latest/JPY');
+        const data = await response.json();
+        
+        if (data && data.rates && data.rates.TWD) {
+            currentFX = data.rates.TWD;
+            console.log("今日即時匯率已更新為: " + currentFX);
+            
+            // 抓到匯率後，自動叫錢包重新計算一次台幣金額
+            if (typeof updatePublicFundDisplay === 'function') updatePublicFundDisplay();
+        }
+    } catch (e) {
+        console.log("目前無法連線至匯率伺服器，使用預設值 0.21");
+    }
+}
+
+// 3. 執行抓取
+updateLiveFX();
 
 
 const ICON_GROUPS = {
@@ -6768,7 +6779,7 @@ let bigTotalTWD = 0;
 let smallTotalTWD = 0;
 expenses.forEach(e => {
 if (e.type === 'topup') return;
-const rate = e.displayCurrency === 'JPY' ? FX : 1;
+const rate = e.displayCurrency === 'JPY' ? currentFX : 1
 bigTotalTWD += e.bigPigShare * rate;
 smallTotalTWD += e.smallPigShare * rate;
 });
