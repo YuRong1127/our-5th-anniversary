@@ -1008,18 +1008,19 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 #password-modal .modal-content {
 max-height: none;
 padding: 22px 18px 16px;
-border-color: #edcfc6;
+border-color: #f4cfc6;
 border-radius: 26px;
-background: linear-gradient(180deg, #fff0e8 0%, #f7ddd3 100%);
-box-shadow: 0 14px 34px rgba(141,110,99,.18);
+background: linear-gradient(180deg, #fff8f4 0%, #ffe6df 100%);
+box-shadow: 0 14px 34px rgba(209,122,109,.14);
 }
 #password-modal .modal-container {
 max-width: 344px;
 padding: 12px;
 }
 #password-modal .modal-title {
-margin-bottom: 10px;
+margin-bottom: 14px;
 font-size: 1.36rem;
+color: #9d6f65;
 }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
 #alert-modal .modal-content { align-items: center; text-align: center; }
@@ -2035,14 +2036,16 @@ gap: 6px;
 display: flex;
 }
 .note-image-action-btn {
+width: 32px;
 height: 32px;
-padding: 0 12px;
+padding: 0;
 border: 1px solid #efd9d2;
-border-radius: 999px;
+border-radius: 50%;
 background: rgba(255,248,244,.94);
 color: #a7675d;
-font-size: .72rem;
+font-size: 1rem;
 font-weight: 900;
+line-height: 1;
 box-shadow: 0 4px 12px rgba(141,110,99,.12);
 }
 .note-image-action-btn.is-active {
@@ -2100,13 +2103,13 @@ background: #d75f6f;
 box-shadow: 0 0 0 1.5px rgba(255,255,255,.96), 0 2px 5px rgba(76,54,49,.22);
 }
 .note-image-crop-handle::before {
-right: 7px;
+right: 0;
 top: 9px;
 width: 3px;
 height: 26px;
 }
 .note-image-crop-handle::after {
-right: 7px;
+right: 0;
 top: 50%;
 width: 15px;
 height: 3px;
@@ -2117,11 +2120,11 @@ left: 0;
 right: auto;
 }
 .note-image-crop-handle.crop-left::before {
-left: 7px;
+left: 0;
 right: auto;
 }
 .note-image-crop-handle.crop-left::after {
-left: 7px;
+left: 0;
 right: auto;
 }
 .note-image-crop-handle.crop-bottom {
@@ -2137,7 +2140,7 @@ transform: translateX(-50%);
 left: 9px;
 right: auto;
 top: auto;
-bottom: 7px;
+bottom: 0;
 width: 26px;
 height: 3px;
 }
@@ -2145,7 +2148,7 @@ height: 3px;
 left: 50%;
 right: auto;
 top: auto;
-bottom: 7px;
+bottom: 0;
 width: 3px;
 height: 15px;
 transform: translateX(-50%);
@@ -2273,13 +2276,19 @@ position: absolute;
 right: 6px;
 top: 6px;
 z-index: 4;
+display: inline-flex;
+align-items: center;
+justify-content: center;
 border: 0;
 border-radius: 50%;
 width: 26px;
 height: 26px;
+padding: 0;
 background: rgba(255,255,255,.9);
 color: #e57373;
+font-size: 1.15rem;
 font-weight: 900;
+line-height: 1;
 }
 #image-preview-modal {
 background: rgba(65,49,45,.72);
@@ -2498,25 +2507,25 @@ display: block;
 .heart-row { display: flex; justify-content: center; margin-bottom: 14px; cursor: pointer; }
 .heart-slot { position: relative; width: 28px; height: 28px; margin: 0 2px; font-size: 1.48rem; }
 .h-empty, .h-full { position: absolute; left: 0; top: 0; }
-.h-empty { color: #a78980; }
+.h-empty { color: #c98f84; }
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 0; min-height: 48px; margin: 0 0 6px; color: #a88980; font-size: 1.12rem; font-weight: 700; text-align: center; line-height: 1.2; }
+.pw-hint-text { display: flex; justify-content: center; align-items: flex-start; gap: 0; min-height: 48px; margin: 0 0 6px; color: #b8796f; font-size: 1.12rem; font-weight: 700; text-align: center; line-height: 1.2; }
 .pw-hint-pig {
 display: block;
-width: auto;
+width: 72px;
 height: 48px;
 flex: 0 0 auto;
 align-self: center;
-margin-left: -12px;
+margin-left: 4px;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
 }
 .pw-hint-pig.angry {
-width: auto;
+width: 72px;
 height: 48px;
-margin-left: 2px;
+margin-left: 4px;
 transform: translateY(0);
 vertical-align: -0.2em;
 }
@@ -2530,22 +2539,22 @@ margin: 4px 0 12px;
 .pw-keypad button {
 width: 74px;
 height: 48px;
-border: 1px solid #dfb8ad;
+border: 1px solid #efbeb4;
 border-radius: 15px;
-background: #f3d9d0;
-color: var(--main-brown);
+background: #ffe1da;
+color: #9d6f65;
 font-size: 1.18rem;
 font-weight: 900;
-box-shadow: 0 4px 10px rgba(141,110,99,.1);
+box-shadow: 0 4px 10px rgba(209,122,109,.11);
 transition: transform .08s ease, box-shadow .08s ease, background .08s ease;
 }
 .pw-keypad button:active {
 transform: scale(.94);
-background: #e9c5ba;
+background: #f5c9c0;
 box-shadow: inset 0 3px 8px rgba(141,110,99,.13);
 opacity: .86;
 }
-.auth-cancel-btn { border: 0; background: transparent; color: #a88980; text-decoration: underline; font-size: .76rem; font-weight: 700; }
+.auth-cancel-btn { border: 0; background: transparent; color: #b8796f; text-decoration: underline; font-size: .76rem; font-weight: 700; }
 .kaomoji-fix { display: inline-block; margin-left: 2px; transform: translateY(-2px); white-space: nowrap; letter-spacing: 0; }
 .hidden-input { position: absolute; opacity: 0; pointer-events: none; }
 @media (max-width: 370px) {
@@ -2799,7 +2808,7 @@ main { padding: 0 14px; }
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
-<div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
+<div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">↶</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
 <div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><div class="boundary-speech">ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></div><img class="boundary-modal-img work-sticker" src="work-too-bad.png" alt="很壞提醒" style="width: 75%; max-width: 200px; margin-top:10px;margin-bottom: 10px;"><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg); width: 180px; padding: 12px 0;">不小心滑到齁!</button></div></div></div>
 <div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><div class="boundary-speech">繼續上班存錢錢💛再一起出去玩</div><img class="boundary-modal-img finish-sticker" src="trip-finished-hug.png" alt="旅程結束陪你小圖"style="width: 75%; max-width: 200px;margin-top: 10px; margin-bottom: 5px;"><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg); width: 180px; padding: 12px 0;">沒有問題!</button></div></div></div>
 
@@ -2929,6 +2938,7 @@ let editSnapshotHeaderHTML = '';
 let currentIconTarget = null;
 let currentDetailCard = null;
 let currentNoteImageBlockIndex = null;
+let lastNoteImageDeleteRequestAt = 0;
 let currentNoteImageOriginalSrc = '';
 let noteImageDrawMode = false;
 let noteImageDrawing = false;
@@ -4267,7 +4277,7 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onpointerdown="event.stopPropagation();" onpointerup="removeDetailBlockFromButton(event)" onclick="event.preventDefault(); event.stopPropagation();">×</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" aria-label="刪除圖片" onpointerdown="event.stopPropagation();" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">×</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">✎</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -5015,16 +5025,27 @@ setDetailFields(currentDetailCard, fields);
 renderDetailFields();
 updateMoreInfoButtons();
 }
-function removeDetailBlockFromButton(event) {
-event?.preventDefault();
-event?.stopPropagation();
-if (event?.stopImmediatePropagation) event.stopImmediatePropagation();
-if (!currentDetailCard || !isEditMode) return;
+function getDetailBlockIndexFromButton(event) {
 const blockEl = event?.currentTarget?.closest('.note-block[data-block-type="image"]');
 const page = blockEl?.closest('.note-page');
 let blockIndex = page ? Array.from(page.querySelectorAll('.note-block')).indexOf(blockEl) : -1;
 if (blockIndex < 0 && Number.isInteger(currentNoteImageBlockIndex)) blockIndex = currentNoteImageBlockIndex;
+return blockIndex;
+}
+function requestRemoveDetailBlockFromButton(event) {
+event?.preventDefault();
+event?.stopPropagation();
+if (event?.stopImmediatePropagation) event.stopImmediatePropagation();
+if (!currentDetailCard || !isEditMode) return;
+const now = Date.now();
+if (now - lastNoteImageDeleteRequestAt < 500) return;
+lastNoteImageDeleteRequestAt = now;
+const blockIndex = getDetailBlockIndexFromButton(event);
 if (blockIndex < 0) return;
+showConfirmAlert('要刪掉這張圖片嗎？\n刪掉後就回不來囉', () => removeDetailBlockAtIndex(blockIndex));
+}
+function removeDetailBlockAtIndex(blockIndex) {
+if (!currentDetailCard || !isEditMode || blockIndex < 0) return;
 const fields = collectDetailFieldsFromModal();
 if (!fields[0]?.blocks) return;
 fields[0].blocks.splice(blockIndex, 1);
