@@ -2514,11 +2514,11 @@ display: block;
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 2px; min-height: 48px; margin: 0 0 6px; color: #c5aaa1; font-size: 1.12rem; font-weight: 700; text-align: center; line-height: 1.2; white-space: nowrap; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 2px; min-height: 44px; margin: 0 0 6px; color: #c5aaa1; font-size: clamp(.98rem, 4.2vw, 1.12rem); font-weight: 700; text-align: center; line-height: 1.2; white-space: nowrap; }
 .pw-hint-pig {
 display: block;
-width: 48px;
-height: 40px;
+width: 42px;
+height: 38px;
 flex: 0 0 auto;
 align-self: center;
 margin-left: 0;
@@ -2526,10 +2526,10 @@ filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
 }
 .pw-hint-pig.angry {
-width: 48px;
-height: 40px;
+width: 42px;
+height: 38px;
 margin-left: 2px;
-transform: translateY(0);
+transform: translateY(1px);
 vertical-align: -0.2em;
 }
 .pw-keypad {
@@ -2567,9 +2567,9 @@ main { padding: 0 14px; }
 .wishlist-tab { font-size: .72rem; padding: 0 4px; }
 .pw-keypad { grid-template-columns: repeat(3, 68px); gap: 8px; }
 .pw-keypad button { width: 68px; height: 46px; }
-.pw-hint-text { font-size: 1.04rem; }
+.pw-hint-text { font-size: .94rem; }
 .pw-hint-pig,
-.pw-hint-pig.angry { width: 44px; height: 38px; }
+.pw-hint-pig.angry { width: 36px; height: 34px; }
 }
 </style>
 </head>
@@ -4285,7 +4285,7 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">✎</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">×</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -5044,12 +5044,16 @@ setDetailFields(currentDetailCard, fields);
 renderDetailFields();
 updateMoreInfoButtons();
 }
-function getDetailBlockIndexFromButton(event) {
+function getDetailBlockInfoFromButton(event) {
 const blockEl = event?.currentTarget?.closest('.note-block[data-block-type="image"]');
 const page = blockEl?.closest('.note-page');
 let blockIndex = page ? Array.from(page.querySelectorAll('.note-block')).indexOf(blockEl) : -1;
 if (blockIndex < 0 && Number.isInteger(currentNoteImageBlockIndex)) blockIndex = currentNoteImageBlockIndex;
-return blockIndex;
+return {
+index: blockIndex,
+src: blockEl?.dataset.src || '',
+originalSrc: blockEl?.dataset.originalSrc || ''
+};
 }
 function requestRemoveDetailBlockFromButton(event) {
 event?.preventDefault();
@@ -5059,14 +5063,20 @@ if (!currentDetailCard || !isEditMode) return;
 const now = Date.now();
 if (now - lastNoteImageDeleteRequestAt < 500) return;
 lastNoteImageDeleteRequestAt = now;
-const blockIndex = getDetailBlockIndexFromButton(event);
-if (blockIndex < 0) return;
-showConfirmAlert('要刪掉這張圖片嗎？\n刪掉後就回不來囉', () => removeDetailBlockAtIndex(blockIndex));
+const blockInfo = getDetailBlockInfoFromButton(event);
+if (blockInfo.index < 0 && !blockInfo.src) return;
+showConfirmAlert('要刪掉這張圖片嗎？\n刪掉後就回不來囉', () => removeDetailImageBlock(blockInfo));
 }
-function removeDetailBlockAtIndex(blockIndex) {
-if (!currentDetailCard || !isEditMode || blockIndex < 0) return;
+function removeDetailImageBlock(blockInfo) {
+if (!currentDetailCard || !isEditMode || !blockInfo) return;
 const fields = collectDetailFieldsFromModal();
 if (!fields[0]?.blocks) return;
+let blockIndex = Number(blockInfo.index);
+const sameImage = block => block?.type === 'image' && (block.src === blockInfo.src || (blockInfo.originalSrc && block.originalSrc === blockInfo.originalSrc));
+if (!Number.isInteger(blockIndex) || !sameImage(fields[0].blocks[blockIndex])) {
+blockIndex = fields[0].blocks.findIndex(sameImage);
+}
+if (blockIndex < 0) return;
 fields[0].blocks.splice(blockIndex, 1);
 if (!fields[0].blocks.length) fields[0].blocks.push({ type: 'text', text: '' });
 currentNoteImageBlockIndex = null;
