@@ -914,8 +914,10 @@ pointer-events: none;
 }
 .alert-stack-pig.wallet-unsaved-pig {
 width: 190px;
-height: 190px;
-margin: -10px 0 -35px;
+height: 155px; /* 縮減高度以裁剪底部 */
+object-fit: cover; /* 配合高度進行裁剪 */
+object-position: top; /* 確保保留上方的小豬，切掉下方 */
+margin: -10px 0 0; /* 移除負邊距，因為底部已經切掉了 */
 image-rendering: auto;
 filter: drop-shadow(0 7px 14px rgba(93,120,112,.16));
 }
