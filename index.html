@@ -1792,8 +1792,8 @@ background: var(--swatch-color, #c86f77);
 .note-color-popover {
 display: none;
 position: fixed;
-left: 50%;
-top: 50%;
+left: var(--note-color-popover-left, 50%);
+top: var(--note-color-popover-top, 50%);
 z-index: 1800;
 width: min(312px, calc(100vw - 46px));
 padding: 17px 15px 14px;
@@ -1801,7 +1801,27 @@ border: 1px solid #f1ddd6;
 border-radius: 24px;
 background: #fffdfb;
 box-shadow: 0 18px 46px rgba(112,91,85,.22);
-transform: translate(-50%, -50%);
+transform: none;
+}
+.note-color-popover::before {
+content: "";
+position: absolute;
+top: -8px;
+left: var(--note-color-popover-arrow, 50%);
+width: 14px;
+height: 14px;
+border-left: 1px solid #f1ddd6;
+border-top: 1px solid #f1ddd6;
+background: #fffdfb;
+transform: translateX(-50%) rotate(45deg);
+}
+.note-color-popover.opens-up::before {
+top: auto;
+bottom: -8px;
+border-left: 0;
+border-top: 0;
+border-right: 1px solid #f1ddd6;
+border-bottom: 1px solid #f1ddd6;
 }
 .note-color-popover-title {
 margin: 0 0 11px;
@@ -1956,10 +1976,11 @@ user-select: none;
 -webkit-user-select: none;
 }
 .note-image-frame {
-width: 100%;
+width: calc(100% * var(--note-crop-width, 100) / 100);
 max-width: 100%;
 max-height: 320px;
-margin: 0 auto;
+margin-left: calc(1% * var(--note-crop-left, 0));
+margin-right: auto;
 border-radius: 18px;
 overflow: hidden;
 background: #fff;
@@ -1972,10 +1993,11 @@ max-height: none;
 }
 .note-image-frame img {
 display: block;
-width: 100%;
+width: calc(10000% / var(--note-crop-width, 100));
 height: auto;
 max-height: 320px;
 object-fit: cover;
+transform: translateX(calc(-1% * var(--note-crop-left, 0)));
 }
 .note-image-frame.is-cropped img {
 height: auto;
@@ -2056,6 +2078,19 @@ color: #a7675d;
 font-size: .66rem;
 font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.16);
+}
+.note-image-crop-handle.crop-left {
+left: -11px;
+right: auto;
+}
+.note-image-crop-handle.crop-bottom {
+left: 50%;
+right: auto;
+top: auto;
+bottom: -11px;
+width: 52px;
+height: 26px;
+transform: translateX(-50%);
 }
 .note-image-drag-hint {
 display: none !important;
@@ -2420,10 +2455,11 @@ filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
 }
 .pw-hint-pig.angry {
-width: 42px;
-height: 34px;
-margin-left: 0;
+width: auto;
+height: 1.35em;
+margin-left: 2px;
 transform: none;
+vertical-align: -0.2em;
 }
 .pw-keypad {
 display: grid;
@@ -2839,6 +2875,9 @@ let noteImageDrawMode = false;
 let noteImageDrawing = false;
 let noteImageCanvasImage = null;
 let noteImageCanvasHistory = [];
+let noteImageCanvasBaseSrc = '';
+let noteImageCanvasStrokes = [];
+let noteImageCurrentStroke = null;
 let currentMapPlaceCard = null;
 let currentRouteConnector = null;
 let lastBothEdited = null;
@@ -3791,11 +3830,27 @@ blocks = blocks.map(block => {
 if (block.type === 'image') {
 const width = Number(block.width || 0);
 const cropHeight = Number(block.cropHeight || 0);
+const cropLeft = Number(block.cropLeft || 0);
+const cropRight = Number(block.cropRight || 0);
+const safeCropLeft = Number.isFinite(cropLeft) ? Math.max(0, Math.min(80, Math.round(cropLeft))) : 0;
+const safeCropRight = Number.isFinite(cropRight) ? Math.max(0, Math.min(80 - safeCropLeft, Math.round(cropRight))) : 0;
+const strokes = Array.isArray(block.strokes) ? block.strokes : [];
 return {
 type: 'image',
 src: block.src || block.url || '',
+originalSrc: block.originalSrc || '',
+strokes: strokes.map(stroke => ({
+color: stroke.color || '#e2566d',
+width: Math.max(1, Math.min(48, Number(stroke.width || 8))),
+points: Array.isArray(stroke.points) ? stroke.points.map(point => ({
+x: Math.max(0, Math.min(1, Number(point.x || 0))),
+y: Math.max(0, Math.min(1, Number(point.y || 0)))
+})).filter(point => Number.isFinite(point.x) && Number.isFinite(point.y)) : []
+})).filter(stroke => stroke.points.length),
 width: Number.isFinite(width) && width ? Math.max(35, Math.min(100, Math.round(width))) : undefined,
-cropHeight: Number.isFinite(cropHeight) && cropHeight ? Math.max(0, Math.min(520, Math.round(cropHeight))) : 0
+cropHeight: Number.isFinite(cropHeight) && cropHeight ? Math.max(0, Math.min(520, Math.round(cropHeight))) : 0,
+cropLeft: safeCropLeft,
+cropRight: safeCropRight
 };
 }
 const html = block.html || (block.text ? plainTextToHtml(block.text) : '');
@@ -4148,8 +4203,12 @@ const selected = currentNoteImageBlockIndex === blockIndex;
 const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 : 100;
 const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
 const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
-const frameStyle = `--note-image-width:${width}%;${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-width="${width}" data-crop-height="${cropHeight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button><div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle" aria-label="裁剪圖片高度" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
+const cropLeft = Math.max(0, Math.min(80, Number(block.cropLeft || 0)));
+const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 0)));
+const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
+const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
+const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button><div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -4312,6 +4371,7 @@ noteColorPaletteOpenedAt = Date.now();
 const popover = document.getElementById('note-color-popover');
 if (popover) {
 popover.style.display = 'block';
+positionNoteColorPopover(event?.currentTarget || event?.target);
 popover.querySelectorAll('.note-color-option').forEach(btn => {
 btn.classList.toggle('is-selected', btn.dataset.noteColor?.toLowerCase() === (currentNoteTextColor || '').trim().toLowerCase());
 });
@@ -4322,6 +4382,28 @@ saveNoteSelectionForColor();
 console.warn('note color selection skipped', error);
 }
 return false;
+}
+function positionNoteColorPopover(anchor) {
+const popover = document.getElementById('note-color-popover');
+const btn = anchor?.closest?.('.note-custom-color-btn') || document.querySelector('.note-custom-color-btn');
+if (!popover || !btn) return;
+popover.classList.remove('opens-up');
+const btnRect = btn.getBoundingClientRect();
+const popRect = popover.getBoundingClientRect();
+const gap = 10;
+const margin = 12;
+const idealLeft = btnRect.left + btnRect.width / 2 - popRect.width / 2;
+const left = Math.max(margin, Math.min(window.innerWidth - popRect.width - margin, idealLeft));
+let top = btnRect.bottom + gap;
+const opensUp = top + popRect.height > window.innerHeight - margin;
+if (opensUp) {
+top = Math.max(margin, btnRect.top - popRect.height - gap);
+popover.classList.add('opens-up');
+}
+const arrow = btnRect.left + btnRect.width / 2 - left;
+popover.style.setProperty('--note-color-popover-left', `${Math.round(left)}px`);
+popover.style.setProperty('--note-color-popover-top', `${Math.round(top)}px`);
+popover.style.setProperty('--note-color-popover-arrow', `${Math.round(Math.max(22, Math.min(popRect.width - 22, arrow)))}px`);
 }
 function openNoteColorPalette(event) {
 if (showNoteColorPaletteDirect(event) === false) return false;
@@ -4339,6 +4421,7 @@ const popover = document.getElementById('note-color-popover');
 if (popover) {
 popover.innerHTML = `<button type="button" class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid">${colorOptionsHtml}</div>`;
 popover.style.display = 'block';
+positionNoteColorPopover(event?.currentTarget || event?.target);
 popover.querySelectorAll('.note-color-option').forEach(btn => {
 ['pointerdown', 'touchstart', 'click'].forEach(type => {
 btn.addEventListener(type, (colorEvent) => chooseNoteColorFromEvent(colorEvent, btn), { passive: false });
@@ -4472,11 +4555,19 @@ const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 return [normalizeDetailField({ name: '', blocks: [{ type: 'text', text, html: plainTextToHtml(text).replace(/優先/g, '<span class="flight-priority-badge">優先</span>') }] })];
 }
 const blocks = Array.from(page.querySelectorAll('.note-block')).map(block => {
+let strokes = [];
+try {
+strokes = JSON.parse(block.dataset.strokes || '[]');
+} catch (error) {}
 if (block.dataset.blockType === 'image') return {
 type: 'image',
 src: block.dataset.src || '',
+originalSrc: block.dataset.originalSrc || '',
+strokes: Array.isArray(strokes) ? strokes : [],
 width: Math.max(35, Math.min(100, Number(block.dataset.width || 100))),
-cropHeight: Math.max(0, Math.min(520, Number(block.dataset.cropHeight || 0)))
+cropHeight: Math.max(0, Math.min(520, Number(block.dataset.cropHeight || 0))),
+cropLeft: Math.max(0, Math.min(80, Number(block.dataset.cropLeft || 0))),
+cropRight: Math.max(0, Math.min(80, Number(block.dataset.cropRight || 0)))
 };
 const html = sanitizeNoteHtml(block.querySelector('.note-text-input')?.innerHTML || '');
 return { type: 'text', text: stripHtml(html).trim(), html };
@@ -4538,7 +4629,13 @@ const fields = collectDetailFieldsFromModal();
 const block = fields[0]?.blocks?.[renderedIndex];
 if (!block || block.type !== 'image') return false;
 if (Number.isFinite(updates.width)) block.width = Math.max(35, Math.min(100, Math.round(updates.width)));
-if (Number.isFinite(updates.cropHeight)) block.cropHeight = Math.max(80, Math.min(520, Math.round(updates.cropHeight)));
+if (Number.isFinite(updates.cropHeight)) {
+const img = selectedBlock.querySelector('.note-image-frame img');
+const maxHeight = Math.max(80, Math.round(img?.getBoundingClientRect().height || selectedBlock.querySelector('.note-image-frame')?.getBoundingClientRect().height || 520));
+block.cropHeight = Math.max(80, Math.min(maxHeight, Math.round(updates.cropHeight)));
+}
+if (Number.isFinite(updates.cropLeft)) block.cropLeft = Math.max(0, Math.min(80 - (Number(block.cropRight) || 0), Math.round(updates.cropLeft)));
+if (Number.isFinite(updates.cropRight)) block.cropRight = Math.max(0, Math.min(80 - (Number(block.cropLeft) || 0), Math.round(updates.cropRight)));
 setDetailFields(currentDetailCard, fields);
 currentNoteImageBlockIndex = renderedIndex;
 renderDetailFields();
@@ -4584,7 +4681,8 @@ const block = event.target.closest('.note-block[data-block-type="image"]');
 if (!selectCurrentNoteImageBlock(block)) return;
 const frame = block.querySelector('.note-image-frame');
 const startY = event.clientY;
-const startHeight = Number(block.dataset.cropHeight || 0) || frame?.getBoundingClientRect().height || 260;
+const imgHeight = frame?.querySelector('img')?.getBoundingClientRect().height || frame?.getBoundingClientRect().height || 260;
+const startHeight = Number(block.dataset.cropHeight || 0) || imgHeight;
 const pointerId = event.pointerId;
 const onMove = (moveEvent) => {
 if (moveEvent.pointerId !== pointerId) return;
@@ -4601,7 +4699,59 @@ document.addEventListener('pointermove', onMove, { passive: false });
 document.addEventListener('pointerup', onEnd, { passive: true });
 document.addEventListener('pointercancel', onEnd, { passive: true });
 }
-function drawNoteImageCanvas(src) {
+function startCurrentNoteImageCropSide(event, side) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const block = event.target.closest('.note-block[data-block-type="image"]');
+if (!selectCurrentNoteImageBlock(block)) return;
+const startX = event.clientX;
+const startLeft = Number(block.dataset.cropLeft || 0);
+const startRight = Number(block.dataset.cropRight || 0);
+const base = Math.max(1, block.getBoundingClientRect().width);
+const pointerId = event.pointerId;
+const onMove = (moveEvent) => {
+if (moveEvent.pointerId !== pointerId) return;
+moveEvent.preventDefault();
+const delta = ((moveEvent.clientX - startX) / base) * 100;
+if (side === 'left') setCurrentNoteImageGeometry({ cropLeft: startLeft + delta });
+else setCurrentNoteImageGeometry({ cropRight: startRight - delta });
+};
+const onEnd = (endEvent) => {
+if (endEvent.pointerId !== pointerId) return;
+document.removeEventListener('pointermove', onMove);
+document.removeEventListener('pointerup', onEnd);
+document.removeEventListener('pointercancel', onEnd);
+};
+document.addEventListener('pointermove', onMove, { passive: false });
+document.addEventListener('pointerup', onEnd, { passive: true });
+document.addEventListener('pointercancel', onEnd, { passive: true });
+}
+function drawStrokeOnCanvas(ctx, stroke, canvas) {
+if (!stroke?.points?.length) return;
+ctx.lineWidth = stroke.width || Math.max(5, canvas.width * 0.012);
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+ctx.strokeStyle = stroke.color || '#e2566d';
+ctx.beginPath();
+stroke.points.forEach((point, index) => {
+const x = point.x * canvas.width;
+const y = point.y * canvas.height;
+if (index === 0) ctx.moveTo(x, y);
+else ctx.lineTo(x, y);
+});
+ctx.stroke();
+}
+function redrawNoteImageCanvas() {
+const canvas = document.getElementById('note-image-edit-canvas');
+const ctx = canvas?.getContext('2d');
+if (!canvas || !ctx || !noteImageCanvasImage) return;
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.drawImage(noteImageCanvasImage, 0, 0, canvas.width, canvas.height);
+noteImageCanvasStrokes.forEach(stroke => drawStrokeOnCanvas(ctx, stroke, canvas));
+}
+function drawNoteImageCanvas(src, strokes = []) {
 return new Promise((resolve) => {
 const canvas = document.getElementById('note-image-edit-canvas');
 const ctx = canvas?.getContext('2d');
@@ -4612,10 +4762,10 @@ const maxWidth = 900;
 const scale = Math.min(1, maxWidth / img.naturalWidth);
 canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
 canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 noteImageCanvasImage = img;
+noteImageCanvasStrokes = Array.isArray(strokes) ? JSON.parse(JSON.stringify(strokes)) : [];
 noteImageCanvasHistory = [];
+redrawNoteImageCanvas();
 resolve(true);
 };
 img.onerror = () => resolve(false);
@@ -4627,15 +4777,21 @@ if (!currentDetailCard || !isEditMode || !Number.isInteger(currentNoteImageBlock
 const selectedBlock = document.querySelector(`#itinerary-detail-fields .note-block[data-block-type="image"][data-block-index="${currentNoteImageBlockIndex}"]`);
 const src = selectedBlock?.dataset.src || '';
 if (!src) return;
-currentNoteImageOriginalSrc = src;
+let strokes = [];
+try {
+strokes = JSON.parse(selectedBlock.dataset.strokes || '[]');
+} catch (error) {}
+currentNoteImageOriginalSrc = selectedBlock.dataset.originalSrc || src;
+noteImageCanvasBaseSrc = currentNoteImageOriginalSrc;
 noteImageDrawMode = true;
-await drawNoteImageCanvas(src);
+await drawNoteImageCanvas(noteImageCanvasBaseSrc, strokes);
 openOverlayModal('note-image-tools-modal');
 }
 function closeNoteImageTools() {
 noteImageDrawing = false;
 noteImageDrawMode = false;
 noteImageCanvasHistory = [];
+noteImageCurrentStroke = null;
 closeOverlayModal('note-image-tools-modal');
 }
 function toggleNoteImageDrawMode() {
@@ -4647,14 +4803,14 @@ btn.textContent = noteImageDrawMode ? '畫筆開啟' : '畫筆關閉';
 }
 }
 function resetNoteImageCanvas() {
-if (currentNoteImageOriginalSrc) drawNoteImageCanvas(currentNoteImageOriginalSrc);
+noteImageCanvasStrokes = [];
+noteImageCanvasHistory = [];
+redrawNoteImageCanvas();
 }
 function undoNoteImageStroke() {
-const canvas = document.getElementById('note-image-edit-canvas');
-const ctx = canvas?.getContext('2d');
-const previous = noteImageCanvasHistory.pop();
-if (!canvas || !ctx || !previous) return;
-ctx.putImageData(previous, 0, 0);
+if (!noteImageCanvasStrokes.length) return;
+noteImageCanvasStrokes.pop();
+redrawNoteImageCanvas();
 }
 function saveNoteImageEdits() {
 if (!currentDetailCard || !Number.isInteger(currentNoteImageBlockIndex)) return;
@@ -4666,6 +4822,8 @@ if (!Number.isInteger(renderedIndex)) return;
 const fields = collectDetailFieldsFromModal();
 const block = fields[0]?.blocks?.[renderedIndex];
 if (!block || block.type !== 'image') return;
+block.originalSrc = block.originalSrc || noteImageCanvasBaseSrc || currentNoteImageOriginalSrc || block.src;
+block.strokes = JSON.parse(JSON.stringify(noteImageCanvasStrokes));
 block.src = canvas.toDataURL('image/png');
 setDetailFields(currentDetailCard, fields);
 closeNoteImageTools();
@@ -4688,14 +4846,18 @@ if (!noteImageDrawMode) return;
 event.preventDefault();
 const ctx = canvas.getContext('2d');
 const point = getCanvasPoint(event, canvas);
-ctx.lineWidth = Math.max(5, canvas.width * 0.012);
+const normalizedPoint = { x: Math.max(0, Math.min(1, point.x / canvas.width)), y: Math.max(0, Math.min(1, point.y / canvas.height)) };
+const strokeWidth = Math.max(5, canvas.width * 0.012);
+ctx.lineWidth = strokeWidth;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 ctx.strokeStyle = '#e2566d';
 if (start) {
+noteImageCurrentStroke = { color: '#e2566d', width: strokeWidth, points: [normalizedPoint] };
 ctx.beginPath();
 ctx.moveTo(point.x, point.y);
 } else {
+noteImageCurrentStroke?.points?.push(normalizedPoint);
 ctx.lineTo(point.x, point.y);
 ctx.stroke();
 }
@@ -4703,11 +4865,6 @@ ctx.stroke();
 canvas.addEventListener('pointerdown', event => {
 noteImageDrawing = true;
 try { canvas.setPointerCapture(event.pointerId); } catch (error) {}
-try {
-const ctx = canvas.getContext('2d');
-noteImageCanvasHistory.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-if (noteImageCanvasHistory.length > 25) noteImageCanvasHistory.shift();
-} catch (error) {}
 drawAt(event, true);
 }, { passive: false });
 canvas.addEventListener('pointermove', event => {
@@ -4715,7 +4872,13 @@ if (!noteImageDrawing) return;
 drawAt(event);
 }, { passive: false });
 ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
-canvas.addEventListener(type, () => { noteImageDrawing = false; }, { passive: true });
+canvas.addEventListener(type, () => {
+if (noteImageCurrentStroke?.points?.length) {
+noteImageCanvasStrokes.push(noteImageCurrentStroke);
+}
+noteImageCurrentStroke = null;
+noteImageDrawing = false;
+}, { passive: true });
 });
 }
 function addDetailField() {
@@ -4759,7 +4922,7 @@ if (!files.length) return;
 const imageSources = await Promise.all(files.map(file => readImageFile(file)));
 const fields = collectDetailFieldsFromModal();
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
-const imageBlocks = imageSources.map(src => ({ type: 'image', src, width: 100, cropHeight: 0 }));
+const imageBlocks = imageSources.map(src => ({ type: 'image', src, originalSrc: src, strokes: [], width: 100, cropHeight: 0, cropLeft: 0, cropRight: 0 }));
 const insertPoint = insertMode === 'cursor' ? pendingNoteImageInsert : null;
 if (insertPoint && Number.isInteger(insertPoint.blockIndex) && fields[0].blocks[insertPoint.blockIndex]?.type === 'text') {
 const replacement = [];
