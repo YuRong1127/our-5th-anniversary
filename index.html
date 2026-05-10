@@ -2010,7 +2010,7 @@ width: calc(10000% / var(--note-crop-width, 100));
 height: auto;
 max-height: 320px;
 object-fit: cover;
-transform: translateX(calc(-1% * var(--note-crop-left, 0)));
+transform: translate(calc(-1% * var(--note-crop-left, 0)), calc(-1px * var(--note-crop-top, 0)));
 }
 .note-image-frame.is-cropped img {
 height: auto;
@@ -2152,6 +2152,32 @@ left: 50%;
 right: auto;
 top: auto;
 bottom: 0;
+width: 3px;
+height: 15px;
+transform: translateX(-50%);
+}
+.note-image-crop-handle.crop-top {
+left: 50%;
+right: auto;
+top: 0;
+bottom: auto;
+width: 44px;
+height: 28px;
+transform: translateX(-50%);
+}
+.note-image-crop-handle.crop-top::before {
+left: 9px;
+right: auto;
+top: 0;
+bottom: auto;
+width: 26px;
+height: 3px;
+}
+.note-image-crop-handle.crop-top::after {
+left: 50%;
+right: auto;
+top: 0;
+bottom: auto;
 width: 3px;
 height: 15px;
 transform: translateX(-50%);
@@ -3906,6 +3932,7 @@ blocks = blocks.map(block => {
 if (block.type === 'image') {
 const width = Number(block.width || 0);
 const cropHeight = Number(block.cropHeight || 0);
+const cropTop = Number(block.cropTop || 0);
 const cropLeft = Number(block.cropLeft || 0);
 const cropRight = Number(block.cropRight || 0);
 const safeCropLeft = Number.isFinite(cropLeft) ? Math.max(0, Math.min(80, Math.round(cropLeft))) : 0;
@@ -3925,6 +3952,7 @@ y: Math.max(0, Math.min(1, Number(point.y || 0)))
 })).filter(stroke => stroke.points.length),
 width: Number.isFinite(width) && width ? Math.max(35, Math.min(100, Math.round(width))) : undefined,
 cropHeight: Number.isFinite(cropHeight) && cropHeight ? Math.max(0, Math.min(520, Math.round(cropHeight))) : 0,
+cropTop: Number.isFinite(cropTop) && cropTop ? Math.max(0, Math.min(520, Math.round(cropTop))) : 0,
 cropLeft: safeCropLeft,
 cropRight: safeCropRight
 };
@@ -4280,12 +4308,13 @@ const editingImageTools = selected && currentNoteImageToolMode === 'edit';
 const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 : 100;
 const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
 const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
+const cropTop = Math.max(0, Math.min(520, Number(block.cropTop || 0)));
 const cropLeft = Math.max(0, Math.min(80, Number(block.cropLeft || 0)));
 const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 0)));
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
-const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
+const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="上下裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -4643,6 +4672,7 @@ originalSrc: block.dataset.originalSrc || '',
 strokes: Array.isArray(strokes) ? strokes : [],
 width: Math.max(35, Math.min(100, Number(block.dataset.width || 100))),
 cropHeight: Math.max(0, Math.min(520, Number(block.dataset.cropHeight || 0))),
+cropTop: Math.max(0, Math.min(520, Number(block.dataset.cropTop || 0))),
 cropLeft: Math.max(0, Math.min(80, Number(block.dataset.cropLeft || 0))),
 cropRight: Math.max(0, Math.min(80, Number(block.dataset.cropRight || 0)))
 };
@@ -4722,6 +4752,7 @@ const img = selectedBlock.querySelector('.note-image-frame img');
 const maxHeight = Math.max(80, Math.round(img?.getBoundingClientRect().height || selectedBlock.querySelector('.note-image-frame')?.getBoundingClientRect().height || 520));
 block.cropHeight = Math.max(80, Math.min(maxHeight, Math.round(updates.cropHeight)));
 }
+if (Number.isFinite(updates.cropTop)) block.cropTop = Math.max(0, Math.min(520, Math.round(updates.cropTop)));
 if (Number.isFinite(updates.cropLeft)) block.cropLeft = Math.max(0, Math.min(80 - (Number(block.cropRight) || 0), Math.round(updates.cropLeft)));
 if (Number.isFinite(updates.cropRight)) block.cropRight = Math.max(0, Math.min(80 - (Number(block.cropLeft) || 0), Math.round(updates.cropRight)));
 setDetailFields(currentDetailCard, fields);
@@ -4776,6 +4807,38 @@ const onMove = (moveEvent) => {
 if (moveEvent.pointerId !== pointerId) return;
 moveEvent.preventDefault();
 setCurrentNoteImageGeometry({ cropHeight: startHeight + moveEvent.clientY - startY });
+};
+const onEnd = (endEvent) => {
+if (endEvent.pointerId !== pointerId) return;
+document.removeEventListener('pointermove', onMove);
+document.removeEventListener('pointerup', onEnd);
+document.removeEventListener('pointercancel', onEnd);
+};
+document.addEventListener('pointermove', onMove, { passive: false });
+document.addEventListener('pointerup', onEnd, { passive: true });
+document.addEventListener('pointercancel', onEnd, { passive: true });
+}
+function startCurrentNoteImageCropTop(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const block = event.target.closest('.note-block[data-block-type="image"]');
+if (!selectCurrentNoteImageBlock(block)) return;
+const frame = block.querySelector('.note-image-frame');
+const imgHeight = frame?.querySelector('img')?.getBoundingClientRect().height || frame?.getBoundingClientRect().height || 260;
+const startY = event.clientY;
+const startTop = Number(block.dataset.cropTop || 0);
+const startHeight = Number(block.dataset.cropHeight || 0) || imgHeight;
+const pointerId = event.pointerId;
+const onMove = (moveEvent) => {
+if (moveEvent.pointerId !== pointerId) return;
+moveEvent.preventDefault();
+const delta = moveEvent.clientY - startY;
+setCurrentNoteImageGeometry({
+cropTop: startTop + delta,
+cropHeight: startHeight - delta
+});
 };
 const onEnd = (endEvent) => {
 if (endEvent.pointerId !== pointerId) return;
@@ -5010,7 +5073,7 @@ if (!files.length) return;
 const imageSources = await Promise.all(files.map(file => readImageFile(file)));
 const fields = collectDetailFieldsFromModal();
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
-const imageBlocks = imageSources.map(src => ({ type: 'image', src, originalSrc: src, strokes: [], width: 100, cropHeight: 0, cropLeft: 0, cropRight: 0 }));
+const imageBlocks = imageSources.map(src => ({ type: 'image', src, originalSrc: src, strokes: [], width: 100, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }));
 const insertPoint = insertMode === 'cursor' ? pendingNoteImageInsert : null;
 if (insertPoint && Number.isInteger(insertPoint.blockIndex) && fields[0].blocks[insertPoint.blockIndex]?.type === 'text') {
 const replacement = [];
@@ -5065,24 +5128,32 @@ if (now - lastNoteImageDeleteRequestAt < 500) return;
 lastNoteImageDeleteRequestAt = now;
 const blockInfo = getDetailBlockInfoFromButton(event);
 if (blockInfo.index < 0 && !blockInfo.src) return;
-showConfirmAlert('要刪掉這張圖片嗎？\n刪掉後就回不來囉', () => removeDetailImageBlock(blockInfo));
+const removal = prepareDetailImageRemoval(blockInfo);
+if (!removal) return;
+showConfirmAlert('要刪掉這張圖片嗎？\n刪掉後就回不來囉', () => applyDetailImageRemoval(removal));
 }
-function removeDetailImageBlock(blockInfo) {
-if (!currentDetailCard || !isEditMode || !blockInfo) return;
-const fields = collectDetailFieldsFromModal();
-if (!fields[0]?.blocks) return;
+function prepareDetailImageRemoval(blockInfo) {
+if (!currentDetailCard || !isEditMode || !blockInfo) return null;
+saveFieldDraftsToCard();
+const card = currentDetailCard;
+const fields = getDetailFields(card);
+if (!fields[0]?.blocks) return null;
 let blockIndex = Number(blockInfo.index);
 const sameImage = block => block?.type === 'image' && (block.src === blockInfo.src || (blockInfo.originalSrc && block.originalSrc === blockInfo.originalSrc));
-if (!Number.isInteger(blockIndex) || !sameImage(fields[0].blocks[blockIndex])) {
+if (!Number.isInteger(blockIndex) || fields[0].blocks[blockIndex]?.type !== 'image') {
 blockIndex = fields[0].blocks.findIndex(sameImage);
 }
-if (blockIndex < 0) return;
+if (blockIndex < 0) return null;
 fields[0].blocks.splice(blockIndex, 1);
 if (!fields[0].blocks.length) fields[0].blocks.push({ type: 'text', text: '' });
+return { card, fields };
+}
+function applyDetailImageRemoval(removal) {
+if (!removal?.card || !isEditMode) return;
 currentNoteImageBlockIndex = null;
 currentNoteImageToolMode = null;
-setDetailFields(currentDetailCard, fields);
-renderDetailFields();
+setDetailFields(removal.card, removal.fields);
+if (currentDetailCard === removal.card) renderDetailFields();
 updateMoreInfoButtons();
 }
 function clearNoteImageDropTargets() {
