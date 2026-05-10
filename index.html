@@ -2773,8 +2773,8 @@ main { padding: 0 14px; }
 <div id="topup-area" class="topup-area">
 <label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
 <div class="wallet-input-group">
-<div id="topup-currency-switch" class="..." onclick="toggleCurrency()">
-    <span id="topup-currency-label">¥ JPY</span>
+<div id="topup-currency-switch" class="currency-switch active-jpy btn-press-effect wallet-input" onclick="toggleCurrency()" style="height: 38px; display: flex; align-items: center; justify-content: center; background: #fff5f2;">
+    <span id="topup-currency-label" style="font-weight: 900;">¥ JPY</span>
 </div>
 </div>
 <label class="wallet-label">公費由誰投入</label>
@@ -2811,8 +2811,8 @@ main { padding: 0 14px; }
 </div>
 <div class="wallet-split-labels"><span>幣別<span class="wallet-label-hint">點選切換</span></span><span>花費金額</span></div>
 <div class="wallet-input-group">
-<div id="currency-switch" class="currency-switch active-jpy btn-press-effect" onclick="toggleCurrency()" style="flex-direction: column; line-height: 1.2; height: auto; padding: 5px 0;">
-    <div id="currency-label">¥ JPY</div>
+<div id="currency-switch" class="currency-switch active-jpy btn-press-effect wallet-input" onclick="toggleCurrency()" style="flex-direction: column; line-height: 1.2; height: auto; padding: 5px 0; display: flex; align-items: center; justify-content: center; background: #fff5f2;">
+    <div id="currency-label" style="font-weight: 900;">¥ JPY</div>
     <div id="live-fx-display" style="font-size: 0.6rem; opacity: 0.8; font-weight: normal;">(匯率: --)</div>
 </div>
 <input type="tel" id="exp-amount" class="wallet-input" placeholder="請輸入花費金額">
