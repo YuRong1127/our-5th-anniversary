@@ -1942,23 +1942,29 @@ text-decoration: underline;
 position: relative;
 overflow: visible;
 border-radius: 18px;
-background: #fff;
-border: 1px solid #f0e6e2;
-box-shadow: 0 6px 18px rgba(141,110,99,.08);
+background: transparent;
+border: 0;
+box-shadow: none;
 margin: 12px 0 14px;
 padding: 0;
+width: var(--note-image-width, 100%);
+max-width: 100%;
+margin-left: auto;
+margin-right: auto;
 -webkit-touch-callout: none;
 user-select: none;
 -webkit-user-select: none;
 }
 .note-image-frame {
-width: var(--note-image-width, 100%);
+width: 100%;
 max-width: 100%;
 max-height: 320px;
 margin: 0 auto;
 border-radius: 18px;
 overflow: hidden;
 background: #fff;
+border: 1px solid #f0e6e2;
+box-shadow: 0 6px 18px rgba(141,110,99,.08);
 }
 .note-image-frame.is-cropped {
 height: var(--note-image-crop, 260px);
@@ -1972,13 +1978,16 @@ max-height: 320px;
 object-fit: cover;
 }
 .note-image-frame.is-cropped img {
-height: 100%;
+height: auto;
 max-height: none;
-object-fit: cover;
+object-fit: initial;
 }
 .photo-preview-item.is-selected {
+filter: drop-shadow(0 8px 18px rgba(209,122,109,.16));
+}
+.photo-preview-item.is-selected .note-image-frame {
 border-color: #e6b0a5;
-box-shadow: 0 8px 22px rgba(209,122,109,.16), inset 0 0 0 2px rgba(209,122,109,.1);
+box-shadow: inset 0 0 0 2px rgba(209,122,109,.1);
 }
 .note-image-action-bar {
 display: none;
@@ -2087,6 +2096,16 @@ transform: scale(.98);
 outline: 2px dashed #e6b0a5;
 outline-offset: 5px;
 border-radius: 18px;
+}
+.note-image-drop-caret {
+display: inline-block;
+width: 3px;
+height: 1.15em;
+margin: 0 2px;
+border-radius: 999px;
+background: #d77b70;
+vertical-align: -0.16em;
+box-shadow: 0 0 0 3px rgba(215,123,112,.14);
 }
 .note-image-drag-ghost {
 position: fixed;
@@ -2389,19 +2408,21 @@ display: block;
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 4px; min-height: 48px; margin: 0 0 8px; color: #bcaaaa; font-size: 1.08rem; font-weight: 700; text-align: center; line-height: 1.2; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 0; min-height: 48px; margin: 0 0 8px; color: #bcaaaa; font-size: 1.08rem; font-weight: 700; text-align: center; line-height: 1.2; }
 .pw-hint-pig {
 display: block;
 width: 72px;
 height: 48px;
 flex: 0 0 auto;
 align-self: center;
+margin-left: -18px;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
 }
 .pw-hint-pig.angry {
-width: 58px;
-height: 46px;
+width: 42px;
+height: 34px;
+margin-left: 0;
 transform: none;
 }
 .pw-keypad {
@@ -2679,7 +2700,7 @@ main { padding: 0 14px; }
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="note-color-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div id="note-color-grid" class="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
 <div id="note-color-popover" class="note-color-popover"><button type="button" class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid"><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c86f77" data-note-color="#c86f77" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="莓果粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d96d7f" data-note-color="#d96d7f" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="玫瑰紅"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d98b72" data-note-color="#d98b72" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="蜜桃橘"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#e6a19a" data-note-color="#e6a19a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="珊瑚粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c9a64a" data-note-color="#c9a64a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="奶油黃"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6d8f6b" data-note-color="#6d8f6b" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="鼠尾草綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#5f9c92" data-note-color="#5f9c92" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="湖水綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6f7fa6" data-note-color="#6f7fa6" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="霧藍紫"></button></div></div>
-<div id="note-image-tools-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNoteImageTools()"><div class="modal-close-circle">✕</div></div><div class="modal-content note-image-tools-content"><div class="modal-title">畫筆標記</div><div class="note-image-tools-preview"><canvas id="note-image-edit-canvas"></canvas></div><div class="note-image-tools-row"><button type="button" id="note-image-draw-toggle" class="note-image-tool-btn btn-press-effect is-active" onclick="toggleNoteImageDrawMode()">畫筆開啟</button><button type="button" class="note-image-tool-btn btn-press-effect" onclick="resetNoteImageCanvas()">清除標記</button></div><button type="button" onclick="saveNoteImageEdits()" class="modal-btn-primary btn-press-effect">套用標記</button></div></div></div>
+<div id="note-image-tools-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNoteImageTools()"><div class="modal-close-circle">✕</div></div><div class="modal-content note-image-tools-content"><div class="modal-title">畫筆標記</div><div class="note-image-tools-preview"><canvas id="note-image-edit-canvas"></canvas></div><div class="note-image-tools-row"><button type="button" class="note-image-tool-btn btn-press-effect" onclick="undoNoteImageStroke()">回上一筆</button><button type="button" class="note-image-tool-btn btn-press-effect" onclick="resetNoteImageCanvas()">清除全部</button></div><button type="button" onclick="saveNoteImageEdits()" class="modal-btn-primary btn-press-effect">套用標記</button></div></div></div>
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
@@ -2817,6 +2838,7 @@ let currentNoteImageOriginalSrc = '';
 let noteImageDrawMode = false;
 let noteImageDrawing = false;
 let noteImageCanvasImage = null;
+let noteImageCanvasHistory = [];
 let currentMapPlaceCard = null;
 let currentRouteConnector = null;
 let lastBothEdited = null;
@@ -3972,7 +3994,7 @@ function injectFutamiWashhandImageBlock(blocks, card) {
 const cardTitle = card?.querySelector('.item-title')?.textContent || '';
 if (!cardTitle.includes('二見清晨參拜') && !cardTitle.includes('夫妻岩')) return blocks;
 if (!blocks.some(block => block.type === 'text' && String(block.text || stripHtml(block.html || '')).includes('手水舍'))) return blocks;
-if (blocks.some(block => block.type === 'image' && String(block.src || '').includes('washhandforge.jpg'))) return blocks;
+if (blocks.some(block => block.type === 'image')) return blocks;
 const nextBlocks = [];
 let inserted = false;
 blocks.forEach(block => {
@@ -4127,7 +4149,7 @@ const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 :
 const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
 const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
 const frameStyle = `--note-image-width:${width}%;${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-width="${width}" data-crop-height="${cropHeight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button><div class="note-image-action-bar"><button type="button" class="note-image-action-btn is-active btn-press-effect" onclick="event.stopPropagation(); selectNoteImageForEditing(this)">編輯</button><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle" aria-label="裁剪圖片高度" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-width="${width}" data-crop-height="${cropHeight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode ? `<button type="button" class="photo-remove-btn btn-press-effect" onclick="removeDetailBlock(0, ${blockIndex})">×</button><div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" onclick="event.stopPropagation(); openNoteImageEditor()">畫筆</button></div><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button><button type="button" class="note-image-crop-handle" aria-label="裁剪圖片高度" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -4494,12 +4516,6 @@ currentNoteImageBlockIndex = blockIndex;
 saveFieldDraftsToCard();
 renderDetailFields();
 }
-function selectNoteImageForEditing(btn) {
-const block = btn?.closest?.('.note-block[data-block-type="image"]');
-if (!selectCurrentNoteImageBlock(block)) return;
-saveFieldDraftsToCard();
-renderDetailFields();
-}
 function selectCurrentNoteImageBlock(block) {
 const blockIndex = Number(block?.dataset.blockIndex);
 if (!Number.isInteger(blockIndex)) return false;
@@ -4515,12 +4531,16 @@ return fields;
 }
 function setCurrentNoteImageGeometry(updates = {}) {
 if (!currentDetailCard || !isEditMode || !Number.isInteger(currentNoteImageBlockIndex)) return false;
-const fields = getCurrentNoteImageFields();
-const block = fields[0].blocks[currentNoteImageBlockIndex];
+const selectedBlock = document.querySelector(`#itinerary-detail-fields .note-block[data-block-type="image"][data-block-index="${currentNoteImageBlockIndex}"]`);
+const renderedIndex = Number(selectedBlock?.dataset.blockIndex);
+if (!Number.isInteger(renderedIndex)) return false;
+const fields = collectDetailFieldsFromModal();
+const block = fields[0]?.blocks?.[renderedIndex];
 if (!block || block.type !== 'image') return false;
 if (Number.isFinite(updates.width)) block.width = Math.max(35, Math.min(100, Math.round(updates.width)));
-if (Number.isFinite(updates.cropHeight)) block.cropHeight = Math.max(0, Math.min(520, Math.round(updates.cropHeight)));
+if (Number.isFinite(updates.cropHeight)) block.cropHeight = Math.max(80, Math.min(520, Math.round(updates.cropHeight)));
 setDetailFields(currentDetailCard, fields);
+currentNoteImageBlockIndex = renderedIndex;
 renderDetailFields();
 updateMoreInfoButtons();
 return true;
@@ -4534,13 +4554,15 @@ const block = event.target.closest('.note-block[data-block-type="image"]');
 if (!selectCurrentNoteImageBlock(block)) return;
 const startX = event.clientX;
 const startWidth = Number(block.dataset.width || 100);
-const rect = block.getBoundingClientRect();
+const pageRect = block.closest('.note-page')?.getBoundingClientRect();
+const rect = (block.parentElement || block).getBoundingClientRect();
 const base = Math.max(1, rect.width);
 const pointerId = event.pointerId;
 const onMove = (moveEvent) => {
 if (moveEvent.pointerId !== pointerId) return;
 moveEvent.preventDefault();
-const nextWidth = startWidth + ((moveEvent.clientX - startX) / base) * 100;
+const direction = document.dir === 'rtl' ? -1 : 1;
+const nextWidth = startWidth + direction * ((moveEvent.clientX - startX) / Math.max(1, pageRect?.width || base)) * 100;
 setCurrentNoteImageGeometry({ width: nextWidth });
 };
 const onEnd = (endEvent) => {
@@ -4593,6 +4615,7 @@ canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
 ctx.clearRect(0, 0, canvas.width, canvas.height);
 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 noteImageCanvasImage = img;
+noteImageCanvasHistory = [];
 resolve(true);
 };
 img.onerror = () => resolve(false);
@@ -4601,19 +4624,18 @@ img.src = src;
 }
 async function openNoteImageEditor() {
 if (!currentDetailCard || !isEditMode || !Number.isInteger(currentNoteImageBlockIndex)) return;
-const fields = getCurrentNoteImageFields();
-const block = fields[0].blocks[currentNoteImageBlockIndex];
-if (!block || block.type !== 'image' || !block.src) return;
-currentNoteImageOriginalSrc = block.src;
+const selectedBlock = document.querySelector(`#itinerary-detail-fields .note-block[data-block-type="image"][data-block-index="${currentNoteImageBlockIndex}"]`);
+const src = selectedBlock?.dataset.src || '';
+if (!src) return;
+currentNoteImageOriginalSrc = src;
 noteImageDrawMode = true;
-await drawNoteImageCanvas(block.src);
-document.getElementById('note-image-draw-toggle')?.classList.add('is-active');
-document.getElementById('note-image-draw-toggle').textContent = '畫筆開啟';
+await drawNoteImageCanvas(src);
 openOverlayModal('note-image-tools-modal');
 }
 function closeNoteImageTools() {
 noteImageDrawing = false;
 noteImageDrawMode = false;
+noteImageCanvasHistory = [];
 closeOverlayModal('note-image-tools-modal');
 }
 function toggleNoteImageDrawMode() {
@@ -4627,16 +4649,27 @@ btn.textContent = noteImageDrawMode ? '畫筆開啟' : '畫筆關閉';
 function resetNoteImageCanvas() {
 if (currentNoteImageOriginalSrc) drawNoteImageCanvas(currentNoteImageOriginalSrc);
 }
+function undoNoteImageStroke() {
+const canvas = document.getElementById('note-image-edit-canvas');
+const ctx = canvas?.getContext('2d');
+const previous = noteImageCanvasHistory.pop();
+if (!canvas || !ctx || !previous) return;
+ctx.putImageData(previous, 0, 0);
+}
 function saveNoteImageEdits() {
 if (!currentDetailCard || !Number.isInteger(currentNoteImageBlockIndex)) return;
 const canvas = document.getElementById('note-image-edit-canvas');
 if (!canvas) return;
-const fields = getCurrentNoteImageFields();
-const block = fields[0].blocks[currentNoteImageBlockIndex];
+const selectedBlock = document.querySelector(`#itinerary-detail-fields .note-block[data-block-type="image"][data-block-index="${currentNoteImageBlockIndex}"]`);
+const renderedIndex = Number(selectedBlock?.dataset.blockIndex);
+if (!Number.isInteger(renderedIndex)) return;
+const fields = collectDetailFieldsFromModal();
+const block = fields[0]?.blocks?.[renderedIndex];
 if (!block || block.type !== 'image') return;
 block.src = canvas.toDataURL('image/png');
 setDetailFields(currentDetailCard, fields);
 closeNoteImageTools();
+currentNoteImageBlockIndex = renderedIndex;
 renderDetailFields();
 updateMoreInfoButtons();
 }
@@ -4670,6 +4703,11 @@ ctx.stroke();
 canvas.addEventListener('pointerdown', event => {
 noteImageDrawing = true;
 try { canvas.setPointerCapture(event.pointerId); } catch (error) {}
+try {
+const ctx = canvas.getContext('2d');
+noteImageCanvasHistory.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+if (noteImageCanvasHistory.length > 25) noteImageCanvasHistory.shift();
+} catch (error) {}
 drawAt(event, true);
 }, { passive: false });
 canvas.addEventListener('pointermove', event => {
@@ -4757,11 +4795,86 @@ updateMoreInfoButtons();
 }
 function clearNoteImageDropTargets() {
 document.querySelectorAll('.note-image-drop-target').forEach(block => block.classList.remove('note-image-drop-target'));
+document.querySelectorAll('.note-image-drop-caret').forEach(marker => marker.remove());
+if (noteImageDragState) noteImageDragState.textDropMarker = null;
 }
 function moveNoteImageDragGhost(x, y) {
 const ghost = noteImageDragState?.ghost;
 if (!ghost) return;
 ghost.style.transform = `translate3d(${Math.round(x - 36)}px, ${Math.round(y - 34)}px, 0) rotate(-2deg)`;
+}
+function getNoteCaretRangeFromPoint(x, y, editor) {
+let range = null;
+if (document.caretRangeFromPoint) {
+range = document.caretRangeFromPoint(x, y);
+} else if (document.caretPositionFromPoint) {
+const position = document.caretPositionFromPoint(x, y);
+if (position) {
+range = document.createRange();
+range.setStart(position.offsetNode, position.offset);
+range.collapse(true);
+}
+}
+if (!range || !editor?.contains(range.startContainer)) return null;
+return range;
+}
+function placeNoteImageTextDropCaret(editor, x, y) {
+if (!noteImageDragState || !editor) return false;
+document.querySelectorAll('.note-image-drop-caret').forEach(marker => marker.remove());
+const range = getNoteCaretRangeFromPoint(x, y, editor);
+if (!range) return false;
+const marker = document.createElement('span');
+marker.className = 'note-image-drop-caret';
+marker.contentEditable = 'false';
+marker.setAttribute('data-note-image-drop-caret', '1');
+range.insertNode(marker);
+noteImageDragState.textDropMarker = marker;
+return true;
+}
+function splitTextBlockAtDropCaret(marker, source) {
+const textBlock = marker?.closest?.('.note-block[data-block-type="text"]');
+const editor = textBlock?.querySelector?.('.note-text-input');
+if (!textBlock || !editor || !source) return false;
+const beforeRange = document.createRange();
+beforeRange.selectNodeContents(editor);
+beforeRange.setEndBefore(marker);
+const afterRange = document.createRange();
+afterRange.selectNodeContents(editor);
+afterRange.setStartAfter(marker);
+const beforeHtml = sanitizeNoteHtml(getNoteRangeHtml(beforeRange));
+const afterHtml = sanitizeNoteHtml(getNoteRangeHtml(afterRange));
+const beforeHasText = stripHtml(beforeHtml).trim();
+const afterHasText = stripHtml(afterHtml).trim();
+const beforeBlock = textBlock.cloneNode(false);
+const afterBlock = textBlock.cloneNode(false);
+const beforeInput = document.createElement('div');
+const afterInput = document.createElement('div');
+beforeInput.className = editor.className;
+afterInput.className = editor.className;
+beforeInput.contentEditable = 'true';
+afterInput.contentEditable = 'true';
+beforeInput.dataset.placeholder = editor.dataset.placeholder || '';
+afterInput.dataset.placeholder = editor.dataset.placeholder || '';
+beforeInput.setAttribute('onfocus', 'setActiveNoteEditor(this)');
+beforeInput.setAttribute('onmouseup', 'setActiveNoteEditor(this)');
+beforeInput.setAttribute('onkeyup', 'setActiveNoteEditor(this)');
+beforeInput.setAttribute('oninput', 'setActiveNoteEditor(this)');
+beforeInput.setAttribute('ontouchend', 'setTimeout(() => setActiveNoteEditor(this), 0)');
+afterInput.setAttribute('onfocus', 'setActiveNoteEditor(this)');
+afterInput.setAttribute('onmouseup', 'setActiveNoteEditor(this)');
+afterInput.setAttribute('onkeyup', 'setActiveNoteEditor(this)');
+afterInput.setAttribute('oninput', 'setActiveNoteEditor(this)');
+afterInput.setAttribute('ontouchend', 'setTimeout(() => setActiveNoteEditor(this), 0)');
+beforeInput.innerHTML = beforeHasText ? beforeHtml : '';
+afterInput.innerHTML = afterHasText ? afterHtml : '';
+beforeBlock.appendChild(beforeInput);
+afterBlock.appendChild(afterInput);
+const fragment = document.createDocumentFragment();
+if (beforeHasText) fragment.appendChild(beforeBlock);
+fragment.appendChild(source);
+if (afterHasText) fragment.appendChild(afterBlock);
+textBlock.replaceWith(fragment);
+return true;
 }
 function startNoteImageDrag(block, pointerId, x, y) {
 if (!isEditMode || !block || block.dataset.blockType !== 'image') return;
@@ -4787,6 +4900,11 @@ const target = document.elementFromPoint(x, y)?.closest?.('.note-block');
 source.style.pointerEvents = '';
 const page = source.closest('.note-page');
 if (!target || !page?.contains(target) || target === source) return;
+const textEditor = target.dataset.blockType === 'text' ? target.querySelector('.note-text-input') : null;
+if (textEditor && placeNoteImageTextDropCaret(textEditor, x, y)) {
+target.classList.add('note-image-drop-target');
+return;
+}
 target.classList.add('note-image-drop-target');
 const rect = target.getBoundingClientRect();
 const insertAfter = y > rect.top + rect.height / 2;
@@ -4800,6 +4918,8 @@ const source = noteImageDragState.block;
 if (noteImageDragState.timer) clearTimeout(noteImageDragState.timer);
 noteImageDragState.ghost?.remove();
 source?.classList.remove('note-image-drag-source');
+const textDropMarker = noteImageDragState.textDropMarker;
+if (wasActive && textDropMarker && source) splitTextBlockAtDropCaret(textDropMarker, source);
 clearNoteImageDropTargets();
 document.body.classList.remove('note-image-dragging');
 noteImageDragState = null;
@@ -4825,6 +4945,13 @@ noteImageDragState = null;
 function initNoteImageReorder() {
 const host = document.getElementById('itinerary-detail-fields');
 if (!host) return;
+host.addEventListener('pointerdown', event => {
+if (!isEditMode || currentNoteImageBlockIndex === null || !currentDetailCard) return;
+if (event.target.closest('.note-block[data-block-type="image"]') || event.target.closest('.note-image-tools-content')) return;
+currentNoteImageBlockIndex = null;
+saveFieldDraftsToCard();
+renderDetailFields();
+}, { passive: true });
 host.addEventListener('pointerdown', event => {
 const block = event.target.closest('.note-block[data-block-type="image"]');
 if (!isEditMode || !block || event.target.closest('.photo-remove-btn') || event.target.closest('.note-image-resize-handle') || event.target.closest('.note-image-crop-handle') || event.target.closest('.note-image-action-bar')) return;
