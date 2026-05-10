@@ -1,4 +1,5 @@
-﻿
+
+
 
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -2778,15 +2779,10 @@ main { padding: 0 14px; }
 </div>
 </div>
 <label class="wallet-label">公費由誰投入</label>
-<div class="topup-flex" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;">
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 900; color: #b87568; white-space: nowrap; font-size: 0.85rem;">大豬</span>
-        <input type="tel" id="topup-big-pig" class="small-input" placeholder="0" style="flex: 1; height: 38px; margin: 0;">
-    </div>
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 900; color: #b87568; white-space: nowrap; font-size: 0.85rem;">小豬</span>
-        <input type="tel" id="topup-small-pig" class="small-input" placeholder="0" style="flex: 1; height: 38px; margin: 0;">
-    </div>
+<div class="topup-flex">
+<div><label class="wallet-label" style="font-size:9px;margin-top:0">大豬投入</label><input type="tel" id="topup-big-pig" class="small-input" placeholder="0"></div>
+<div><label class="wallet-label" style="font-size:9px;margin-top:0">小豬投入</label><input type="tel" id="topup-small-pig" class="small-input" placeholder="0"></div>
+</div>
 </div>
 <div id="expense-area">
 <label class="wallet-label">消費品項</label>
