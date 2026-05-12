@@ -4159,27 +4159,7 @@ let html = linkifyRichHtml(block.html || plainTextToHtml(block.text));
 return html;
 }
 function splitNoteBlocksForEditing(blocks) {
-const nextBlocks = [];
-blocks.forEach(block => {
-if (block.type !== 'text') {
-nextBlocks.push(block);
-return;
-}
-const html = sanitizeNoteHtml(block.html || plainTextToHtml(block.text || ''));
-const parts = html
-.split(/(?:<br\s*\/?>\s*){2,}/i)
-.map(part => part.trim())
-.filter(part => stripHtml(part).trim());
-if (parts.length <= 1) {
-nextBlocks.push(block);
-return;
-}
-parts.forEach((part, index) => {
-nextBlocks.push({ type: 'text', text: stripHtml(part), html: part });
-if (index < parts.length - 1) nextBlocks.push({ type: 'text', text: '', html: '' });
-});
-});
-return nextBlocks;
+return blocks;
 }
 function injectFutamiWashhandImageBlock(blocks, card) {
 const cardTitle = card?.querySelector('.item-title')?.textContent || '';
@@ -4694,7 +4674,7 @@ arrival ? `抵達：${arrival}` : '',
 const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 return [normalizeDetailField({ name: '', blocks: [{ type: 'text', text, html: plainTextToHtml(text).replace(/優先/g, '<span class="flight-priority-badge">優先</span>') }] })];
 }
-const blocks = Array.from(page.querySelectorAll('.note-block')).map(block => {
+const rawBlocks = Array.from(page.querySelectorAll('.note-block')).map(block => {
 let strokes = [];
 try {
 strokes = JSON.parse(block.dataset.strokes || '[]');
@@ -4713,6 +4693,16 @@ cropRight: Math.max(0, Math.min(80, Number(block.dataset.cropRight || 0)))
 const html = sanitizeNoteHtml(block.querySelector('.note-text-input')?.innerHTML || '');
 return { type: 'text', text: stripHtml(html).trim(), html };
 }).filter(block => block.type === 'image' ? block.src : true);
+const blocks = [];
+rawBlocks.forEach(block => {
+if (block.type === 'text' && blocks.length > 0 && blocks[blocks.length - 1].type === 'text') {
+const last = blocks[blocks.length - 1];
+last.html = (last.html || '') + '<br><br>' + (block.html || '');
+last.text = (last.text || '') + '\n\n' + (block.text || '');
+} else {
+blocks.push(block);
+}
+});
 return [normalizeDetailField({ name: '', blocks })];
 }
 function openImagePreview(event, img) {
