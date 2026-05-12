@@ -4233,7 +4233,9 @@ if (fieldIndex < fields.length - 1 && fieldBlocks.length) {
 blocks.push({ type: 'text', text: '' });
 }
 });
-return blocks.length ? injectFutamiWashhandImageBlock(blocks, card) : [{ type: 'text', text: '' }];
+if (!blocks.length) return [{ type: 'text', text: '' }];
+if (isEditMode) return blocks;
+return injectFutamiWashhandImageBlock(blocks, card);
 }
 function noteHasContent(card) {
 return getNoteBlocks(card).some(block => block.type === 'image' ? block.src : (block.text || '').trim());
