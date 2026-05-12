@@ -566,7 +566,7 @@ font-weight: 900;
 white-space: nowrap;
 box-shadow: 0 8px 20px rgba(141,110,99,.12);
 }
-.menu-action .float-icon { width: 56px; height: 56px; flex: 0 0 56px; background: #fff8f5; border-color: rgba(255,255,255,.96); }
+.menu-action .float-icon { width: 60px; height: 60px; flex: 0 0 60px; background: #fff8f5; border-color: rgba(255,255,255,.96); }
 .menu-icon-img {
 display: block;
 width: var(--menu-icon-w, 46px);
@@ -576,11 +576,11 @@ object-position: center center;
 pointer-events: none;
 transform: translate(var(--menu-icon-x, 0), var(--menu-icon-y, 0));
 }
-.menu-icon-edit { --menu-icon-w: 88px; --menu-icon-h: 49px; --menu-icon-y: -1px; }
-.menu-icon-prep { --menu-icon-w: 64px; --menu-icon-h: 60px; --menu-icon-y: 1px; }
-.menu-icon-wishlist { --menu-icon-w: 72px; --menu-icon-h: 55px; --menu-icon-y: -1px; }
-.menu-icon-docs { --menu-icon-w: 66px; --menu-icon-h: 56px; --menu-icon-y: 1px; }
-.menu-icon-wallet { --menu-icon-w: 65px; --menu-icon-h: 59px; --menu-icon-y: 1px; }
+.menu-icon-edit { --menu-icon-w: 94px; --menu-icon-h: 52px; --menu-icon-y: -1px; }
+.menu-icon-prep { --menu-icon-w: 69px; --menu-icon-h: 65px; --menu-icon-y: 1px; }
+.menu-icon-wishlist { --menu-icon-w: 77px; --menu-icon-h: 59px; --menu-icon-y: -1px; }
+.menu-icon-docs { --menu-icon-w: 71px; --menu-icon-h: 60px; --menu-icon-y: 1px; }
+.menu-icon-wallet { --menu-icon-w: 70px; --menu-icon-h: 64px; --menu-icon-y: 1px; }
 .floating-menu.show .menu-action:nth-child(1) { transition-delay: .03s; }
 .floating-menu.show .menu-action:nth-child(2) { transition-delay: .05s; }
 .floating-menu.show .menu-action:nth-child(3) { transition-delay: .07s; }
@@ -3077,7 +3077,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-10-itinerary-stations-note-merge-v3';
+const STATIC_CONTENT_VERSION = '2026-05-13-ugata-stations-menu-note-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 
 const correctPw = '20211127';
@@ -5292,6 +5292,10 @@ blockIndex = fields[0].blocks.findIndex(sameImage);
 }
 if (blockIndex < 0) return null;
 fields[0].blocks.splice(blockIndex, 1);
+fields[0].blocks = fields[0].blocks.filter(block => {
+if (block?.type !== 'text') return true;
+return stripHtml(block.html || block.text || '').trim();
+});
 if (!fields[0].blocks.length) fields[0].blocks.push({ type: 'text', text: '' });
 return { card, fields };
 }
