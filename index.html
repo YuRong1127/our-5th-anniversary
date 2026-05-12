@@ -575,11 +575,11 @@ object-fit: contain;
 object-position: center center;
 pointer-events: none;
 }
-.menu-icon-edit { --menu-icon-w: 57px; --menu-icon-h: 32px; }
-.menu-icon-prep { --menu-icon-w: 44px; --menu-icon-h: 41px; }
-.menu-icon-wishlist { --menu-icon-w: 49px; --menu-icon-h: 37px; }
-.menu-icon-docs { --menu-icon-w: 46px; --menu-icon-h: 39px; }
-.menu-icon-wallet { --menu-icon-w: 45px; --menu-icon-h: 40px; }
+.menu-icon-edit { --menu-icon-w: 82px; --menu-icon-h: 45px; }
+.menu-icon-prep { --menu-icon-w: 64px; --menu-icon-h: 60px; }
+.menu-icon-wishlist { --menu-icon-w: 72px; --menu-icon-h: 55px; }
+.menu-icon-docs { --menu-icon-w: 68px; --menu-icon-h: 58px; }
+.menu-icon-wallet { --menu-icon-w: 66px; --menu-icon-h: 60px; }
 .floating-menu.show .menu-action:nth-child(1) { transition-delay: .03s; }
 .floating-menu.show .menu-action:nth-child(2) { transition-delay: .05s; }
 .floating-menu.show .menu-action:nth-child(3) { transition-delay: .07s; }
@@ -2240,9 +2240,7 @@ opacity: .34;
 transform: scale(.98);
 }
 .note-block.note-image-drop-target {
-outline: 2px dashed #e6b0a5;
-outline-offset: 5px;
-border-radius: 18px;
+outline: 0;
 }
 .note-image-drop-caret {
 display: inline-block;
@@ -2253,6 +2251,29 @@ border-radius: 999px;
 background: #d77b70;
 vertical-align: -0.16em;
 box-shadow: 0 0 0 3px rgba(215,123,112,.14);
+}
+.note-block[data-block-type="image"].note-image-drop-target::before,
+.note-block[data-block-type="image"].note-image-drop-target::after {
+content: "";
+position: absolute;
+left: 12px;
+right: 12px;
+height: 3px;
+border-radius: 999px;
+background: rgba(215,123,112,.72);
+box-shadow: 0 0 0 3px rgba(215,123,112,.12);
+}
+.note-block[data-block-type="image"].note-image-drop-target::before {
+top: -8px;
+}
+.note-block[data-block-type="image"].note-image-drop-target::after {
+bottom: -8px;
+}
+.note-block[data-block-type="image"].note-image-drop-target.drop-after::before {
+display: none;
+}
+.note-block[data-block-type="image"].note-image-drop-target:not(.drop-after)::after {
+display: none;
 }
 .note-image-drag-ghost {
 position: fixed;
@@ -5212,7 +5233,7 @@ if (currentDetailCard === removal.card) renderDetailFields();
 updateMoreInfoButtons();
 }
 function clearNoteImageDropTargets() {
-document.querySelectorAll('.note-image-drop-target').forEach(block => block.classList.remove('note-image-drop-target'));
+document.querySelectorAll('.note-image-drop-target').forEach(block => block.classList.remove('note-image-drop-target', 'drop-after'));
 document.querySelectorAll('.note-image-drop-caret').forEach(marker => marker.remove());
 if (noteImageDragState) noteImageDragState.textDropMarker = null;
 }
@@ -5326,6 +5347,7 @@ return;
 target.classList.add('note-image-drop-target');
 const rect = target.getBoundingClientRect();
 const insertAfter = y > rect.top + rect.height / 2;
+target.classList.toggle('drop-after', insertAfter);
 if (insertAfter) target.insertAdjacentElement('afterend', source);
 else target.insertAdjacentElement('beforebegin', source);
 }
