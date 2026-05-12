@@ -2050,8 +2050,8 @@ box-shadow: inset 0 0 0 2px rgba(209,122,109,.1);
 .note-image-action-bar {
 display: none;
 position: absolute;
-left: 8px;
-top: 8px;
+right: -8px;
+top: -8px;
 z-index: 2;
 gap: 6px;
 }
@@ -2078,6 +2078,28 @@ color: #fff;
 }
 .note-image-action-btn.is-danger {
 color: #e57373;
+}
+.note-image-delete-btn {
+position: absolute;
+right: -8px;
+top: -8px;
+z-index: 4;
+display: none;
+align-items: center;
+justify-content: center;
+width: 30px;
+height: 30px;
+border: 2px solid #fff;
+border-radius: 50%;
+background: rgba(255,248,244,.96);
+color: #e57373;
+font-size: 1.1rem;
+font-weight: 900;
+line-height: 1;
+box-shadow: 0 6px 14px rgba(141,110,99,.16);
+}
+.photo-preview-item.is-selected .note-image-delete-btn {
+display: flex;
 }
 .note-image-resize-handle,
 .note-image-crop-handle {
@@ -2717,7 +2739,11 @@ main { padding: 0 14px; }
 <div class="connector-line" data-route-url="https://maps.app.goo.gl/fpm5ED4jeTgVRFvu6" data-route-text="步行 11 分"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/81WqPP6DqHhcGyYLA" data-map-place-value="鳥羽站"><span class="itinerary-icon btn-press-effect">🚄</span><div><span class="time-badge editable">11:54 - 12:21</span><div class="item-title editable">鳥羽站搭乘志摩之風</div><div class="item-desc editable">從鳥羽站搭志摩之風前往鵜方，銜接下午橫山展望台。</div></div></div>
 <div class="connector-line"></div>
+<div class="card" data-map-place-value="鵜方站"><span class="itinerary-icon btn-press-effect">🚉</span><div><span class="time-badge editable">12:21</span><div class="item-title editable">鵜方站</div><div class="item-desc editable">抵達鵜方站，準備轉往橫山展望台。</div></div></div>
+<div class="connector-line"></div>
 <div class="card" data-map-place-input="https://maps.app.goo.gl/zj3TVoU2UcBiJkeYA" data-map-place-value="橫山展望台"><span class="itinerary-icon btn-press-effect">🌄</span><div><span class="time-badge editable">13:30 - 17:00</span><div class="item-title editable">橫山展望台</div><div class="item-desc editable">留一整個下午喝咖啡、看海灣，等夕陽登場收宮。</div></div></div>
+<div class="connector-line"></div>
+<div class="card" data-map-place-value="鵜方站"><span class="itinerary-icon btn-press-effect">🚉</span><div><span class="time-badge editable">17:00 後</span><div class="item-title editable">鵜方站</div><div class="item-desc editable">從橫山展望台回到鵜方站，再銜接回鳥羽的交通。</div></div></div>
 <div class="connector-line"></div>
 <div class="card" data-map-place-value="鳥羽站"><span class="itinerary-icon btn-press-effect">🚉</span><div><span class="time-badge editable">傍晚</span><div class="item-title editable">鳥羽站</div><div class="item-desc editable">從橫山展望台回到鳥羽站，準備回飯店休息。</div></div></div>
 <div class="connector-line"></div>
@@ -4371,7 +4397,6 @@ return;
 const blocksHtml = blocks.map((block, blockIndex) => {
 if (block.type === 'image') {
 const selected = currentNoteImageBlockIndex === blockIndex;
-const editingImageTools = selected && currentNoteImageToolMode === 'edit';
 const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 : 100;
 const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
 const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
@@ -4381,7 +4406,7 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode && selected ? `<button type="button" class="note-image-delete-btn btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">×</button>` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -4389,7 +4414,7 @@ const isAfterImageEmpty = prevBlock?.type === 'image' && !stripHtml(block.html |
 const placeholder = isAfterImageEmpty ? '可以繼續書寫文字，或再插入圖片' : '';
 const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
-return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)" oninput="setActiveNoteEditor(this)" ontouchend="setTimeout(() => setActiveNoteEditor(this), 0)">${visibleEditHtml}</div></div>`;
+return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)" oninput="setActiveNoteEditor(this)" onpaste="handleNotePlainPaste(event)" ontouchend="setTimeout(() => setActiveNoteEditor(this), 0)">${visibleEditHtml}</div></div>`;
 }).join('');
 const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
 const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
@@ -4502,6 +4527,32 @@ setActiveNoteEditor(editor);
 }
 function handleNoteColorButton(event) {
 return openNoteColorPalette(event);
+}
+function handleNotePlainPaste(event) {
+const editor = event?.currentTarget;
+if (!editor || !editor.classList?.contains('note-text-input')) return;
+const text = event.clipboardData?.getData('text/plain') || '';
+if (!text) return;
+event.preventDefault();
+event.stopPropagation();
+editor.focus();
+setActiveNoteEditor(editor);
+const cleanText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+if (document.queryCommandSupported?.('insertText')) {
+document.execCommand('insertText', false, cleanText);
+} else {
+const selection = window.getSelection();
+if (!selection || !selection.rangeCount) {
+editor.appendChild(document.createTextNode(cleanText));
+return;
+}
+const range = selection.getRangeAt(0);
+range.deleteContents();
+range.insertNode(document.createTextNode(cleanText));
+range.collapse(false);
+selection.removeAllRanges();
+selection.addRange(range);
+}
 }
 function bindNoteToolbarButtons(root = document) {
 root.querySelectorAll('.note-custom-color-btn').forEach(btn => {
@@ -5415,7 +5466,7 @@ renderDetailFields();
 }, { passive: true });
 host.addEventListener('pointerdown', event => {
 const block = event.target.closest('.note-block[data-block-type="image"]');
-if (!isEditMode || !block || event.target.closest('.photo-remove-btn') || event.target.closest('.note-image-resize-handle') || event.target.closest('.note-image-crop-handle') || event.target.closest('.note-image-action-bar')) return;
+if (!isEditMode || !block || event.target.closest('.photo-remove-btn') || event.target.closest('.note-image-resize-handle') || event.target.closest('.note-image-crop-handle') || event.target.closest('.note-image-action-bar') || event.target.closest('.note-image-delete-btn')) return;
 if (event.pointerType === 'mouse' && event.button !== 0) return;
 try { block.setPointerCapture(event.pointerId); } catch (error) {}
 const startX = event.clientX;
