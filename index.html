@@ -91,7 +91,7 @@ button, input { font: inherit; }
 
 
 
-.floating-bg { position: fixed; inset: 0; pointer-events: none; /* overflow: hidden; */ z-index: 1; }
+.floating-bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
 .float-item { position: absolute; bottom: -44px; opacity: .14; animation: mieFloat linear infinite; animation-fill-mode: both; }
 @keyframes mieFloat {
 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
@@ -102,8 +102,8 @@ button, input { font: inherit; }
 
 
 
-.sticky-top-container, main { position: relative; z-index: 100; pointer-events: auto; }
-.sticky-top-container { position: sticky; top: 0; z-index: 50; background: var(--bg-color); padding-bottom: 2px; }
+.sticky-top-container, main { position: relative; z-index: 2; }
+.sticky-top-container { position: sticky; top: 0; z-index: 1000 !important; background: var(--bg-color); padding-bottom: 2px; }
 header {
 height: 132px;
 min-height: 132px;
@@ -116,18 +116,18 @@ display: flex;
 align-items: center;
 justify-content: center;
 text-align: center;
-/* overflow: hidden; */
+overflow: hidden;
 }
-.header-main-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 100%; height: 92px; min-height: 92px; max-height: 92px; /* overflow: hidden; */ }
-.header-subtitle-container { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 19px; flex: 0 0 19px; /* overflow: hidden; */ }
+.header-main-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 100%; height: 92px; min-height: 92px; max-height: 92px; overflow: hidden; }
+.header-subtitle-container { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 19px; flex: 0 0 19px; overflow: hidden; }
 .header-line { width: 30px; height: 1px; background: #ede2db; }
 .header-subtitle { font-family: 'Dancing Script', cursive; font-size: 1rem; line-height: 19px; color: var(--heart-pink); }
-.header-title { flex: 0 0 50px; width: 100%; height: 50px; margin: 0; color: #a67c71; font-size: 1.6rem; font-weight: 700; letter-spacing: .12em; line-height: 50px; /* overflow: hidden; */ }
+.header-title { flex: 0 0 50px; width: 100%; height: 50px; margin: 0; color: #a67c71; font-size: 1.6rem; font-weight: 700; letter-spacing: .12em; line-height: 50px; overflow: hidden; }
 .header-title-with-art { display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: .08em; }
 .header-title-with-art span { display: inline-flex; align-items: center; justify-content: center; height: 50px; line-height: 50px; white-space: nowrap; }
 .header-title-divider-art { width: 96px; max-width: 28vw; height: 50px; object-fit: contain; flex: 0 0 auto; transform: none; }
-.quote-single-line { width: 100%; height: 18px; flex: 0 0 18px; /* overflow: hidden; */ color: var(--light-brown); font-size: .85rem; line-height: 18px; font-style: italic; white-space: nowrap; text-overflow: ellipsis; }
-#edit-mode-title { display: none; width: 100%; height: 92px; color: #a67c71; font-size: 1.1rem; font-weight: 600; line-height: 92px; /* overflow: hidden; */ }
+.quote-single-line { width: 100%; height: 18px; flex: 0 0 18px; overflow: hidden; color: var(--light-brown); font-size: .85rem; line-height: 18px; font-style: italic; white-space: nowrap; text-overflow: ellipsis; }
+#edit-mode-title { display: none; width: 100%; height: 92px; color: #a67c71; font-size: 1.1rem; font-weight: 600; line-height: 92px; overflow: hidden; }
 
 
 
@@ -260,7 +260,7 @@ box-shadow: 0 -8px 24px rgba(200,121,127,.08);
 body.day-3-theme #day-3 .card {
 border-color: #f7d8df;
 box-shadow: 0 10px 26px rgba(217,107,134,.12), 0 0 0 4px rgba(255,221,229,.32);
-/* overflow: hidden; */
+overflow: hidden;
 }
 body.day-3-theme #day-3 .card::before,
 body.day-3-theme #day-3 .card::after {
@@ -291,7 +291,7 @@ color: #d96b86;
 body.day-3-theme #day-3 .item-title {
 color: #76545a;
 }
-body.day-3-theme #wallet-modal .modal-content { scroll-behavior: auto !important; 
+body.day-3-theme #wallet-modal .modal-content {
 border-color: #f7d8df;
 background: linear-gradient(180deg, #fff 0%, #fff7fa 100%);
 box-shadow: 0 14px 38px rgba(217,107,134,.14);
@@ -408,7 +408,7 @@ body:not(.edit-mode) .connector-line:not(.has-route-plan) .route-inline { displa
 .route-text { min-width: 0; flex: 1; color: #9c877f; font-size: .76rem; line-height: 1.35; }
 .route-nav-link {
 position: relative;
-z-index: 101; pointer-events: auto;
+z-index: 3;
 width: 30px;
 height: 30px;
 flex: 0 0 30px;
@@ -528,7 +528,7 @@ white-space: nowrap;
 
 
 .float-icon { width: 62px; height: 62px; border: 2px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 8px 24px rgba(141,110,99,.15); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
-.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 100000 !important; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; padding: 0; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); /* overflow: hidden; */ pointer-events: auto; touch-action: manipulation; appearance: none; -webkit-appearance: none; }
+.main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; padding: 0; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; pointer-events: auto; touch-action: manipulation; appearance: none; -webkit-appearance: none; }
 .main-piggy::before { display: none; }
 .main-piggy img { width: 86%; height: 86%; object-fit: contain; display: block; filter: none; pointer-events: none; position: relative; z-index: 1; }
 .main-piggy.is-open img { width: 96%; height: 96%; }
@@ -537,7 +537,7 @@ white-space: nowrap;
 .menu-backdrop {
 position: fixed;
 inset: 0;
-z-index: 99998 !important;
+z-index: 55;
 display: none;
 background: rgba(141,110,99,.16);
 backdrop-filter: blur(5px);
@@ -546,7 +546,7 @@ opacity: 0;
 transition: opacity .12s ease-out;
 }
 .menu-backdrop.show { opacity: 1; }
-.floating-menu { position: fixed; right: 20px; bottom: 106px; display: none; flex-direction: column; gap: 12px; align-items: flex-end; z-index: 99999 !important; }
+.floating-menu { position: fixed; right: 20px; bottom: 106px; display: none; flex-direction: column; gap: 12px; align-items: flex-end; z-index: 60; }
 .menu-action { display: flex; align-items: center; justify-content: flex-end; gap: 10px; opacity: 0; transform: translateY(18px) scale(.42); transition: opacity .22s ease-out, transform .26s cubic-bezier(.18,1.35,.32,1); will-change: opacity, transform; transform-origin: right bottom; }
 .floating-menu.show .menu-action { opacity: 1; transform: none; }
 .menu-label {
@@ -617,7 +617,7 @@ background: rgba(111,164,142,.96);
 background: rgba(209,122,109,.96);
 }
 .modal-container { position: relative; width: 92%; max-width: 400px; padding: 20px; }
-.modal-content { scroll-behavior: auto !important;  width: 100%; max-height: 86vh; /* overflow: hidden; */ display: flex; flex-direction: column; padding: 30px 20px; border: 1px solid #f9f0ed; border-radius: 30px; background: var(--modal-bg); box-shadow: 0 10px 40px rgba(141,110,99,.1); }
+.modal-content { width: 100%; max-height: 86vh; overflow: hidden; display: flex; flex-direction: column; padding: 30px 20px; border: 1px solid #f9f0ed; border-radius: 30px; background: var(--modal-bg); box-shadow: 0 10px 40px rgba(141,110,99,.1); }
 .modal-scroll-area { min-height: 0; flex: 1; overflow-y: auto; padding: 5px; -webkit-overflow-scrolling: touch; }
 .modal-title { margin-bottom: 15px; color: var(--main-brown); font-size: 1.4rem; font-weight: 900; text-align: center; }
 .wishlist-title-basket {
@@ -650,7 +650,7 @@ background-image: url("data:image/svg+xml,%3Csvg width='108' height='48' viewBox
 }
 #wallet-modal { align-items: center; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
 #wallet-modal .modal-container { padding-top: 20px; padding-bottom: 20px; }
-#wallet-modal .modal-content { scroll-behavior: auto !important;  max-height: 96vh; padding-top: 16px; padding-bottom: 16px; }
+#wallet-modal .modal-content { max-height: 96vh; padding-top: 16px; padding-bottom: 16px; }
 #wallet-modal .modal-title { margin-bottom: 8px; }
 #wallet-modal {
 --wallet-inner-inset: 5px;
@@ -681,7 +681,7 @@ font-size: 1.16rem;
 line-height: 1;
 white-space: nowrap;
 }
-#wallet-modal .modal-content { scroll-behavior: auto !important;  max-height: calc(100vh - 40px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+#wallet-modal .modal-content { max-height: calc(100vh - 40px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
 #wallet-modal .modal-scroll-area {
 padding-left: 0;
 padding-right: 0;
@@ -945,7 +945,7 @@ margin-top: 8px !important;
 margin-bottom: 8px !important;
 }
 #work-modal .modal-content,
-#finish-modal .modal-content { scroll-behavior: auto !important; 
+#finish-modal .modal-content {
 align-items: center;
 padding-top: 22px;
 gap: 10px;
@@ -1006,9 +1006,9 @@ filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
 }
 .modal-close-btn { position: absolute; top: 2px; right: 2px; z-index: 1010; padding: 12px; }
 .modal-close-circle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: var(--heart-pink); box-shadow: 0 2px 10px rgba(0,0,0,.1); }
-.modal-btn-primary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 58px; border: 0; border-radius: 20px; padding: 14px 24px; appearance: none; -webkit-appearance: none; background: var(--heart-pink); background-clip: padding-box; color: #fff; font-size: 1.05rem; font-weight: 900; line-height: 1.15; text-align: center; box-shadow: 0 4px 12px rgba(209,122,109,.25); /* overflow: hidden; */ }
+.modal-btn-primary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 58px; border: 0; border-radius: 20px; padding: 14px 24px; appearance: none; -webkit-appearance: none; background: var(--heart-pink); background-clip: padding-box; color: #fff; font-size: 1.05rem; font-weight: 900; line-height: 1.15; text-align: center; box-shadow: 0 4px 12px rgba(209,122,109,.25); overflow: hidden; }
 #wallet-modal .modal-btn-primary { background: #b87568; box-shadow: 0 5px 14px rgba(184,117,104,.18); }
-#password-modal .modal-content { scroll-behavior: auto !important; 
+#password-modal .modal-content {
 max-height: none;
 padding: 22px 18px 16px;
 border-color: #f4cfc6;
@@ -1026,7 +1026,7 @@ font-size: 1.52rem;
 color: #9d6f65;
 }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
-#alert-modal .modal-content { scroll-behavior: auto !important;  align-items: center; text-align: center; }
+#alert-modal .modal-content { align-items: center; text-align: center; }
 #alert-modal .modal-title { margin-bottom: 0; }
 #alert-modal p {
 margin: 22px 0;
@@ -1071,7 +1071,7 @@ background-clip: padding-box;
 color: var(--main-brown);
 font-size: 1.05rem;
 font-weight: 900;
-/* overflow: hidden; */
+overflow: hidden;
 }
 #alert-primary-btn::before,
 #alert-primary-btn::after,
@@ -1274,10 +1274,10 @@ color: #fff;
 font-size: .9rem;
 font-weight: 800;
 }
-.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); padding: 0; background: #fffdfb; display: inline-flex; align-items: center; justify-content: center; /* overflow: hidden; */ color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82), 0 3px 9px rgba(141,110,99,.08); }
+.category-select { width: var(--wallet-control-height); height: var(--wallet-control-height); flex: 0 0 var(--wallet-control-height); border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); padding: 0; background: #fffdfb; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; color: #8d6e63; font-size: .78rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82), 0 3px 9px rgba(141,110,99,.08); }
 .category-select .cat-icon-sm { width: 100%; height: 100%; flex: 0 0 100%; border-radius: calc(var(--wallet-control-radius) - 1px); }
 .category-menu { position: absolute; top: 100%; left: 0; z-index: 100; display: none; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 250px; max-width: 100%; margin-top: 8px; padding: 12px; border: 1px solid #ead7cf; border-radius: 20px; background: #fffbf9; box-shadow: 0 12px 30px rgba(141,110,99,.14); }
-.cat-item { min-height: 66px; border: 0; border-radius: 14px; background: transparent; padding: 0; /* overflow: hidden; */ display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #8d6e63; font-size: .68rem; font-weight: 900; }
+.cat-item { min-height: 66px; border: 0; border-radius: 14px; background: transparent; padding: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #8d6e63; font-size: .68rem; font-weight: 900; }
 .cat-item .cat-icon-sm { width: 38px; height: 38px; flex: 0 0 38px; }
 .cat-item-label { line-height: 1; }
 .cat-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; line-height: 1; filter: saturate(1.08); }
@@ -1384,7 +1384,7 @@ white-space: normal !important;
 content: '';
 position: absolute;
 display: none;
-z-index: 100; pointer-events: auto;
+z-index: 2;
 width: 112px;
 height: 42px;
 background-repeat: no-repeat;
@@ -1408,11 +1408,11 @@ transform: rotate(8deg);
 }
 .flight-detail-modal .note-text-view {
 position: relative;
-z-index: 101; pointer-events: auto;
+z-index: 3;
 }
 .flight-ticket-view {
 position: relative;
-z-index: 101; pointer-events: auto;
+z-index: 3;
 display: block;
 min-height: 0;
 color: #775f58;
@@ -1649,7 +1649,7 @@ font-size: .66rem;
 }
 .flight-ticket-view.is-editing [contenteditable="true"] {
 border-radius: 8px;
-outline: none;
+outline: 1px dashed rgba(209,122,109,.34);
 outline-offset: 2px;
 }
 .flight-ticket-view.is-editing [contenteditable="true"]:focus {
@@ -1661,7 +1661,7 @@ position: absolute;
 right: 8px;
 top: 26px;
 bottom: auto;
-z-index: 100; pointer-events: auto;
+z-index: 2;
 width: 132px;
 max-width: 38%;
 opacity: .96;
@@ -1779,7 +1779,7 @@ box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.14);
 }
 .note-custom-color-btn {
 position: relative;
-/* overflow: hidden; */
+overflow: hidden;
 cursor: pointer;
 background: #fffaf7;
 color: #8d6e63;
@@ -1883,7 +1883,7 @@ box-shadow: inset 0 0 0 1px rgba(141,110,99,.08);
 width: 100%;
 min-height: 40px;
 resize: none;
-/* overflow: hidden; */
+overflow: hidden;
 border: 0;
 border-radius: 0;
 padding: 4px 2px;
@@ -1897,101 +1897,6 @@ line-height: 1.78;
 .note-text-input {
 white-space: pre-wrap;
 word-break: break-word;
-}
-.note-page.is-editing {
-position: relative;
-}
-.note-word-editor {
-min-height: 300px;
-padding: 18px 16px 80px;
-border: 1px solid #f2e3dd;
-border-radius: 18px;
-background: #fff;
-box-shadow: inset 0 0 0 1px rgba(255,255,255,.9), 0 8px 20px rgba(141,110,99,.055);
-line-height: 1.88;
-text-align: left;
-}
-.note-word-editor:focus {
-outline: 2px solid rgba(209,122,109,.22);
-outline-offset: 3px;
-}
-.note-word-editor:empty::before {
-content: attr(data-placeholder);
-color: #bcaaaa;
-font-size: .9rem;
-font-weight: 800;
-pointer-events: none;
-}
-.note-word-editor .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
-display: inline-block;
-vertical-align: top;
-margin: 6px 10px 8px 0;
-width: min(var(--note-image-width, 56%), 72%);
-}
-.note-word-editor .note-image-frame { overflow: visible !important; 
-max-height: 240px;
-border-radius: 14px;
-}
-.note-word-editor .note-image-frame img {
-max-height: 240px;
-}
-.note-word-editor .photo-preview-item.is-selected {
-outline: 2px solid rgba(209,122,109,.32);
-outline-offset: 3px;
-}
-.note-word-editor p,
-.note-word-editor div {
-margin-top: 0;
-margin-bottom: .65em;
-}
-.note-word-editor br + .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
-margin-top: 10px;
-}
-
-.note-page.is-editing .note-block {
-display: inline-block;
-vertical-align: top;
-width: auto;
-margin: 0;
-padding: 0;
-}
-.note-page.is-editing .note-block[data-block-type="text"] {
-display: block;
-width: 100%;
-}
-.note-page.is-editing .note-block[data-block-type="image"] {
-margin: 4px 8px 8px 0;
-}
-.note-text-input {
-min-height: 1.5em;
-padding: 4px 2px;
-}
-
-.note-page.is-editing {
-background: #fff;
-border: 1px solid #f2e3dd;
-border-radius: 18px;
-padding: 15px;
-min-height: 300px;
-box-shadow: inset 0 0 0 1px rgba(255,255,255,.9), 0 8px 20px rgba(141,110,99,.055);
-}
-.note-page.is-editing .note-block {
-border: none !important;
-box-shadow: none !important;
-background: transparent !important;
-}
-.note-text-input.is-active {
-outline: none !important;
-}
-@media (max-width: 420px) {
-.note-word-editor {
-padding: 15px 13px 76px;
-min-height: 260px;
-}
-.note-word-editor .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
-width: min(var(--note-image-width, 62%), 82%);
-margin-right: 8px;
-}
 }
 .note-text-input.after-image-text {
 min-height: 64px;
@@ -2068,7 +1973,7 @@ font-size: .78rem;
 font-weight: 900;
 text-decoration: underline;
 }
-.photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
+.photo-preview-item {
 position: relative;
 overflow: visible;
 border-radius: 18px;
@@ -2085,7 +1990,7 @@ margin-right: auto;
 user-select: none;
 -webkit-user-select: none;
 }
-.note-image-frame { overflow: visible !important; 
+.note-image-frame { width: var(--note-image-width, 100%); overflow: hidden; position: relative; 
 position: relative;
 width: calc(100% * var(--note-crop-width, 100) / 100);
 max-width: 100%;
@@ -2093,22 +1998,22 @@ max-height: 320px;
 margin-left: calc(1% * var(--note-crop-left, 0));
 margin-right: auto;
 border-radius: 18px;
-/* overflow: hidden; */
+overflow: hidden;
 background: #fff;
 border: 1px solid #f0e6e2;
 box-shadow: 0 6px 18px rgba(141,110,99,.08);
 }
-.note-image-frame.is-cropped { height: var(--note-image-crop, 260px) !important; overflow: hidden !important; position: relative;  
+.note-image-frame.is-cropped {
 height: var(--note-image-crop, 260px);
 max-height: none;
 }
-.note-image-frame img {
+.note-image-frame img { width: calc(100% * (100 / var(--note-crop-width, 100))); transform: translate(calc(-1% * var(--note-crop-left, 0)), calc(-1px * var(--note-crop-top, 0))); 
 display: block;
 width: calc(10000% / var(--note-crop-width, 100));
 height: auto;
 max-height: 320px;
 object-fit: cover;
-transform: translate(calc(-1% * var(--note-crop-left, 0)), calc(-1px * var(--note-crop-top, 0))) !important;
+transform: translate(calc(-1% * var(--note-crop-left, 0)), calc(-1px * var(--note-crop-top, 0)));
 }
 .note-image-frame.is-cropped img {
 height: auto;
@@ -2118,22 +2023,22 @@ object-fit: initial;
 .photo-preview-item.is-selected {
 filter: drop-shadow(0 8px 18px rgba(209,122,109,.16));
 }
-.photo-preview-item.is-selected .note-image-frame { overflow: visible !important; 
+.photo-preview-item.is-selected .note-image-frame { width: var(--note-image-width, 100%); overflow: hidden; position: relative; 
 border-color: #e6b0a5;
 box-shadow: inset 0 0 0 2px rgba(209,122,109,.1);
 }
-.note-image-action-bar { z-index: 9999 !important; pointer-events: auto !important; 
+.note-image-action-bar {
 display: none;
 position: absolute;
 left: 8px;
 top: 8px;
-z-index: 100; pointer-events: auto;
+z-index: 2;
 gap: 6px;
 }
-.photo-preview-item.is-selected .note-image-action-bar { z-index: 9999 !important; pointer-events: auto !important; 
+.photo-preview-item.is-selected .note-image-action-bar {
 display: flex;
 }
-.note-image-action-btn { pointer-events: auto !important; 
+.note-image-action-btn {
 width: 32px;
 height: 32px;
 padding: 0;
@@ -2155,19 +2060,19 @@ color: #fff;
 color: #e57373;
 }
 .note-image-resize-handle,
-.note-image-crop-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: ns-resize !important; 
+.note-image-crop-handle {
 display: none;
 position: absolute;
-z-index: 101; pointer-events: auto;
+z-index: 3;
 touch-action: none;
 }
 .photo-preview-item.is-selected .note-image-resize-handle,
-.photo-preview-item.is-selected .note-image-crop-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: ns-resize !important; 
+.photo-preview-item.is-selected .note-image-crop-handle {
 display: flex;
 align-items: center;
 justify-content: center;
 }
-.note-image-resize-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: nwse-resize !important;  z-index: 9999 !important; pointer-events: auto !important; 
+.note-image-resize-handle {
 right: -10px;
 bottom: -10px;
 width: 28px;
@@ -2180,7 +2085,7 @@ font-size: .82rem;
 font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.22);
 }
-.note-image-crop-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: ns-resize !important; 
+.note-image-crop-handle {
 right: 0;
 top: 50%;
 width: 28px;
@@ -2283,12 +2188,12 @@ transform: translateX(-50%);
 .note-image-drag-hint {
 display: none !important;
 }
-body:not(.edit-mode) .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
+body:not(.edit-mode) .photo-preview-item {
 cursor: zoom-in;
 }
 .note-inline-image {
 margin: 12px 0 14px;
-/* overflow: hidden; */
+overflow: hidden;
 border: 1px solid #f0e6e2;
 border-radius: 18px;
 background: #fff;
@@ -2304,7 +2209,7 @@ cursor: zoom-in;
 .note-block[data-block-type="image"] {
 position: relative;
 }
-body.edit-mode .note-block[data-block-type="image"] img { pointer-events: auto !important; 
+body.edit-mode .note-block[data-block-type="image"] img {
 cursor: grab;
 touch-action: none;
 -webkit-touch-callout: none;
@@ -2316,7 +2221,7 @@ opacity: .34;
 transform: scale(.98);
 }
 .note-block.note-image-drop-target {
-outline: none;
+outline: 2px dashed #e6b0a5;
 outline-offset: 5px;
 border-radius: 18px;
 }
@@ -2338,7 +2243,7 @@ z-index: 2600;
 width: min(230px, 56vw);
 border: 2px solid #fff;
 border-radius: 18px;
-/* overflow: hidden; */
+overflow: hidden;
 box-shadow: 0 14px 34px rgba(141,110,99,.24);
 pointer-events: none;
 transform: translate3d(-9999px, -9999px, 0);
@@ -2367,7 +2272,7 @@ padding: 10px;
 border: 1px solid #f2e3de;
 border-radius: 22px;
 background: #fffdfb;
-/* overflow: hidden; */
+overflow: hidden;
 }
 #note-image-edit-canvas {
 display: block;
@@ -2385,7 +2290,7 @@ gap: 8px;
 .note-image-tools-row.size-row {
 grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-.note-image-tool-btn { z-index: 9999 !important; pointer-events: auto !important;  position: relative; z-index: 200; 
+.note-image-tool-btn {
 height: 42px;
 border: 1px solid #efd9d2;
 border-radius: 16px;
@@ -2447,7 +2352,7 @@ object-fit: contain;
 }
 .expense-card { margin-bottom: 14px; padding: 18px; border: 1px solid #fdf5f2; border-radius: 24px; background: #fff; box-shadow: 0 4px 15px rgba(141,110,99,.06); }
 .expense-top { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; min-height: 52px; }
-.expense-icon { width: 52px; height: 52px; flex: 0 0 52px; border: 1px solid #fdf5f2; border-radius: 18px; background: #fef9f6; /* overflow: hidden; */ }
+.expense-icon { width: 52px; height: 52px; flex: 0 0 52px; border: 1px solid #fdf5f2; border-radius: 18px; background: #fef9f6; overflow: hidden; }
 .expense-heading { min-width: 0; display: flex; min-height: 52px; flex-direction: column; justify-content: center; }
 .expense-title { min-width: 0; color: #34495e; font-size: 1.05rem; font-weight: 900; word-break: break-word; }
 .expense-time { margin-bottom: 7px; color: var(--light-brown); font-size: .82rem; font-weight: 700; }
@@ -2463,8 +2368,8 @@ object-fit: contain;
 .settle-highlight-name { color: #cb6a7f; font-size: 1.22rem; font-weight: 900; }
 .settle-highlight-amount { color: #5b73bc; font-size: 1.5rem; font-weight: 900; }
 .pie-chart { position: relative; width: 130px; height: 130px; margin: 15px auto; border-radius: 50%; box-shadow: 0 4px 15px rgba(141,110,99,.1); }
-.pie-chart::after { content: ''; position: absolute; inset: 27px; z-index: 100; pointer-events: auto; border-radius: 50%; background: #fff; }
-.pie-center-label { position: absolute; top: 50%; left: 50%; z-index: 101; pointer-events: auto; transform: translate(-50%, -50%); text-align: center; color: var(--light-brown); font-size: .7rem; font-weight: 900; line-height: 1.15; }
+.pie-chart::after { content: ''; position: absolute; inset: 27px; z-index: 2; border-radius: 50%; background: #fff; }
+.pie-center-label { position: absolute; top: 50%; left: 50%; z-index: 3; transform: translate(-50%, -50%); text-align: center; color: var(--light-brown); font-size: .7rem; font-weight: 900; line-height: 1.15; }
 .pie-total { display: block; margin-top: 3px; color: var(--main-brown); font-size: .82rem; font-weight: 900; }
 .stat-boxes { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin-top: 14px; }
 .stat-box { padding: 12px; border-radius: 18px; text-align: center; }
@@ -2476,7 +2381,7 @@ object-fit: contain;
 .wishlist-tabs { display: grid; grid-template-columns: repeat(var(--wishlist-cols, 4), minmax(0, 1fr)); gap: 6px; margin-bottom: 0; padding: 5px; border-radius: 16px; background: #f5efec; }
 .prep-tabs { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; margin-bottom: 9px; padding: 6px; background: #f3ebe8; overflow: visible; }
 .wishlist-tab { min-height: 32px; min-width: 0; border: 0; border-radius: 12px; padding: 0 6px; background: transparent; color: var(--light-brown); font-size: .76rem; font-weight: 900; white-space: nowrap; }
-.wishlist-tab span:first-child { min-width: 0; /* overflow: hidden; */ text-overflow: ellipsis; }
+.wishlist-tab span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .wishlist-tab.has-delete {
 display: inline-flex;
 align-items: center;
@@ -2502,7 +2407,7 @@ line-height: 1;
 position: absolute;
 right: 8px;
 top: -24px;
-z-index: 100; pointer-events: auto;
+z-index: 2;
 height: 24px;
 border: 0;
 border-radius: 0;
@@ -2569,7 +2474,7 @@ width: 26px;
 height: 26px;
 }
 #prep-list .wishlist-name {
-/* overflow: hidden; */
+overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
 word-break: normal;
@@ -2585,7 +2490,7 @@ height: 28px;
 .docs-add-btn { width: auto; min-width: 104px; height: 36px; flex: 0 0 auto; padding: 0 14px; border: 1px solid #f0d9d2; border-radius: 999px; background: #fff5f0; color: #c47b72; font-size: .78rem; display: inline-flex; align-items: center; justify-content: center; gap: 5px; box-shadow: none; }
 .docs-add-btn .docs-add-plus { font-size: .98rem; line-height: 1; }
 .docs-list .wishlist-item { grid-template-columns: 42px minmax(0,1fr) 34px; cursor: pointer; position: relative; }
-.docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; /* overflow: hidden; */ pointer-events: none; }
+.docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
 .docs-thumb.has-image { padding: 0; }
 .docs-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .docs-file-mark { font-size: .58rem; font-weight: 900; letter-spacing: 0; color: #b87568; }
@@ -2606,7 +2511,7 @@ color: #caa79d;
 font-size: .82rem;
 font-weight: 900;
 line-height: 1;
-/* overflow: hidden; */
+overflow: hidden;
 display: inline-flex;
 align-items: center;
 justify-content: center;
@@ -3090,7 +2995,6 @@ let bothManualEdits = { big: false, small: false };
 let fp = null;
 let pendingNoteFocusIndex = null;
 let pendingNoteImageInsert = null;
-let pendingNoteWordEditorRange = null;
 let savedNoteColorRange = null;
 let noteColorPaletteOpenedAt = 0;
 let currentNoteTextColor = '';
@@ -3772,27 +3676,6 @@ url: urlMatch ? urlMatch[0].replace(/[，,。]+$/, '') : raw,
 text: normalizeRouteText(raw)
 };
 }
-
-function handleGlobalPaste(event) {
-const target = event.target;
-if (!target.isContentEditable) return;
-if (target.id === 'route-plan-url') return; // 排除特定需要特殊處理的欄位
-event.preventDefault();
-const text = (event.clipboardData || window.clipboardData).getData('text/plain');
-if (!text) return;
-const selection = window.getSelection();
-if (!selection.rangeCount) return;
-selection.deleteFromDocument();
-const range = selection.getRangeAt(0);
-const textNode = document.createTextNode(text);
-range.insertNode(textNode);
-range.setStartAfter(textNode);
-range.setEndAfter(textNode);
-selection.removeAllRanges();
-selection.addRange(range);
-target.dispatchEvent(new Event('input', { bubbles: true }));
-}
-
 function handleRoutePlanUrlPaste(event) {
 const pasted = event.clipboardData?.getData('text') || '';
 if (!pasted) return;
@@ -4446,7 +4329,18 @@ return;
 }
 const blocksHtml = blocks.map((block, blockIndex) => {
 if (block.type === 'image') {
-return getNoteImageBlockHtml(block, blockIndex);
+const selected = currentNoteImageBlockIndex === blockIndex;
+const editingImageTools = selected && currentNoteImageToolMode === 'edit';
+const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 : 100;
+const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
+const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
+const cropTop = Math.max(0, Math.min(520, Number(block.cropTop || 0)));
+const cropLeft = Math.max(0, Math.min(80, Number(block.cropLeft || 0)));
+const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 0)));
+const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
+const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
+const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
@@ -4466,126 +4360,9 @@ const flightPairKey = isFlightNote ? getLockedFlightPairKey(currentDetailCard) :
 const flightCornerSrc = flightPairKey === 'IT206' ? 'wallet-corner-friends.png' : flightPairKey === 'IT207' ? 'flight-return-corner-friends.png' : '';
 const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration ${flightPairKey === 'IT207' ? 'return-flight-corner' : ''}" src="${flightCornerSrc}" alt="" aria-hidden="true">` : '';
 const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, false) : '';
-const noteBodyHtml = flightViewHtml || blocksHtml;
-host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${noteBodyHtml}${insertTools}${flightCorner}</div>`;
+host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${flightViewHtml || blocksHtml}${insertTools}${flightCorner}</div>`;
 bindNoteToolbarButtons(host);
 focusPendingNoteBlock();
-}
-
-function getNoteImageBlockHtml(block, blockIndex) {
-const selected = currentNoteImageBlockIndex === blockIndex;
-const editingImageTools = selected && currentNoteImageToolMode === 'edit';
-const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 : 100;
-const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
-const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
-const cropTop = Math.max(0, Math.min(520, Number(block.cropTop || 0)));
-const cropLeft = Math.max(0, Math.min(80, Number(block.cropLeft || 0)));
-const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 0)));
-const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
-const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
-const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="event.stopPropagation(); startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
-}
-function renderNoteWordEditorHtml(blocks) {
-let html = '';
-blocks.forEach((block, blockIndex) => {
-if (block.type === 'image') {
-html += getNoteImageBlockHtml(block, blockIndex) + ' ';
-return;
-}
-const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
-if (stripHtml(editHtml).trim()) html += `<div>${editHtml}</div>`;
-});
-const placeholder = '像 Word 一樣直接打字；游標停在哪裡，相機就把照片插在哪裡';
-return `<div class="note-text-input note-word-editor" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)" oninput="setActiveNoteEditor(this)" ontouchend="setTimeout(() => setActiveNoteEditor(this), 0)">${html}</div>`;
-}
-function collectNoteWordEditorBlocks(editor) {
-const blocks = [];
-let textBox = document.createElement('div');
-const flushText = () => {
-const html = sanitizeNoteHtml(textBox.innerHTML || '');
-if (stripHtml(html).trim()) blocks.push({ type: 'text', text: stripHtml(html).trim(), html });
-textBox = document.createElement('div');
-};
-const appendTextClone = (node) => {
-textBox.appendChild(node.cloneNode(true));
-};
-const appendImageBlock = (node) => {
-flushText();
-let strokes = [];
-try { strokes = JSON.parse(node.dataset.strokes || '[]'); } catch (error) {}
-blocks.push({
-type: 'image',
-src: node.dataset.src || node.querySelector('img')?.src || '',
-originalSrc: node.dataset.originalSrc || '',
-strokes: Array.isArray(strokes) ? strokes : [],
-width: Math.max(35, Math.min(100, Number(node.dataset.width || 56))),
-cropHeight: Math.max(0, Math.min(520, Number(node.dataset.cropHeight || 0))),
-cropTop: Math.max(0, Math.min(520, Number(node.dataset.cropTop || 0))),
-cropLeft: Math.max(0, Math.min(80, Number(node.dataset.cropLeft || 0))),
-cropRight: Math.max(0, Math.min(80, Number(node.dataset.cropRight || 0)))
-});
-};
-const walkNode = (node) => {
-if (node.nodeType === Node.ELEMENT_NODE && node.classList?.contains('photo-preview-item') && node.dataset.blockType === 'image') {
-appendImageBlock(node);
-return;
-}
-if (node.nodeType === Node.ELEMENT_NODE && node.querySelector?.('.photo-preview-item[data-block-type="image"]')) {
-const shell = node.cloneNode(false);
-Array.from(node.childNodes).forEach(child => {
-if (child.nodeType === Node.ELEMENT_NODE && child.classList?.contains('photo-preview-item') && child.dataset.blockType === 'image') {
-if (stripHtml(shell.innerHTML || '').trim()) {
-textBox.appendChild(shell.cloneNode(true));
-shell.innerHTML = '';
-}
-appendImageBlock(child);
-} else {
-shell.appendChild(child.cloneNode(true));
-}
-});
-if (stripHtml(shell.innerHTML || '').trim()) textBox.appendChild(shell);
-return;
-}
-appendTextClone(node);
-};
-Array.from(editor.childNodes).forEach(walkNode);
-flushText();
-return blocks.length ? blocks : [{ type: 'text', text: '', html: '' }];
-}
-function insertImageIntoWordEditor(src) {
-const editor = document.querySelector('.note-word-editor.is-active') || document.querySelector('.note-word-editor');
-if (!editor) return false;
-editor.focus();
-setActiveNoteEditor(editor);
-const nextIndex = editor.querySelectorAll('.photo-preview-item').length;
-const imageHtml = getNoteImageBlockHtml({ type: 'image', src, originalSrc: src, strokes: [], width: 56, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }, nextIndex);
-const selection = window.getSelection();
-let range = pendingNoteWordEditorRange || (selection && selection.rangeCount ? selection.getRangeAt(0) : null);
-if (!range || !editor.contains(range.startContainer)) {
-range = document.createRange();
-range.selectNodeContents(editor);
-range.collapse(false);
-}
-pendingNoteWordEditorRange = null;
-range.deleteContents();
-const temp = document.createElement('span');
-temp.innerHTML = imageHtml + ' ';
-const fragment = document.createDocumentFragment();
-let lastNode = null;
-while (temp.firstChild) {
-lastNode = temp.firstChild;
-fragment.appendChild(lastNode);
-}
-range.insertNode(fragment);
-if (lastNode) {
-const nextRange = document.createRange();
-nextRange.setStartAfter(lastNode);
-nextRange.collapse(true);
-selection.removeAllRanges();
-selection.addRange(nextRange);
-}
-return true;
 }
 function setActiveNoteEditor(el) {
 document.querySelectorAll('.note-text-input').forEach(item => item.classList.toggle('is-active', item === el));
@@ -4637,7 +4414,6 @@ return sanitizeNoteHtml(box.innerHTML);
 }
 function captureNoteImageInsertPoint() {
 pendingNoteImageInsert = null;
-pendingNoteWordEditorRange = null;
 const selection = window.getSelection();
 let editor = null;
 let selectedRange = null;
@@ -4649,18 +4425,6 @@ editor = node?.closest?.('.note-text-input') || null;
 editor = editor || document.querySelector('.note-text-input.is-active') || document.querySelector('.note-text-input');
 if (!editor) return;
 setActiveNoteEditor(editor);
-if (editor.classList.contains('note-word-editor')) {
-if (!selectedRange || !editor.contains(selectedRange.startContainer)) {
-selectedRange = document.createRange();
-selectedRange.selectNodeContents(editor);
-selectedRange.collapse(false);
-} else if (!editor.contains(selectedRange.endContainer)) {
-selectedRange = selectedRange.cloneRange();
-selectedRange.collapse(true);
-}
-pendingNoteWordEditorRange = selectedRange.cloneRange();
-return;
-}
 const block = editor.closest('.note-block');
 const blockIndex = Number(block?.dataset.blockIndex);
 if (!Number.isInteger(blockIndex)) return;
@@ -4998,7 +4762,7 @@ function showNoteImageEditTools(event) {
 event?.preventDefault();
 event?.stopPropagation();
 const block = event?.currentTarget?.closest('.note-block[data-block-type="image"]');
-if (!block) return; currentNoteImageBlockIndex = Number(block.dataset.blockIndex);
+if (!selectCurrentNoteImageBlock(block)) return;
 currentNoteImageToolMode = 'edit';
 saveFieldDraftsToCard();
 renderDetailFields();
@@ -5019,9 +4783,9 @@ const fields = collectDetailFieldsFromModal();
 const block = fields[0]?.blocks?.[renderedIndex];
 if (!block || block.type !== 'image') return false;
 if (Number.isFinite(updates.width)) block.width = Math.max(35, Math.min(100, Math.round(updates.width)));
-if (updates.cropHeight !== undefined && updates.cropHeight !== null) {
+if (Number.isFinite(updates.cropHeight)) {
 const img = selectedBlock.querySelector('.note-image-frame img');
-const maxHeight = Math.max(80, Math.round(img?.getBoundingClientRect().height || selectedBlock.querySelector('.note-image-frame')?.getBoundingClientRect().height || 520));
+const img = selectedBlock.querySelector(".note-image-frame img"); const maxHeight = Math.max(80, Math.round(img?.naturalHeight ? (img.height || img.getBoundingClientRect().height) : 520));
 block.cropHeight = Math.max(80, Math.min(maxHeight, Math.round(updates.cropHeight)));
 }
 if (Number.isFinite(updates.cropTop)) block.cropTop = Math.max(0, Math.min(520, Math.round(updates.cropTop)));
@@ -5039,7 +4803,7 @@ event.preventDefault();
 event.stopPropagation();
 }
 const block = event.target.closest('.note-block[data-block-type="image"]');
-if (!block) return; currentNoteImageBlockIndex = Number(block.dataset.blockIndex);
+if (!selectCurrentNoteImageBlock(block)) return;
 const startX = event.clientX;
 const startWidth = Number(block.dataset.width || 100);
 const pageRect = block.closest('.note-page')?.getBoundingClientRect();
@@ -5050,7 +4814,7 @@ const onMove = (moveEvent) => {
 if (moveEvent.pointerId !== pointerId) return;
 moveEvent.preventDefault();
 const direction = document.dir === 'rtl' ? -1 : 1;
-const nextWidth = startWidth + direction * ((moveEvent.clientX - startX) / Math.max(1, block.closest(".note-page")?.offsetWidth || 300)) * 100;
+const nextWidth = startWidth + direction * ((moveEvent.clientX - startX) / Math.max(1, pageRect?.width || base)) * 100;
 setCurrentNoteImageGeometry({ width: nextWidth });
 };
 const onEnd = (endEvent) => {
@@ -5069,7 +4833,7 @@ event.preventDefault();
 event.stopPropagation();
 }
 const block = event.target.closest('.note-block[data-block-type="image"]');
-if (!block) return; currentNoteImageBlockIndex = Number(block.dataset.blockIndex);
+if (!selectCurrentNoteImageBlock(block)) return;
 const frame = block.querySelector('.note-image-frame');
 const startY = event.clientY;
 const imgHeight = frame?.querySelector('img')?.getBoundingClientRect().height || frame?.getBoundingClientRect().height || 260;
@@ -5096,7 +4860,7 @@ event.preventDefault();
 event.stopPropagation();
 }
 const block = event.target.closest('.note-block[data-block-type="image"]');
-if (!block) return; currentNoteImageBlockIndex = Number(block.dataset.blockIndex);
+if (!selectCurrentNoteImageBlock(block)) return;
 const frame = block.querySelector('.note-image-frame');
 const imgHeight = frame?.querySelector('img')?.getBoundingClientRect().height || frame?.getBoundingClientRect().height || 260;
 const startY = event.clientY;
@@ -5128,7 +4892,7 @@ event.preventDefault();
 event.stopPropagation();
 }
 const block = event.target.closest('.note-block[data-block-type="image"]');
-if (!block) return; currentNoteImageBlockIndex = Number(block.dataset.blockIndex);
+if (!selectCurrentNoteImageBlock(block)) return;
 const startX = event.clientX;
 const startLeft = Number(block.dataset.cropLeft || 0);
 const startRight = Number(block.dataset.cropRight || 0);
@@ -5345,7 +5109,7 @@ if (!files.length) return;
 const imageSources = await Promise.all(files.map(file => readImageFile(file)));
 const fields = collectDetailFieldsFromModal();
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
-const imageBlocks = imageSources.map(src => ({ type: 'image', src, originalSrc: src, strokes: [], width: 56, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }));
+const imageBlocks = imageSources.map(src => ({ type: 'image', src, originalSrc: src, strokes: [], width: 100, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }));
 const insertPoint = insertMode === 'cursor' ? pendingNoteImageInsert : null;
 if (insertPoint && Number.isInteger(insertPoint.blockIndex) && fields[0].blocks[insertPoint.blockIndex]?.type === 'text') {
 const replacement = [];
@@ -5537,10 +5301,10 @@ const page = source.closest('.note-page');
 if (!target || !page?.contains(target) || target === source) return;
 const textEditor = target.dataset.blockType === 'text' ? target.querySelector('.note-text-input') : null;
 if (textEditor && placeNoteImageTextDropCaret(textEditor, x, y)) {
-// target.classList.add('note-image-drop-target');
+target.classList.add('note-image-drop-target');
 return;
 }
-// target.classList.add('note-image-drop-target');
+target.classList.add('note-image-drop-target');
 const rect = target.getBoundingClientRect();
 const insertAfter = y > rect.top + rect.height / 2;
 if (insertAfter) target.insertAdjacentElement('afterend', source);
@@ -7300,7 +7064,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('heart-row').innerHTML = Array.from({ length: 8 }, () => `<div class="heart-slot"><span class="h-empty">\u2661</span><span class="h-full">\u2665</span></div>`).join('');
 window.addEventListener('keydown', handlePasswordKeyboard);
 document.addEventListener('click', closeDocMenus);
-	document.addEventListener('paste', handleGlobalPaste);
 const initialDay = getInitialTripDay();
 switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();
