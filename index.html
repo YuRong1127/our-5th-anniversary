@@ -4308,7 +4308,19 @@ function renderDetailFields() {
 const host = document.getElementById('itinerary-detail-fields');
 if (!host || !currentDetailCard) return;
 let blocks = getNoteBlocks(currentDetailCard);
-if (isEditMode) blocks = splitNoteBlocksForEditing(blocks);
+if (isEditMode) {
+const merged = [];
+blocks.forEach(block => {
+if (block.type === 'text' && merged.length > 0 && merged[merged.length - 1].type === 'text') {
+const last = merged[merged.length - 1];
+last.html = (last.html || plainTextToHtml(last.text || '')) + '<br><br>' + (block.html || plainTextToHtml(block.text || ''));
+last.text = (last.text || '') + '\n\n' + (block.text || '');
+} else {
+merged.push({ ...block });
+}
+});
+blocks = merged;
+}
 if (!isEditMode) blocks = blocks.filter(block => block.type === 'image' ? block.src : (block.text || '').trim());
 if (isEditMode && !blocks.length) blocks = [{ type: 'text', text: '' }];
 if (!isEditMode && !blocks.length) {
