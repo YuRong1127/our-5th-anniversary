@@ -1947,6 +1947,42 @@ margin-bottom: .65em;
 .note-word-editor br + .photo-preview-item {
 margin-top: 10px;
 }
+
+.note-page.is-editing .note-block {
+display: inline-block;
+vertical-align: top;
+width: auto;
+margin: 0;
+padding: 0;
+}
+.note-page.is-editing .note-block[data-block-type="text"] {
+display: block;
+width: 100%;
+}
+.note-page.is-editing .note-block[data-block-type="image"] {
+margin: 4px 8px 8px 0;
+}
+.note-text-input {
+min-height: 1.5em;
+padding: 4px 2px;
+}
+
+.note-page.is-editing {
+background: #fff;
+border: 1px solid #f2e3dd;
+border-radius: 18px;
+padding: 15px;
+min-height: 300px;
+box-shadow: inset 0 0 0 1px rgba(255,255,255,.9), 0 8px 20px rgba(141,110,99,.055);
+}
+.note-page.is-editing .note-block {
+border: none !important;
+box-shadow: none !important;
+background: transparent !important;
+}
+.note-text-input.is-active {
+outline: none !important;
+}
 @media (max-width: 420px) {
 .note-word-editor {
 padding: 15px 13px 76px;
@@ -4409,7 +4445,7 @@ const flightPairKey = isFlightNote ? getLockedFlightPairKey(currentDetailCard) :
 const flightCornerSrc = flightPairKey === 'IT206' ? 'wallet-corner-friends.png' : flightPairKey === 'IT207' ? 'flight-return-corner-friends.png' : '';
 const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration ${flightPairKey === 'IT207' ? 'return-flight-corner' : ''}" src="${flightCornerSrc}" alt="" aria-hidden="true">` : '';
 const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, false) : '';
-const noteBodyHtml = (isEditMode && !isFlightNote) ? renderNoteWordEditorHtml(blocks) : (flightViewHtml || blocksHtml);
+const noteBodyHtml = flightViewHtml || blocksHtml;
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${noteBodyHtml}${insertTools}${flightCorner}</div>`;
 bindNoteToolbarButtons(host);
 focusPendingNoteBlock();
@@ -4418,7 +4454,7 @@ focusPendingNoteBlock();
 function getNoteImageBlockHtml(block, blockIndex) {
 const selected = currentNoteImageBlockIndex === blockIndex;
 const editingImageTools = selected && currentNoteImageToolMode === 'edit';
-const legacyWidth = block.size === 'small' ? 48 : block.size === 'medium' ? 58 : 56;
+const legacyWidth = block.size === 'small' ? 62 : block.size === 'medium' ? 82 : 100;
 const width = Math.max(35, Math.min(100, Number(block.width || legacyWidth)));
 const cropHeight = Math.max(0, Math.min(520, Number(block.cropHeight || 0)));
 const cropTop = Math.max(0, Math.min(520, Number(block.cropTop || 0)));
@@ -4427,7 +4463,7 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<span class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" contenteditable="false" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><span class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</span>${isEditMode && selected ? `<span class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></span>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</span>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
 }
 function renderNoteWordEditorHtml(blocks) {
 let html = '';
@@ -4865,8 +4901,6 @@ arrival ? `抵達：${arrival}` : '',
 const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
 return [normalizeDetailField({ name: '', blocks: [{ type: 'text', text, html: plainTextToHtml(text).replace(/優先/g, '<span class="flight-priority-badge">優先</span>') }] })];
 }
-const wordEditor = page.querySelector('.note-word-editor');
-if (wordEditor) return [normalizeDetailField({ name: '', blocks: collectNoteWordEditorBlocks(wordEditor) })];
 const rawBlocks = Array.from(page.querySelectorAll('.note-block')).map(block => {
 let strokes = [];
 try {
@@ -5288,15 +5322,6 @@ if (!currentDetailCard || !isEditMode) return;
 const files = Array.from(event.target.files || []).filter(file => file.type.startsWith('image/'));
 if (!files.length) return;
 const imageSources = await Promise.all(files.map(file => readImageFile(file)));
-const wordEditor = document.querySelector('.note-word-editor');
-if (wordEditor && insertMode === 'cursor') {
-imageSources.forEach(src => insertImageIntoWordEditor(src));
-event.target.value = '';
-setActiveNoteEditor(wordEditor);
-saveFieldDraftsToCard();
-updateMoreInfoButtons();
-return;
-}
 const fields = collectDetailFieldsFromModal();
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
 const imageBlocks = imageSources.map(src => ({ type: 'image', src, originalSrc: src, strokes: [], width: 56, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }));
