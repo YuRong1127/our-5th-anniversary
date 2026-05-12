@@ -28,6 +28,11 @@
 <link rel="preload" as="image" href="fund-topup-success-pig-inline.png">
 <link rel="preload" as="image" href="wallet-unsaved-pig-inline-hd.png">
 <link rel="preload" as="image" href="discard-unsaved-pig.png">
+<link rel="preload" as="image" href="menu-edit-computer.png">
+<link rel="preload" as="image" href="menu-prep-bag.png">
+<link rel="preload" as="image" href="menu-wishlist-gift.png">
+<link rel="preload" as="image" href="menu-docs-writing.png">
+<link rel="preload" as="image" href="menu-wallet-money.png">
 <link rel="preload" as="image" href="wallet-corner-friends.png">
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
@@ -528,7 +533,7 @@ white-space: nowrap;
 
 
 
-.float-icon { width: 62px; height: 62px; border: 2px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 8px 24px rgba(141,110,99,.15); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+.float-icon { width: 62px; height: 62px; border: 2px solid #fff; border-radius: 50%; background: #fff; box-shadow: 0 8px 24px rgba(141,110,99,.15); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; overflow: hidden; }
 .main-piggy { position: fixed; right: 20px; bottom: 25px; z-index: 70; width: 66px; height: 66px; border: 3px solid #fff; border-radius: 50%; padding: 0; background: #ffe4e4; box-shadow: 0 8px 24px rgba(141,110,99,.18); overflow: hidden; pointer-events: auto; touch-action: manipulation; appearance: none; -webkit-appearance: none; }
 .main-piggy::before { display: none; }
 .main-piggy img { width: 86%; height: 86%; object-fit: contain; display: block; filter: none; pointer-events: none; position: relative; z-index: 1; }
@@ -562,6 +567,19 @@ white-space: nowrap;
 box-shadow: 0 8px 20px rgba(141,110,99,.12);
 }
 .menu-action .float-icon { flex: 0 0 62px; }
+.menu-icon-img {
+display: block;
+width: var(--menu-icon-w, 46px);
+height: var(--menu-icon-h, 40px);
+object-fit: contain;
+object-position: center center;
+pointer-events: none;
+}
+.menu-icon-edit { --menu-icon-w: 57px; --menu-icon-h: 32px; }
+.menu-icon-prep { --menu-icon-w: 44px; --menu-icon-h: 41px; }
+.menu-icon-wishlist { --menu-icon-w: 49px; --menu-icon-h: 37px; }
+.menu-icon-docs { --menu-icon-w: 46px; --menu-icon-h: 39px; }
+.menu-icon-wallet { --menu-icon-w: 45px; --menu-icon-h: 40px; }
 .floating-menu.show .menu-action:nth-child(1) { transition-delay: .03s; }
 .floating-menu.show .menu-action:nth-child(2) { transition-delay: .05s; }
 .floating-menu.show .menu-action:nth-child(3) { transition-delay: .07s; }
@@ -2862,11 +2880,11 @@ main { padding: 0 14px; }
 </div>
 <div id="menu-backdrop" class="menu-backdrop" onclick="closeMenu()"></div>
 <div id="floating-menu" class="floating-menu">
-<div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon">✏️</div></div>
-<div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon">🎒</div></div>
-<div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon">🧺</div></div>
-<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon">📁</div></div>
-<div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon">👛</div></div>
+<div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon"><img class="menu-icon-img menu-icon-edit" src="menu-edit-computer.png" alt="編輯行程"></div></div>
+<div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon"><img class="menu-icon-img menu-icon-prep" src="menu-prep-bag.png" alt="出發清單"></div></div>
+<div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon"><img class="menu-icon-img menu-icon-wishlist" src="menu-wishlist-gift.png" alt="願望清單"></div></div>
+<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon"><img class="menu-icon-img menu-icon-docs" src="menu-docs-writing.png" alt="重要資料"></div></div>
+<div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon"><img class="menu-icon-img menu-icon-wallet" src="menu-wallet-money.png" alt="記帳錢包"></div></div>
 </div>
 <button id="main-btn" class="float-icon main-piggy btn-press-effect" type="button" aria-label="開啟小豬選單" onpointerup="handlePiggyMenuPointer(event)" onclick="handlePiggyMenuClick(event)"><img src="piggy-main.png" alt="小豬選單"></button>
 <button id="add-itinerary-btn" class="add-itinerary-btn btn-press-effect" type="button" onclick="addItineraryItem()">＋</button>
