@@ -1922,7 +1922,7 @@ font-size: .9rem;
 font-weight: 800;
 pointer-events: none;
 }
-.note-word-editor .photo-preview-item { position: relative; overflow: visible !important;  position: relative; z-index: 10; 
+.note-word-editor .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
 display: inline-block;
 vertical-align: top;
 margin: 6px 10px 8px 0;
@@ -1944,7 +1944,7 @@ outline-offset: 3px;
 margin-top: 0;
 margin-bottom: .65em;
 }
-.note-word-editor br + .photo-preview-item { position: relative; overflow: visible !important;  position: relative; z-index: 10; 
+.note-word-editor br + .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
 margin-top: 10px;
 }
 
@@ -1988,7 +1988,7 @@ outline: none !important;
 padding: 15px 13px 76px;
 min-height: 260px;
 }
-.note-word-editor .photo-preview-item { position: relative; overflow: visible !important;  position: relative; z-index: 10; 
+.note-word-editor .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
 width: min(var(--note-image-width, 62%), 82%);
 margin-right: 8px;
 }
@@ -2068,7 +2068,7 @@ font-size: .78rem;
 font-weight: 900;
 text-decoration: underline;
 }
-.photo-preview-item { position: relative; overflow: visible !important;  position: relative; z-index: 10; 
+.photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
 position: relative;
 overflow: visible;
 border-radius: 18px;
@@ -2098,7 +2098,7 @@ background: #fff;
 border: 1px solid #f0e6e2;
 box-shadow: 0 6px 18px rgba(141,110,99,.08);
 }
-.note-image-frame.is-cropped {
+.note-image-frame.is-cropped { height: var(--note-image-crop, 260px) !important; overflow: hidden !important; 
 height: var(--note-image-crop, 260px);
 max-height: none;
 }
@@ -2155,19 +2155,19 @@ color: #fff;
 color: #e57373;
 }
 .note-image-resize-handle,
-.note-image-crop-handle {
+.note-image-crop-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: ns-resize !important; 
 display: none;
 position: absolute;
 z-index: 101; pointer-events: auto;
 touch-action: none;
 }
 .photo-preview-item.is-selected .note-image-resize-handle,
-.photo-preview-item.is-selected .note-image-crop-handle {
+.photo-preview-item.is-selected .note-image-crop-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: ns-resize !important; 
 display: flex;
 align-items: center;
 justify-content: center;
 }
-.note-image-resize-handle { z-index: 9999 !important; pointer-events: auto !important; 
+.note-image-resize-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: nwse-resize !important;  z-index: 9999 !important; pointer-events: auto !important; 
 right: -10px;
 bottom: -10px;
 width: 28px;
@@ -2180,7 +2180,7 @@ font-size: .82rem;
 font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.22);
 }
-.note-image-crop-handle {
+.note-image-crop-handle { z-index: 100001 !important; pointer-events: auto !important; cursor: ns-resize !important; 
 right: 0;
 top: 50%;
 width: 28px;
@@ -2283,7 +2283,7 @@ transform: translateX(-50%);
 .note-image-drag-hint {
 display: none !important;
 }
-body:not(.edit-mode) .photo-preview-item { position: relative; overflow: visible !important;  position: relative; z-index: 10; 
+body:not(.edit-mode) .photo-preview-item { user-select: none; -webkit-user-select: none;  position: relative; overflow: visible !important;  position: relative; z-index: 10; 
 cursor: zoom-in;
 }
 .note-inline-image {
@@ -2304,7 +2304,7 @@ cursor: zoom-in;
 .note-block[data-block-type="image"] {
 position: relative;
 }
-body.edit-mode .note-block[data-block-type="image"] img {
+body.edit-mode .note-block[data-block-type="image"] img { pointer-events: auto !important; 
 cursor: grab;
 touch-action: none;
 -webkit-touch-callout: none;
@@ -4484,7 +4484,7 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)">${editingImageTools ? `<button type="button" class="note-image-crop-handle crop-top" aria-label="上方裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCropTop(event)">裁</button><button type="button" class="note-image-crop-handle crop-left" aria-label="左側裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCropSide(event, 'left')">裁</button><button type="button" class="note-image-crop-handle" aria-label="右側裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCropSide(event, 'right')">裁</button><button type="button" class="note-image-crop-handle crop-bottom" aria-label="下方裁剪" onpointerdown="event.stopPropagation(); startCurrentNoteImageCrop(event)">裁</button>` : ''}</div>${isEditMode && selected ? `<div class="note-image-action-bar"><button type="button" class="note-image-action-btn btn-press-effect" aria-label="畫筆標記" title="畫筆標記" onclick="event.stopPropagation(); openNoteImageEditor()">🖌️</button><button type="button" class="note-image-action-btn btn-press-effect ${editingImageTools ? 'is-active' : ''}" aria-label="編輯圖片" title="編輯圖片" onclick="showNoteImageEditTools(event)">✂️</button><button type="button" class="note-image-action-btn is-danger btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">❌</button></div>${editingImageTools ? `<button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" onpointerdown="event.stopPropagation(); startCurrentNoteImageResize(event)">↘</button>` : ''}` : ''}</div>`;
 }
 function renderNoteWordEditorHtml(blocks) {
 let html = '';
@@ -5019,7 +5019,7 @@ const fields = collectDetailFieldsFromModal();
 const block = fields[0]?.blocks?.[renderedIndex];
 if (!block || block.type !== 'image') return false;
 if (Number.isFinite(updates.width)) block.width = Math.max(35, Math.min(100, Math.round(updates.width)));
-if (Number.isFinite(updates.cropHeight)) {
+if (updates.cropHeight !== undefined && updates.cropHeight !== null) {
 const img = selectedBlock.querySelector('.note-image-frame img');
 const maxHeight = Math.max(80, Math.round(img?.getBoundingClientRect().height || selectedBlock.querySelector('.note-image-frame')?.getBoundingClientRect().height || 520));
 block.cropHeight = Math.max(80, Math.min(maxHeight, Math.round(updates.cropHeight)));
@@ -5050,7 +5050,7 @@ const onMove = (moveEvent) => {
 if (moveEvent.pointerId !== pointerId) return;
 moveEvent.preventDefault();
 const direction = document.dir === 'rtl' ? -1 : 1;
-const nextWidth = startWidth + direction * ((moveEvent.clientX - startX) / Math.max(1, pageRect?.width || base)) * 100;
+const nextWidth = startWidth + direction * ((moveEvent.clientX - startX) / Math.max(1, block.closest(".note-page")?.offsetWidth || 300)) * 100;
 setCurrentNoteImageGeometry({ width: nextWidth });
 };
 const onEnd = (endEvent) => {
