@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -103,7 +104,7 @@ button, input { font: inherit; }
 
 
 .sticky-top-container, main { position: relative; z-index: 2; }
-.sticky-top-container { position: sticky; top: 0; z-index: 1000 !important; background: var(--bg-color); padding-bottom: 2px; }
+.sticky-top-container { position: sticky; top: 0; z-index: 50; background: var(--bg-color); padding-bottom: 2px; }
 header {
 height: 132px;
 min-height: 132px;
@@ -1990,7 +1991,7 @@ margin-right: auto;
 user-select: none;
 -webkit-user-select: none;
 }
-.note-image-frame { width: var(--note-image-width, 100%); overflow: hidden; position: relative; 
+.note-image-frame {
 position: relative;
 width: calc(100% * var(--note-crop-width, 100) / 100);
 max-width: 100%;
@@ -2007,7 +2008,7 @@ box-shadow: 0 6px 18px rgba(141,110,99,.08);
 height: var(--note-image-crop, 260px);
 max-height: none;
 }
-.note-image-frame img { width: calc(100% * (100 / var(--note-crop-width, 100))); transform: translate(calc(-1% * var(--note-crop-left, 0)), calc(-1px * var(--note-crop-top, 0))); 
+.note-image-frame img {
 display: block;
 width: calc(10000% / var(--note-crop-width, 100));
 height: auto;
@@ -2023,7 +2024,7 @@ object-fit: initial;
 .photo-preview-item.is-selected {
 filter: drop-shadow(0 8px 18px rgba(209,122,109,.16));
 }
-.photo-preview-item.is-selected .note-image-frame { width: var(--note-image-width, 100%); overflow: hidden; position: relative; 
+.photo-preview-item.is-selected .note-image-frame {
 border-color: #e6b0a5;
 box-shadow: inset 0 0 0 2px rgba(209,122,109,.1);
 }
@@ -4785,7 +4786,7 @@ if (!block || block.type !== 'image') return false;
 if (Number.isFinite(updates.width)) block.width = Math.max(35, Math.min(100, Math.round(updates.width)));
 if (Number.isFinite(updates.cropHeight)) {
 const img = selectedBlock.querySelector('.note-image-frame img');
-const img = selectedBlock.querySelector(".note-image-frame img"); const maxHeight = Math.max(80, Math.round(img?.naturalHeight ? (img.height || img.getBoundingClientRect().height) : 520));
+const maxHeight = Math.max(80, Math.round(img?.getBoundingClientRect().height || selectedBlock.querySelector('.note-image-frame')?.getBoundingClientRect().height || 520));
 block.cropHeight = Math.max(80, Math.min(maxHeight, Math.round(updates.cropHeight)));
 }
 if (Number.isFinite(updates.cropTop)) block.cropTop = Math.max(0, Math.min(520, Math.round(updates.cropTop)));
