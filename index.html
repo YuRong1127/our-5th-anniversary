@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -575,11 +576,11 @@ object-position: center center;
 pointer-events: none;
 transform: translate(var(--menu-icon-x, 0), var(--menu-icon-y, 0));
 }
-.menu-icon-edit { --menu-icon-w: 61.5px; --menu-icon-h: 44px; --menu-icon-y: 5px; --menu-icon-x: -3px;object-fit: fill !important;}
-.menu-icon-prep { --menu-icon-w: 49px; --menu-icon-h: 52.5px; --menu-icon-y: 1px; --menu-icon-x: 0px;}
-.menu-icon-wishlist { --menu-icon-w: 62px; --menu-icon-h: 60px; --menu-icon-x: -1px;--menu-icon-y: 0px; }
-.menu-icon-docs { --menu-icon-w: 62px; --menu-icon-h: 72px; --menu-icon-y: 2px; --menu-icon-x: 1px}
-.menu-icon-wallet { --menu-icon-w: 52px; --menu-icon-h: 58px; --menu-icon-y: -1px; --menu-icon-x: -1.5px;object-fit: fill !important; }
+.menu-icon-edit { --menu-icon-w: 94px; --menu-icon-h: 52px; --menu-icon-y: -1px; }
+.menu-icon-prep { --menu-icon-w: 69px; --menu-icon-h: 65px; --menu-icon-y: 1px; }
+.menu-icon-wishlist { --menu-icon-w: 77px; --menu-icon-h: 59px; --menu-icon-y: -1px; }
+.menu-icon-docs { --menu-icon-w: 71px; --menu-icon-h: 60px; --menu-icon-y: 1px; }
+.menu-icon-wallet { --menu-icon-w: 70px; --menu-icon-h: 64px; --menu-icon-y: 1px; }
 .floating-menu.show .menu-action:nth-child(1) { transition-delay: .03s; }
 .floating-menu.show .menu-action:nth-child(2) { transition-delay: .05s; }
 .floating-menu.show .menu-action:nth-child(3) { transition-delay: .07s; }
@@ -7061,6 +7062,63 @@ const output = document.createElement('div');
 Array.from(template.content.childNodes).forEach(child => output.appendChild(cleanNode(child)));
 return output.innerHTML;
 }
+function getRouteMergeCardKey(card) {
+return getCloudMergeCardKey(card) || getCloudMergeTitleKey(card) || getCloudMergePlaceKey(card) || '';
+}
+function getRouteAdjacentCard(connector, direction) {
+let node = connector?.[direction === 'previous' ? 'previousElementSibling' : 'nextElementSibling'];
+while (node && !node.classList?.contains('card')) {
+node = node[direction === 'previous' ? 'previousElementSibling' : 'nextElementSibling'];
+}
+return node || null;
+}
+function getCloudRouteConnectorKey(connector) {
+if (!connector) return '';
+const dayId = connector.closest('.day-section')?.id || '';
+const prevKey = getRouteMergeCardKey(getRouteAdjacentCard(connector, 'previous'));
+const nextKey = getRouteMergeCardKey(getRouteAdjacentCard(connector, 'next'));
+if (!dayId || (!prevKey && !nextKey)) return '';
+return `${dayId}::${prevKey || 'start'}=>${nextKey || 'end'}`;
+}
+function getSourceRouteText(connector) {
+return connector?.dataset.routeText || connector?.querySelector('.route-text')?.textContent?.trim() || '';
+}
+function copyRouteConnectorFromCloud(targetConnector, sourceConnector) {
+if (!targetConnector || !sourceConnector) return false;
+const sourceUrl = sourceConnector.dataset.routeUrl || '';
+const sourceText = getSourceRouteText(sourceConnector);
+if (!sourceUrl && !sourceText) return false;
+let changed = false;
+if (sourceUrl && targetConnector.dataset.routeUrl !== sourceUrl) {
+targetConnector.dataset.routeUrl = sourceUrl;
+changed = true;
+}
+if (sourceText && targetConnector.dataset.routeText !== sourceText) {
+targetConnector.dataset.routeText = sourceText;
+const textEl = targetConnector.querySelector('.route-text');
+if (textEl) textEl.textContent = sourceText;
+changed = true;
+}
+return changed;
+}
+function mergeCloudRouteConnectorData(sourceRoot) {
+const sourceConnectors = Array.from(sourceRoot.querySelectorAll('.day-section .connector-line'));
+if (!sourceConnectors.length) return false;
+const routeMap = new Map();
+sourceConnectors.forEach(connector => {
+if (!connector.dataset.routeUrl && !getSourceRouteText(connector)) return;
+const key = getCloudRouteConnectorKey(connector);
+if (key && !routeMap.has(key)) routeMap.set(key, connector);
+});
+if (!routeMap.size) return false;
+let changed = false;
+document.querySelectorAll('.day-section .connector-line').forEach(targetConnector => {
+const sourceConnector = routeMap.get(getCloudRouteConnectorKey(targetConnector));
+if (!sourceConnector) return;
+changed = copyRouteConnectorFromCloud(targetConnector, sourceConnector) || changed;
+});
+return changed;
+}
 function mergeCloudCardDataFromHTML(cloudHTML) {
 const template = document.createElement('template');
 template.innerHTML = cloudHTML || '';
@@ -7091,6 +7149,7 @@ if (!sourceCard) return;
 changed = copyEditableTextFromCloud(targetCard, sourceCard) || changed;
 if (cardHasDetailPayload(sourceCard)) changed = copyCardCloudPayload(targetCard, sourceCard) || changed;
 });
+changed = mergeCloudRouteConnectorData(template.content) || changed;
 return changed;
 }
 window.mergeCloudCardDataFromHTML = mergeCloudCardDataFromHTML;
