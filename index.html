@@ -5848,6 +5848,7 @@ toggleEditMode(false);
 editSnapshotHTML = document.getElementById('day-content').innerHTML;
 editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML;
 enhanceRouteConnectors();
+window.scrollTo({ top: 0, behavior: 'smooth' });
 queueTripCloudSave(true);
 }
 function discardEditChanges() {
@@ -5860,6 +5861,7 @@ if (editSnapshotHeaderHTML) document.getElementById('header-normal-view').innerH
 toggleEditMode(false);
 enhanceRouteConnectors();
 switchDay(dayToRestore, { auto: true, skipHistory: true });
+window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
