@@ -7420,6 +7420,30 @@ document.getElementById('route-plan-text').addEventListener('keydown', function(
     }
 }, true); 
 
+function handlePlainTextPaste(e) {
+  const target = e.target.closest('.editable, .note-text-input');
+
+  if (!target) return;
+
+  e.preventDefault();
+
+  const text = (e.clipboardData || window.clipboardData)
+    .getData('text/plain');
+
+  if (document.queryCommandSupported('insertText')) {
+    document.execCommand('insertText', false, text);
+  } else {
+    const selection = window.getSelection();
+
+    if (!selection.rangeCount) return;
+
+    selection.deleteFromDocument();
+    selection.getRangeAt(0).insertNode(document.createTextNode(text));
+  }
+}
+
+document.addEventListener('paste', handlePlainTextPaste);
+    
 </script>
 </body>
 </html>
