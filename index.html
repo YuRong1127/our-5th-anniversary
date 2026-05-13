@@ -391,7 +391,8 @@ font-weight: 900;
 line-height: 1;
 box-shadow: none;
 }
-.item-desc { margin-top: 4px; color: #9ca3af; font-size: .78rem; line-height: 1.4; }
+.item-desc { margin-top: 4px; color: #9ca3af; font-size: .78rem; line-height: 1.4; white-space: pre-line; overflow-wrap: anywhere; }
+body.edit-mode .item-desc { white-space: pre-wrap; }
 .editable:focus { outline: 0; background: #fffde7; border-radius: 4px; }
 .connector-line {
 position: relative;
@@ -7042,7 +7043,7 @@ let changed = false;
 const targetEl = targetCard.querySelector(`.${className}`);
 const sourceEl = sourceCard.querySelector(`.${className}`);
 if (!targetEl || !sourceEl) return;
-const sourceHtml = sanitizeEditableInlineHtml(sourceEl.innerHTML || '');
+const sourceHtml = sanitizeEditableInlineHtml(sourceEl.innerHTML || '', className === 'item-desc');
 if (sourceHtml && targetEl.innerHTML !== sourceHtml) {
 targetEl.innerHTML = sourceHtml;
 changed = true;
@@ -7050,13 +7051,20 @@ changed = true;
 });
 return changed;
 }
-function sanitizeEditableInlineHtml(value) {
+function sanitizeEditableInlineHtml(value, preserveBreaks = false) {
 const template = document.createElement('template');
 template.innerHTML = value || '';
 function cleanNode(node) {
 if (node.nodeType === Node.TEXT_NODE) return document.createTextNode(node.textContent || '');
 if (node.nodeType !== Node.ELEMENT_NODE) return document.createTextNode('');
 const tag = node.tagName.toLowerCase();
+if (preserveBreaks && tag === 'br') return document.createTextNode('\n');
+if (preserveBreaks && ['div', 'p'].includes(tag)) {
+const fragment = document.createDocumentFragment();
+Array.from(node.childNodes).forEach(child => fragment.appendChild(cleanNode(child)));
+fragment.appendChild(document.createTextNode('\n'));
+return fragment;
+}
 if (tag === 'span' && node.classList.contains('terminal-badge')) {
 const span = document.createElement('span');
 span.className = 'terminal-badge';
@@ -7067,7 +7075,7 @@ return document.createTextNode(node.textContent || '');
 }
 const output = document.createElement('div');
 Array.from(template.content.childNodes).forEach(child => output.appendChild(cleanNode(child)));
-return output.innerHTML;
+return preserveBreaks ? output.innerHTML.replace(/\n+$/g, '') : output.innerHTML;
 }
 function mergeCloudCardDataFromHTML(cloudHTML) {
 const template = document.createElement('template');
