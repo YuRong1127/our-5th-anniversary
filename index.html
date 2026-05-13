@@ -3239,6 +3239,9 @@ document.body.scrollTop = scrollTop;
 window.scrollTo({ top: scrollTop, left: 0, behavior: 'auto' });
 }));
 }
+function scrollCurrentDayToTopAfterEdit(day = currentDay) {
+requestAnimationFrame(() => scrollDaySectionToTop(day, 1000000));
+}
 
 function pushAppHistory(day = currentDay, replace = false) {
 if (!window.history || typeof window.history.pushState !== 'function') return;
@@ -5844,18 +5847,14 @@ if (flightPairKey === 'IT207') sources.push('flight-return-corner-friends.png');
 return warmImages(sources);
 }
 function saveEditChanges() {
+const dayToShow = currentDay;
 toggleEditMode(false);
 editSnapshotHTML = document.getElementById('day-content').innerHTML;
 editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML;
 enhanceRouteConnectors();
-const firstCard = document.querySelector('.day-section.active .item-container');
-    if (firstCard) {
-        firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    
-    queueTripCloudSave(true);
+switchDay(dayToShow, { auto: true, skipHistory: true });
+scrollCurrentDayToTopAfterEdit(dayToShow);
+queueTripCloudSave(true);
 }
 function discardEditChanges() {
 showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">要放棄這次編輯嗎？\n剛剛改的內容會不見喔</span><img class="alert-stack-pig discard-pig" src="discard-unsaved-pig.png" alt="放棄編輯提醒小豬"></span>', confirmDiscardEditChanges);
@@ -5867,15 +5866,7 @@ if (editSnapshotHeaderHTML) document.getElementById('header-normal-view').innerH
 toggleEditMode(false);
 enhanceRouteConnectors();
 switchDay(dayToRestore, { auto: true, skipHistory: true });
-
-    setTimeout(() => {
-        const firstCard = document.querySelector('.day-section.active .item-container');
-        if (firstCard) {
-            firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }, 50); 
+scrollCurrentDayToTopAfterEdit(dayToRestore);
 }
 
 
