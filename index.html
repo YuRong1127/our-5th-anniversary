@@ -3190,7 +3190,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = true;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-05-16-solidified-jins-suzuka-association-v2';
+const STATIC_CONTENT_VERSION = '2026-05-16-explicit-static-save-only-v3';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 
 const correctPw = '20211127';
@@ -5999,7 +5999,7 @@ editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML
 enhanceRouteConnectors();
 switchDay(dayToShow, { auto: true, skipHistory: true });
 scrollCurrentDayToTopAfterEdit(dayToShow);
-queueTripCloudSave(true);
+queueTripCloudSave(true, { includeStatic: true });
 }
 function discardEditChanges() {
 showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">要放棄這次編輯嗎？\n剛剛改的內容會不見喔</span><img class="alert-stack-pig discard-pig" src="discard-unsaved-pig.png" alt="放棄編輯提醒小豬"></span>', confirmDiscardEditChanges);
@@ -7243,7 +7243,7 @@ host.innerHTML = html;
 }
 
 
-function collectTripCloudData() {
+function collectTripCloudData(options = {}) {
 standardizeItemDescBreaks();
 const data = {
 expenses,
@@ -7254,7 +7254,7 @@ docItems,
 currentDay,
 updatedAt: new Date().toISOString()
 };
-if (CLOUD_STATIC_SYNC_ENABLED) {
+if (CLOUD_STATIC_SYNC_ENABLED && options.includeStatic) {
 data.dayContentHTML = document.getElementById('day-content')?.innerHTML || '';
 data.staticContentVersion = STATIC_CONTENT_VERSION;
 }
@@ -7381,13 +7381,9 @@ function applyTripCloudData(data) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (!data || isEditMode) return;
 isApplyingCloudData = true;
-let shouldRefreshCloudStatic = false;
 
 if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim() && data.staticContentVersion === STATIC_CONTENT_VERSION) {
 document.getElementById('day-content').innerHTML = data.dayContentHTML;
-} else if (typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim()) {
-shouldRefreshCloudStatic = true;
-mergeCloudCardDataFromHTML(data.dayContentHTML);
 }
 standardizeItemDescBreaks();
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
@@ -7414,7 +7410,6 @@ renderDocsFolder();
 editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
 editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
 isApplyingCloudData = false;
-if (shouldRefreshCloudStatic) queueTripCloudSave();
 if (addedDefaultPrepItems) queueTripCloudSave();
 }
 let saveStatusTimer = null;
@@ -7426,13 +7421,14 @@ toast.className = `save-status-toast show ${type}`;
 clearTimeout(saveStatusTimer);
 saveStatusTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
-function queueTripCloudSave(showStatus = false) {
+function queueTripCloudSave(showStatus = false, options = {}) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (isApplyingCloudData || typeof window.saveTripToCloud !== 'function') return;
-return window.saveTripToCloud(collectTripCloudData(), { showStatus });
+return window.saveTripToCloud(collectTripCloudData(options), { showStatus });
 }
 window.collectTripCloudData = collectTripCloudData;
 window.applyTripCloudData = applyTripCloudData;
+window.queueTripCloudSave = queueTripCloudSave;
 window.showSaveStatus = showSaveStatus;
 
 
@@ -7544,6 +7540,8 @@ async function backupCloudStaticBeforeOverwrite(nextPayload) {
 }
 
 async function recoverDetailFieldsFromBackups() {
+  // Keep old cloud backups from re-applying stale itinerary text over the HTML base.
+  return;
   if (backupRecoveryAttempted || window.CLOUD_STATIC_SYNC_ENABLED === false) return;
   backupRecoveryAttempted = true;
   try {
@@ -7627,7 +7625,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (data.updatedAt && latestCloudUpdatedAt && data.updatedAt <= latestCloudUpdatedAt) return;
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
       window.applyTripCloudData(data);
-      setTimeout(recoverDetailFieldsFromBackups, 800);
     }, (error) => {
       console.error('Firebase sync failed:', error);
     });
@@ -7719,4 +7716,3 @@ document.addEventListener('paste', handlePlainTextPaste);
 </script>
 </body>
 </html>
-
