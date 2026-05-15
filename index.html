@@ -5867,6 +5867,7 @@ return warmImages(sources);
 function saveEditChanges() {
 const dayToShow = currentDay;
 standardizeItemDescBreaks();
+window.suppressCloudApplyUntil = Date.now() + 3500;
 toggleEditMode(false);
 editSnapshotHTML = document.getElementById('day-content').innerHTML;
 editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML;
@@ -7418,6 +7419,7 @@ async function recoverDetailFieldsFromBackups() {
 }
 
 window.saveTripToCloud = (data, options = {}) => {
+  window.suppressCloudApplyUntil = Date.now() + 3500;
   if (pendingSaveResolve) pendingSaveResolve(false);
   clearTimeout(saveTimer);
   return new Promise((resolve) => {
@@ -7434,6 +7436,7 @@ window.saveTripToCloud = (data, options = {}) => {
         latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
         if (window.CLOUD_STATIC_SYNC_ENABLED) await backupCloudStaticBeforeOverwrite(payload);
         await setDoc(tripRef, payload, { merge: true });
+        window.suppressCloudApplyUntil = Date.now() + 1500;
         if (options.showStatus) window.showSaveStatus?.('儲存成功', 'success');
         resolve(true);
       } catch (error) {
@@ -7466,6 +7469,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     onSnapshot(tripRef, (docSnapshot) => {
       if (!docSnapshot.exists()) return;
+      if (Date.now() < (window.suppressCloudApplyUntil || 0)) return;
       const data = docSnapshot.data();
       if (data.updatedAt && data.updatedAt === latestCloudUpdatedAt) return;
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
