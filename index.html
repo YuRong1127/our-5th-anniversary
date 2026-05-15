@@ -7241,6 +7241,7 @@ document.getElementById('day-content').innerHTML = data.dayContentHTML;
 shouldRefreshCloudStatic = true;
 mergeCloudCardDataFromHTML(data.dayContentHTML);
 }
+standardizeItemDescBreaks();
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 wishlistCategories = Array.isArray(data.wishlistCategories) ? data.wishlistCategories : wishlistCategories;
@@ -7474,7 +7475,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (!docSnapshot.exists()) return;
       if (Date.now() < (window.suppressCloudApplyUntil || 0)) return;
       const data = docSnapshot.data();
-      if (data.updatedAt && data.updatedAt === latestCloudUpdatedAt) return;
+      if (docSnapshot.metadata?.fromCache && data.dayContentHTML) return;
+      if (data.updatedAt && latestCloudUpdatedAt && data.updatedAt <= latestCloudUpdatedAt) return;
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
       window.applyTripCloudData(data);
       setTimeout(recoverDetailFieldsFromBackups, 800);
