@@ -7199,6 +7199,7 @@ template.innerHTML = cloudHTML || '';
 const sourceCards = Array.from(template.content.querySelectorAll('.day-section .card'));
 if (!sourceCards.length) return false;
 const exactMap = new Map();
+const dayIndexMap = new Map();
 const titleMap = new Map();
 const placeMap = new Map();
 const detailIndexMap = new Map();
@@ -7208,6 +7209,7 @@ const titleKey = getCloudMergeTitleKey(card);
 const placeKey = getCloudMergePlaceKey(card);
 const dayIndexKey = getCloudMergeDayIndexKey(card);
 if (exactKey && !exactMap.has(exactKey)) exactMap.set(exactKey, card);
+if (dayIndexKey && !dayIndexMap.has(dayIndexKey)) dayIndexMap.set(dayIndexKey, card);
 if (titleKey && !titleMap.has(titleKey)) titleMap.set(titleKey, card);
 if (placeKey && !placeMap.has(placeKey)) placeMap.set(placeKey, card);
 if (dayIndexKey && cardHasDetailPayload(card) && !detailIndexMap.has(dayIndexKey)) detailIndexMap.set(dayIndexKey, card);
@@ -7215,10 +7217,11 @@ if (dayIndexKey && cardHasDetailPayload(card) && !detailIndexMap.has(dayIndexKey
 let changed = false;
 document.querySelectorAll('.day-section .card').forEach(targetCard => {
 const exactSource = exactMap.get(getCloudMergeCardKey(targetCard));
+const dayIndexSource = dayIndexMap.get(getCloudMergeDayIndexKey(targetCard));
 const titleSource = titleMap.get(getCloudMergeTitleKey(targetCard));
 const placeSource = placeMap.get(getCloudMergePlaceKey(targetCard));
 const detailIndexSource = detailIndexMap.get(getCloudMergeDayIndexKey(targetCard));
-const sourceCard = exactSource || titleSource || placeSource || (cardHasDetailPayload(targetCard) ? detailIndexSource : null);
+const sourceCard = exactSource || dayIndexSource || titleSource || placeSource || (cardHasDetailPayload(targetCard) ? detailIndexSource : null);
 if (!sourceCard) return;
 changed = copyEditableTextFromCloud(targetCard, sourceCard) || changed;
 if (cardHasDetailPayload(sourceCard)) changed = copyCardCloudPayload(targetCard, sourceCard) || changed;
