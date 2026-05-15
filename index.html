@@ -37,6 +37,12 @@
 <link rel="preload" as="image" href="goodgirl.png">
 <link rel="preload" as="image" href="wallet-split-big.png">
 <link rel="preload" as="image" href="wallet-split-small.png">
+<link rel="preload" as="image" href="wallet-payer-big.png">
+<link rel="preload" as="image" href="wallet-payer-small.png">
+<link rel="preload" as="image" href="wallet-topup-big.png">
+<link rel="preload" as="image" href="wallet-topup-small.png">
+<link rel="preload" as="image" href="wallet-transit-big.png">
+<link rel="preload" as="image" href="wallet-transit-small.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
@@ -1284,6 +1290,12 @@ font-weight: 800;
 .toggle-btn.active { background: #fffdfb; color: #b55f63; font-weight: 900; box-shadow: 0 3px 9px rgba(181,95,99,.1); }
 #split-toggle .wallet-split-person-btn { min-height: 44px; padding: 0 6px; }
 .wallet-split-person-img { display: block; height: 34px; width: auto; max-width: 74px; object-fit: contain; object-position: center; margin: 0 auto; filter: drop-shadow(0 3px 7px rgba(141,110,99,.08)); pointer-events: none; }
+#payer-toggle .wallet-payer-person-btn { min-height: 44px; padding: 0 6px; }
+.wallet-payer-person-img { display: block; height: 34px; width: auto; max-width: 74px; object-fit: contain; object-position: center; margin: 0 auto; filter: drop-shadow(0 3px 7px rgba(141,110,99,.08)); pointer-events: none; }
+.wallet-topup-person-label { flex: 0 0 48px; width: 48px; height: 40px; display: inline-flex; align-items: center; justify-content: center; margin: 0 !important; }
+.wallet-topup-person-img { display: block; height: 34px; width: auto; max-width: 66px; object-fit: contain; object-position: center; filter: drop-shadow(0 3px 7px rgba(141,110,99,.08)); pointer-events: none; }
+.wallet-transit-person-label { flex: 0 0 48px; width: 48px; height: 40px; display: inline-flex; align-items: center; justify-content: center; margin: 0 !important; }
+.wallet-transit-person-img { display: block; height: 34px; width: auto; max-width: 66px; object-fit: contain; object-position: center; filter: drop-shadow(0 3px 7px rgba(141,110,99,.08)); pointer-events: none; }
 .currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #8d6e63; font-size: .86rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82), 0 3px 9px rgba(141,110,99,.08); }
 .currency-switch.active-jpy { background: #fff1ef; color: #b87568; border-color: #f0d3cc; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82); }
 .currency-switch.active-twd { background: #f0f7f3; color: #6d8f6b; border-color: #d8eadf; }
@@ -2830,8 +2842,8 @@ main { padding: 0 14px; }
 </div>
 <label class="wallet-label">公費由誰投入</label>
 <div class="topup-flex">
-<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">大豬</label><input type="tel" id="topup-big-pig" class="small-input" placeholder="0"></div>
-<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">小豬</label><input type="tel" id="topup-small-pig" class="small-input" placeholder="0"></div>
+<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label wallet-topup-person-label" aria-label="大豬"><img class="wallet-topup-person-img" src="wallet-topup-big.png" alt="大豬"></label><input type="tel" id="topup-big-pig" class="small-input" placeholder="0"></div>
+<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label wallet-topup-person-label" aria-label="小豬"><img class="wallet-topup-person-img" src="wallet-topup-small.png" alt="小豬"></label><input type="tel" id="topup-small-pig" class="small-input" placeholder="0"></div>
 </div>
 </div>
 <div id="transit-area" class="topup-area">
@@ -2843,8 +2855,8 @@ main { padding: 0 14px; }
 </div>
 <label class="wallet-label">交通卡儲值</label>
 <div class="topup-flex">
-<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">大豬交通卡</label><input type="tel" id="transit-big-pig" class="small-input" placeholder="0"></div>
-<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">小豬交通卡</label><input type="tel" id="transit-small-pig" class="small-input" placeholder="0"></div>
+<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label wallet-transit-person-label" aria-label="大豬交通卡"><img class="wallet-transit-person-img" src="wallet-transit-big.png" alt="大豬交通卡"></label><input type="tel" id="transit-big-pig" class="small-input" placeholder="0"></div>
+<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label wallet-transit-person-label" aria-label="小豬交通卡"><img class="wallet-transit-person-img" src="wallet-transit-small.png" alt="小豬交通卡"></label><input type="tel" id="transit-small-pig" class="small-input" placeholder="0"></div>
 </div>
 </div>
 <div id="expense-area">
@@ -2856,8 +2868,8 @@ main { padding: 0 14px; }
 </div>
 <label class="wallet-label">是誰先付錢</label>
 <div class="toggle-group" id="payer-toggle">
-<div class="toggle-btn active btn-press-effect" onclick="setPayer('大豬')">大豬</div>
-<div class="toggle-btn btn-press-effect" onclick="setPayer('小豬')">小豬</div>
+<div class="toggle-btn active wallet-payer-person-btn btn-press-effect" data-value="大豬" onclick="setPayer('大豬')" aria-label="大豬"><img class="wallet-payer-person-img" src="wallet-payer-big.png" alt="大豬"></div>
+<div class="toggle-btn wallet-payer-person-btn btn-press-effect" data-value="小豬" onclick="setPayer('小豬')" aria-label="小豬"><img class="wallet-payer-person-img" src="wallet-payer-small.png" alt="小豬"></div>
 <div class="toggle-btn btn-press-effect" onclick="setPayer('公費')">公費</div>
 </div>
 <label class="wallet-label">這筆錢誰花的</label>
@@ -6395,7 +6407,7 @@ document.getElementById('submit-exp-btn').textContent = mode === 'topup' ? (edit
 }
 function setPayer(p) {
 currentPayer = p;
-document.querySelectorAll('#payer-toggle .toggle-btn').forEach(btn => btn.classList.toggle('active', btn.textContent === p));
+document.querySelectorAll('#payer-toggle .toggle-btn').forEach(btn => btn.classList.toggle('active', (btn.dataset.value || btn.textContent) === p));
 }
 function setSplit(s) {
 currentSplit = s;
