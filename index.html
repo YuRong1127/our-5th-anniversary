@@ -2427,6 +2427,22 @@ object-fit: contain;
 .pie-total { display: block; margin-top: 3px; color: var(--main-brown); font-size: .82rem; font-weight: 900; }
 .stat-boxes { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin-top: 14px; }
 .stat-box { padding: 12px; border-radius: 18px; text-align: center; }
+.stats-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-bottom: 14px; padding: 5px; border-radius: 16px; background: #f5efec; }
+.stats-tab { min-height: 34px; border: 0; border-radius: 12px; background: transparent; color: #a98e87; font-size: .78rem; font-weight: 900; }
+.stats-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 3px 10px rgba(141,110,99,.08); }
+.stats-page { display: none; }
+.stats-page.active { display: block; }
+.stats-bar-chart { display: flex; flex-direction: column; gap: 10px; margin-top: 2px; }
+.stats-bar-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 9px; align-items: center; }
+.stats-bar-label { color: #8d6e63; font-size: .76rem; font-weight: 900; text-align: right; white-space: nowrap; }
+.stats-bar-track { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.stats-bar-line { display: grid; grid-template-columns: minmax(0, 1fr) 66px; gap: 7px; align-items: center; }
+.stats-bar-bg { height: 13px; border-radius: 999px; background: #f6eee9; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
+.stats-bar-fill { height: 100%; min-width: 4px; border-radius: inherit; }
+.stats-bar-fill.big { background: #d98578; }
+.stats-bar-fill.small { background: #8d6e63; }
+.stats-bar-value { color: #9a837b; font-size: .68rem; font-weight: 900; text-align: right; white-space: nowrap; }
+.stats-bar-legend { display: flex; justify-content: center; gap: 16px; margin: 0 0 12px; font-size: .74rem; font-weight: 900; }
 .icon-picker-grid { display: flex; flex-direction: column; gap: 6px; }
 .icon-group-title { margin: 10px 4px 6px; color: #a78980; font-size: .75rem; font-weight: 900; text-align: left; }
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
@@ -2670,7 +2686,7 @@ main { padding: 0 14px; }
 <div id="header-normal-view" class="header-main-content">
 <div class="header-subtitle-container"><div class="header-line"></div><div class="header-subtitle">2026 Mie Anniversary</div><div class="header-line"></div></div>
 <h1 class="header-title header-title-with-art editable"><span>五週年</span><img class="header-title-divider-art" src="titlecute.png" alt="" aria-hidden="true"><span>三重之旅</span></h1>
-<div class="quote-single-line editable">「在鳥羽的微風中，我們圓圓的迎接第五年。」</div>
+<div class="quote-single-line editable">「在鳥羽的海風中，我們圓圓的迎接第五年。」</div>
 </div>
 <div id="edit-mode-title">✎﹏現在是在編輯頁面裡喔💬</div>
 </header>
@@ -7093,20 +7109,43 @@ return;
 }
 let bigTotalTWD = 0;
 let smallTotalTWD = 0;
+const categoryStats = {};
+Object.keys(CATEGORY_META).forEach(category => {
+categoryStats[category] = { big: 0, small: 0 };
+});
 expenses.forEach(e => {
 if (e.type === 'topup' || e.type === 'transitTopup') return;
 const rate = e.displayCurrency === 'JPY' ? currentFX : 1
-bigTotalTWD += e.bigPigShare * rate;
-smallTotalTWD += e.smallPigShare * rate;
+const bigShareTWD = (Number(e.bigPigShare) || 0) * rate;
+const smallShareTWD = (Number(e.smallPigShare) || 0) * rate;
+bigTotalTWD += bigShareTWD;
+smallTotalTWD += smallShareTWD;
+const category = CATEGORY_META[e.category] ? e.category : '其他';
+categoryStats[category].big += bigShareTWD;
+categoryStats[category].small += smallShareTWD;
 });
 const total = bigTotalTWD + smallTotalTWD;
 const statsEl = document.getElementById('stats-content');
 setPanelEmptyState('stats-modal', false);
 const bigPerc = total > 0 ? Math.round(bigTotalTWD / total * 100) : 50;
 const smallPerc = 100 - bigPerc;
-statsEl.innerHTML = `<div style="text-align:center"><div style="color:#aaa;font-size:.75rem;font-weight:900">兩人總花費佔比 (NTD)</div><div class="pie-chart" style="background:conic-gradient(var(--heart-pink) ${bigPerc}%, var(--main-brown) ${bigPerc}% 100%)"><div class="pie-center-label">總花費<span class="pie-total">$${Math.round(total).toLocaleString()}</span></div></div><div style="display:flex;justify-content:center;gap:18px;font-size:.75rem;font-weight:900"><span style="color:#d17a6d">● 大豬</span><span style="color:#8d6e63">● 小豬</span></div><div class="stat-boxes"><div class="stat-box" style="background:#fff1f1;border:1px solid #f9dcdc;color:#d17a6d"><div style="font-size:.65rem;font-weight:900">大豬共花了 (${bigPerc}%)</div><div style="font-weight:900;font-size:1rem">$${Math.round(bigTotalTWD).toLocaleString()}</div></div><div class="stat-box" style="background:#fef9f6;border:1px solid #f0e6e2;color:#8d6e63"><div style="font-size:.65rem;font-weight:900">小豬共花了 (${smallPerc}%)</div><div style="font-weight:900;font-size:1rem">$${Math.round(smallTotalTWD).toLocaleString()}</div></div></div></div>`;
+const maxCategoryValue = Math.max(1, ...Object.values(categoryStats).flatMap(item => [item.big, item.small]));
+const categoryOrder = ['吃', '住', '交通', '門票', '禮物', '購物', '玩樂', '其他'];
+const barRows = categoryOrder.map(category => {
+const item = categoryStats[category] || { big: 0, small: 0 };
+const label = getCategoryLabel(category);
+const bigWidth = Math.max(0, Math.round(item.big / maxCategoryValue * 100));
+const smallWidth = Math.max(0, Math.round(item.small / maxCategoryValue * 100));
+return `<div class="stats-bar-row"><div class="stats-bar-label">${label}</div><div class="stats-bar-track"><div class="stats-bar-line"><div class="stats-bar-bg"><div class="stats-bar-fill big" style="width:${bigWidth}%"></div></div><div class="stats-bar-value">$${Math.round(item.big).toLocaleString()}</div></div><div class="stats-bar-line"><div class="stats-bar-bg"><div class="stats-bar-fill small" style="width:${smallWidth}%"></div></div><div class="stats-bar-value">$${Math.round(item.small).toLocaleString()}</div></div></div></div>`;
+}).join('');
+statsEl.innerHTML = `<div class="stats-tabs"><button type="button" class="stats-tab active btn-press-effect" data-stats-page="pie" onclick="setStatsPage('pie')">大餅圖</button><button type="button" class="stats-tab btn-press-effect" data-stats-page="bar" onclick="setStatsPage('bar')">柱狀圖</button></div><div class="stats-page active" data-stats-page-panel="pie"><div style="text-align:center"><div style="color:#aaa;font-size:.75rem;font-weight:900">兩人總花費佔比 (NTD)</div><div class="pie-chart" style="background:conic-gradient(var(--heart-pink) ${bigPerc}%, var(--main-brown) ${bigPerc}% 100%)"><div class="pie-center-label">總花費<span class="pie-total">$${Math.round(total).toLocaleString()}</span></div></div><div style="display:flex;justify-content:center;gap:18px;font-size:.75rem;font-weight:900"><span style="color:#d17a6d">● 大豬</span><span style="color:#8d6e63">● 小豬</span></div><div class="stat-boxes"><div class="stat-box" style="background:#fff1f1;border:1px solid #f9dcdc;color:#d17a6d"><div style="font-size:.65rem;font-weight:900">大豬共花了 (${bigPerc}%)</div><div style="font-weight:900;font-size:1rem">$${Math.round(bigTotalTWD).toLocaleString()}</div></div><div class="stat-box" style="background:#fef9f6;border:1px solid #f0e6e2;color:#8d6e63"><div style="font-size:.65rem;font-weight:900">小豬共花了 (${smallPerc}%)</div><div style="font-weight:900;font-size:1rem">$${Math.round(smallTotalTWD).toLocaleString()}</div></div></div></div></div><div class="stats-page" data-stats-page-panel="bar"><div class="stats-bar-legend"><span style="color:#d17a6d">● 大豬</span><span style="color:#8d6e63">● 小豬</span></div><div class="stats-bar-chart">${barRows}</div></div>`;
 document.getElementById('wallet-modal').style.display = 'none';
 openSimpleModal('stats-modal');
+}
+
+function setStatsPage(page) {
+document.querySelectorAll('#stats-content .stats-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.statsPage === page));
+document.querySelectorAll('#stats-content .stats-page').forEach(panel => panel.classList.toggle('active', panel.dataset.statsPagePanel === page));
 }
 
 
