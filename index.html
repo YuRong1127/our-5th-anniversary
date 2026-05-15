@@ -35,6 +35,8 @@
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
 <link rel="preload" as="image" href="goodgirl.png">
+<link rel="preload" as="image" href="wallet-split-big.png">
+<link rel="preload" as="image" href="wallet-split-small.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
@@ -1280,6 +1282,8 @@ font-weight: 800;
 .toggle-group { display: flex; min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 8px; padding: 3px; border-radius: var(--wallet-control-radius); background: #f6e9e4; }
 .toggle-btn { flex: 1; min-height: calc(var(--wallet-control-height) - 6px); padding: 0 4px; border-radius: calc(var(--wallet-control-radius) - 4px); color: #b89a92; font-size: .82rem; text-align: center; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .toggle-btn.active { background: #fffdfb; color: #b55f63; font-weight: 900; box-shadow: 0 3px 9px rgba(181,95,99,.1); }
+#split-toggle .wallet-split-person-btn { min-height: 44px; padding: 0 6px; }
+.wallet-split-person-img { display: block; height: 34px; width: auto; max-width: 74px; object-fit: contain; object-position: center; margin: 0 auto; filter: drop-shadow(0 3px 7px rgba(141,110,99,.08)); pointer-events: none; }
 .currency-switch { width: 86px; height: var(--wallet-control-height); flex: 0 0 86px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #8d6e63; font-size: .86rem; font-weight: 900; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82), 0 3px 9px rgba(141,110,99,.08); }
 .currency-switch.active-jpy { background: #fff1ef; color: #b87568; border-color: #f0d3cc; box-shadow: inset 0 0 0 1px rgba(255,255,255,.82); }
 .currency-switch.active-twd { background: #f0f7f3; color: #6d8f6b; border-color: #d8eadf; }
@@ -2859,8 +2863,8 @@ main { padding: 0 14px; }
 <label class="wallet-label">這筆錢誰花的</label>
 <div class="toggle-group" id="split-toggle">
 <div class="toggle-btn active btn-press-effect" onclick="setSplit('均分')">均分</div>
-<div class="toggle-btn btn-press-effect" onclick="setSplit('大豬')">大豬</div>
-<div class="toggle-btn btn-press-effect" onclick="setSplit('小豬')">小豬</div>
+<div class="toggle-btn wallet-split-person-btn btn-press-effect" data-value="大豬" onclick="setSplit('大豬')" aria-label="大豬"><img class="wallet-split-person-img" src="wallet-split-big.png" alt="大豬"></div>
+<div class="toggle-btn wallet-split-person-btn btn-press-effect" data-value="小豬" onclick="setSplit('小豬')" aria-label="小豬"><img class="wallet-split-person-img" src="wallet-split-small.png" alt="小豬"></div>
 <div class="toggle-btn btn-press-effect" onclick="setSplit('都有啦')">都有啦</div>
 </div>
 <div id="both-input-area">
@@ -3971,9 +3975,10 @@ if (getLockedFlightPairKey(card)) {
 showAlert('搭機的出發和抵達行程是綁在一起的，不能單獨刪除喔 ✈️');
 return;
 }
-if (!confirm('確定要刪除這筆行程嗎？')) return;
+showConfirmAlert('確定要刪除這筆行程嗎？\n刪掉後就回不來囉', () => {
 card.remove();
 rebuildSectionConnectors(section);
+});
 }
 function getCardPhotos(card) {
 try {
@@ -6394,7 +6399,7 @@ document.querySelectorAll('#payer-toggle .toggle-btn').forEach(btn => btn.classL
 }
 function setSplit(s) {
 currentSplit = s;
-document.querySelectorAll('#split-toggle .toggle-btn').forEach(btn => btn.classList.toggle('active', btn.textContent === s));
+document.querySelectorAll('#split-toggle .toggle-btn').forEach(btn => btn.classList.toggle('active', (btn.dataset.value || btn.textContent) === s));
 document.getElementById('both-input-area').style.display = s === '都有啦' ? 'block' : 'none';
 if (s !== '都有啦') bothManualEdits = { big: false, small: false };
 if (s === '都有啦') syncBothAmountSum('mode');
