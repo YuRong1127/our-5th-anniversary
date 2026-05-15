@@ -2815,6 +2815,7 @@ main { padding: 0 14px; }
 <div class="toggle-group" id="wallet-mode-toggle">
 <div class="toggle-btn active btn-press-effect" onclick="setWalletMode('expense')">一般消費</div>
 <div class="toggle-btn btn-press-effect" onclick="setWalletMode('topup')">公費儲值</div>
+<div class="toggle-btn btn-press-effect" onclick="setWalletMode('transit')">交通卡儲值</div>
 </div>
 <div id="topup-area" class="topup-area">
 <label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
@@ -2827,6 +2828,19 @@ main { padding: 0 14px; }
 <div class="topup-flex">
 <div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">大豬</label><input type="tel" id="topup-big-pig" class="small-input" placeholder="0"></div>
 <div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">小豬</label><input type="tel" id="topup-small-pig" class="small-input" placeholder="0"></div>
+</div>
+</div>
+<div id="transit-area" class="topup-area">
+<label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
+<div class="wallet-input-group">
+<div id="transit-currency-switch" class="currency-switch active-jpy btn-press-effect wallet-input" onclick="toggleCurrency()" style="height: 46px; display: flex; align-items: center; justify-content: center;">
+    <span id="transit-currency-label" style="font-weight: 900;">¥ JPY</span>
+</div>
+</div>
+<label class="wallet-label">交通卡儲值</label>
+<div class="topup-flex">
+<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">大豬交通卡</label><input type="tel" id="transit-big-pig" class="small-input" placeholder="0"></div>
+<div style="display: flex; align-items: center; gap: 8px;"><label class="wallet-label" style="font-size:13px; margin:0 !important; white-space:nowrap;">小豬交通卡</label><input type="tel" id="transit-small-pig" class="small-input" placeholder="0"></div>
 </div>
 </div>
 <div id="expense-area">
@@ -2857,9 +2871,8 @@ main { padding: 0 14px; }
 </div>
 <div class="wallet-split-labels"><span>幣別<span class="wallet-label-hint">點選切換</span></span><span>花費金額</span></div>
 <div class="wallet-input-group">
-<div id="currency-switch" class="currency-switch active-jpy btn-press-effect wallet-input" onclick="toggleCurrency()" style="flex-direction: column; line-height: 1.2; height: auto; padding: 5px 0; display: flex; align-items: center; justify-content: center;">
+<div id="currency-switch" class="currency-switch active-jpy btn-press-effect wallet-input" onclick="toggleCurrency()" style="height: 46px; display: flex; align-items: center; justify-content: center;">
     <div id="currency-label" style="font-weight: 900;">¥ JPY</div>
-    <div id="live-fx-display" style="font-size: 0.6rem; opacity: 0.8; font-weight: normal;">(匯率: --)</div>
 </div>
 <input type="tel" id="exp-amount" class="wallet-input" placeholder="請輸入花費金額">
 </div>
@@ -3060,32 +3073,8 @@ const correctPw = '20211127';
 const passwordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬">';
 const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="angry-pig-inline.png" alt="生氣小豬">';
 
-// 1. 設定初始匯率（預設 0.21）
-let currentFX = 0.21; 
-
-// 2. 建立自動連網抓取功能
-async function updateLiveFX() {
-    try {
-        const response = await fetch('https://open.er-api.com/v6/latest/JPY');
-        const data = await response.json();
-        if (data && data.rates && data.rates.TWD) {
-            currentFX = data.rates.TWD;
-            console.log("今日即時匯率已更新為: " + currentFX);
-
-            // 💡 這幾行就是妳要的：把匯率顯示在按鈕格子裡
-            const fxDisplay = document.getElementById('live-fx-display');
-            if (fxDisplay) {
-                fxDisplay.textContent = `(匯率: ${currentFX.toFixed(4)})`;
-            }
-
-            if (typeof updatePublicFundDisplay === 'function') updatePublicFundDisplay();
-        }
-    } catch (e) {
-        console.log("網路不穩，使用預設值 0.21");
-    }
-}
-updateLiveFX();
-
+// ???????????????????????????????
+let currentFX = 0.2;
 
 const ICON_GROUPS = {
 '常用': ['📍','🏠','⭐','✨','💖','💕','✅','📝','📸','🛍️','🎁','💰','🎫','🧺','🎒','🧳','🗺️','🧭','⏰'],
@@ -3342,8 +3331,10 @@ const big = document.getElementById('both-big-pig')?.value.trim();
 const small = document.getElementById('both-small-pig')?.value.trim();
 const topupBig = document.getElementById('topup-big-pig')?.value.trim();
 const topupSmall = document.getElementById('topup-small-pig')?.value.trim();
+const transitBig = document.getElementById('transit-big-pig')?.value.trim();
+const transitSmall = document.getElementById('transit-small-pig')?.value.trim();
 const hasChangedOptions = currentWalletMode !== 'expense' || currentPayer !== '大豬' || currentSplit !== '均分' || currentCategory !== '吃' || currentCurrency !== 'JPY';
-return Boolean(editingId || title || amount || big || small || topupBig || topupSmall || hasChangedOptions);
+return Boolean(editingId || title || amount || big || small || topupBig || topupSmall || transitBig || transitSmall || hasChangedOptions);
 }
 function closeWalletModal() {
 if (hasWalletDraft()) {
@@ -4070,6 +4061,12 @@ div.querySelectorAll('div, p, li').forEach(el => {
 if (el.nextSibling) el.appendChild(document.createTextNode('\n'));
 });
 return (div.textContent || '').replace(/\n{3,}/g, '\n\n');
+}
+function standardizeItemDescBreaks(root = document) {
+root.querySelectorAll('.item-desc').forEach(el => {
+const text = (el.innerText || el.textContent || '').replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim();
+el.innerHTML = plainTextToHtml(text);
+});
 }
 function sanitizeNoteHtml(value) {
 const template = document.createElement('template');
@@ -5826,6 +5823,7 @@ return warmImages(sources);
 }
 function saveEditChanges() {
 const dayToShow = currentDay;
+standardizeItemDescBreaks();
 toggleEditMode(false);
 editSnapshotHTML = document.getElementById('day-content').innerHTML;
 editSnapshotHeaderHTML = document.getElementById('header-normal-view').innerHTML;
@@ -6339,11 +6337,12 @@ card.innerHTML = `<div class="fund-balance-main">公費餘額 ¥${Math.round(fun
 function setWalletMode(mode) {
 currentWalletMode = mode;
 document.querySelectorAll('#wallet-mode-toggle .toggle-btn').forEach(btn => {
-btn.classList.toggle('active', (mode === 'expense' && btn.textContent === '一般消費') || (mode === 'topup' && btn.textContent === '公費儲值'));
+btn.classList.toggle('active', (mode === 'expense' && btn.textContent === '一般消費') || (mode === 'topup' && btn.textContent === '公費儲值') || (mode === 'transit' && btn.textContent === '交通卡儲值'));
 });
 document.getElementById('expense-area').style.display = mode === 'expense' ? 'block' : 'none';
 document.getElementById('topup-area').style.display = mode === 'topup' ? 'block' : 'none';
-document.getElementById('submit-exp-btn').textContent = mode === 'topup' ? '確認加入公費' : (editingId ? '更新這筆記錄' : '確認新增此筆');
+document.getElementById('transit-area').style.display = mode === 'transit' ? 'block' : 'none';
+document.getElementById('submit-exp-btn').textContent = mode === 'topup' ? (editingId ? '更新公費儲值' : '確認加入公費') : mode === 'transit' ? (editingId ? '更新交通卡儲值' : '確認加入交通卡') : (editingId ? '更新這筆記錄' : '確認新增此筆');
 }
 function setPayer(p) {
 currentPayer = p;
@@ -6359,18 +6358,15 @@ if (s === '都有啦') syncBothAmountSum('mode');
 function toggleCurrency() {
     currentCurrency = currentCurrency === 'JPY' ? 'TWD' : 'JPY';
     const mainLabel = document.getElementById('currency-label');
-    const fxDisplay = document.getElementById('live-fx-display');
     const mainBtn = document.getElementById('currency-switch');
     
     if (mainBtn) {
         if (currentCurrency === 'JPY') {
             if (mainLabel) mainLabel.textContent = '¥ JPY';
-            if (fxDisplay) fxDisplay.style.display = 'block';
             mainBtn.classList.add('active-jpy');
             mainBtn.classList.remove('active-twd');
         } else {
             if (mainLabel) mainLabel.textContent = '$ TWD';
-            if (fxDisplay) fxDisplay.style.display = 'none';
             mainBtn.classList.add('active-twd');
             mainBtn.classList.remove('active-jpy');
         }
@@ -6378,19 +6374,35 @@ function toggleCurrency() {
 
     const topupLabel = document.getElementById('topup-currency-label');
     const topupBtn = document.getElementById('topup-currency-switch');
+    const transitLabel = document.getElementById('transit-currency-label');
+    const transitBtn = document.getElementById('transit-currency-switch');
     
-    if (topupBtn) {
+    [topupBtn, transitBtn].forEach((btn) => {
+        if (!btn) return;
         if (currentCurrency === 'JPY') {
-            if (topupLabel) topupLabel.textContent = '¥ JPY';
-            topupBtn.classList.add('active-jpy');
-            topupBtn.classList.remove('active-twd');
+            btn.classList.add('active-jpy');
+            btn.classList.remove('active-twd');
         } else {
-            if (topupLabel) topupLabel.textContent = '$ TWD';
-            topupBtn.classList.add('active-twd');
-            topupBtn.classList.remove('active-jpy');
+            btn.classList.add('active-twd');
+            btn.classList.remove('active-jpy');
         }
-    }
+    });
+    if (topupLabel) topupLabel.textContent = currentCurrency === 'JPY' ? '¥ JPY' : '$ TWD';
+    if (transitLabel) transitLabel.textContent = currentCurrency === 'JPY' ? '¥ JPY' : '$ TWD';
     if (typeof updatePublicFundDisplay === 'function') updatePublicFundDisplay();
+}
+function syncCurrencyControls() {
+const label = currentCurrency === 'TWD' ? '$ TWD' : '¥ JPY';
+const mainLabel = document.getElementById('currency-label');
+const topupLabel = document.getElementById('topup-currency-label');
+const transitLabel = document.getElementById('transit-currency-label');
+if (mainLabel) mainLabel.textContent = label;
+if (topupLabel) topupLabel.textContent = label;
+if (transitLabel) transitLabel.textContent = label;
+document.querySelectorAll('#currency-switch, #topup-currency-switch, #transit-currency-switch').forEach(btn => {
+btn.classList.toggle('active-twd', currentCurrency === 'TWD');
+btn.classList.toggle('active-jpy', currentCurrency !== 'TWD');
+});
 }
 function parseMoneyValue(value) {
 const n = parseFloat(String(value || '').replace(/,/g, '').trim());
@@ -6646,6 +6658,8 @@ document.getElementById('both-big-pig').value = '';
 document.getElementById('both-small-pig').value = '';
 document.getElementById('topup-big-pig').value = '';
 document.getElementById('topup-small-pig').value = '';
+document.getElementById('transit-big-pig').value = '';
+document.getElementById('transit-small-pig').value = '';
 document.getElementById('exp-time').value = getNowString();
 syncTimeDisplay();
 setWalletMode('expense');
@@ -6654,16 +6668,57 @@ setSplit('均分');
 selectCategory('吃');
 currentCurrency = 'JPY';
 const btn = document.getElementById('currency-switch');
-document.querySelectorAll('#currency-switch, #topup-currency-switch').forEach((btn) => {
-btn.textContent = '¥ JPY';
+document.querySelectorAll('#currency-switch, #topup-currency-switch, #transit-currency-switch').forEach((btn) => {
 btn.classList.add('active-jpy');
 btn.classList.remove('active-twd');
 });
+const mainCurrencyLabel = document.getElementById('currency-label');
+const topupCurrencyLabel = document.getElementById('topup-currency-label');
+const transitCurrencyLabel = document.getElementById('transit-currency-label');
+if (mainCurrencyLabel) mainCurrencyLabel.textContent = '¥ JPY';
+if (topupCurrencyLabel) topupCurrencyLabel.textContent = '¥ JPY';
+if (transitCurrencyLabel) transitCurrencyLabel.textContent = '¥ JPY';
 document.getElementById('submit-exp-btn').textContent = '確認新增此筆';
 document.getElementById('cancel-edit-btn').style.display = 'none';
 updatePublicFundDisplay();
 }
 function addExpense() {
+if (currentWalletMode === 'transit') {
+const bigTransitTopup = parseMoneyValue(document.getElementById('transit-big-pig').value) || 0;
+const smallTransitTopup = parseMoneyValue(document.getElementById('transit-small-pig').value) || 0;
+const amount = bigTransitTopup + smallTransitTopup;
+if (amount <= 0) return showAlert('交通卡儲值金額要填正確喔！');
+const next = {
+id: editingId || Date.now(),
+type: 'transitTopup',
+title: '交通卡儲值',
+amount,
+displayCurrency: currentCurrency,
+timeISO: document.getElementById('exp-time').value || getNowString(),
+payer: '交通卡',
+split: '交通卡儲值',
+category: '交通',
+bigPigShare: 0,
+smallPigShare: 0,
+bigTransitTopup,
+smallTransitTopup,
+isSettled: true
+};
+if (editingId) {
+const idx = expenses.findIndex(x => x.id === editingId);
+if (idx !== -1) expenses[idx] = next;
+resetExpenseForm();
+renderExpenses();
+openDetailsModal();
+} else {
+expenses.unshift(next);
+resetExpenseForm();
+renderExpenses();
+showAlert('交通卡儲值成功！');
+}
+queueTripCloudSave();
+return;
+}
 if (currentWalletMode === 'topup') {
 const bigTopup = parseMoneyValue(document.getElementById('topup-big-pig').value) || 0;
 const smallTopup = parseMoneyValue(document.getElementById('topup-small-pig').value) || 0;
@@ -6752,12 +6807,30 @@ function editExpense(id) {
 const e = expenses.find(x => x.id === id);
 if (!e) return;
 editingId = id;
+if (e.type === 'transitTopup') {
+setWalletMode('transit');
+document.getElementById('exp-time').value = e.timeISO;
+syncTimeDisplay();
+currentCurrency = e.displayCurrency;
+document.querySelectorAll('#currency-switch, #topup-currency-switch, #transit-currency-switch').forEach(btn => {
+btn.textContent = currentCurrency === 'TWD' ? '$ TWD' : '¥ JPY';
+btn.classList.toggle('active-twd', currentCurrency === 'TWD');
+btn.classList.toggle('active-jpy', currentCurrency !== 'TWD');
+});
+document.getElementById('transit-big-pig').value = e.bigTransitTopup || 0;
+document.getElementById('transit-small-pig').value = e.smallTransitTopup || 0;
+document.getElementById('submit-exp-btn').textContent = '更新交通卡儲值';
+document.getElementById('cancel-edit-btn').style.display = 'block';
+document.getElementById('details-modal').style.display = 'none';
+document.getElementById('wallet-modal').style.display = 'flex';
+return;
+}
 if (e.type === 'topup') {
 setWalletMode('topup');
 document.getElementById('exp-time').value = e.timeISO;
 syncTimeDisplay();
 currentCurrency = e.displayCurrency;
-document.querySelectorAll('#currency-switch, #topup-currency-switch').forEach(btn => {
+document.querySelectorAll('#currency-switch, #topup-currency-switch, #transit-currency-switch').forEach(btn => {
 btn.textContent = currentCurrency === 'TWD' ? '$ TWD' : '¥ JPY';
 btn.classList.toggle('active-twd', currentCurrency === 'TWD');
 btn.classList.toggle('active-jpy', currentCurrency !== 'TWD');
@@ -6775,7 +6848,7 @@ document.getElementById('exp-title').value = e.title;
 document.getElementById('exp-time').value = e.timeISO;
 syncTimeDisplay();
 currentCurrency = e.displayCurrency;
-document.querySelectorAll('#currency-switch, #topup-currency-switch').forEach(btn => {
+document.querySelectorAll('#currency-switch, #topup-currency-switch, #transit-currency-switch').forEach(btn => {
 btn.textContent = currentCurrency === 'TWD' ? '$ TWD' : '¥ JPY';
 btn.classList.toggle('active-twd', currentCurrency === 'TWD');
 btn.classList.toggle('active-jpy', currentCurrency !== 'TWD');
@@ -6819,6 +6892,25 @@ return;
 setPanelEmptyState('details-modal', false);
 listEl.innerHTML = expenses.map(e => {
 const currSymbol = e.displayCurrency === 'TWD' ? '$' : '¥';
+if (e.type === 'transitTopup') {
+const big = e.bigTransitTopup || 0;
+const small = e.smallTransitTopup || 0;
+return `<div class="expense-card">
+<div class="expense-top">
+<div class="expense-icon">${getCategoryIconHtml('交通', 'cat-icon-md')}</div>
+<div class="expense-heading"><div class="expense-time">${formatDisplayTime(e.timeISO)}</div><div class="expense-title">交通卡儲值</div></div>
+</div>
+<div class="expense-note">
+<div class="expense-note-amount"><span>儲值交通卡</span><span class="expense-amount">${currSymbol}${Math.round(e.amount).toLocaleString()}</span></div>
+大豬交通卡 <b style="color:#d17a6d">${currSymbol}${Math.round(big).toLocaleString()}</b><br>小豬交通卡 <b style="color:#8d6e63">${currSymbol}${Math.round(small).toLocaleString()}</b>
+</div>
+<div class="expense-actions">
+<button class="mini-btn green btn-press-effect" onclick="editExpense(${e.id})">編輯</button>
+<button class="mini-btn red btn-press-effect" onclick="confirmDelete(${e.id})">刪除</button>
+<span class="settle-badge public-pay-badge">交通卡儲值</span>
+</div>
+</div>`;
+}
 if (e.type === 'topup') {
 const big = e.bigPigTopup || 0;
 const small = e.smallPigTopup || 0;
@@ -6888,7 +6980,7 @@ return;
 let bigDebtJPY = 0;
 let smallDebtJPY = 0;
 expenses.forEach(e => {
-if (e.type === 'topup') return;
+if (e.type === 'topup' || e.type === 'transitTopup') return;
 if (e.isSettled) return;
 const bShareJPY = e.displayCurrency === 'TWD' ? e.bigPigShare / FX : e.bigPigShare;
 const sShareJPY = e.displayCurrency === 'TWD' ? e.smallPigShare / FX : e.smallPigShare;
@@ -6919,7 +7011,7 @@ return;
 let bigTotalTWD = 0;
 let smallTotalTWD = 0;
 expenses.forEach(e => {
-if (e.type === 'topup') return;
+if (e.type === 'topup' || e.type === 'transitTopup') return;
 const rate = e.displayCurrency === 'JPY' ? currentFX : 1
 bigTotalTWD += e.bigPigShare * rate;
 smallTotalTWD += e.smallPigShare * rate;
@@ -6960,6 +7052,7 @@ host.innerHTML = html;
 
 
 function collectTripCloudData() {
+standardizeItemDescBreaks();
 const data = {
 expenses,
 wishItems,
