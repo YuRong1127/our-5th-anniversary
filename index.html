@@ -4063,10 +4063,52 @@ if (el.nextSibling) el.appendChild(document.createTextNode('\n'));
 });
 return (div.textContent || '').replace(/\n{3,}/g, '\n\n');
 }
+function editableHtmlToPlainText(value) {
+const template = document.createElement('template');
+template.innerHTML = value || '';
+let text = '';
+const blockTags = new Set(['div', 'p', 'li']);
+function appendBreak() {
+if (text && !text.endsWith('\n')) text += '\n';
+}
+function walk(node) {
+if (node.nodeType === Node.TEXT_NODE) {
+text += node.textContent || '';
+return;
+}
+if (node.nodeType !== Node.ELEMENT_NODE) return;
+const tag = node.tagName.toLowerCase();
+if (tag === 'br') {
+text += '\n';
+return;
+}
+const isBlock = blockTags.has(tag);
+if (isBlock) appendBreak();
+Array.from(node.childNodes).forEach(walk);
+if (isBlock) appendBreak();
+}
+Array.from(template.content.childNodes).forEach(walk);
+return text.replace(/\r/g, '').replace(/\u00a0/g, ' ').replace(/[ \t]+\n/g, '\n').replace(/\n[ \t]+/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+}
 function standardizeItemDescBreaks(root = document) {
 root.querySelectorAll('.item-desc').forEach(el => {
-const text = (el.innerText || el.textContent || '').replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim();
+const source = el.innerHTML || el.textContent || '';
+const text = editableHtmlToPlainText(source);
 el.innerHTML = plainTextToHtml(text);
+});
+}
+function standardizeRouteTextBreaks(root = document) {
+root.querySelectorAll('.connector-line .route-text').forEach(el => {
+const connector = el.closest('.connector-line');
+const source = el.innerHTML || el.textContent || '';
+const text = editableHtmlToPlainText(source);
+if (!text || text === '交通備註') {
+el.textContent = '交通備註';
+if (connector && !connector.dataset.routeUrl) delete connector.dataset.routeText;
+return;
+}
+el.innerHTML = plainTextToHtml(text);
+if (connector) connector.dataset.routeText = text;
 });
 }
 function sanitizeNoteHtml(value) {
@@ -7114,7 +7156,9 @@ let changed = false;
 const targetEl = targetCard.querySelector(`.${className}`);
 const sourceEl = sourceCard.querySelector(`.${className}`);
 if (!targetEl || !sourceEl) return;
-const sourceHtml = sanitizeEditableInlineHtml(sourceEl.innerHTML || '', className === 'item-desc');
+const sourceHtml = className === 'item-desc'
+? plainTextToHtml(editableHtmlToPlainText(sourceEl.innerHTML || sourceEl.textContent || ''))
+: sanitizeEditableInlineHtml(sourceEl.innerHTML || '', false);
 if (sourceHtml && targetEl.innerHTML !== sourceHtml) {
 targetEl.innerHTML = sourceHtml;
 changed = true;
