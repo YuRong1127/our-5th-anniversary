@@ -3333,7 +3333,8 @@ const topupBig = document.getElementById('topup-big-pig')?.value.trim();
 const topupSmall = document.getElementById('topup-small-pig')?.value.trim();
 const transitBig = document.getElementById('transit-big-pig')?.value.trim();
 const transitSmall = document.getElementById('transit-small-pig')?.value.trim();
-const hasChangedOptions = currentWalletMode !== 'expense' || currentPayer !== '大豬' || currentSplit !== '均分' || currentCategory !== '吃' || currentCurrency !== 'JPY';
+const hasInput = Boolean(title || amount || big || small || topupBig || topupSmall || transitBig || transitSmall);
+const hasChangedOptions = hasInput && (currentPayer !== '大豬' || currentSplit !== '均分' || currentCategory !== '吃' || currentCurrency !== 'JPY');
 return Boolean(editingId || title || amount || big || small || topupBig || topupSmall || transitBig || transitSmall || hasChangedOptions);
 }
 function closeWalletModal() {
@@ -6648,7 +6649,8 @@ const [datePart, timePart] = isoStr.split('T');
 const parts = datePart.split('-');
 return `${parts[1]}.${parts[2]} ${timePart}`;
 }
-function resetExpenseForm() {
+function resetExpenseForm(options = {}) {
+const nextWalletMode = options.keepMode ? currentWalletMode : 'expense';
 editingId = null;
 bothManualEdits = { big: false, small: false };
 lastBothEdited = null;
@@ -6662,7 +6664,7 @@ document.getElementById('transit-big-pig').value = '';
 document.getElementById('transit-small-pig').value = '';
 document.getElementById('exp-time').value = getNowString();
 syncTimeDisplay();
-setWalletMode('expense');
+setWalletMode(nextWalletMode);
 setPayer('大豬');
 setSplit('均分');
 selectCategory('吃');
@@ -6678,7 +6680,6 @@ const transitCurrencyLabel = document.getElementById('transit-currency-label');
 if (mainCurrencyLabel) mainCurrencyLabel.textContent = '¥ JPY';
 if (topupCurrencyLabel) topupCurrencyLabel.textContent = '¥ JPY';
 if (transitCurrencyLabel) transitCurrencyLabel.textContent = '¥ JPY';
-document.getElementById('submit-exp-btn').textContent = '確認新增此筆';
 document.getElementById('cancel-edit-btn').style.display = 'none';
 updatePublicFundDisplay();
 }
@@ -6707,12 +6708,12 @@ isSettled: true
 if (editingId) {
 const idx = expenses.findIndex(x => x.id === editingId);
 if (idx !== -1) expenses[idx] = next;
-resetExpenseForm();
+resetExpenseForm({ keepMode: true });
 renderExpenses();
 openDetailsModal();
 } else {
 expenses.unshift(next);
-resetExpenseForm();
+resetExpenseForm({ keepMode: true });
 renderExpenses();
 showAlert('交通卡儲值成功！');
 }
@@ -6743,12 +6744,12 @@ isSettled: true
 if (editingId) {
 const idx = expenses.findIndex(x => x.id === editingId);
 if (idx !== -1) expenses[idx] = next;
-resetExpenseForm();
+resetExpenseForm({ keepMode: true });
 renderExpenses();
 openDetailsModal();
 } else {
 expenses.unshift(next);
-resetExpenseForm();
+resetExpenseForm({ keepMode: true });
 renderExpenses();
 showAlertHtml('<span class="inline-alert-row">公費儲值成功！<img class="inline-alert-pig" src="fund-topup-success-pig-inline.png" alt="公費儲值成功小豬"></span>');
 }
