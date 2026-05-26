@@ -196,6 +196,13 @@ user-select: none;
 
 
 main { padding: 0 20px; margin-top: 16px; }
+@media (min-width: 768px) {
+main {
+width: min(560px, calc(100% - 40px));
+margin: 18px auto 0;
+padding: 0;
+}
+}
 body.day-3-theme main { margin-top: 6px; }
 .day-section { display: none; animation: fadeIn .32s ease-out; }
 .day-section.active { display: block; }
