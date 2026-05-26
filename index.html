@@ -196,13 +196,6 @@ user-select: none;
 
 
 main { padding: 0 20px; margin-top: 16px; }
-@media (min-width: 768px) {
-main {
-width: min(560px, calc(100% - 40px));
-margin: 18px auto 0;
-padding: 0;
-}
-}
 body.day-3-theme main { margin-top: 6px; }
 .day-section { display: none; animation: fadeIn .32s ease-out; }
 .day-section.active { display: block; }
@@ -2677,6 +2670,19 @@ opacity: .86;
 .auth-cancel-btn { border: 0; background: transparent; color: #b8796f; text-decoration: underline; font-size: .76rem; font-weight: 700; }
 .kaomoji-fix { display: inline-block; margin-left: 2px; transform: translateY(-2px); white-space: nowrap; letter-spacing: 0; }
 .hidden-input { position: absolute; opacity: 0; pointer-events: none; }
+@media (min-width: 768px) {
+main,
+body.day-3-theme main {
+width: min(620px, calc(100% - 40px));
+max-width: 620px;
+margin: 18px auto 0;
+padding-left: 0;
+padding-right: 0;
+}
+body.day-3-theme main {
+margin-top: 10px;
+}
+}
 @media (max-width: 370px) {
 main { padding: 0 14px; }
 .summary-btn { font-size: .76rem; }
