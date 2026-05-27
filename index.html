@@ -221,18 +221,26 @@ padding-right: 0;
 }
 .itinerary-card-end-art {
 align-self: stretch;
-flex: 0 0 clamp(92px, 28vw, 148px);
-width: clamp(92px, 28vw, 148px);
+flex: 0 0 clamp(64px, 18vw, 94px);
+width: clamp(64px, 18vw, 94px);
 min-height: 100%;
-margin: -20px 0 -20px auto;
+margin: -10px 0 -10px auto;
 object-fit: contain;
 object-position: right center;
 pointer-events: none;
 filter: drop-shadow(-6px 8px 12px rgba(141,110,99,.08));
 }
 .itinerary-card-end-art.toda-stay-art {
-flex-basis: clamp(80px, 24vw, 126px);
-width: clamp(80px, 24vw, 126px);
+flex-basis: clamp(54px, 15vw, 78px);
+width: clamp(54px, 15vw, 78px);
+margin-top: -8px;
+margin-bottom: -8px;
+}
+.itinerary-card-end-art.ooishiya-dinner-art {
+flex-basis: clamp(66px, 19vw, 98px);
+width: clamp(66px, 19vw, 98px);
+margin-top: -10px;
+margin-bottom: -10px;
 }
 body.edit-mode .card.has-end-art {
 padding-right: 0;
@@ -4207,6 +4215,7 @@ return title === '戶田家' || (place.includes('戶田家') && time === '住宿
 selector: '#day-4 > .card',
 src: 'ooishiya-dinner-card.png',
 alt: '大石屋晚餐小圖',
+className: 'ooishiya-dinner-art',
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const place = card.dataset.mapPlaceValue || '';
