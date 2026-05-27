@@ -32,6 +32,7 @@
 <link rel="preload" as="image" href="menu-docs-writing.png">
 <link rel="preload" as="image" href="menu-wallet-money.png">
 <link rel="preload" as="image" href="wallet-corner-friends.png">
+<link rel="preload" as="image" href="ooishiya-dinner-card.png">
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
 <link rel="preload" as="image" href="goodgirl.png">
@@ -211,6 +212,27 @@ border: 1.5px solid var(--card-border);
 border-radius: 25px;
 background: #fff;
 box-shadow: 0 4px 10px rgba(141,110,99,.03);
+}
+.card.has-end-art {
+overflow: hidden;
+padding-right: 0;
+}
+.itinerary-card-end-art {
+align-self: stretch;
+flex: 0 0 clamp(92px, 28vw, 148px);
+width: clamp(92px, 28vw, 148px);
+min-height: 100%;
+margin: -20px 0 -20px auto;
+object-fit: contain;
+object-position: right center;
+pointer-events: none;
+filter: drop-shadow(-6px 8px 12px rgba(141,110,99,.08));
+}
+body.edit-mode .card.has-end-art {
+padding-right: 0;
+}
+body.edit-mode .itinerary-card-end-art {
+opacity: .55;
 }
 body.day-3-theme header,
 body.day-3-theme .card,
@@ -4157,6 +4179,25 @@ moreBtn.textContent = isEditMode ? (isFlight ? '' : '寫點什麼吧') : (isFlig
 });
 updateReorderButtons();
 updateMoreInfoButtons();
+enhanceSpecialItineraryArt();
+}
+function enhanceSpecialItineraryArt() {
+document.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
+document.querySelectorAll('.card.has-end-art').forEach(card => card.classList.remove('has-end-art'));
+const targetCard = Array.from(document.querySelectorAll('#day-4 > .card')).find(card => {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+const place = card.dataset.mapPlaceValue || '';
+const desc = card.querySelector('.item-desc')?.textContent.trim() || '';
+return title === '大石屋 check in 吃晚餐' || (place.includes('大石屋') && desc.includes('晚餐'));
+});
+if (!targetCard) return;
+targetCard.classList.add('has-end-art');
+const img = document.createElement('img');
+img.className = 'itinerary-card-end-art';
+img.src = 'ooishiya-dinner-card.png';
+img.alt = '大石屋晚餐小圖';
+const insertBefore = targetCard.querySelector('.reorder-controls, .delete-card-btn, .card-extra-controls');
+targetCard.insertBefore(img, insertBefore || null);
 }
 function cardHasMoreInfo(card) {
 return noteHasContent(card);
@@ -7688,6 +7729,7 @@ initNoteToolbarTouchFix();
 initNoteImageCanvasEditor();
 initNoteImageReorder();
 enhanceRouteConnectors();
+enhanceSpecialItineraryArt();
 initDatePicker();
 initDayDragSwap();
 initAppBackButton();
