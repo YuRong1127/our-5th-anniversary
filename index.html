@@ -2673,14 +2673,23 @@ opacity: .86;
 @media (min-width: 768px) {
 main,
 body.day-3-theme main {
-width: min(620px, calc(100% - 40px));
-max-width: 620px;
+width: calc(100% - 40px);
+max-width: 760px;
 margin: 18px auto 0;
 padding-left: 0;
 padding-right: 0;
 }
 body.day-3-theme main {
 margin-top: 10px;
+}
+.main-piggy {
+right: max(24px, calc((100vw - 760px) / 2 - 92px));
+}
+.floating-menu {
+right: max(24px, calc((100vw - 760px) / 2 - 88px));
+}
+.add-itinerary-btn {
+right: max(24px, calc((100vw - 760px) / 2 - 84px));
 }
 }
 @media (max-width: 370px) {
