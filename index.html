@@ -3202,19 +3202,24 @@ let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false }
 ];
-let wishlistCategories = ['全家', '7-11', 'Lawson', '機場必買', '藥妝店', '伴手禮'];
+let wishlistCategories = ['全家', '7-11', 'Lawson', '無印良品', 'Uniqlo', '3Coins', '藥妝店', '機場必買', '伴手禮'];
 let currentWishlistCategory = '全家';
 let wishlistCategoryEditMode = false;
-const DEFAULT_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson', '機場必買', '藥妝店', '伴手禮'];
+const DEFAULT_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson', '無印良品', 'Uniqlo', '3Coins', '藥妝店', '機場必買', '伴手禮'];
 const WISHLIST_CATEGORY_ALIASES = {
-'超商必買': '全家'
+'超商必買': '全家',
+'UNIQLO': 'Uniqlo',
+'3COINS': '3Coins'
 };
 const WISHLIST_PLACEHOLDERS = {
 '全家': '新增全家想買...',
 '7-11': '新增 7-11 想買...',
 'Lawson': '新增 Lawson 想買...',
-'機場必買': '新增機場想買...',
+'無印良品': '新增無印良品想買...',
+'Uniqlo': '新增 Uniqlo 想買...',
+'3Coins': '新增 3Coins 想買...',
 '藥妝店': '新增藥妝店想買...',
+'機場必買': '新增機場想買...',
 '伴手禮': '新增伴手禮...'
 };
 let prepItems = [
@@ -6295,12 +6300,7 @@ const next = [];
 const clean = String(category || '').trim();
 if (clean && !next.includes(clean)) next.push(clean);
 });
-if (!next.includes('藥妝店') && next.some(category => DEFAULT_WISHLIST_CATEGORIES.includes(category))) {
-const giftIndex = next.indexOf('伴手禮');
-if (giftIndex >= 0) next.splice(giftIndex, 0, '藥妝店');
-else next.push('藥妝店');
-}
-const orderedDefaults = DEFAULT_WISHLIST_CATEGORIES.filter(category => next.includes(category));
+const orderedDefaults = DEFAULT_WISHLIST_CATEGORIES;
 const customCategories = next.filter(category => !DEFAULT_WISHLIST_CATEGORIES.includes(category));
 wishlistCategories = [...orderedDefaults, ...customCategories];
 if (!wishlistCategories.includes(currentWishlistCategory)) currentWishlistCategory = wishlistCategories[0] || '';
@@ -6311,7 +6311,7 @@ const tabs = document.getElementById('wishlist-tabs');
 if (!tabs) return;
 normalizeWishlistCategories();
 const categoryButtonCount = wishlistCategories.length + (wishlistCategoryEditMode ? 1 : 0);
-const wishlistCols = categoryButtonCount <= 4 ? categoryButtonCount || 1 : categoryButtonCount <= 6 ? 3 : 4;
+const wishlistCols = categoryButtonCount <= 3 ? categoryButtonCount || 1 : categoryButtonCount <= 9 ? 3 : 4;
 tabs.style.setProperty('--wishlist-cols', wishlistCols);
 const editBtn = document.getElementById('wishlist-category-edit-toggle');
 if (editBtn) {
