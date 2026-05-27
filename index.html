@@ -33,6 +33,7 @@
 <link rel="preload" as="image" href="menu-wallet-money.png">
 <link rel="preload" as="image" href="wallet-corner-friends.png">
 <link rel="preload" as="image" href="ooishiya-dinner-card.png">
+<link rel="preload" as="image" href="toda-stay-card.png">
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
 <link rel="preload" as="image" href="goodgirl.png">
@@ -4184,20 +4185,41 @@ enhanceSpecialItineraryArt();
 function enhanceSpecialItineraryArt() {
 document.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
 document.querySelectorAll('.card.has-end-art').forEach(card => card.classList.remove('has-end-art'));
-const targetCard = Array.from(document.querySelectorAll('#day-4 > .card')).find(card => {
+const specialArtCards = [
+{
+selector: '#day-3 > .card',
+src: 'toda-stay-card.png',
+alt: '戶田家住宿小圖',
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+const time = card.querySelector('.time-badge')?.textContent.trim() || '';
+const place = card.dataset.mapPlaceValue || '';
+return title === '戶田家' || (place.includes('戶田家') && time === '住宿');
+}
+},
+{
+selector: '#day-4 > .card',
+src: 'ooishiya-dinner-card.png',
+alt: '大石屋晚餐小圖',
+match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const place = card.dataset.mapPlaceValue || '';
 const desc = card.querySelector('.item-desc')?.textContent.trim() || '';
 return title === '大石屋 check in 吃晚餐' || (place.includes('大石屋') && desc.includes('晚餐'));
-});
+}
+}
+];
+specialArtCards.forEach(art => {
+const targetCard = Array.from(document.querySelectorAll(art.selector)).find(card => art.match(card));
 if (!targetCard) return;
 targetCard.classList.add('has-end-art');
 const img = document.createElement('img');
 img.className = 'itinerary-card-end-art';
-img.src = 'ooishiya-dinner-card.png';
-img.alt = '大石屋晚餐小圖';
+img.src = art.src;
+img.alt = art.alt;
 const insertBefore = targetCard.querySelector('.reorder-controls, .delete-card-btn, .card-extra-controls');
 targetCard.insertBefore(img, insertBefore || null);
+});
 }
 function cardHasMoreInfo(card) {
 return noteHasContent(card);
