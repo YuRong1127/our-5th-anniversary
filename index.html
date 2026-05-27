@@ -279,28 +279,16 @@ padding: 6px 58px;
 border: 0;
 border-radius: 0;
 background-color: transparent;
-background-image: url('anniv-left-inline.png');
-background-repeat: no-repeat;
-background-position: calc(50% - 72px) center;
-background-size: 46px 46px;
+background-image: url('anniv-left-inline.png'), url('anniv-right-inline.png');
+background-repeat: no-repeat, no-repeat;
+background-position: calc(50% - 72px) center, calc(50% + 72px) center;
+background-size: 46px 46px, 46px 46px;
 color: #c95272;
 font-family: 'Dancing Script', 'Kosugi Maru', cursive;
 font-size: 1.02rem;
 font-weight: 600;
 line-height: 1;
 box-shadow: none;
-}
-body.day-3-theme main::after {
-content: '';
-position: absolute;
-top: 6px;
-left: calc(50% + 49px);
-width: 46px;
-height: 46px;
-background: url('anniv-right-inline.png') center / contain no-repeat;
-transform: scaleX(-1);
-pointer-events: none;
-z-index: 0;
 }
 body.day-3-theme .edit-footer {
 background: rgba(255,250,248,.92);
@@ -3690,6 +3678,7 @@ document.getElementById(`tab-${day}`).classList.add('active');
 document.querySelectorAll('.day-section').forEach(el => el.classList.remove('active'));
 document.getElementById(`day-${day}`).classList.add('active');
 initFloatingBackground();
+requestAnimationFrame(refitVisibleItineraryEndArt);
 if (!options.auto) scrollDaySectionToTop(day, previousScrollTop);
 if (!options.skipHistory && !isHandlingAppHistory) pushAppHistory(day);
 }
@@ -4243,6 +4232,7 @@ const time = card.querySelector('.time-badge');
 const desc = card.querySelector('.item-desc');
 if (!time || !desc || !img) return;
 const cardRect = card.getBoundingClientRect();
+if (!cardRect.width || !cardRect.height) return;
 const timeRect = time.getBoundingClientRect();
 const descRect = desc.getBoundingClientRect();
 const styles = getComputedStyle(card);
@@ -4252,6 +4242,12 @@ const bandHeight = Math.max(1, descRect.bottom - timeRect.top);
 img.style.marginTop = `${Math.round(bandTop)}px`;
 img.style.height = `${Math.round(bandHeight)}px`;
 img.style.maxWidth = 'none';
+}
+function refitVisibleItineraryEndArt() {
+document.querySelectorAll('.day-section.active .card.has-end-art').forEach(card => {
+const img = card.querySelector('.itinerary-card-end-art');
+if (img) fitItineraryEndArtToTextBand(card, img);
+});
 }
 function enhanceSpecialItineraryDetails() {
 const targetCard = Array.from(document.querySelectorAll('.day-section > .card')).find(card => {
