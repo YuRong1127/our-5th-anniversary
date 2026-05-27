@@ -4236,8 +4236,12 @@ const desc = card.querySelector('.item-desc');
 if (!time || !desc || !img) return;
 const cardRect = card.getBoundingClientRect();
 if (!cardRect.width || !cardRect.height) return;
-const bandTop = Math.max(0, time.offsetTop);
-const bandHeight = Math.max(1, desc.offsetTop + desc.offsetHeight - bandTop);
+const timeRect = time.getBoundingClientRect();
+const descRects = Array.from(desc.getClientRects()).filter(rect => rect.width || rect.height);
+const descBottom = descRects.length ? Math.max(...descRects.map(rect => rect.bottom)) : desc.getBoundingClientRect().bottom;
+const bandTop = Math.max(0, timeRect.top - cardRect.top);
+const bandBottom = Math.min(cardRect.height, descBottom - cardRect.top);
+const bandHeight = Math.max(1, bandBottom - bandTop);
 img.style.top = `${Math.round(bandTop)}px`;
 img.style.height = `${Math.round(bandHeight)}px`;
 img.style.maxWidth = 'none';
@@ -4259,10 +4263,15 @@ const imageSrc = 'threecoins-video-transceiver.png';
 const fields = getDetailFields(targetCard);
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
 const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
-if (blocks.some(block => block?.type === 'image' && block.src === imageSrc)) return;
+const existingImageBlock = blocks.find(block => block?.type === 'image' && block.src === imageSrc);
+if (existingImageBlock) {
+existingImageBlock.width = 45;
+setDetailFields(targetCard, fields);
+return;
+}
 fields[0].blocks = [
 ...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
-{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 100, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }
+{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }
 ];
 setDetailFields(targetCard, fields);
 }
