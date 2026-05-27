@@ -34,6 +34,7 @@
 <link rel="preload" as="image" href="wallet-corner-friends.png">
 <link rel="preload" as="image" href="ooishiya-dinner-card.png">
 <link rel="preload" as="image" href="toda-stay-card.png">
+<link rel="preload" as="image" href="sunrise-makeup-card.png">
 <link rel="preload" as="image" href="threecoins-video-transceiver.png">
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
@@ -4214,6 +4215,16 @@ const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const place = card.dataset.mapPlaceValue || '';
 const desc = card.querySelector('.item-desc')?.textContent.trim() || '';
 return title === '大石屋 check in 吃晚餐' || (place.includes('大石屋') && desc.includes('晚餐'));
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'sunrise-makeup-card.png',
+alt: '日出化妝小圖',
+className: 'sunrise-makeup-art',
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+return title === '剛起床的日出化妝';
 }
 }
 ];
