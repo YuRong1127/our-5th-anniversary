@@ -4236,13 +4236,9 @@ const desc = card.querySelector('.item-desc');
 if (!time || !desc || !img) return;
 const cardRect = card.getBoundingClientRect();
 if (!cardRect.width || !cardRect.height) return;
-const timeRect = time.getBoundingClientRect();
-const descRect = desc.getBoundingClientRect();
-const styles = getComputedStyle(card);
-const contentTop = cardRect.top + parseFloat(styles.paddingTop || '0');
-const bandTop = Math.max(0, timeRect.top - contentTop);
-const bandHeight = Math.max(1, descRect.bottom - timeRect.top);
-img.style.top = `${Math.round(parseFloat(styles.paddingTop || '0') + bandTop)}px`;
+const bandTop = Math.max(0, time.offsetTop);
+const bandHeight = Math.max(1, desc.offsetTop + desc.offsetHeight - bandTop);
+img.style.top = `${Math.round(bandTop)}px`;
 img.style.height = `${Math.round(bandHeight)}px`;
 img.style.maxWidth = 'none';
 }
