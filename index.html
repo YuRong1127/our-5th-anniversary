@@ -4276,23 +4276,14 @@ itineraryEndArtVisibleBoundsCache.set(cacheKey, boundsPromise);
 return boundsPromise;
 }
 async function fitItineraryEndArtToTextBand(card, img) {
-const time = card.querySelector('.time-badge');
-const desc = card.querySelector('.item-desc');
-if (!time || !desc || !img) return;
+if (!card || !img) return;
 const cardRect = card.getBoundingClientRect();
 if (!cardRect.width || !cardRect.height) return;
-const timeRect = time.getBoundingClientRect();
-const descRange = document.createRange();
-descRange.selectNodeContents(desc);
-const descRects = Array.from(descRange.getClientRects()).filter(rect => rect.width || rect.height);
-descRange.detach();
-const descBottom = descRects.length ? Math.max(...descRects.map(rect => rect.bottom)) : desc.getBoundingClientRect().bottom;
-const bandTop = Math.max(0, timeRect.top - cardRect.top);
-const bandBottom = Math.min(cardRect.height, descBottom - cardRect.top);
-const bandHeight = Math.max(1, bandBottom - bandTop);
 const visibleBounds = await getItineraryEndArtVisibleBounds(img);
-const scale = bandHeight / Math.max(1, visibleBounds.height);
-img.style.top = `${Math.round(bandTop - visibleBounds.top * scale)}px`;
+const visibleHeight = Math.max(1, cardRect.height * 0.5);
+const visibleTop = (cardRect.height - visibleHeight) / 2;
+const scale = visibleHeight / Math.max(1, visibleBounds.height);
+img.style.top = `${Math.round(visibleTop - visibleBounds.top * scale)}px`;
 img.style.height = `${Math.round(img.naturalHeight * scale)}px`;
 img.style.maxWidth = 'none';
 }
