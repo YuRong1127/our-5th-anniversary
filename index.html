@@ -4230,7 +4230,41 @@ targetCard.insertBefore(img, insertBefore || null);
 requestAnimationFrame(() => fitItineraryEndArtToTextBand(targetCard, img));
 });
 }
-function fitItineraryEndArtToTextBand(card, img) {
+const itineraryEndArtVisibleBoundsCache = new Map();
+function getItineraryEndArtVisibleBounds(img) {
+const cacheKey = img.currentSrc || img.src;
+if (itineraryEndArtVisibleBoundsCache.has(cacheKey)) return itineraryEndArtVisibleBoundsCache.get(cacheKey);
+const boundsPromise = new Promise(resolve => {
+const compute = () => {
+try {
+const canvas = document.createElement('canvas');
+canvas.width = img.naturalWidth;
+canvas.height = img.naturalHeight;
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
+ctx.drawImage(img, 0, 0);
+const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+let top = canvas.height;
+let bottom = -1;
+for (let y = 0; y < canvas.height; y += 1) {
+for (let x = 0; x < canvas.width; x += 1) {
+if (data[(y * canvas.width + x) * 4 + 3] > 18) {
+if (y < top) top = y;
+if (y > bottom) bottom = y;
+}
+}
+}
+resolve(bottom >= top ? { top, bottom, height: bottom - top + 1 } : { top: 0, bottom: canvas.height - 1, height: canvas.height });
+} catch (err) {
+resolve({ top: 0, bottom: img.naturalHeight - 1, height: img.naturalHeight });
+}
+};
+if (img.complete && img.naturalWidth) compute();
+else img.addEventListener('load', compute, { once: true });
+});
+itineraryEndArtVisibleBoundsCache.set(cacheKey, boundsPromise);
+return boundsPromise;
+}
+async function fitItineraryEndArtToTextBand(card, img) {
 const time = card.querySelector('.time-badge');
 const desc = card.querySelector('.item-desc');
 if (!time || !desc || !img) return;
@@ -4242,8 +4276,10 @@ const descBottom = descRects.length ? Math.max(...descRects.map(rect => rect.bot
 const bandTop = Math.max(0, timeRect.top - cardRect.top);
 const bandBottom = Math.min(cardRect.height, descBottom - cardRect.top);
 const bandHeight = Math.max(1, bandBottom - bandTop);
-img.style.top = `${Math.round(bandTop)}px`;
-img.style.height = `${Math.round(bandHeight)}px`;
+const visibleBounds = await getItineraryEndArtVisibleBounds(img);
+const scale = bandHeight / Math.max(1, visibleBounds.height);
+img.style.top = `${Math.round(bandTop - visibleBounds.top * scale)}px`;
+img.style.height = `${Math.round(img.naturalHeight * scale)}px`;
 img.style.maxWidth = 'none';
 }
 function refitVisibleItineraryEndArt() {
