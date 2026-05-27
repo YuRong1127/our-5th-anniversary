@@ -34,6 +34,7 @@
 <link rel="preload" as="image" href="wallet-corner-friends.png">
 <link rel="preload" as="image" href="ooishiya-dinner-card.png">
 <link rel="preload" as="image" href="toda-stay-card.png">
+<link rel="preload" as="image" href="threecoins-video-transceiver.png">
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
 <link rel="preload" as="image" href="goodgirl.png">
@@ -3229,10 +3230,11 @@ let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false }
 ];
-let wishlistCategories = ['全家', '7-11', 'Lawson', '無印良品', 'Uniqlo', '3Coins', '藥妝店', '機場必買', '伴手禮'];
+let wishlistCategories = ['全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
 let currentWishlistCategory = '全家';
 let wishlistCategoryEditMode = false;
-const DEFAULT_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson', '無印良品', 'Uniqlo', '3Coins', '藥妝店', '機場必買', '伴手禮'];
+const DEFAULT_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
+const REMOVED_WISHLIST_CATEGORIES = ['無印良品', 'Uniqlo', '3Coins'];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家',
 'UNIQLO': 'Uniqlo',
@@ -3242,9 +3244,6 @@ const WISHLIST_PLACEHOLDERS = {
 '全家': '新增全家想買...',
 '7-11': '新增 7-11 想買...',
 'Lawson': '新增 Lawson 想買...',
-'無印良品': '新增無印良品想買...',
-'Uniqlo': '新增 Uniqlo 想買...',
-'3Coins': '新增 3Coins 想買...',
 '藥妝店': '新增藥妝店想買...',
 '機場必買': '新增機場想買...',
 '伴手禮': '新增伴手禮...'
@@ -4185,6 +4184,8 @@ moreBtn.textContent = isEditMode ? (isFlight ? '' : '寫點什麼吧') : (isFlig
 updateReorderButtons();
 updateMoreInfoButtons();
 enhanceSpecialItineraryArt();
+enhanceSpecialItineraryDetails();
+updateMoreInfoButtons();
 }
 function enhanceSpecialItineraryArt() {
 document.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
@@ -4225,6 +4226,24 @@ img.alt = art.alt;
 const insertBefore = targetCard.querySelector('.reorder-controls, .delete-card-btn, .card-extra-controls');
 targetCard.insertBefore(img, insertBefore || null);
 });
+}
+function enhanceSpecialItineraryDetails() {
+const targetCard = Array.from(document.querySelectorAll('.day-section > .card')).find(card => {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+const place = card.dataset.mapPlaceValue || '';
+return title === '3COINS+plus MELSA榮店' || place.includes('3COINS+plus MELSA榮店');
+});
+if (!targetCard) return;
+const imageSrc = 'threecoins-video-transceiver.png';
+const fields = getDetailFields(targetCard);
+if (!fields[0]) fields[0] = { name: '', blocks: [] };
+const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
+if (blocks.some(block => block?.type === 'image' && block.src === imageSrc)) return;
+fields[0].blocks = [
+...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
+{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 100, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }
+];
+setDetailFields(targetCard, fields);
 }
 function cardHasMoreInfo(card) {
 return noteHasContent(card);
@@ -6358,18 +6377,22 @@ return;
 closeModal('wishlist-modal');
 }
 function normalizeWishlistCategories() {
-wishlistCategories = wishlistCategories.map(category => WISHLIST_CATEGORY_ALIASES[category] || category);
+wishlistCategories = wishlistCategories
+.map(category => WISHLIST_CATEGORY_ALIASES[category] || category)
+.filter(category => !REMOVED_WISHLIST_CATEGORIES.includes(category));
 wishItems.forEach(item => {
 if (item && WISHLIST_CATEGORY_ALIASES[item.category]) item.category = WISHLIST_CATEGORY_ALIASES[item.category];
 });
+wishItems = wishItems.filter(item => !REMOVED_WISHLIST_CATEGORIES.includes(item.category));
 if (WISHLIST_CATEGORY_ALIASES[currentWishlistCategory]) currentWishlistCategory = WISHLIST_CATEGORY_ALIASES[currentWishlistCategory];
+if (REMOVED_WISHLIST_CATEGORIES.includes(currentWishlistCategory)) currentWishlistCategory = DEFAULT_WISHLIST_CATEGORIES[0] || '';
 const next = [];
 [...wishlistCategories, ...wishItems.map(item => item.category)].forEach(category => {
 const clean = String(category || '').trim();
-if (clean && !next.includes(clean)) next.push(clean);
+if (clean && !REMOVED_WISHLIST_CATEGORIES.includes(clean) && !next.includes(clean)) next.push(clean);
 });
 const orderedDefaults = DEFAULT_WISHLIST_CATEGORIES;
-const customCategories = next.filter(category => !DEFAULT_WISHLIST_CATEGORIES.includes(category));
+const customCategories = next.filter(category => !DEFAULT_WISHLIST_CATEGORIES.includes(category) && !REMOVED_WISHLIST_CATEGORIES.includes(category));
 wishlistCategories = [...orderedDefaults, ...customCategories];
 if (!wishlistCategories.includes(currentWishlistCategory)) currentWishlistCategory = wishlistCategories[0] || '';
 return wishlistCategories;
@@ -6416,8 +6439,10 @@ renderWishlistCategories();
 }
 function addWishlistCategory() {
 const input = document.getElementById('wishlist-category-input');
-const category = input?.value.trim();
+const rawCategory = input?.value.trim();
+const category = WISHLIST_CATEGORY_ALIASES[rawCategory] || rawCategory;
 if (!category) return showAlert('先幫分類取個名字吧 🧺');
+if (REMOVED_WISHLIST_CATEGORIES.includes(category)) return;
 normalizeWishlistCategories();
 if (!wishlistCategories.includes(category)) wishlistCategories.push(category);
 currentWishlistCategory = category;
@@ -7757,6 +7782,8 @@ initNoteImageCanvasEditor();
 initNoteImageReorder();
 enhanceRouteConnectors();
 enhanceSpecialItineraryArt();
+enhanceSpecialItineraryDetails();
+updateMoreInfoButtons();
 initDatePicker();
 initDayDragSwap();
 initAppBackButton();
