@@ -664,8 +664,19 @@ background-image: url("data:image/svg+xml,%3Csvg width='108' height='48' viewBox
 transform: scaleX(-1);
 background-image: url("data:image/svg+xml,%3Csvg width='108' height='48' viewBox='0 0 108 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 29C23 14 41 12 58 22C73 31 89 27 101 13' stroke='%23b9d9cf' stroke-width='2'/%3E%3Cpath d='M33 20c-4-7-1-12 6-8c2-8 9-8 10 0c7-4 11 1 6 8c8 1 8 8 0 9c4 7-1 12-8 7c-3 7-10 6-10-2c-8 3-11-3-4-14Z' fill='%23f76576' stroke='%23e88791' stroke-width='1.4'/%3E%3Ccircle cx='44' cy='23' r='4.2' fill='%23fff6ca' stroke='%23e5c468' stroke-width='1.1'/%3E%3Cpath d='M15 27c6-1 10 1 13 5M18 22c5-3 10-3 14 0M70 20c4-7 10-9 16-5M74 25c7-3 14-1 18 3M84 14c4-3 8-3 12 0' stroke='%238bcbbb' stroke-width='2'/%3E%3Cpath d='M76 31c4-2 8-1 11 2M23 34c3 3 7 4 12 3' stroke='%23c5e2d9' stroke-width='1.6'/%3E%3Ccircle cx='82' cy='32' r='3.2' fill='%23f6d86f' stroke='%23efc86a' stroke-width='1'/%3E%3Ccircle cx='90' cy='33' r='2.4' fill='%23fff1b8'/%3E%3C/g%3E%3C/svg%3E");
 }
-#wallet-modal { align-items: center; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-#wallet-modal .modal-container { padding-top: 20px; padding-bottom: 20px; }
+#wallet-modal,
+#details-modal,
+#settle-modal,
+#stats-modal {
+align-items: flex-start;
+overflow-y: auto;
+padding-top: max(12px, calc(env(safe-area-inset-top) + 10px));
+padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 10px));
+}
+#wallet-modal .modal-container,
+#details-modal .modal-container,
+#settle-modal .modal-container,
+#stats-modal .modal-container { padding-top: 18px; padding-bottom: 12px; }
 #wallet-modal .modal-content { padding-top: 16px; padding-bottom: 16px; }
 #wallet-modal .modal-title { margin-bottom: 8px; }
 #wallet-modal {
@@ -697,12 +708,12 @@ font-size: 1.16rem;
 line-height: 1;
 white-space: nowrap;
 }
-#wallet-modal .modal-content { max-height: calc(100vh - 40px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+#wallet-modal .modal-content { max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
 #wallet-modal .modal-scroll-area {
 padding-left: 0;
 padding-right: 0;
 }
-.panel-modal-content { height: auto; max-height: 84vh; border-radius: 35px; background: #fdfaf8; }
+.panel-modal-content { height: auto; max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); border-radius: 35px; background: #fdfaf8; }
 .panel-modal-content.compact-empty-modal {
 max-height: 86vh;
 border-radius: 30px;
@@ -973,18 +984,19 @@ position: relative;
 z-index: 1;
 isolation: isolate;
 display: inline-block;
-max-width: 88%;
+max-width: min(94%, calc(100vw - 44px));
 margin: 0 auto;
-padding: 8px 12px;
+padding: 8px 10px;
 border: 1px solid #efb8ae;
 border-radius: 18px;
 background: #fffaf7;
 color: #9b6a61;
-font-size: .82rem;
+font-size: clamp(.68rem, 3.45vw, .82rem);
 font-weight: 900;
 line-height: 1.35;
 box-shadow: 0 4px 12px rgba(141,110,99,.06);
 }
+.boundary-nowrap { white-space: nowrap; }
 #work-modal .modal-btn-primary,
 #finish-modal .modal-btn-primary {
 display: inline-flex;
@@ -2410,12 +2422,13 @@ object-fit: contain;
 .expense-heading { min-width: 0; display: flex; min-height: 52px; flex-direction: column; justify-content: center; }
 .expense-title { min-width: 0; color: #34495e; font-size: 1.05rem; font-weight: 900; word-break: break-word; }
 .expense-time { margin-bottom: 7px; color: var(--light-brown); font-size: .82rem; font-weight: 700; }
-.expense-amount { display: inline-flex; align-items: baseline; color: var(--heart-pink); font-size: 1.28rem; font-weight: 900; }
+.expense-amount { display: inline-flex; flex: 0 1 auto; min-width: 0; align-items: baseline; color: var(--heart-pink); font-size: 1.28rem; font-weight: 900; overflow-wrap: anywhere; text-align: right; }
 .settle-badge { margin-left: auto; border: 1px solid #f9dcdc; border-radius: 999px; padding: 6px 11px; background: #fce4e4; color: #e53935; font-size: .75rem; font-weight: 900; }
 .settle-badge.done { border-color: #dcedc8; background: #f1f8e9; color: #689f38; }
 .settle-badge.public-pay-badge { border-color: #e7ddd8; background: #f7f0ed; color: #9c877f; }
 .expense-note { margin: 0 0 12px; padding: 12px; border-radius: 16px; background: #f8f8f8; color: #8e8e8e; font-size: .85rem; line-height: 1.8; }
-.expense-note-amount { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #e7e1de; }
+.expense-note-amount { display: flex; align-items: center; justify-content: space-between; min-width: 0; gap: 10px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #e7e1de; }
+.expense-note-amount > span:first-child { min-width: 0; }
 .expense-actions { display: flex; align-items: center; gap: 8px; }
 .mini-btn { border: 1px solid #f0f0f0; border-radius: 10px; padding: 7px 16px; background: #fff; font-size: .85rem; font-weight: 900; }
 .green { color: #81c784; } .red { color: #e57373; }
@@ -2702,6 +2715,78 @@ main { padding: 0 14px; }
 .pw-hint-text { font-size: .94rem; }
 .pw-hint-pig { width: 36px; height: 34px; }
 .pw-hint-pig.angry { width: 24px; height: 22px; transform: translateY(-1.5px); }
+}
+@media (max-width: 390px), (max-height: 700px) {
+#wallet-modal,
+#details-modal,
+#settle-modal,
+#stats-modal {
+padding-top: max(14px, calc(env(safe-area-inset-top) + 12px));
+padding-bottom: max(10px, calc(env(safe-area-inset-bottom) + 8px));
+}
+#wallet-modal .modal-container,
+#details-modal .modal-container,
+#settle-modal .modal-container,
+#stats-modal .modal-container {
+width: 96%;
+padding: 14px 10px 10px;
+}
+#wallet-modal .modal-content,
+.panel-modal-content {
+max-height: calc(100vh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+border-radius: 24px;
+}
+#wallet-modal .modal-content {
+padding: 14px 12px;
+}
+#details-modal .modal-content,
+#settle-modal .modal-content,
+#stats-modal .modal-content {
+padding: 22px 14px 16px;
+}
+.modal-close-btn {
+top: 0;
+right: 0;
+}
+.modal-close-circle {
+width: 34px;
+height: 34px;
+}
+.expense-card {
+padding: 13px;
+border-radius: 20px;
+}
+.expense-top {
+gap: 9px;
+min-height: 46px;
+}
+.expense-icon {
+width: 46px;
+height: 46px;
+flex-basis: 46px;
+border-radius: 15px;
+}
+.expense-heading {
+min-height: 46px;
+}
+.expense-title {
+font-size: .96rem;
+}
+.expense-time {
+font-size: .76rem;
+}
+.expense-note {
+padding: 10px;
+font-size: .8rem;
+}
+.expense-note-amount {
+align-items: flex-start;
+gap: 8px;
+}
+.expense-amount {
+font-size: 1.12rem;
+line-height: 1.2;
+}
 }
 </style>
 </head>
@@ -3069,7 +3154,7 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
 <div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
-<div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><div class="boundary-speech">ㄟ你上班要做什麼還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></div><img class="boundary-modal-img work-sticker" src="work-too-bad.png" alt="很壞提醒" style="width: 75%; max-width: 200px; margin-top:10px;margin-bottom: 10px;"><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg); width: 180px; padding: 12px 0;">不小心滑到齁!</button></div></div></div>
+<div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><div class="boundary-speech">ㄟ你上班要做什麼<span class="boundary-nowrap">還問我<span class="kaomoji-fix">٩(๑`^´๑)۶</span></span></div><img class="boundary-modal-img work-sticker" src="work-too-bad.png" alt="很壞提醒" style="width: 75%; max-width: 200px; margin-top:10px;margin-bottom: 10px;"><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg); width: 180px; padding: 12px 0;">不小心滑到齁!</button></div></div></div>
 <div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><div class="boundary-speech">繼續上班存錢錢💛再一起出去玩</div><img class="boundary-modal-img finish-sticker" src="trip-finished-hug.png" alt="旅程結束陪你小圖"style="width: 75%; max-width: 200px;margin-top: 10px; margin-bottom: 5px;"><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg); width: 180px; padding: 12px 0;">沒有問題!</button></div></div></div>
 
 
