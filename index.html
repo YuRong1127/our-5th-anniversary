@@ -1116,6 +1116,16 @@ overflow: hidden;
 .wallet-input::placeholder, .small-input::placeholder { color: #d3c3be; font-weight: 500; }
 .small-input { padding: 0 11px; font-size: .84rem; }
 .custom-datetime-container { display: flex; justify-content: space-between; align-items: center; height: var(--wallet-control-height); min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 6px; padding: 0 13px; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #6f5a54; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
+.time-range-content { align-items: stretch; max-width: 340px; padding: 24px 18px 18px; }
+.time-range-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0 14px; }
+.time-range-field { min-width: 0; }
+.time-range-field label { display: block; margin: 0 0 6px 2px; color: #9b6a61; font-size: .72rem; font-weight: 900; }
+.time-range-input { width: 100%; height: 44px; box-sizing: border-box; border: 1px solid #ead7cf; border-radius: 15px; padding: 0 10px; outline: 0; background: #fffdfb; color: #6f5a54; font-size: .96rem; font-weight: 900; text-align: center; }
+.time-range-input:focus { border-color: #d17a6d; box-shadow: 0 0 0 3px rgba(209,122,109,.12); }
+.time-range-actions { display: grid; grid-template-columns: .75fr 1fr; gap: 9px; }
+.time-range-clear-btn { min-height: 46px; border: 0; border-radius: 16px; background: var(--cancel-bg); color: var(--main-brown); font-size: .9rem; font-weight: 900; }
+body.edit-mode .time-badge { cursor: pointer; }
+body.edit-mode .time-badge::after { content: '  ✎'; color: #d3aaa0; font-size: .68rem; }
 .calendar-icon-styled { width: 30px; height: 30px; flex: 0 0 30px; display: flex; align-items: center; justify-content: center; }
 .calendar-icon-styled svg { display: block; width: 26px; height: 26px; }
 #exp-time-picker-host { width: 100%; }
@@ -3146,6 +3156,7 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <div id="details-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費明細</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div id="settle-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div id="settle-content" class="panel-content settle-panel-content"></div></div></div></div></div>
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="stats-title-row"><div class="stats-main-title">📊 統計</div><div class="stats-tabs"><button type="button" class="stats-tab active btn-press-effect" data-stats-page="pie" onclick="setStatsPage('pie')">大餅圖</button><button type="button" class="stats-tab btn-press-effect" data-stats-page="bar" onclick="setStatsPage('bar')">柱狀圖</button></div></div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
+<div id="time-range-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-fields"><div class="time-range-field"><label for="time-range-start">開始</label><input id="time-range-start" class="time-range-input" type="time" inputmode="numeric"></div><div class="time-range-field"><label for="time-range-end">結束</label><input id="time-range-end" class="time-range-input" type="time" inputmode="numeric"></div></div><div class="time-range-actions"><button type="button" class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()">未定</button><button type="button" class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()">儲存時間</button></div></div></div></div>
 <div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 想買的哩哩扣扣</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
 <div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('docs-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📁 重要資料夾</div><div class="wishlist-form docs-add-form"><button type="button" class="wishlist-add-btn docs-add-btn btn-press-effect" onclick="addDocItem()"><span class="docs-add-plus">＋</span><span>新增資料</span></button><input type="file" id="docs-new-file-input" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="attachNewDocFile(event)"></div><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
@@ -3321,6 +3332,7 @@ let noteImageCanvasStrokes = [];
 let noteImageCurrentStroke = null;
 let currentMapPlaceCard = null;
 let currentRouteConnector = null;
+let currentTimeBadgeTarget = null;
 let lastBothEdited = null;
 let bothManualEdits = { big: false, small: false };
 let fp = null;
@@ -4185,6 +4197,47 @@ const sel = window.getSelection();
 sel.removeAllRanges();
 sel.addRange(range);
 newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function normalizeTimeInputValue(value) {
+const match = String(value || '').trim().match(/^(\d{1,2}):([0-5]\d)$/);
+if (!match) return '';
+const hour = Math.max(0, Math.min(23, Number(match[1])));
+return `${String(hour).padStart(2, '0')}:${match[2]}`;
+}
+function parseTimeBadgeText(text) {
+const times = String(text || '').match(/\b\d{1,2}:[0-5]\d\b/g) || [];
+return {
+start: normalizeTimeInputValue(times[0] || ''),
+end: normalizeTimeInputValue(times[1] || '')
+};
+}
+function openTimeRangeEditor(event, badgeEl) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+if (!isEditMode || !badgeEl) return;
+currentTimeBadgeTarget = badgeEl;
+const parsed = parseTimeBadgeText(badgeEl.textContent);
+document.getElementById('time-range-start').value = parsed.start;
+document.getElementById('time-range-end').value = parsed.end;
+openSimpleModal('time-range-modal');
+setTimeout(() => document.getElementById('time-range-start')?.focus(), 60);
+}
+function closeTimeRangeEditor() {
+currentTimeBadgeTarget = null;
+closeModal('time-range-modal');
+}
+function clearTimeRangeEditor() {
+if (currentTimeBadgeTarget) currentTimeBadgeTarget.textContent = '未定';
+closeTimeRangeEditor();
+}
+function saveTimeRangeEditor() {
+if (!currentTimeBadgeTarget) return closeTimeRangeEditor();
+const start = normalizeTimeInputValue(document.getElementById('time-range-start')?.value || '');
+const end = normalizeTimeInputValue(document.getElementById('time-range-end')?.value || '');
+currentTimeBadgeTarget.textContent = start && end ? `${start} - ${end}` : start ? `${start} -` : end ? `- ${end}` : '未定';
+closeTimeRangeEditor();
 }
 function rebuildSectionConnectors(section) {
 Array.from(section.querySelectorAll(':scope > .connector-line')).forEach(connector => connector.remove());
@@ -5905,7 +5958,7 @@ const connector = document.createElement('div');
 connector.className = 'connector-line';
 section.appendChild(connector);
 }
-const newCard = buildItineraryCard('未定', '新增行程', '點擊此處補上行程細節');
+const newCard = buildItineraryCard('08:00 - 09:00', '新增行程', '點擊此處補上行程細節');
 section.appendChild(newCard);
 enhanceRouteConnectors();
 focusNewItineraryCard(newCard);
@@ -5935,6 +5988,11 @@ html += `</div>`;
 grid.innerHTML = html;
 }
 document.getElementById('day-content').addEventListener('click', e => {
+const timeBadge = e.target.closest('.time-badge');
+if (timeBadge && isEditMode) {
+openTimeRangeEditor(e, timeBadge);
+return;
+}
 const icon = e.target.closest('.itinerary-icon');
 if (!icon || !isEditMode) return;
 e.preventDefault();
