@@ -217,22 +217,25 @@ box-shadow: 0 4px 10px rgba(141,110,99,.03);
 }
 .card.has-end-art {
 overflow: hidden;
-padding-right: 0;
+padding-right: 20px;
 }
 .itinerary-card-end-art {
-align-self: flex-start;
-flex: 0 0 auto;
+position: absolute;
+right: 20px;
+top: 20px;
+z-index: 1;
+display: block;
 width: auto;
 height: auto;
 max-width: none;
-margin: 0 0 0 auto;
+margin: 0;
 object-fit: contain;
 object-position: right center;
 pointer-events: none;
 filter: none;
 }
 body.edit-mode .card.has-end-art {
-padding-right: 0;
+padding-right: 20px;
 }
 body.edit-mode .itinerary-card-end-art {
 opacity: .55;
@@ -4239,7 +4242,7 @@ const styles = getComputedStyle(card);
 const contentTop = cardRect.top + parseFloat(styles.paddingTop || '0');
 const bandTop = Math.max(0, timeRect.top - contentTop);
 const bandHeight = Math.max(1, descRect.bottom - timeRect.top);
-img.style.marginTop = `${Math.round(bandTop)}px`;
+img.style.top = `${Math.round(parseFloat(styles.paddingTop || '0') + bandTop)}px`;
 img.style.height = `${Math.round(bandHeight)}px`;
 img.style.maxWidth = 'none';
 }
