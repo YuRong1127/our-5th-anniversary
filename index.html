@@ -4185,9 +4185,54 @@ moreBtn.textContent = isEditMode ? (isFlight ? '' : '寫點什麼吧') : (isFlig
 });
 updateReorderButtons();
 updateMoreInfoButtons();
+enhanceSpecialItineraryCards();
 enhanceSpecialItineraryArt();
 enhanceSpecialItineraryDetails();
 updateMoreInfoButtons();
+}
+function enhanceSpecialItineraryCards() {
+document.querySelectorAll('.day-section').forEach(section => {
+const cards = Array.from(section.querySelectorAll(':scope > .card'));
+const tobaIndex = cards.findIndex(card => card.querySelector('.item-title')?.textContent.trim() === '鳥羽站');
+if (tobaIndex >= 0) {
+const todaIndex = cards.findIndex((card, index) => index > tobaIndex && card.querySelector('.item-title')?.textContent.trim() === '戶田家' && card.querySelector('.time-badge')?.textContent.trim() === '住宿');
+if (todaIndex >= 0) {
+if (cards.slice(tobaIndex + 1, todaIndex).some(card => card.querySelector('.item-title')?.textContent.trim() === '逛全家超商')) return;
+const tobaCard = cards[tobaIndex];
+const nextNode = tobaCard.nextSibling;
+const connector = document.createElement('div');
+connector.className = 'connector-line same-place-connector';
+const familyCard = document.createElement('div');
+familyCard.className = 'card';
+familyCard.dataset.mapPlaceValue = '鳥羽站';
+familyCard.innerHTML = `<span class="itinerary-icon btn-press-effect">🏪</span><div><span class="time-badge editable" contenteditable="false">抵達後</span><div class="item-title editable" contenteditable="false">逛全家超商</div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">先去全家補飲料和小零食，再慢慢去戶田家。</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect is-empty" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">點我看更多</button></div>`;
+section.insertBefore(connector, nextNode);
+section.insertBefore(familyCard, nextNode);
+}
+}
+const threeCoinsIndex = cards.findIndex(card => card.querySelector('.item-title')?.textContent.trim() === '3COINS+plus MELSA榮店');
+if (threeCoinsIndex >= 0) {
+const titlesBeforeThreeCoins = cards.slice(0, threeCoinsIndex).map(card => card.querySelector('.item-title')?.textContent.trim() || '');
+const shoppingCards = [
+{ title: '無印良品', place: '無印良品', icon: '🛍️', desc: '先逛無印良品，補旅行小物和舒服好用的日用品。' },
+{ title: 'Uniqlo', place: 'Uniqlo', icon: '👕', desc: '再去 Uniqlo 看看衣服和旅途好穿的小配件。' }
+].filter(item => !titlesBeforeThreeCoins.includes(item.title));
+if (shoppingCards.length) {
+const threeCoinsCard = cards[threeCoinsIndex];
+const insertBefore = threeCoinsCard.previousSibling || threeCoinsCard;
+shoppingCards.forEach(item => {
+const connector = document.createElement('div');
+connector.className = 'connector-line';
+const card = document.createElement('div');
+card.className = 'card';
+card.dataset.mapPlaceValue = item.place;
+card.innerHTML = `<span class="itinerary-icon btn-press-effect">${item.icon}</span><div><span class="time-badge editable" contenteditable="false">未定</span><div class="item-title editable" contenteditable="false">${item.title}</div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">${item.desc}</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect is-empty" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">點我看更多</button></div>`;
+section.insertBefore(connector, insertBefore);
+section.insertBefore(card, insertBefore);
+});
+}
+}
+});
 }
 function enhanceSpecialItineraryArt() {
 document.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
@@ -7852,6 +7897,7 @@ initNoteToolbarTouchFix();
 initNoteImageCanvasEditor();
 initNoteImageReorder();
 enhanceRouteConnectors();
+enhanceSpecialItineraryCards();
 enhanceSpecialItineraryArt();
 enhanceSpecialItineraryDetails();
 updateMoreInfoButtons();
