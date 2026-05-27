@@ -4351,13 +4351,26 @@ if (!fields[0]) fields[0] = { name: '', blocks: [] };
 const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
 const existingImageBlock = blocks.find(block => block?.type === 'image' && block.src === imageSrc);
 if (existingImageBlock) {
+let changed = false;
+if (Number(existingImageBlock.width) !== 45) {
 existingImageBlock.width = 45;
+changed = true;
+}
+const imageIndex = blocks.indexOf(existingImageBlock);
+const hasTextAfterImage = blocks.slice(imageIndex + 1).some(block => block?.type === 'text');
+if (!hasTextAfterImage) {
+blocks.splice(imageIndex + 1, 0, { type: 'text', text: '', html: '' });
+changed = true;
+}
+if (changed) fields[0].blocks = blocks;
+if (!changed) return;
 setDetailFields(targetCard, fields);
 return;
 }
 fields[0].blocks = [
 ...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
-{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }
+{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 },
+{ type: 'text', text: '', html: '' }
 ];
 setDetailFields(targetCard, fields);
 }
