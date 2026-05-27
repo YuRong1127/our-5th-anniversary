@@ -229,6 +229,10 @@ object-position: right center;
 pointer-events: none;
 filter: drop-shadow(-6px 8px 12px rgba(141,110,99,.08));
 }
+.itinerary-card-end-art.toda-stay-art {
+flex-basis: clamp(80px, 24vw, 126px);
+width: clamp(80px, 24vw, 126px);
+}
 body.edit-mode .card.has-end-art {
 padding-right: 0;
 }
@@ -4190,6 +4194,7 @@ const specialArtCards = [
 selector: '#day-3 > .card',
 src: 'toda-stay-card.png',
 alt: '戶田家住宿小圖',
+className: 'toda-stay-art',
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const time = card.querySelector('.time-badge')?.textContent.trim() || '';
@@ -4214,7 +4219,7 @@ const targetCard = Array.from(document.querySelectorAll(art.selector)).find(card
 if (!targetCard) return;
 targetCard.classList.add('has-end-art');
 const img = document.createElement('img');
-img.className = 'itinerary-card-end-art';
+img.className = ['itinerary-card-end-art', art.className].filter(Boolean).join(' ');
 img.src = art.src;
 img.alt = art.alt;
 const insertBefore = targetCard.querySelector('.reorder-controls, .delete-card-btn, .card-extra-controls');
