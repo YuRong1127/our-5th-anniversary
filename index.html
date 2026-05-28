@@ -4349,6 +4349,7 @@ return title === '3COINS+plus MELSA榮店' || place.includes('3COINS+plus MELSA�
 });
 if (!targetCard) return;
 const imageSrc = 'threecoins-video-transceiver.png';
+const transceiverText = '兒童視訊對講機';
 const fields = getDetailFields(targetCard);
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
 const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
@@ -4356,6 +4357,11 @@ const existingImageBlock = blocks.find(block => block?.type === 'image' && block
 if (existingImageBlock) {
 let changed = false;
 const imageIndex = blocks.indexOf(existingImageBlock);
+const hasTransceiverText = blocks.some(block => block?.type === 'text' && stripHtml(block.html || block.text || '').includes(transceiverText));
+if (!hasTransceiverText && imageIndex >= 0) {
+blocks.splice(imageIndex, 0, { type: 'text', text: transceiverText, html: transceiverText });
+changed = true;
+}
 if (Number(existingImageBlock.width) !== 45) {
 existingImageBlock.width = 45;
 changed = true;
@@ -4371,6 +4377,7 @@ return;
 }
 fields[0].blocks = [
 ...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
+{ type: 'text', text: transceiverText, html: transceiverText },
 { type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 },
 { type: 'text', text: '', html: '' }
 ];
