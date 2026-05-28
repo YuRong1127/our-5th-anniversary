@@ -1967,8 +1967,8 @@ white-space: pre-wrap;
 word-break: break-word;
 }
 .note-text-input.after-image-text {
-min-height: 32px;
-padding: 4px 2px;
+min-height: 0;
+padding: 0;
 border-radius: 0;
 background: transparent;
 box-shadow: none;
@@ -2053,6 +2053,12 @@ margin-right: auto;
 -webkit-touch-callout: none;
 user-select: none;
 -webkit-user-select: none;
+}
+body.edit-mode .photo-preview-item {
+cursor: grab;
+}
+body.edit-mode .photo-preview-item:active {
+cursor: grabbing;
 }
 .note-image-frame {
 position: relative;
@@ -4352,12 +4358,6 @@ if (Number(existingImageBlock.width) !== 45) {
 existingImageBlock.width = 45;
 changed = true;
 }
-const imageIndex = blocks.indexOf(existingImageBlock);
-const hasTextAfterImage = blocks.slice(imageIndex + 1).some(block => block?.type === 'text');
-if (!hasTextAfterImage) {
-blocks.splice(imageIndex + 1, 0, { type: 'text', text: '', html: '' });
-changed = true;
-}
 if (changed) fields[0].blocks = blocks;
 if (!changed) return;
 setDetailFields(targetCard, fields);
@@ -4365,8 +4365,7 @@ return;
 }
 fields[0].blocks = [
 ...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
-{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 },
-{ type: 'text', text: '', html: '' }
+{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }
 ];
 setDetailFields(targetCard, fields);
 }
@@ -4982,11 +4981,13 @@ const cropRight = Math.max(0, Math.min(80 - cropLeft, Number(block.cropRight || 
 const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
-return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${isEditMode && selected ? `<button type="button" class="note-image-delete-btn btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">×</button>` : ''}</div>`;
+const imageControls = isEditMode && selected ? `<button type="button" class="note-image-delete-btn btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">×</button><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" title="拖曳調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : '';
+return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${imageControls}</div>`;
 }
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
 const isAfterImageEmpty = prevBlock?.type === 'image' && !stripHtml(block.html || '').trim();
+if (isAfterImageEmpty) return '';
 const placeholder = isAfterImageEmpty ? '可以繼續書寫文字，或再插入圖片' : '';
 const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
@@ -6051,17 +6052,23 @@ if (event.pointerType === 'mouse' && event.button !== 0) return;
 try { block.setPointerCapture(event.pointerId); } catch (error) {}
 const startX = event.clientX;
 const startY = event.clientY;
-const timer = setTimeout(() => {
+const isMousePointer = event.pointerType === 'mouse';
+const timer = isMousePointer ? null : setTimeout(() => {
 if (!noteImageDragState || noteImageDragState.pointerId !== event.pointerId) return;
 startNoteImageDrag(block, event.pointerId, startX, startY);
 }, 420);
-noteImageDragState = { block, pointerId: event.pointerId, active: false, startX, startY, timer };
+noteImageDragState = { block, pointerId: event.pointerId, active: false, startX, startY, timer, mouseDrag: isMousePointer };
 }, { passive: true });
 host.addEventListener('pointermove', event => {
 if (!noteImageDragState || noteImageDragState.pointerId !== event.pointerId) return;
 const moved = Math.hypot(event.clientX - noteImageDragState.startX, event.clientY - noteImageDragState.startY);
-if (!noteImageDragState.active && moved > 13) {
-clearTimeout(noteImageDragState.timer);
+if (!noteImageDragState.active && noteImageDragState.mouseDrag && moved > 4) {
+if (noteImageDragState.timer) clearTimeout(noteImageDragState.timer);
+noteImageDragState.timer = null;
+startNoteImageDrag(noteImageDragState.block, event.pointerId, noteImageDragState.startX, noteImageDragState.startY);
+}
+if (!noteImageDragState.active && !noteImageDragState.mouseDrag && moved > 13) {
+if (noteImageDragState.timer) clearTimeout(noteImageDragState.timer);
 noteImageDragState.timer = null;
 }
 if (noteImageDragState?.active) {
