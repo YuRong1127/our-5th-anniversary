@@ -1967,11 +1967,12 @@ white-space: pre-wrap;
 word-break: break-word;
 }
 .note-text-input.after-image-text {
-min-height: 0;
+min-height: 1.7em;
 padding: 0;
 border-radius: 0;
 background: transparent;
 box-shadow: none;
+outline: none;
 }
 .note-text-input.after-image-text:empty::before {
 content: '';
@@ -4354,8 +4355,13 @@ const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
 const existingImageBlock = blocks.find(block => block?.type === 'image' && block.src === imageSrc);
 if (existingImageBlock) {
 let changed = false;
+const imageIndex = blocks.indexOf(existingImageBlock);
 if (Number(existingImageBlock.width) !== 45) {
 existingImageBlock.width = 45;
+changed = true;
+}
+if (imageIndex >= 0 && blocks[imageIndex + 1]?.type !== 'text') {
+blocks.splice(imageIndex + 1, 0, { type: 'text', text: '', html: '' });
 changed = true;
 }
 if (changed) fields[0].blocks = blocks;
@@ -4365,7 +4371,8 @@ return;
 }
 fields[0].blocks = [
 ...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
-{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 }
+{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 },
+{ type: 'text', text: '', html: '' }
 ];
 setDetailFields(targetCard, fields);
 }
@@ -4987,8 +4994,7 @@ return `<div class="note-block photo-preview-item ${selected ? 'is-selected' : '
 if (!isEditMode) return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-view">${renderNoteTextViewHtml(block)}</div></div>`;
 const prevBlock = blocks[blockIndex - 1];
 const isAfterImageEmpty = prevBlock?.type === 'image' && !stripHtml(block.html || '').trim();
-if (isAfterImageEmpty) return '';
-const placeholder = isAfterImageEmpty ? '可以繼續書寫文字，或再插入圖片' : '';
+const placeholder = '';
 const editHtml = sanitizeNoteHtml(block.html || plainTextToHtml(block.text));
 const visibleEditHtml = stripHtml(editHtml).trim() ? editHtml : '';
 return `<div class="note-block" data-block-index="${blockIndex}" data-block-type="text"><div class="note-text-input ${isAfterImageEmpty ? 'after-image-text' : ''}" contenteditable="true" data-placeholder="${placeholder}" onfocus="setActiveNoteEditor(this)" onmouseup="setActiveNoteEditor(this)" onkeyup="setActiveNoteEditor(this)" oninput="setActiveNoteEditor(this)" onpaste="handleNotePlainPaste(event)" ontouchend="setTimeout(() => setActiveNoteEditor(this), 0)">${visibleEditHtml}</div></div>`;
