@@ -34,6 +34,7 @@
 <link rel="preload" as="image" href="wallet-corner-friends.png">
 <link rel="preload" as="image" href="ooishiya-dinner-card.png">
 <link rel="preload" as="image" href="toda-stay-card.png">
+<link rel="preload" as="image" href="toda-breakfast-card.png">
 <link rel="preload" as="image" href="sunrise-makeup-card.png">
 <link rel="preload" as="image" href="ama-hut-lunch-card.png">
 <link rel="preload" as="image" href="threecoins-video-transceiver.png">
@@ -4256,6 +4257,17 @@ return title === '戶田家' || (place.includes('戶田家') && time === '住宿
 },
 {
 selector: '#day-4 > .card',
+src: 'toda-breakfast-card.png',
+alt: '戶田家早餐小圖',
+className: 'toda-breakfast-art',
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+const place = card.dataset.mapPlaceValue || '';
+return title === '享用戶田家早餐' && place.includes('戶田家');
+}
+},
+{
+selector: '#day-4 > .card',
 src: 'ooishiya-dinner-card.png',
 alt: '大石屋晚餐小圖',
 className: 'ooishiya-dinner-art',
@@ -4277,7 +4289,7 @@ return title === '剛起床的日出化妝';
 }
 },
 {
-selector: '#day-5 > .card',
+selector: '.day-section > .card',
 src: 'ama-hut-lunch-card.png',
 alt: '八幡灶海女小屋午餐小圖',
 className: 'ama-hut-lunch-art',
