@@ -39,6 +39,7 @@
 <link rel="preload" as="image" href="sunrise-makeup-card.png">
 <link rel="preload" as="image" href="ama-hut-lunch-card.png">
 <link rel="preload" as="image" href="ooishiya-sleep-card.png">
+<link rel="preload" as="image" href="familymart-shopping-card.png">
 <link rel="preload" as="image" href="threecoins-video-transceiver.png">
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
@@ -4247,6 +4248,16 @@ document.querySelectorAll('.card.has-end-art').forEach(card => card.classList.re
 const specialArtCards = [
 {
 selector: '#day-3 > .card',
+src: 'familymart-shopping-card.png',
+alt: '逛全家超商小圖',
+className: 'familymart-shopping-art',
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+return title === '逛全家超商';
+}
+},
+{
+selector: '#day-3 > .card',
 src: 'toda-stay-card.png',
 alt: '戶田家住宿小圖',
 className: 'toda-stay-art',
@@ -4281,15 +4292,16 @@ return title === '大石屋 check in 吃晚餐' || (place.includes('大石屋') 
 }
 },
 {
-selector: '#day-4 > .card',
+selector: '.day-section > .card',
 src: 'ooishiya-sleep-card.png',
-alt: '大石屋睡飽小圖',
+alt: '大石屋睡飽飽小圖',
 className: 'ooishiya-sleep-art',
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const time = card.querySelector('.time-badge')?.textContent.trim() || '';
 const place = card.dataset.mapPlaceValue || '';
-return title === '大石屋睡飽' || (title === '大石屋' && time === '住宿' && place.includes('大石屋'));
+const desc = card.querySelector('.item-desc')?.textContent.trim() || '';
+return title.includes('大石屋睡飽') || (title === '大石屋' && time === '住宿' && place.includes('大石屋') && desc.includes('入住時間'));
 }
 },
 {
@@ -4384,8 +4396,9 @@ img.style.maxWidth = 'none';
 }
 function refitVisibleItineraryEndArt() {
 document.querySelectorAll('.day-section.active .card.has-end-art').forEach(card => {
-const img = card.querySelector('.itinerary-card-end-art');
-if (img) fitItineraryEndArtToTextBand(card, img);
+card.querySelectorAll('.itinerary-card-end-art').forEach(img => {
+fitItineraryEndArtToTextBand(card, img);
+});
 });
 }
 function enhanceSpecialItineraryDetails() {
