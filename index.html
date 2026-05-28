@@ -40,6 +40,7 @@
 <link rel="preload" as="image" href="ama-hut-lunch-card.png">
 <link rel="preload" as="image" href="ooishiya-sleep-card.png">
 <link rel="preload" as="image" href="familymart-shopping-card.png">
+<link rel="preload" as="image" href="hotel-actel-sleep-card.png">
 <link rel="preload" as="image" href="threecoins-video-transceiver.png">
 <link rel="preload" as="image" href="flight-return-corner-friends.png">
 <link rel="preload" as="image" href="goodboy.png">
@@ -4246,6 +4247,16 @@ function enhanceSpecialItineraryArt() {
 document.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
 document.querySelectorAll('.card.has-end-art').forEach(card => card.classList.remove('has-end-art'));
 const specialArtCards = [
+{
+selector: '#day-1 > .card',
+src: 'hotel-actel-sleep-card.png',
+alt: 'Hotel Actel睡覺小圖',
+className: 'hotel-actel-sleep-art',
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+return title === 'Hotel Actel睡覺';
+}
+},
 {
 selector: '#day-3 > .card',
 src: 'familymart-shopping-card.png',
