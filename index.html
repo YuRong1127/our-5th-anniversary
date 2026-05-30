@@ -4304,6 +4304,7 @@ alt: '週四起床梳整小圖',
 className: 'thursday-grooming-art',
 visibleTopRatio: 0.32,
 visibleBottomRatio: 1,
+verticalOffsetRatio: 0.08,
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 return title === '起床梳整' || title === '起床化妝';
@@ -4344,6 +4345,7 @@ img.alt = art.alt;
 if (art.visibleRatio) img.dataset.visibleRatio = String(art.visibleRatio);
 if (art.visibleTopRatio !== undefined) img.dataset.visibleTopRatio = String(art.visibleTopRatio);
 if (art.visibleBottomRatio !== undefined) img.dataset.visibleBottomRatio = String(art.visibleBottomRatio);
+if (art.verticalOffsetRatio !== undefined) img.dataset.verticalOffsetRatio = String(art.verticalOffsetRatio);
 const insertBefore = targetCard.querySelector('.reorder-controls, .delete-card-btn, .card-extra-controls');
 targetCard.insertBefore(img, insertBefore || null);
 requestAnimationFrame(() => fitItineraryEndArtToTextBand(targetCard, img));
@@ -4397,7 +4399,8 @@ visibleBounds = { top, bottom, height: Math.max(1, bottom - top + 1) };
 }
 const visibleRatio = Number(img.dataset.visibleRatio || 0.5);
 const visibleHeight = Math.max(1, cardRect.height * visibleRatio);
-const visibleTop = (cardRect.height - visibleHeight) / 2;
+const verticalOffset = Number(img.dataset.verticalOffsetRatio || 0);
+const visibleTop = (cardRect.height - visibleHeight) / 2 + cardRect.height * verticalOffset;
 const scale = visibleHeight / Math.max(1, visibleBounds.height);
 img.style.top = `${Math.round(visibleTop - visibleBounds.top * scale)}px`;
 img.style.height = `${Math.round(img.naturalHeight * scale)}px`;
