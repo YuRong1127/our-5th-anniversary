@@ -4279,7 +4279,7 @@ return title === '八幡灶海女小屋午餐';
 ];
 specialArtCards.forEach(art => {
 const targetCard = Array.from(document.querySelectorAll(art.selector)).find(card => art.match(card));
-if (!targetCard) return;
+ if (!targetCard) return false;
 targetCard.classList.add('has-end-art');
 const img = document.createElement('img');
 img.className = ['itinerary-card-end-art', art.className].filter(Boolean).join(' ');
@@ -4361,11 +4361,11 @@ function enhanceSpecialItineraryDetails() {
 const targetCard = Array.from(document.querySelectorAll('.day-section > .card')).find(card => {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const place = card.dataset.mapPlaceValue || '';
-return title === '3COINS+plus MELSA??' || place.includes('3COINS+plus MELSA??');
+ return title === '3COINS+plus MELSA榮店' || place.includes('3COINS+plus MELSA榮店');
 });
-if (!targetCard) return;
+if (!targetCard) return false;
 const imageSrc = 'threecoins-video-transceiver.png';
-const transceiverText = '???????';
+ const transceiverText = '兒童視訊對講機';
 const fields = getDetailFields(targetCard);
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
 const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
@@ -4387,9 +4387,9 @@ blocks.splice(imageIndex + 1, 0, { type: 'text', text: '', html: '' });
 changed = true;
 }
 if (changed) fields[0].blocks = blocks;
-if (!changed) return;
+ if (!changed) return false;
 setDetailFields(targetCard, fields);
-return;
+ return true;
 }
 fields[0].blocks = [
 ...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
@@ -4398,6 +4398,7 @@ fields[0].blocks = [
 { type: 'text', text: '', html: '' }
 ];
 setDetailFields(targetCard, fields);
+return true;
 }
 function cardHasMoreInfo(card) {
 return noteHasContent(card);
@@ -7872,6 +7873,8 @@ if (Number.isInteger(data.currentDay) && hasManualDaySelection && isTripInProgre
 
 enhanceRouteConnectors();
 enhanceItineraryCards();
+enhanceSpecialItineraryArt();
+const specialDetailsChanged = enhanceSpecialItineraryDetails();
 toggleEditMode(false);
 switchDay(hasManualDaySelection && isTripInProgress() ? currentDay : getInitialTripDay(), { auto: true, skipHistory: true });
 pushAppHistory(currentDay, true);
@@ -7884,6 +7887,7 @@ renderDocsFolder();
 editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
 editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
 isApplyingCloudData = false;
+if (specialDetailsChanged) queueTripCloudSave({ showStatus: false });
 if (addedDefaultPrepItems) queueTripCloudSave();
 }
 let saveStatusTimer = null;
@@ -8194,5 +8198,3 @@ document.addEventListener('paste', handlePlainTextPaste);
 </script>
 </body>
 </html>
-
-
