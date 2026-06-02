@@ -3903,7 +3903,11 @@ function enhanceRouteConnectors() {
 document.querySelectorAll('.connector-line').forEach(connector => {
 const flightInfo = getFlightConnectorInfo(connector);
 if (flightInfo) {
+connector.querySelector('.route-inline')?.remove();
+connector.classList.remove('has-route-plan', 'same-place-connector');
+
 if (!connector.querySelector('.flight-inline')) renderFlightConnector(connector, flightInfo);
+
 connector.classList.add('flight-connector');
 connector.querySelectorAll('.flight-inline .editable').forEach(el => el.contentEditable = isEditMode);
 return;
