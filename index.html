@@ -3184,7 +3184,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'non-steroid-itch-ointment.jpg' },
 { id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'biore-cleansing-oil-mist.jpg' },
 { id: 106, category: '無印良品', title: '防撕裂廚房紙巾', done: false, imageSrc: 'muji-tear-resistant-kitchen-paper.jpg' },
-{ id: 107, category: '3coins', title: '兒童視訊對講機', done: false, imageSrc: 'threecoins-video-transceiver.png' }
+{ id: 107, category: '3coins', title: '兒童對講機(需手提行李)', done: false, imageSrc: 'threecoins-video-transceiver.png' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
@@ -3193,7 +3193,7 @@ let wishItems = [
 { id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'non-steroid-itch-ointment.jpg' },
 { id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'biore-cleansing-oil-mist.jpg' },
 { id: 106, category: '無印良品', title: '防撕裂廚房紙巾', done: false, imageSrc: 'muji-tear-resistant-kitchen-paper.jpg' },
-{ id: 107, category: '3coins', title: '兒童視訊對講機', done: false, imageSrc: 'threecoins-video-transceiver.png' }
+{ id: 107, category: '3coins', title: '兒童對講機(需手提行李)', done: false, imageSrc: 'threecoins-video-transceiver.png' }
 ];
 let wishlistCategories = ['3coins', '無印良品', 'Uniqlo', '全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
 let currentWishlistCategory = '全家';
@@ -4399,7 +4399,7 @@ const place = card.dataset.mapPlaceValue || '';
 });
 if (!targetCard) return false;
 const imageSrc = 'threecoins-video-transceiver.png';
- const transceiverText = '兒童視訊對講機';
+ const transceiverText = '兒童對講機(需手提行李)';
 const fields = getDetailFields(targetCard);
 if (!fields[0]) fields[0] = { name: '', blocks: [] };
 const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
