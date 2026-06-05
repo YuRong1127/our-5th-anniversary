@@ -3183,27 +3183,31 @@ let currentDay = 1;
 let expenses = [];
 const REQUIRED_WISHLIST_ITEMS = [
 { id: 103, category: '藥妝店', title: '喉嚨殺菌消炎噴劑', done: false, imageSrc: 'throat-sterilizing-spray.webp' },
-{ id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false },
+{ id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'non-steroid-itch-ointment.jpg' },
 { id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'biore-cleansing-oil-mist.jpg' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false },
 { id: 103, category: '藥妝店', title: '喉嚨殺菌消炎噴劑', done: false, imageSrc: 'throat-sterilizing-spray.webp' },
-{ id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false },
+{ id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'non-steroid-itch-ointment.jpg' },
 { id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'biore-cleansing-oil-mist.jpg' }
 ];
-let wishlistCategories = ['全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
+let wishlistCategories = ['3coins', '無印良品', 'Uniqlo', '全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
 let currentWishlistCategory = '全家';
 let wishlistCategoryEditMode = false;
-const DEFAULT_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
-const REMOVED_WISHLIST_CATEGORIES = ['無印良品', 'Uniqlo', '3Coins'];
+const DEFAULT_WISHLIST_CATEGORIES = ['3coins', '無印良品', 'Uniqlo', '全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
+const REMOVED_WISHLIST_CATEGORIES = [];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家',
 'UNIQLO': 'Uniqlo',
-'3COINS': '3Coins'
+'3Coins': '3coins',
+'3COINS': '3coins'
 };
 const WISHLIST_PLACEHOLDERS = {
+'3coins': '新增 3coins 想買...',
+'無印良品': '新增無印良品想買...',
+'Uniqlo': '新增 Uniqlo 想買...',
 '全家': '新增全家想買...',
 '7-11': '新增 7-11 想買...',
 'Lawson': '新增 Lawson 想買...',
