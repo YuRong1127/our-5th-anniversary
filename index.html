@@ -239,7 +239,12 @@ margin: 0;
 object-fit: contain;
 object-position: right center;
 pointer-events: none;
-filter: none;
+filter: none !important;
+-webkit-filter: none !important;
+mix-blend-mode: normal;
+image-rendering: auto;
+backface-visibility: hidden;
+-webkit-backface-visibility: hidden;
 }
 .ama-hut-lunch-art {
 filter: drop-shadow(0 1px 0 rgba(141,110,99,.22)) drop-shadow(0 3px 5px rgba(141,110,99,.14));
