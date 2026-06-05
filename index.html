@@ -2609,6 +2609,7 @@ white-space: nowrap;
 .wishlist-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 42px 32px; align-items: center; gap: 8px; padding: 10px 10px; border: 1px solid #f4e4df; border-radius: 18px; background: #fff; box-shadow: 0 5px 14px rgba(141,110,99,.045); cursor: pointer; }
 .wishlist-check { width: 28px; height: 28px; border: 1px solid #efd9d2; border-radius: 50%; background: #fffaf7; color: var(--heart-pink); font-size: .85rem; font-weight: 900; }
 .wishlist-name { min-width: 0; color: #705b55; font-size: .92rem; font-weight: 800; line-height: 1.35; word-break: break-word; }
+.wishlist-name-note { display: inline; margin-left: 3px; color: #b79a91; font-size: .72em; font-weight: 800; white-space: nowrap; }
 #prep-list { gap: 7px; }
 #prep-list .wishlist-item {
 grid-template-columns: 28px minmax(0,1fr) 30px;
@@ -3184,7 +3185,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'non-steroid-itch-ointment.jpg' },
 { id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'biore-cleansing-oil-mist.jpg' },
 { id: 106, category: '無印良品', title: '防撕裂廚房紙巾', done: false, imageSrc: 'muji-tear-resistant-kitchen-paper.jpg' },
-{ id: 107, category: '3coins', title: '兒童對講機(需手提行李)', done: false, imageSrc: 'threecoins-video-transceiver.png' }
+{ id: 107, category: '3coins', title: '兒童對講機*需手提行李', done: false, imageSrc: 'threecoins-video-transceiver.png' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
@@ -3193,13 +3194,14 @@ let wishItems = [
 { id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'non-steroid-itch-ointment.jpg' },
 { id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'biore-cleansing-oil-mist.jpg' },
 { id: 106, category: '無印良品', title: '防撕裂廚房紙巾', done: false, imageSrc: 'muji-tear-resistant-kitchen-paper.jpg' },
-{ id: 107, category: '3coins', title: '兒童對講機(需手提行李)', done: false, imageSrc: 'threecoins-video-transceiver.png' }
+{ id: 107, category: '3coins', title: '兒童對講機*需手提行李', done: false, imageSrc: 'threecoins-video-transceiver.png' }
 ];
 let wishlistCategories = ['3coins', '無印良品', 'Uniqlo', '全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
 let currentWishlistCategory = '全家';
 let wishlistCategoryEditMode = false;
 const DEFAULT_WISHLIST_CATEGORIES = ['3coins', '無印良品', 'Uniqlo', '全家', '7-11', 'Lawson', '藥妝店', '機場必買', '伴手禮'];
 const REMOVED_WISHLIST_CATEGORIES = [];
+const OBSOLETE_WISHLIST_TITLES = ['兒童視訊對講機', '兒童對講機(需手提行李)'];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家',
 'UNIQLO': 'Uniqlo',
@@ -3219,6 +3221,9 @@ const WISHLIST_PLACEHOLDERS = {
 };
 function ensureRequiredWishlistItems() {
 let added = false;
+const beforeCount = wishItems.length;
+wishItems = wishItems.filter(item => !OBSOLETE_WISHLIST_TITLES.includes(item.title));
+if (wishItems.length !== beforeCount) added = true;
 REQUIRED_WISHLIST_ITEMS.forEach(requiredItem => {
 const existingItem = wishItems.find(item => item.category === requiredItem.category && item.title === requiredItem.title);
 if (existingItem) {
@@ -4392,47 +4397,7 @@ fitItineraryEndArtToTextBand(card, img);
 }
 
 function enhanceSpecialItineraryDetails() {
-const targetCard = Array.from(document.querySelectorAll('.day-section > .card')).find(card => {
-const title = card.querySelector('.item-title')?.textContent.trim() || '';
-const place = card.dataset.mapPlaceValue || '';
- return title === '3COINS+plus MELSA榮店' || place.includes('3COINS+plus MELSA榮店');
-});
-if (!targetCard) return false;
-const imageSrc = 'threecoins-video-transceiver.png';
- const transceiverText = '兒童對講機(需手提行李)';
-const fields = getDetailFields(targetCard);
-if (!fields[0]) fields[0] = { name: '', blocks: [] };
-const blocks = Array.isArray(fields[0].blocks) ? fields[0].blocks : [];
-const existingImageBlock = blocks.find(block => block?.type === 'image' && block.src === imageSrc);
-if (existingImageBlock) {
-let changed = false;
-const imageIndex = blocks.indexOf(existingImageBlock);
-const hasTransceiverText = blocks.some(block => block?.type === 'text' && stripHtml(block.html || block.text || '').includes(transceiverText));
-if (!hasTransceiverText && imageIndex >= 0) {
-blocks.splice(imageIndex, 0, { type: 'text', text: transceiverText, html: transceiverText });
-changed = true;
-}
-if (Number(existingImageBlock.width) !== 45) {
-existingImageBlock.width = 45;
-changed = true;
-}
-if (imageIndex >= 0 && blocks[imageIndex + 1]?.type !== 'text') {
-blocks.splice(imageIndex + 1, 0, { type: 'text', text: '', html: '' });
-changed = true;
-}
-if (changed) fields[0].blocks = blocks;
- if (!changed) return false;
-setDetailFields(targetCard, fields);
- return true;
-}
-fields[0].blocks = [
-...blocks.filter(block => block?.type !== 'text' || stripHtml(block.html || block.text || '').trim()),
-{ type: 'text', text: transceiverText, html: transceiverText },
-{ type: 'image', src: imageSrc, originalSrc: imageSrc, strokes: [], width: 45, cropHeight: 0, cropTop: 0, cropLeft: 0, cropRight: 0 },
-{ type: 'text', text: '', html: '' }
-];
-setDetailFields(targetCard, fields);
-return true;
+return false;
 }
 function cardHasMoreInfo(card) {
 return noteHasContent(card);
@@ -6579,7 +6544,7 @@ wishlistCategories = wishlistCategories
 wishItems.forEach(item => {
 if (item && WISHLIST_CATEGORY_ALIASES[item.category]) item.category = WISHLIST_CATEGORY_ALIASES[item.category];
 });
-wishItems = wishItems.filter(item => !REMOVED_WISHLIST_CATEGORIES.includes(item.category));
+wishItems = wishItems.filter(item => !REMOVED_WISHLIST_CATEGORIES.includes(item.category) && !OBSOLETE_WISHLIST_TITLES.includes(item.title));
 ensureRequiredWishlistItems();
 if (WISHLIST_CATEGORY_ALIASES[currentWishlistCategory]) currentWishlistCategory = WISHLIST_CATEGORY_ALIASES[currentWishlistCategory];
 if (REMOVED_WISHLIST_CATEGORIES.includes(currentWishlistCategory)) currentWishlistCategory = DEFAULT_WISHLIST_CATEGORIES[0] || '';
@@ -6752,6 +6717,14 @@ event.target.value = '';
 renderWishlist();
 queueTripCloudSave();
 }
+function renderWishlistTitle(title) {
+const value = String(title || '');
+const markerIndex = value.indexOf('*');
+if (markerIndex < 0) return escapeHtml(value);
+const main = value.slice(0, markerIndex).trimEnd();
+const note = value.slice(markerIndex);
+return `${escapeHtml(main)}<span class="wishlist-name-note">${escapeHtml(note)}</span>`;
+}
 function renderWishlist() {
 const list = document.getElementById('wishlist-list');
 if (!list) return;
@@ -6769,7 +6742,7 @@ return;
 }
 list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}" onclick="handleWishlistItemClick(event, ${item.id})">
 <button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${item.id})">${item.done ? '✓' : ''}</button>
-<div class="wishlist-name">${escapeHtml(item.title)}</div>
+<div class="wishlist-name">${renderWishlistTitle(item.title)}</div>
 <button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${item.id})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(getWishlistImageSrc(item))}" alt="${escapeHtml(item.title)}圖片">` : '📷'}</button>
 <input type="file" id="wishlist-photo-input-${item.id}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistImage(${item.id}, event)">
 <button type="button" class="wishlist-delete btn-press-effect" onclick="event.stopPropagation(); deleteWishlistItem(${item.id})">×</button>
@@ -6878,7 +6851,7 @@ return;
 }
 list.innerHTML = docItems.map(item => `<div class="wishlist-item" onclick="openDocFile(event, ${item.id})">
 <div class="docs-thumb ${getDocFileSrc(item) && getDocFileType(item).startsWith('image/') ? 'has-image' : ''}" aria-hidden="true">${getDocThumbHtml(item)}</div>
-<div class="wishlist-name">${escapeHtml(item.title)}</div>
+<div class="wishlist-name">${renderWishlistTitle(item.title)}</div>
 <div class="docs-menu-wrap" data-doc-menu="${item.id}"><button type="button" class="docs-menu-btn btn-press-effect" aria-label="管理資料" onclick="toggleDocMenu(event, ${item.id})">⋯</button><div class="docs-menu-popover"><button type="button" onclick="event.stopPropagation(); renameDocItem(${item.id})">改名稱</button><button type="button" onclick="event.stopPropagation(); deleteDocItem(${item.id})">刪除</button></div></div>
 </div>`).join('');
 }
@@ -6972,7 +6945,7 @@ return;
 }
 list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}">
 <button type="button" class="wishlist-check btn-press-effect" onclick="togglePrepItem(${item.id})">${item.done ? '✓' : ''}</button>
-<div class="wishlist-name">${escapeHtml(item.title)}</div>
+<div class="wishlist-name">${renderWishlistTitle(item.title)}</div>
 <button type="button" class="wishlist-delete btn-press-effect" onclick="deletePrepItem(${item.id})">×</button>
 </div>`).join('');
 }
