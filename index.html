@@ -3181,6 +3181,11 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <script>
 let currentDay = 1;
 let expenses = [];
+const REQUIRED_WISHLIST_ITEMS = [
+{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎噴劑', done: false },
+{ id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false },
+{ id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false }
+];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false },
@@ -3206,6 +3211,19 @@ const WISHLIST_PLACEHOLDERS = {
 '機場必買': '新增機場想買...',
 '伴手禮': '新增伴手禮...'
 };
+function ensureRequiredWishlistItems() {
+const existingKeys = new Set(wishItems.map(item => `${item.category}::${item.title}`));
+let added = false;
+REQUIRED_WISHLIST_ITEMS.forEach(item => {
+const key = `${item.category}::${item.title}`;
+if (!existingKeys.has(key)) {
+wishItems.push({ ...item });
+existingKeys.add(key);
+added = true;
+}
+});
+return added;
+}
 let prepItems = [
 { id: 201, category: '出行必備', title: '護照 / ESIM', done: false },
 { id: 202, category: '出行必備', title: '機票 / 訂房確認', done: false },
@@ -6553,6 +6571,7 @@ wishItems.forEach(item => {
 if (item && WISHLIST_CATEGORY_ALIASES[item.category]) item.category = WISHLIST_CATEGORY_ALIASES[item.category];
 });
 wishItems = wishItems.filter(item => !REMOVED_WISHLIST_CATEGORIES.includes(item.category));
+ensureRequiredWishlistItems();
 if (WISHLIST_CATEGORY_ALIASES[currentWishlistCategory]) currentWishlistCategory = WISHLIST_CATEGORY_ALIASES[currentWishlistCategory];
 if (REMOVED_WISHLIST_CATEGORIES.includes(currentWishlistCategory)) currentWishlistCategory = DEFAULT_WISHLIST_CATEGORIES[0] || '';
 const next = [];
@@ -7871,6 +7890,7 @@ standardizeItemDescBreaks();
 expenses = Array.isArray(data.expenses) ? data.expenses : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 wishlistCategories = Array.isArray(data.wishlistCategories) ? data.wishlistCategories : wishlistCategories;
+const addedRequiredWishlistItems = ensureRequiredWishlistItems();
 normalizeWishlistCategories();
 prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
 docItems = Array.isArray(data.docItems) ? data.docItems : docItems;
@@ -7894,7 +7914,7 @@ renderDocsFolder();
 editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
 editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
 isApplyingCloudData = false;
-if (specialDetailsChanged) queueTripCloudSave({ showStatus: false });
+if (specialDetailsChanged || addedRequiredWishlistItems) queueTripCloudSave({ showStatus: false });
 if (addedDefaultPrepItems) queueTripCloudSave();
 }
 let saveStatusTimer = null;
