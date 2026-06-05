@@ -3216,7 +3216,7 @@ let added = false;
 REQUIRED_WISHLIST_ITEMS.forEach(requiredItem => {
 const existingItem = wishItems.find(item => item.category === requiredItem.category && item.title === requiredItem.title);
 if (existingItem) {
-if (requiredItem.imageSrc && !getWishlistImageSrc(existingItem)) {
+if (requiredItem.imageSrc && getWishlistImageSrc(existingItem) !== requiredItem.imageSrc) {
 existingItem.imageSrc = requiredItem.imageSrc;
 added = true;
 }
