@@ -4166,6 +4166,7 @@ selector: '.day-section > .card',
 src: 'images/cards/ooishiya-sleep-card.png',
 alt: '大石屋睡飽飽小圖',
 className: 'ooishiya-sleep-art',
+visibleRatio: 0.62,
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 const time = card.querySelector('.time-badge')?.textContent.trim() || '';
@@ -4181,7 +4182,7 @@ alt: '週四起床梳整小圖',
 className: 'thursday-grooming-art',
 visibleTopRatio: 0.32,
 visibleBottomRatio: 1,
-verticalOffsetRatio: 0.08,
+verticalOffsetRatio: 0.14,
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 return title === '起床梳整' || title === '起床化妝';
