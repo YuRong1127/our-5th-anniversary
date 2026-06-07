@@ -2012,6 +2012,52 @@ padding: 0 3px;
 box-decoration-break: clone;
 -webkit-box-decoration-break: clone;
 }
+.note-highlight-section {
+margin: 2px 0 10px;
+}
+.note-highlight-section:last-child {
+margin-bottom: 0;
+}
+.note-highlight-heading {
+display: block;
+margin: 4px 0 3px;
+line-height: 1.78;
+}
+.note-highlight-body {
+position: relative;
+margin: 0 0 2px;
+}
+.note-highlight-body-content {
+--note-clamp-lines: 3;
+line-height: 1.78;
+}
+.note-highlight-body.is-collapsible:not(.is-expanded) .note-highlight-body-content {
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: var(--note-clamp-lines);
+overflow: hidden;
+}
+.note-highlight-body-toggle {
+display: none;
+margin: 4px 0 0;
+border: 0;
+padding: 0;
+background: transparent;
+color: #c07d6d;
+font-size: .86rem;
+font-weight: 900;
+line-height: 1.5;
+text-decoration: underline;
+text-underline-offset: 3px;
+}
+.note-highlight-body.has-overflow .note-highlight-body-toggle {
+display: inline-flex;
+}
+@media (max-width: 640px) {
+.note-highlight-body-content {
+--note-clamp-lines: 2;
+}
+}
 .note-nowrap {
 white-space: nowrap;
 }
@@ -4690,9 +4736,97 @@ walk(child);
 walk(wrapper);
 return wrapper.innerHTML;
 }
+function splitHtmlLines(value) {
+const template = document.createElement('template');
+template.innerHTML = value || '';
+const lines = [[]];
+function appendNode(node) {
+if (node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'br') {
+lines.push([]);
+return;
+}
+lines[lines.length - 1].push(node.cloneNode(true));
+}
+Array.from(template.content.childNodes).forEach(appendNode);
+return lines.map(nodes => {
+const box = document.createElement('div');
+nodes.forEach(node => box.appendChild(node));
+return {
+html: box.innerHTML,
+text: (box.textContent || '').trim()
+};
+});
+}
+function lineHasNoteHighlight(lineHtml) {
+const box = document.createElement('div');
+box.innerHTML = lineHtml || '';
+return Boolean(box.querySelector('span[style*="background-color"]'));
+}
+function renderHighlightedNoteSections(html) {
+const lines = splitHtmlLines(html);
+if (!lines.some(line => line.text && lineHasNoteHighlight(line.html))) return html;
+const output = [];
+let pendingPlain = [];
+let currentSection = null;
+function flushPlain() {
+if (!pendingPlain.length) return;
+output.push(pendingPlain.map(line => line.html).join('<br>'));
+pendingPlain = [];
+}
+function flushSection() {
+if (!currentSection) return;
+const bodyHtml = currentSection.body.map(line => line.html).join('<br>');
+output.push(`<div class="note-highlight-section"><span class="note-highlight-heading">${currentSection.heading.html}</span>${bodyHtml ? `<div class="note-highlight-body is-collapsible"><div class="note-highlight-body-content">${bodyHtml}</div><button type="button" class="note-highlight-body-toggle btn-press-effect" onclick="toggleNoteHighlightBody(event, this)">...查看更多</button></div>` : ''}</div>`);
+currentSection = null;
+}
+lines.forEach(line => {
+const isHeading = line.text && lineHasNoteHighlight(line.html);
+if (isHeading) {
+flushPlain();
+flushSection();
+currentSection = { heading: line, body: [] };
+return;
+}
+if (currentSection) {
+currentSection.body.push(line);
+} else {
+pendingPlain.push(line);
+}
+});
+flushSection();
+flushPlain();
+return output.filter(Boolean).join('<br>');
+}
 function renderNoteTextViewHtml(block) {
 let html = linkifyRichHtml(block.html || plainTextToHtml(block.text));
+html = renderHighlightedNoteSections(html);
 return html;
+}
+function toggleNoteHighlightBody(event, btn) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const body = btn?.closest?.('.note-highlight-body');
+if (!body) return;
+body.classList.toggle('is-expanded');
+btn.textContent = body.classList.contains('is-expanded') ? '收起' : '...查看更多';
+}
+function updateNoteHighlightCollapses(root = document) {
+root.querySelectorAll('.note-highlight-body.is-collapsible').forEach(body => {
+const content = body.querySelector('.note-highlight-body-content');
+if (!content) return;
+body.classList.remove('has-overflow');
+const wasExpanded = body.classList.contains('is-expanded');
+body.classList.remove('is-expanded');
+requestAnimationFrame(() => {
+const hasOverflow = content.scrollHeight > content.clientHeight + 2;
+body.classList.toggle('has-overflow', hasOverflow);
+if (wasExpanded && hasOverflow) body.classList.add('is-expanded');
+const btn = body.querySelector('.note-highlight-body-toggle');
+if (btn) btn.textContent = body.classList.contains('is-expanded') ? '收起' : '...查看更多';
+});
+});
 }
 function injectFutamiWashhandImageBlock(blocks, card) {
 const cardTitle = card?.querySelector('.item-title')?.textContent || '';
@@ -4885,6 +5019,7 @@ const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration $
 const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, false) : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${flightViewHtml || blocksHtml}${insertTools}${flightCorner}</div>`;
 bindNoteToolbarButtons(host);
+if (!isEditMode) updateNoteHighlightCollapses(host);
 focusPendingNoteBlock();
 }
 function setActiveNoteEditor(el) {
@@ -5838,6 +5973,7 @@ document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.displ
 if (isFlight) await warmFlightDetailImages(flightPairKey);
 renderDetailFields();
 openSimpleModal('itinerary-detail-modal');
+if (!isEditMode) setTimeout(() => updateNoteHighlightCollapses(document.getElementById('itinerary-detail-fields')), 30);
 resetItineraryDetailScroll();
 setTimeout(resetItineraryDetailScroll, 50);
 setTimeout(resetItineraryDetailScroll, 220);
@@ -6025,6 +6161,7 @@ const mainBtn = document.getElementById('main-btn');
 if (isMenuShowing && mainBtn && menu && !mainBtn.contains(e.target) && !menu.contains(e.target)) closeMenu();
 });
 window.addEventListener('scroll', () => { if (isMenuShowing) closeMenu(); }, { passive: true });
+window.addEventListener('resize', () => updateNoteHighlightCollapses(document.getElementById('itinerary-detail-fields') || document), { passive: true });
 
 
 
