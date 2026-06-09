@@ -36,7 +36,9 @@
 <link rel="preload" as="image" href="images/cards/toda-stay-card.png">
 <link rel="preload" as="image" href="images/cards/toda-breakfast-card.png">
 <link rel="preload" as="image" href="images/cards/thursday-grooming-card.png">
+<link rel="preload" as="image" href="images/cards/kompal-sakaehigashi-card.png">
 <link rel="preload" as="image" href="images/cards/sunrise-makeup-card.png">
+<link rel="preload" as="image" href="images/cards/meotoiwa-moon-card.png">
 <link rel="preload" as="image" href="images/cards/ama-hut-lunch-card.png">
 <link rel="preload" as="image" href="images/cards/ooishiya-sleep-card.png">
 <link rel="preload" as="image" href="images/cards/familymart-shopping-card.png">
@@ -4267,6 +4269,19 @@ return title === '起床梳整' || title === '起床化妝';
 }
 },
 {
+selector: '#day-2 > .card',
+src: 'images/cards/kompal-sakaehigashi-card.png',
+alt: 'コンパル 栄東店小圖',
+className: 'kompal-sakaehigashi-art',
+visibleRatio: 0.78,
+visibleTopRatio: 0.02,
+visibleBottomRatio: 0.98,
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+return title === 'コンパル 栄東店';
+}
+},
+{
 selector: '#day-5 > .card',
 src: 'images/cards/sunrise-makeup-card.png',
 alt: '日出化妝小圖',
@@ -4274,6 +4289,19 @@ className: 'sunrise-makeup-art',
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
 return title === '剛起床的日出化妝';
+}
+},
+{
+selector: '#day-4 > .card',
+src: 'images/cards/meotoiwa-moon-card.png',
+alt: '夫妻岩賞月小圖',
+className: 'meotoiwa-moon-art',
+visibleRatio: 0.7,
+visibleTopRatio: 0.04,
+visibleBottomRatio: 0.96,
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+return title === '夫妻岩賞月';
 }
 },
 {
