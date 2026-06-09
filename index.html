@@ -4402,7 +4402,34 @@ fitItineraryEndArtToTextBand(card, img);
 }
 
 function enhanceSpecialItineraryDetails() {
-return false;
+let changed = false;
+const suzukaInfoText = '行李寄存資訊\n1.ecbo cloak app預約7-11寄放¥800/件\n2.白子車站置物櫃(出剪票口後右轉走到底):中置物櫃3個(現金支付¥500)、小置物櫃10個(現金支付¥300)，都只能投¥100硬幣\n3.觀光案內所行李寄放¥1000/件 ※營業時間09:30-18:00';
+const suzukaInfoHtml = '<span style="color: #6f7fa6;"><b>行李寄存資訊</b></span><br>1.ecbo cloak app預約7-11寄放¥800/件<br>2.白子車站置物櫃(出剪票口後右轉走到底):中置物櫃3個(現金支付¥500)、小置物櫃10個(現金支付¥300)，都只能投¥100硬幣<br>3.觀光案內所行李寄放¥1000/件 ※營業時間09:30-18:00';
+const targetCard = Array.from(document.querySelectorAll('#day-2 > .card')).find(card => {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+const time = card.querySelector('.time-badge')?.textContent.trim() || '';
+const desc = card.querySelector('.item-desc')?.textContent.trim() || '';
+return title === '鈴鹿觀光案內所' && (time === '09:30 - 09:39' || desc.includes('寄放行李'));
+});
+if (targetCard) {
+const nextFields = [{
+name: '',
+blocks: [
+{ type: 'text', text: suzukaInfoText, html: suzukaInfoHtml },
+{ type: 'image', src: 'images/details/suzuka-tourist-info.png', width: 100 }
+]
+}];
+const before = JSON.stringify(getDetailFields(targetCard));
+setDetailFields(targetCard, nextFields);
+const after = JSON.stringify(getDetailFields(targetCard));
+changed = before !== after;
+const moreBtn = targetCard.querySelector('.more-info-btn');
+if (moreBtn) {
+moreBtn.classList.remove('is-empty');
+moreBtn.textContent = getMoreInfoButtonText(targetCard, true);
+}
+}
+return changed;
 }
 function cardHasMoreInfo(card) {
 return noteHasContent(card);
@@ -6023,6 +6050,7 @@ currentDetailCard = btn.closest('.card');
 currentNoteImageBlockIndex = null;
 if (!currentDetailCard) return;
 const isFlight = isFlightDetailCard(currentDetailCard);
+enhanceSpecialItineraryDetails();
 if (!isEditMode && !noteHasContent(currentDetailCard)) {
 showAlert('這個行程還沒有介紹內容喔');
 return;
