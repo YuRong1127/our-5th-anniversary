@@ -1,10 +1,11 @@
-const CACHE_VERSION = 'mie-anniversary-v20260610-assets-3';
+const CACHE_VERSION = 'mie-anniversary-v20260611-secure-docs-2';
 const APP_SHELL_URL = './index.html';
+const SECURE_VAULT_URL = './secure-docs/vault.json';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.add(APP_SHELL_URL))
+    caches.open(CACHE_VERSION).then((cache) => cache.addAll([APP_SHELL_URL, SECURE_VAULT_URL]))
   );
 });
 
