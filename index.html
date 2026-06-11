@@ -2569,6 +2569,7 @@ width: 28px;
 height: 28px;
 }
 .docs-hint { margin: -4px 2px 12px; color: #b79a91; font-size: .78rem; font-weight: 800; line-height: 1.55; text-align: center; }
+.docs-security-note { margin: -6px 0 12px; color: #b79a91; font-size: .72rem; font-weight: 800; text-align: center; }
 .docs-add-form { justify-content: center; margin: -2px 0 16px; }
 .docs-add-btn { width: auto; min-width: 104px; height: 36px; flex: 0 0 auto; padding: 0 14px; border: 1px solid #f0d9d2; border-radius: 999px; background: #fff5f0; color: #c47b72; font-size: .78rem; display: inline-flex; align-items: center; justify-content: center; gap: 5px; box-shadow: none; }
 .docs-add-btn .docs-add-plus { font-size: .98rem; line-height: 1; }
@@ -3116,7 +3117,7 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <div id="time-range-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-fields"><div class="time-range-field"><label for="time-range-start">開始</label><input id="time-range-start" class="time-range-input" type="text" inputmode="numeric" maxlength="5" placeholder="08:00" oninput="formatTimeRangeInput(this)"></div><div class="time-range-field"><label for="time-range-end">結束</label><input id="time-range-end" class="time-range-input" type="text" inputmode="numeric" maxlength="5" placeholder="09:10" oninput="formatTimeRangeInput(this)"></div></div><div class="time-range-actions"><button type="button" class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()">未定</button><button type="button" class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()">儲存時間</button></div></div></div></div>
 <div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧺 想買的哩哩扣扣</div><div class="wishlist-category-wrap"><button type="button" id="wishlist-category-edit-toggle" class="wishlist-category-edit-btn btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯</button><div class="wishlist-tabs" id="wishlist-tabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div class="wishlist-form"><input type="text" id="wishlist-input" class="wishlist-input" placeholder="例如：布丁、限定餅乾..." onkeydown="handleWishlistKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">＋</button></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
-<div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('docs-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">📁 重要資料夾</div><div class="wishlist-form docs-add-form"><button type="button" class="wishlist-add-btn docs-add-btn btn-press-effect" onclick="addDocItem()"><span class="docs-add-plus">＋</span><span>新增資料</span></button><input type="file" id="docs-new-file-input" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="attachNewDocFile(event)"></div><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
+<div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeSecureDocs()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🔐 重要資料夾</div><p class="docs-security-note">完整憑證只在這台裝置暫時解密，關閉後會重新上鎖</p><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
 <div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">顯示在行程中的文字</label><textarea id="route-plan-text" class="wishlist-input" style="height: 80px; resize: none; padding-top: 10px;" placeholder="例如：近鐵特急 / 步行 8 分"></textarea><div id="route-plan-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
@@ -3348,9 +3349,15 @@ window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
 const STATIC_CONTENT_VERSION = '2026-05-19-naiku-detail-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 
-const correctPw = '20211127';
-const passwordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="images/pigs/typing-pig.png" alt="打字小豬">';
+const SECURE_DOCS_URL = new URL('secure-docs/vault.json?v=20260611-password-2', window.location.href).href;
+const editPasswordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="images/pigs/typing-pig.png" alt="打字小豬">';
+const docsPasswordPromptHtml = '請輸入密碼以查看重要資料<img class="pw-hint-pig" src="images/pigs/typing-pig.png" alt="打字小豬">';
+let passwordPromptHtml = editPasswordPromptHtml;
 const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="images/pigs/angry-pig-inline.png" alt="生氣小豬">';
+let passwordAuthMode = 'edit';
+let secureDocs = [];
+let secureDocsObjectUrls = [];
+let passwordCheckInProgress = false;
 
 // ???????????????????????????????
 let currentFX = 0.2;
@@ -6240,6 +6247,8 @@ window.addEventListener('resize', () => updateNoteHighlightCollapses(document.ge
 
 function handleEditClick() {
 closeMenu();
+passwordAuthMode = 'edit';
+passwordPromptHtml = editPasswordPromptHtml;
 document.getElementById('pw-input').value = '';
 document.getElementById('auth-cancel-btn').style.display = '';
 document.getElementById('pw-hint').innerHTML = passwordPromptHtml;
@@ -6260,16 +6269,60 @@ document.querySelectorAll('.heart-slot').forEach((s, i) => s.classList.toggle('a
 function vibrateKeypad(duration = 12) {
 if (navigator.vibrate) navigator.vibrate(duration);
 }
-function handlePasswordValue(value) {
+function base64ToBytes(value) {
+const binary = atob(value);
+return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+async function decryptSecureVault(password) {
+const response = await fetch(SECURE_DOCS_URL, { cache: 'no-store' });
+if (!response.ok) throw new Error('Secure vault could not be loaded');
+const vault = await response.json();
+const keyMaterial = await crypto.subtle.importKey(
+'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']
+);
+const key = await crypto.subtle.deriveKey({
+name: 'PBKDF2',
+salt: base64ToBytes(vault.salt),
+iterations: vault.iterations,
+hash: 'SHA-256'
+}, keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+const plaintext = await crypto.subtle.decrypt({
+name: 'AES-GCM',
+iv: base64ToBytes(vault.iv)
+}, key, base64ToBytes(vault.ciphertext));
+const data = JSON.parse(new TextDecoder().decode(plaintext));
+if (data.version !== 1 || !Array.isArray(data.documents)) throw new Error('Invalid secure vault');
+return data;
+}
+function createSecureDocItems(documents) {
+secureDocsObjectUrls.forEach(url => URL.revokeObjectURL(url));
+secureDocsObjectUrls = [];
+secureDocs = documents.map(document => {
+const objectUrl = URL.createObjectURL(new Blob([base64ToBytes(document.dataBase64)], { type: document.fileType || 'application/octet-stream' }));
+secureDocsObjectUrls.push(objectUrl);
+return { ...document, fileSrc: objectUrl };
+});
+}
+async function handlePasswordValue(value) {
 updateHearts(value);
 const hint = document.getElementById('pw-hint');
 const input = document.getElementById('pw-input');
-if (value === correctPw) {
+if (value.length === 8 && !passwordCheckInProgress) {
+passwordCheckInProgress = true;
+hint.textContent = '解鎖中...';
+try {
+const vault = await decryptSecureVault(value);
+if (passwordAuthMode === 'docs') createSecureDocItems(vault.documents);
 setTimeout(() => {
 closeModal('password-modal');
+if (passwordAuthMode === 'docs') {
+renderDocsFolder();
+openSimpleModal('docs-modal');
+} else {
 toggleEditMode(true);
+}
 }, 250);
-} else if (value.length >= 8) {
+} catch (error) {
 hint.innerHTML = passwordWrongHtml;
 document.getElementById('auth-cancel-btn').style.display = 'none';
 setTimeout(() => {
@@ -6278,6 +6331,9 @@ updateHearts('');
 hint.innerHTML = passwordPromptHtml;
 document.getElementById('auth-cancel-btn').style.display = '';
 }, 900);
+} finally {
+passwordCheckInProgress = false;
+}
 }
 }
 function pressPwKey(num) {
@@ -6657,9 +6713,22 @@ list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'don
 }
 function openDocsFolder() {
 closeMenu();
-renderDocsFolder();
+passwordAuthMode = 'docs';
+passwordPromptHtml = docsPasswordPromptHtml;
+document.getElementById('pw-input').value = '';
+document.getElementById('auth-cancel-btn').style.display = '';
+document.getElementById('pw-hint').innerHTML = passwordPromptHtml;
+updateHearts('');
 document.activeElement?.blur?.();
-openSimpleModal('docs-modal');
+openSimpleModal('password-modal');
+}
+function closeSecureDocs() {
+closeModal('docs-modal');
+secureDocsObjectUrls.forEach(url => URL.revokeObjectURL(url));
+secureDocsObjectUrls = [];
+secureDocs = [];
+const list = document.getElementById('docs-list');
+if (list) list.innerHTML = '';
 }
 function addDocItem() {
 document.getElementById('docs-new-file-input')?.click();
@@ -6716,7 +6785,7 @@ event.preventDefault();
 event.stopPropagation();
 }
 closeDocMenus();
-const item = docItems.find(doc => doc.id === id);
+const item = secureDocs.find(doc => String(doc.id) === String(id));
 if (!item) return;
 const src = getDocFileSrc(item);
 if (!src) {
@@ -6752,14 +6821,14 @@ return '<span class="docs-file-mark">DOC</span>';
 function renderDocsFolder() {
 const list = document.getElementById('docs-list');
 if (!list) return;
-if (!docItems.length) {
-list.innerHTML = `<div class="wishlist-empty">重要資料夾還空空的<br>可以先新增飯店憑證或 VJW 截圖</div>`;
+if (!secureDocs.length) {
+list.innerHTML = `<div class="wishlist-empty">沒有可顯示的加密資料</div>`;
 return;
 }
-list.innerHTML = docItems.map(item => `<div class="wishlist-item" onclick="openDocFile(event, ${item.id})">
+list.innerHTML = secureDocs.map(item => `<div class="wishlist-item" onclick="openDocFile(event, '${item.id}')">
 <div class="docs-thumb ${getDocFileSrc(item) && getDocFileType(item).startsWith('image/') ? 'has-image' : ''}" aria-hidden="true">${getDocThumbHtml(item)}</div>
 <div class="wishlist-name">${renderWishlistTitle(item.title)}</div>
-<div class="docs-menu-wrap" data-doc-menu="${item.id}"><button type="button" class="docs-menu-btn btn-press-effect" aria-label="管理資料" onclick="toggleDocMenu(event, ${item.id})">⋯</button><div class="docs-menu-popover"><button type="button" onclick="event.stopPropagation(); renameDocItem(${item.id})">改名稱</button><button type="button" onclick="event.stopPropagation(); deleteDocItem(${item.id})">刪除</button></div></div>
+<div class="docs-file-mark">查看</div>
 </div>`).join('');
 }
 function openPrepList() {
