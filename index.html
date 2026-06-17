@@ -264,6 +264,15 @@ mix-blend-mode: normal;
 image-rendering: auto;
 backface-visibility: hidden;
 -webkit-backface-visibility: hidden;
+visibility: hidden;
+opacity: 0;
+}
+.itinerary-card-end-art.is-fitted {
+visibility: visible;
+opacity: 1;
+}
+.meotoiwa-moon-art.is-fitted {
+opacity: .82;
 }
 .ama-hut-lunch-art {
 filter: drop-shadow(0 1px 0 rgba(141,110,99,.22)) drop-shadow(0 3px 5px rgba(141,110,99,.14));
@@ -271,7 +280,7 @@ filter: drop-shadow(0 1px 0 rgba(141,110,99,.22)) drop-shadow(0 3px 5px rgba(141
 body.edit-mode .card.has-end-art {
 padding-right: 20px;
 }
-body.edit-mode .itinerary-card-end-art {
+body.edit-mode .itinerary-card-end-art.is-fitted {
 opacity: .55;
 }
 body.day-3-theme header,
@@ -4513,6 +4522,7 @@ async function fitItineraryEndArtToTextBand(card, img) {
 if (!card || !img) return;
 const cardRect = card.getBoundingClientRect();
 if (!cardRect.width || !cardRect.height) return;
+img.classList.remove('is-fitted');
 let visibleBounds = await getItineraryEndArtVisibleBounds(img);
 const visibleTopRatio = Number(img.dataset.visibleTopRatio);
 const visibleBottomRatio = Number(img.dataset.visibleBottomRatio);
@@ -4529,6 +4539,7 @@ const scale = visibleHeight / Math.max(1, visibleBounds.height);
 img.style.top = `${Math.round(visibleTop - visibleBounds.top * scale)}px`;
 img.style.height = `${Math.round(img.naturalHeight * scale)}px`;
 img.style.maxWidth = 'none';
+img.classList.add('is-fitted');
 }
 function refitVisibleItineraryEndArt() {
 document.querySelectorAll('.day-section.active .card.has-end-art').forEach(card => {
@@ -7908,11 +7919,18 @@ startX = e.touches[0].clientX;
 startY = e.touches[0].clientY;
 isMoving = true;
 }, { passive: true });
+document.getElementById('swipe-body').addEventListener('touchmove', e => {
+if (!isMoving || !e.touches.length) return;
+const dx = startX - e.touches[0].clientX;
+const dy = startY - e.touches[0].clientY;
+if (Math.abs(dy) > 28 && Math.abs(dy) > Math.abs(dx) * 1.15) isMoving = false;
+}, { passive: true });
 document.getElementById('swipe-body').addEventListener('touchend', e => {
 if (!isMoving || isModalOpen) return;
 const dx = startX - e.changedTouches[0].clientX;
 const dy = startY - e.changedTouches[0].clientY;
-if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)) {
+const isHorizontalSwipe = Math.abs(dx) > 82 && Math.abs(dy) < 62 && Math.abs(dx) > Math.abs(dy) * 1.7;
+if (isHorizontalSwipe) {
 if (dx > 0) {
 if (currentDay < 5) switchDay(currentDay + 1);
 else if (!isEditMode) openSimpleModal('finish-modal');
