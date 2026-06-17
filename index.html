@@ -161,21 +161,31 @@ overflow: hidden;
 .date-nav::-webkit-scrollbar { display: none; }
 .date-item { min-width: 62px; padding: 10px 0; border-radius: 16px; text-align: center; color: var(--light-brown); flex-shrink: 0; }
 .date-item small { display: block; font-size: .72rem; margin-bottom: 2px; }
+.date-item > div { white-space: nowrap; line-height: 1.1; }
 .date-item.active { background: var(--accent-peach); color: var(--heart-pink); font-weight: 800; }
 body.edit-mode .date-item { touch-action: none; }
+body.day-dragging .date-item:not(.day-drag-source) {
+transition: transform .18s ease;
+}
 .date-item.day-drag-source {
 position: relative;
-z-index: 1;
-opacity: .32;
-transform: scale(.96);
+z-index: 2500;
+opacity: 1;
+visibility: visible;
 background: #fff4ef;
-box-shadow: inset 0 0 0 2px rgba(209,122,109,.14);
+box-shadow: inset 0 0 0 2px rgba(209,122,109,.24);
+will-change: transform;
+transition: none;
+}
+body.day-dragging .date-item.day-drag-source {
+opacity: 1 !important;
+visibility: visible !important;
 }
 .date-item.day-drag-target {
 background: #fff4ef;
 color: var(--heart-pink);
-transform: translateY(-4px) scale(1.05);
-box-shadow: inset 0 0 0 2px rgba(209,122,109,.36), 0 10px 22px rgba(209,122,109,.16);
+box-shadow: inset 0 0 0 2px rgba(209,122,109,.28);
+transition: box-shadow .18s ease, background .18s ease;
 }
 .day-drag-ghost {
 position: fixed;
@@ -185,13 +195,14 @@ z-index: 2500;
 pointer-events: none;
 min-width: 62px;
 padding: 10px 0;
+box-sizing: border-box;
 border-radius: 16px;
 text-align: center;
 background: #fffdfb;
 color: var(--heart-pink);
 font-weight: 900;
-box-shadow: 0 22px 44px rgba(112,91,85,.28), 0 0 0 3px rgba(209,122,109,.14);
-transform: translate3d(-999px, -999px, 0) rotate(-2deg) scale(1.12);
+box-shadow: 0 0 0 3px rgba(209,122,109,.14);
+transform: none;
 transition: box-shadow .16s ease;
 will-change: transform;
 }
@@ -199,6 +210,11 @@ will-change: transform;
 display: block;
 font-size: .72rem;
 margin-bottom: 2px;
+}
+.day-drag-ghost > div {
+white-space: nowrap;
+line-height: 1.1;
+text-align: center;
 }
 body.day-dragging {
 cursor: grabbing;
@@ -3646,9 +3662,20 @@ closeModal('wallet-modal');
 
 
 
+let pendingArtRefit = 0;
+function scheduleVisibleArtRefit() {
+if (pendingArtRefit) cancelAnimationFrame(pendingArtRefit);
+pendingArtRefit = requestAnimationFrame(() => {
+pendingArtRefit = 0;
+const run = () => refitVisibleItineraryEndArt();
+if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 250 });
+else setTimeout(run, 80);
+});
+}
 function switchDay(day, options = {}) {
 if (isModalOpen) return;
 if (Date.now() < dateClickSuppressedUntil && !options.auto) return;
+if (day === currentDay && !options.auto) return;
 if (!options.auto) hasManualDaySelection = true;
 const previousScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 currentDay = day;
@@ -3658,7 +3685,7 @@ document.getElementById(`tab-${day}`).classList.add('active');
 document.querySelectorAll('.day-section').forEach(el => el.classList.remove('active'));
 document.getElementById(`day-${day}`).classList.add('active');
 initFloatingBackground();
-requestAnimationFrame(refitVisibleItineraryEndArt);
+scheduleVisibleArtRefit();
 if (!options.auto) scrollDaySectionToTop(day, previousScrollTop);
 if (!options.skipHistory && !isHandlingAppHistory) pushAppHistory(day);
 }
@@ -3668,33 +3695,106 @@ const match = tab?.id?.match(/^tab-(\d+)$/);
 return match ? Number(match[1]) : null;
 }
 function clearDayDragClasses() {
-document.querySelectorAll('.date-item').forEach(tab => tab.classList.remove('day-drag-source', 'day-drag-target'));
+document.querySelectorAll('.date-item').forEach(tab => {
+tab.classList.remove('day-drag-source', 'day-drag-target');
+tab.style.transform = '';
+});
 }
 function removeDayDragGhost() {
-if (dayDragState?.ghost) dayDragState.ghost.remove();
+if (dayDragState?.sourceTab) dayDragState.sourceTab.style.transform = '';
 document.body.classList.remove('day-dragging');
 }
-function moveDayDragGhost(x, y) {
-const ghost = dayDragState?.ghost;
-if (!ghost) return;
+function getDayDragRailBounds() {
+const nav = document.getElementById('app-nav');
+const source = dayDragState?.sourceTab;
+const navRect = nav?.getBoundingClientRect();
+const sourceRect = source?.getBoundingClientRect();
+if (!navRect || !sourceRect) return null;
+return {
+left: navRect.left,
+right: navRect.right,
+y: navRect.top + (navRect.height / 2),
+ghostWidth: sourceRect.width,
+ghostHeight: sourceRect.height
+};
+}
+function clampNumber(value, min, max) {
+return Math.max(min, Math.min(max, value));
+}
+function getConstrainedDayDragPoint(x, y) {
+const bounds = getDayDragRailBounds();
 const offsetX = dayDragState.ghostOffsetX || 0;
-const offsetY = dayDragState.ghostOffsetY || 0;
-ghost.style.transform = `translate3d(${Math.round(x - offsetX)}px, ${Math.round(y - offsetY)}px, 0) rotate(-2deg) scale(1.12)`;
+if (!bounds) return { x, y };
+const minX = bounds.left + offsetX;
+const maxX = bounds.right - bounds.ghostWidth + offsetX;
+return {
+x: clampNumber(x, minX, Math.max(minX, maxX)),
+y: bounds.y
+};
+}
+function moveDayDragGhost(x, y) {
+const sourceTab = dayDragState?.sourceTab;
+if (!sourceTab) return;
+const point = getConstrainedDayDragPoint(x, y);
+const startRect = dayDragState.sourceRect;
+const startCenterX = startRect ? startRect.left + startRect.width / 2 : point.x;
+const deltaX = point.x - (dayDragState.dragStartX || startCenterX);
+sourceTab.style.transform = `translateX(${Math.round(deltaX)}px)`;
 }
 function createDayDragGhost(tab, x, y) {
 const rect = tab.getBoundingClientRect();
-const ghost = tab.cloneNode(true);
-ghost.id = '';
-ghost.classList.remove('active', 'btn-press-effect', 'day-drag-source', 'day-drag-target');
-ghost.classList.add('day-drag-ghost');
-ghost.style.width = `${rect.width}px`;
-ghost.style.height = `${rect.height}px`;
-document.body.appendChild(ghost);
-dayDragState.ghost = ghost;
-dayDragState.ghostOffsetX = x - rect.left;
-dayDragState.ghostOffsetY = y - rect.top;
+const tabOrder = Array.from(document.querySelectorAll('.date-item')).map(item => {
+const itemRect = item.getBoundingClientRect();
+return {
+tab: item,
+day: getDayNumberFromTab(item),
+left: itemRect.left,
+width: itemRect.width,
+centerX: itemRect.left + itemRect.width / 2
+};
+});
+dayDragState.ghost = null;
+dayDragState.placeholder = null;
+dayDragState.placeholderPositionKey = '';
+dayDragState.sourceRect = rect;
+dayDragState.tabOrder = tabOrder;
+dayDragState.sourceIndex = tabOrder.findIndex(item => item.tab === tab);
+dayDragState.dragStartX = rect.left + rect.width / 2;
+dayDragState.ghostOffsetX = rect.width / 2;
+dayDragState.ghostOffsetY = rect.height / 2;
 document.body.classList.add('day-dragging');
-moveDayDragGhost(x, y);
+moveDayDragGhost(dayDragState.dragStartX, rect.top + rect.height / 2);
+}
+function getNearestDayDragTab(pointX) {
+if (!dayDragState?.sourceTab) return null;
+let bestTab = null;
+let bestDistance = Infinity;
+const tabOrder = dayDragState.tabOrder || [];
+tabOrder.forEach(item => {
+const centerX = item.centerX;
+const distance = Math.abs(pointX - centerX);
+if (distance < bestDistance) {
+bestDistance = distance;
+bestTab = item.tab;
+}
+});
+return bestTab;
+}
+function applyDayDragPush(targetDay) {
+const tabOrder = dayDragState?.tabOrder || [];
+const fromIndex = dayDragState?.sourceIndex ?? -1;
+const targetIndex = tabOrder.findIndex(item => item.day === targetDay);
+if (fromIndex < 0 || targetIndex < 0) return;
+tabOrder.forEach((item, index) => {
+if (item.tab === dayDragState.sourceTab) return;
+let deltaX = 0;
+if (targetIndex > fromIndex && index > fromIndex && index <= targetIndex) {
+deltaX = tabOrder[index - 1].centerX - item.centerX;
+} else if (targetIndex < fromIndex && index >= targetIndex && index < fromIndex) {
+deltaX = tabOrder[index + 1].centerX - item.centerX;
+}
+item.tab.style.transform = deltaX ? `translateX(${Math.round(deltaX)}px)` : '';
+});
 }
 function startDayDrag(tab, pointerId, x, y) {
 if (!isEditMode || !tab) return;
@@ -3710,12 +3810,14 @@ if (navigator.vibrate) navigator.vibrate(18);
 function updateDayDragTarget(x, y) {
 if (!dayDragState?.active) return;
 moveDayDragGhost(x, y);
-const target = document.elementFromPoint(x, y)?.closest?.('.date-item');
+const point = getConstrainedDayDragPoint(x, y);
+const target = getNearestDayDragTab(point.x);
 const targetDay = getDayNumberFromTab(target);
 document.querySelectorAll('.date-item').forEach(tab => tab.classList.remove('day-drag-target'));
 if (target && targetDay) {
 dayDragState.targetDay = targetDay;
 target.classList.add('day-drag-target');
+applyDayDragPush(targetDay);
 }
 }
 function swapDayItineraries(fromDay, toDay) {
@@ -3795,7 +3897,10 @@ updateDayDragTarget(event.clientX, event.clientY);
 nav.addEventListener('pointerup', event => {
 if (!dayDragState || dayDragState.pointerId !== event.pointerId) return;
 clearTimeout(dayDragState.timer);
-if (dayDragState.active) finishDayDrag();
+if (dayDragState.active) {
+updateDayDragTarget(event.clientX, event.clientY);
+finishDayDrag();
+}
 else dayDragState = null;
 }, { passive: true });
 nav.addEventListener('pointercancel', () => {
@@ -7685,27 +7790,38 @@ document.querySelectorAll('#stats-content .stats-page').forEach(panel => panel.c
 }
 
 
-function initFloatingBackground() {
-const host = document.getElementById('floating-bg');
-const mieIcons = currentDay === 3
+const floatingBackgroundCache = new Map();
+function buildFloatingBackgroundHtml(day) {
+const mieIcons = day === 3
 ? ['💕','💖','💗','💓','💞','💌','🌹','✨','☀️','🌞','🐷','🐽','💛','🌻']
 : ['🍁','🍂','⛩️','♨️','🦞','🦪','🌊','🍵','🎡','🚆','🛳️','🌅'];
-const count = currentDay === 3 ? 24 : 18;
-const leftPositions = currentDay === 3
+const count = day === 3 ? 24 : 18;
+const leftPositions = day === 3
 ? [4, 76, 31, 92, 15, 58, 86, 39, 69, 8, 48, 97, 23, 63, 82, 12, 54, 94, 35, 72, 2, 44, 88, 19]
 : [6, 54, 88, 24, 72, 12, 62, 94, 38, 82, 18, 68, 48, 96, 30, 78, 4, 58];
 let html = '';
 for (let i = 0; i < count; i++) {
-const icon = mieIcons[(i * 5 + (currentDay === 3 ? 3 : 1)) % mieIcons.length];
+const icon = mieIcons[(i * 5 + (day === 3 ? 3 : 1)) % mieIcons.length];
 const left = leftPositions[i % leftPositions.length];
-const duration = (currentDay === 3 ? 26 : 30) + ((i * 7) % 9) * 2.4;
-const phase = ((i * 13 + (currentDay === 3 ? 5 : 2)) % count) / count;
+const duration = (day === 3 ? 26 : 30) + ((i * 7) % 9) * 2.4;
+const phase = ((i * 13 + (day === 3 ? 5 : 2)) % count) / count;
 const delay = -(phase * duration);
-const size = (currentDay === 3 ? 15 : 17) + (i % 4) * 4;
+const size = (day === 3 ? 15 : 17) + (i % 4) * 4;
 const drift = i % 2 === 0 ? 22 : -22;
 html += `<span class="float-item" style="left:${left}%;--float-x:${drift}px;animation-delay:${delay.toFixed(2)}s;animation-duration:${duration.toFixed(2)}s;font-size:${size}px">${icon}</span>`;
 }
+return html;
+}
+function initFloatingBackground() {
+const host = document.getElementById('floating-bg');
+if (!host) return;
+if (host.dataset.day === String(currentDay)) return;
+if (!floatingBackgroundCache.has(currentDay)) {
+floatingBackgroundCache.set(currentDay, buildFloatingBackgroundHtml(currentDay));
+}
+const html = floatingBackgroundCache.get(currentDay);
 host.innerHTML = html;
+host.dataset.day = String(currentDay);
 }
 
 
