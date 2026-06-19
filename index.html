@@ -452,7 +452,12 @@ gap: 7px;
 flex-wrap: wrap;
 }
 body.edit-mode .item-title { display: inline; max-width: none; padding-right: 0; vertical-align: baseline; }
-body.edit-mode .item-title:has(.terminal-badge) { display: inline; }
+body.edit-mode .item-title:has(.terminal-badge) {
+display: inline-flex;
+align-items: center;
+gap: 7px;
+vertical-align: middle;
+}
 .terminal-badge {
 display: inline-flex;
 align-items: center;
@@ -495,16 +500,26 @@ min-height: 10px;
 .route-inline { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; width: min(320px, calc(100vw - 110px)); }
 body:not(.edit-mode) .connector-line:not(.has-route-plan) .route-inline { display: none; }
 .route-text { min-width: 0; flex: 1; color: #9c877f; font-size: .76rem; line-height: 1.35;white-space: pre-wrap !important; }
+.route-text {
+caret-color: transparent;
+user-select: none;
+-webkit-user-select: none;
+}
 body.edit-mode .route-inline {
 cursor: pointer;
-border-radius: 999px;
-padding: 6px 10px;
-background: rgba(255,250,247,.74);
-transition: background .14s ease, box-shadow .14s ease;
+width: auto;
+max-width: calc(100vw - 110px);
+padding: 0;
+background: transparent;
+transition: color .14s ease;
 }
 body.edit-mode .route-inline:active {
-background: #fff7f3;
-box-shadow: 0 3px 10px rgba(141,110,99,.06);
+background: transparent;
+box-shadow: none;
+}
+body.edit-mode .route-inline .route-text {
+flex: 0 0 auto;
+white-space: nowrap !important;
 }
 .route-nav-link {
 position: relative;
@@ -987,6 +1002,10 @@ border-radius: 999px;
 font-size: .74rem;
 }
 body.edit-mode .more-info-btn {
+height: 23px;
+border-radius: 9px;
+padding: 0 7px;
+font-size: .72rem;
 border-color: #e2aaa1;
 background: #ffe7e0;
 color: #ad6258;
@@ -2613,25 +2632,43 @@ white-space: nowrap;
 .wishlist-input::placeholder { color: #cbbcb7; font-size: .82rem; }
 .route-mode-grid {
 display: grid;
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 8px;
+grid-template-columns: repeat(4, minmax(0, 1fr));
+gap: 9px;
 margin: 5px 0 10px;
 }
 .route-mode-option {
-height: 40px;
-border: 1px solid #efd9ce;
-border-radius: 14px;
-background: #fffaf7;
-color: #b87568;
-font-size: .86rem;
+height: 36px;
+border: 1px solid transparent;
+border-radius: 999px;
+background: #fff8f5;
+color: #9b6a61;
+font-size: .8rem;
 font-weight: 900;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+padding: 0 8px;
+white-space: nowrap;
 }
 .route-mode-option.active {
-border-color: #d17a6d;
-background: #ffe7e0;
+border-color: #efcfc6;
+background: #fff0eb;
 color: #a65d52;
 box-shadow: 0 4px 12px rgba(190,124,102,.12);
 }
+.route-mode-icon {
+width: 18px;
+height: 18px;
+display: block;
+flex: 0 0 auto;
+stroke: currentColor;
+stroke-width: 1.8;
+stroke-linecap: round;
+stroke-linejoin: round;
+fill: none;
+}
+.route-mode-duration { display: none; }
 .route-duration-fields {
 display: grid;
 grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -3258,7 +3295,7 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeSecureDocs()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🔐 重要資料夾</div><p class="docs-security-note">完整憑證只在這台裝置暫時解密，關閉後會重新上鎖</p><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
 <div id="map-place-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeMapPlaceModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">📍 地圖定位</div><div class="modal-scroll-area"><label class="wallet-label">貼上 Google Maps 景點網址或地點名稱</label><input type="text" id="map-place-input" class="wishlist-input" placeholder="例如：https://maps.app.goo.gl/..."><div id="map-place-preview" class="wishlist-empty" style="margin-top:12px"></div></div><button type="button" onclick="saveMapPlace()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存定位</button><button type="button" onclick="clearMapPlace()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除定位</button></div></div></div>
-<div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">交通方式</label><div class="route-mode-grid"><button type="button" class="route-mode-option btn-press-effect" data-route-mode="開車" onclick="setRouteTransportMode('開車')">開車</button><button type="button" class="route-mode-option btn-press-effect" data-route-mode="騎車" onclick="setRouteTransportMode('騎車')">騎車</button><button type="button" class="route-mode-option btn-press-effect" data-route-mode="大眾運輸" onclick="setRouteTransportMode('大眾運輸')">大眾運輸</button><button type="button" class="route-mode-option btn-press-effect" data-route-mode="步行" onclick="setRouteTransportMode('步行')">步行</button></div><label class="wallet-label">移動時間</label><div class="route-duration-fields"><div class="route-duration-field"><input type="tel" id="route-plan-hours" class="wishlist-input" inputmode="numeric" placeholder="0" oninput="updateRoutePlanTextFromControls()"><span class="route-duration-unit">小時</span></div><div class="route-duration-field"><input type="tel" id="route-plan-minutes" class="wishlist-input" inputmode="numeric" placeholder="0" oninput="updateRoutePlanTextFromControls()"><span class="route-duration-unit">分鐘</span></div></div><input type="hidden" id="route-plan-text"><label class="wallet-label">行程中會顯示</label><div id="route-plan-preview" class="wishlist-empty route-display-editor" contenteditable="true" style="margin-top:6px" oninput="syncRoutePlanTextFromPreview()"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
+<div id="route-plan-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeRoutePlanModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content"><div class="modal-title">🚇 移動方式</div><div class="modal-scroll-area"><label class="wallet-label">Google Maps 路線網址</label><input type="text" id="route-plan-url" class="wishlist-input" placeholder="貼上 Google Maps 分享路線"><label class="wallet-label">交通方式</label><div class="route-mode-grid"><button type="button" class="route-mode-option btn-press-effect" data-route-mode="開車" onclick="setRouteTransportMode('開車')" aria-label="開車"><svg class="route-mode-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16H3.8a1.4 1.4 0 0 1-1.4-1.4v-2.2c0-.8.5-1.5 1.2-1.8l2.1-.8 1.7-3.2A2 2 0 0 1 9.1 5.5h5.8a2 2 0 0 1 1.7 1.1l1.7 3.2 2.1.8c.7.3 1.2 1 1.2 1.8v2.2A1.4 1.4 0 0 1 20.2 16H19"/><path d="M7 16h10"/><circle cx="6.5" cy="16" r="2"/><circle cx="17.5" cy="16" r="2"/></svg><span class="route-mode-duration"></span></button><button type="button" class="route-mode-option btn-press-effect" data-route-mode="騎車" onclick="setRouteTransportMode('騎車')" aria-label="騎車"><svg class="route-mode-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17h7.2c1.1 0 1.9-.5 2.5-1.4l1.2-1.9H20"/><path d="M8 13l2.1-3.8h3.5l2.3 4.5"/><path d="M13 9V6h3"/><path d="M5 17h.1"/><circle cx="5" cy="17" r="2"/><circle cx="19" cy="17" r="2"/></svg><span class="route-mode-duration"></span></button><button type="button" class="route-mode-option btn-press-effect" data-route-mode="大眾運輸" onclick="setRouteTransportMode('大眾運輸')" aria-label="大眾運輸"><svg class="route-mode-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="13" rx="2"/><path d="M8 4V2.8h8V4"/><path d="M8 8h8"/><path d="M8 13h.01M16 13h.01"/><path d="M8 20l1.5-3M16 17l1.5 3"/></svg><span class="route-mode-duration"></span></button><button type="button" class="route-mode-option btn-press-effect" data-route-mode="步行" onclick="setRouteTransportMode('步行')" aria-label="步行"><svg class="route-mode-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><path d="M12 7.8v5.1"/><path d="M12 9.4l-3.1 2.1"/><path d="M12 9.4l3.1 2.1"/><path d="M12 12.9l-2.5 5.6"/><path d="M12 12.9l2.5 5.6"/></svg><span class="route-mode-duration"></span></button></div><label class="wallet-label">移動時間</label><div class="route-duration-fields"><div class="route-duration-field"><input type="tel" id="route-plan-hours" class="wishlist-input" inputmode="numeric" placeholder="0" oninput="updateRoutePlanTextFromControls()"><span class="route-duration-unit">小時</span></div><div class="route-duration-field"><input type="tel" id="route-plan-minutes" class="wishlist-input" inputmode="numeric" placeholder="0" oninput="updateRoutePlanTextFromControls()"><span class="route-duration-unit">分鐘</span></div></div><input type="hidden" id="route-plan-text"><label class="wallet-label">行程中會顯示</label><div id="route-plan-preview" class="wishlist-empty route-display-editor" contenteditable="true" style="margin-top:6px" oninput="syncRoutePlanTextFromPreview()"></div></div><button type="button" onclick="saveRoutePlan()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存路線</button><button type="button" onclick="clearRoutePlan()" style="width:100%;margin-top:10px;border:0;background:transparent;color:#b7aaa5;font-weight:900;text-decoration:underline">清除路線</button></div></div></div>
 <div id="itinerary-detail-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeItineraryDetailModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title itinerary-detail-title">行程介紹</div><div class="modal-scroll-area"><div id="itinerary-detail-fields"></div></div><button type="button" onclick="saveItineraryDetail()" class="modal-btn-primary btn-press-effect" style="margin-top:14px">儲存介紹</button></div></div></div>
 <div id="note-color-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div id="note-color-grid" class="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
 <div id="note-color-popover" class="note-color-popover"><button type="button" class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid"><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c86f77" data-note-color="#c86f77" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="莓果粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d96d7f" data-note-color="#d96d7f" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="玫瑰紅"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#d98b72" data-note-color="#d98b72" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="蜜桃橘"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#e6a19a" data-note-color="#e6a19a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="珊瑚粉"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#c9a64a" data-note-color="#c9a64a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="奶油黃"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6d8f6b" data-note-color="#6d8f6b" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="鼠尾草綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#5f9c92" data-note-color="#5f9c92" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="湖水綠"></button><button type="button" class="note-color-option btn-press-effect" style="--swatch-color:#6f7fa6" data-note-color="#6f7fa6" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" aria-label="霧藍紫"></button></div></div>
@@ -4233,7 +4270,7 @@ if (!raw || raw === '編輯移動方式') return parts;
 if (/步行|走路|徒歩/i.test(raw)) parts.mode = '步行';
 else if (/騎車|機車|腳踏車|自行車|bike|bicycle/i.test(raw)) parts.mode = '騎車';
 else if (/開車|自駕|駕車|driving|drive/i.test(raw)) parts.mode = '開車';
-else if (/大眾運輸|公共交通|公車|巴士|地鐵|捷運|電車|近鐵|名鐵|JR|特急|μSKY|transit|train|metro|bus/i.test(raw)) parts.mode = '大眾運輸';
+else if (/大眾運輸|公共交通|公車|巴士|地鐵|地下鐵|地下鉄|捷運|電車|近鐵|名鐵|JR|特急|μSKY|東山線|名城線|名港線|鶴舞線|桜通線|櫻通線|上飯田線|あおなみ線|transit|train|metro|subway|bus/i.test(raw) || /[A-Z]?\s*[\u4e00-\u9fff]{1,8}線\s*\d+\s*分/.test(raw)) parts.mode = '大眾運輸';
 const hourMatch = raw.match(/(\d+)\s*(?:小時|小时|時|hr|h)/i);
 const minuteMatch = raw.match(/(\d+)\s*(?:分鐘|分钟|分|min|m)/i);
 if (hourMatch) parts.hours = hourMatch[1];
@@ -4242,10 +4279,11 @@ return parts;
 }
 function routeUrlToMode(value) {
 const raw = String(value || '');
-if (/travelmode=walking|directionsmode=walking/i.test(raw)) return '步行';
-if (/travelmode=bicycling|directionsmode=bicycling/i.test(raw)) return '騎車';
-if (/travelmode=driving|directionsmode=driving/i.test(raw)) return '開車';
-if (/travelmode=transit|directionsmode=transit/i.test(raw)) return '大眾運輸';
+const decoded = decodeURIComponent(raw.replace(/\+/g, ' '));
+if (/travelmode=walking|directionsmode=walking|!3e2\b/i.test(decoded)) return '步行';
+if (/travelmode=bicycling|directionsmode=bicycling|!3e1\b/i.test(decoded)) return '騎車';
+if (/travelmode=driving|directionsmode=driving|!3e0\b/i.test(decoded)) return '開車';
+if (/travelmode=transit|directionsmode=transit|!3e3\b/i.test(decoded)) return '大眾運輸';
 return '';
 }
 function setRouteTransportMode(mode) {
@@ -4254,6 +4292,16 @@ document.querySelectorAll('.route-mode-option').forEach(btn => {
 btn.classList.toggle('active', btn.dataset.routeMode === selectedRouteMode);
 });
 updateRoutePlanTextFromControls();
+}
+function updateRouteModeDurations() {
+const hourInput = document.getElementById('route-plan-hours');
+const minuteInput = document.getElementById('route-plan-minutes');
+const duration = formatRouteDisplayText('', hourInput?.value || '', minuteInput?.value || '');
+document.querySelectorAll('.route-mode-option .route-mode-duration').forEach(span => {
+span.textContent = '';
+});
+const activeDuration = document.querySelector(`.route-mode-option[data-route-mode="${CSS.escape(selectedRouteMode)}"] .route-mode-duration`);
+if (activeDuration) activeDuration.textContent = duration ? duration.replace('小時', ' 小時 ').replace('分', ' 分').replace(/\s+/g, ' ').trim() : '--';
 }
 function formatRouteDisplayText(mode, hours, minutes) {
 const cleanMode = String(mode || '').trim();
@@ -4277,6 +4325,7 @@ const textInput = document.getElementById('route-plan-text');
 const preview = document.getElementById('route-plan-preview');
 if (textInput) textInput.value = text;
 if (preview) preview.textContent = text;
+updateRouteModeDurations();
 updateRoutePlanPreview();
 }
 function setRoutePlanEditorValue(value) {
@@ -4295,6 +4344,29 @@ const textInput = document.getElementById('route-plan-text');
 const preview = document.getElementById('route-plan-preview');
 if (textInput) textInput.value = text;
 if (preview) preview.textContent = text;
+updateRouteModeDurations();
+}
+function applyRoutePasteAutoFill(value) {
+const raw = String(value || '').trim();
+if (!raw) return;
+const parsed = parseRoutePaste(raw);
+const urlMode = routeUrlToMode(parsed.url || raw);
+const textParts = routeTextToParts(parsed.text || raw);
+const nextMode = textParts.mode || urlMode;
+if (nextMode && nextMode !== selectedRouteMode) selectedRouteMode = nextMode;
+const hourInput = document.getElementById('route-plan-hours');
+const minuteInput = document.getElementById('route-plan-minutes');
+if (textParts.hours && hourInput && !hourInput.value) hourInput.value = textParts.hours;
+if (textParts.minutes && minuteInput && !minuteInput.value) minuteInput.value = textParts.minutes;
+document.querySelectorAll('.route-mode-option').forEach(btn => {
+btn.classList.toggle('active', btn.dataset.routeMode === selectedRouteMode);
+});
+if ((nextMode || textParts.hours || textParts.minutes) && !document.getElementById('route-plan-text')?.value.trim()) {
+updateRoutePlanTextFromControls();
+} else {
+updateRouteModeDurations();
+updateRoutePlanPreview();
+}
 }
 function parseRoutePaste(value) {
 const raw = String(value || '').trim();
@@ -4314,6 +4386,11 @@ document.getElementById('route-plan-url').value = parsed.url;
 const textInput = document.getElementById('route-plan-text');
 if (textInput && !textInput.value.trim() && parsed.text) setRoutePlanEditorValue(parsed.text);
 else if (!selectedRouteMode) setRouteTransportMode(routeUrlToMode(parsed.url));
+applyRoutePasteAutoFill(pasted);
+updateRoutePlanPreview();
+}
+function handleRoutePlanUrlInput() {
+applyRoutePasteAutoFill(document.getElementById('route-plan-url')?.value || '');
 updateRoutePlanPreview();
 }
 function updateRoutePlanPreview() {
@@ -6864,7 +6941,9 @@ document.getElementById('add-itinerary-btn').style.display = isEdit ? 'flex' : '
 document.getElementById('header-normal-view').style.display = isEdit ? 'none' : 'flex';
 document.getElementById('edit-mode-title').style.display = isEdit ? 'block' : 'none';
 document.getElementById('main-btn').classList.toggle('hidden-piggy', isEdit);
-document.querySelectorAll('.editable').forEach(el => el.contentEditable = isEdit);
+document.querySelectorAll('.editable').forEach(el => {
+el.contentEditable = el.classList.contains('route-text') ? false : isEdit;
+});
 document.querySelectorAll('.more-info-btn').forEach(btn => {
 const isFlight = isFlightDetailCard(btn.closest('.card'));
 btn.classList.toggle('flight-detail-btn', isFlight);
@@ -8308,7 +8387,7 @@ document.getElementById('both-big-pig').addEventListener('input', () => syncBoth
 document.getElementById('both-small-pig').addEventListener('input', () => syncBothAmountSum('small'));
 document.getElementById('exp-amount').addEventListener('input', () => syncBothAmountSum('amount'));
 document.getElementById('map-place-input').addEventListener('input', updateMapPlacePreview);
-document.getElementById('route-plan-url').addEventListener('input', updateRoutePlanPreview);
+document.getElementById('route-plan-url').addEventListener('input', handleRoutePlanUrlInput);
 document.getElementById('route-plan-url').addEventListener('paste', handleRoutePlanUrlPaste);
 document.getElementById('route-plan-text').addEventListener('input', updateRoutePlanPreview);
 ['both-big-pig', 'both-small-pig', 'exp-amount', 'topup-big-pig', 'topup-small-pig'].forEach((id) => {
