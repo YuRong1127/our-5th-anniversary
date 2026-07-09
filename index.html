@@ -97,7 +97,7 @@ body.day-3-theme {
 
 
 * { box-sizing: border-box; }
-html, body { height: 100%; overscroll-behavior-x: none; overscroll-behavior-y: auto; overflow-x: hidden; }
+html, body { height: 100%; overscroll-behavior-x: none; overscroll-behavior-y: none; overflow-x: hidden; }
 body {
 margin: 0;
 min-height: 100vh;
@@ -137,7 +137,7 @@ button, input { font: inherit; }
 
 
 .sticky-top-container, main { position: relative; z-index: 2; }
-.sticky-top-container { position: sticky; top: 0; z-index: 50; background: var(--bg-color); padding-bottom: 2px; }
+.sticky-top-container { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--bg-color); padding-bottom: 2px; }
 header {
 height: 132px;
 min-height: 132px;
@@ -233,8 +233,8 @@ user-select: none;
 
 
 
-main { padding: 0 20px; margin-top: 16px; }
-body.day-3-theme main { margin-top: 6px; }
+main { padding: 0 20px; margin-top: 237px; }
+body.day-3-theme main { margin-top: 227px; }
 .day-section { display: none; animation: fadeIn .32s ease-out; }
 .day-section.active { display: block; }
 .day-section.active::after {
@@ -1605,6 +1605,9 @@ content: '';
 display: block;
 margin: 1px 0;
 }
+.flight-detail-modal .note-text-view .note-inline-photo + br {
+display: none;
+}
 .flight-detail-modal .note-text-view span[style*="white-space:nowrap"] {
 white-space: normal !important;
 }
@@ -2173,6 +2176,17 @@ display: block;
 margin: 4px 0 3px;
 font-weight: 900;
 line-height: 1.78;
+}
+.note-inline-photo {
+display: block;
+width: min(100%, 320px);
+max-height: 220px;
+margin: 8px auto 10px;
+border-radius: 14px;
+object-fit: contain;
+background: #fffaf7;
+box-shadow: 0 6px 18px rgba(141, 110, 99, 0.08);
+cursor: zoom-in;
 }
 .note-highlight-body {
 position: relative;
@@ -3632,12 +3646,12 @@ main,
 body.day-3-theme main {
 width: calc(100% - 40px);
 max-width: 760px;
-margin: 18px auto 0;
+margin: 239px auto 0;
 padding-left: 0;
 padding-right: 0;
 }
 body.day-3-theme main {
-margin-top: 10px;
+margin-top: 231px;
 }
 .main-piggy {
 right: max(24px, calc((100vw - 760px) / 2 - 92px));
@@ -6319,7 +6333,7 @@ text: `博物館簡介
 
 館內體驗
 館內有重現海上珍珠筏的場景，參觀者可穿著珍珠養殖工作服，站上珍珠筏拍照留念 ；另設珍珠挑選與分級體驗，可觀察珍珠大小、形狀、顏色及光澤差異以了解珍珠分級方式；亦有展示放大後的珍珠，可更清楚觀察不同珍珠的色澤及外型。`,
-html: `<span style="background-color: #fff3b8;">博物館簡介</span><br>於1985年開館，是日本第一座以珍珠為主題的博物館。館內透過實物、標本、模型、圖片、影片及專業人員解說，介紹珍珠從天然形成到人工養殖、採收、加工製作成珠寶的完整過程，同時展示天然珍珠時代的古董珠寶、御木本經典收藏，以及各式珍珠工藝作品。館藏橫跨約兩千年前帝政羅馬時代至十九世紀歐洲使用天然珍珠製作的古董珠寶，也收藏明治至昭和時代誕生的御木本經典收藏。2016年伊勢志摩峰會期間，各國元首夫人曾參觀珍珠博物館。<br>珍珠博物館主要可分為兩個展區。<span style="color: #d98b72;">一樓主要介紹珍珠從形成到完成珠寶的整個過程</span>，包括天然珍珠形成原理、人工養殖技術、植核、培育、採收、分級及加工流程，也展示珍珠養殖使用的工具、母貝及珍珠筏等。<span style="color: #d98b72;">二樓則展示珍珠工藝作品及珠寶收藏</span>，包含大型藝術作品以及各式珍珠首飾與工藝品。館內另設有專人解說區，利用實物、標本及影片介紹珍珠知識，讓參觀者了解珍珠如何形成，以及養殖珍珠與天然珍珠之間的差異。<br><br><span style="background-color: #fff3b8;">關於珍珠</span><br>並非所有貝類都能產生珍珠，只有具有珍珠層的貝類才能形成珍珠。天然珍珠是在貝類生長過程中，當沙粒、微生物或其他異物進入貝殼內部，而貝類無法將異物排出時，便會持續分泌真珠質，一層層將異物包覆，最後形成珍珠。<span style="color: #d98b72;">真珠質主要成分為碳酸鈣</span>，約占95%；蛋白質約占4.5%；其餘約0.5%為水分及其他雜質。每一層真珠質厚度約0.3～0.4微米，可堆疊數千層，因此珍珠具有柔和且富有層次的光澤。由於天然形成過程無法控制，因此天然珍珠大小、形狀及顏色皆不固定，真正圓潤且品質優良的天然珍珠十分稀少，因此價格也相當昂貴。<br><span style="color: #d98b72;">珍珠顏色則與形成過程有關</span>。粉紅色主要來自光線經過數千層真珠質折射後所產生的色澤；附著於真珠質上的蛋白質可能呈現黃色或黑色，因此經層層包覆後，珍珠可能呈現金色或黑色；若形成過程中包覆到母貝本身的黑色或棕色物質，則可能呈現藍色。<br>珍珠除了製作珠寶及藝術工藝品外，珍珠貝各部位也可加工製成珍珠粉或作為保養品原料，使其不僅具有珠寶價值，也能應用於食品及保養品。<br><br><span style="background-color: #fff3b8;">人工養殖珍珠</span><br>十九世紀末，天然珍珠受到世界各地喜愛，日本大量採捕天然珍珠貝，使珍珠貝數量驟降，因此御木本幸吉開始投入人工養殖珍珠研究。1893年7月，御木本幸吉成功培育人工養殖珍珠，使珍珠得以大量生產，也讓過去價格十分高昂的珍珠逐漸成為較多人能負擔的珠寶。人工養殖珍珠的方式，是<span style="color: #d98b72;">先採集活體珍珠貝</span>，再將人工製作的珠核<span style="color: #d98b72;">植入母貝體內</span>，使母貝持續分泌真珠質包覆珠核，最後形成珍珠，一般約需三年至五年才能完成養殖。<br>人工養殖珍珠所使用的珠核取自美國<span style="color: #d98b72;">密西西比河的淡水二枚貝</span>。製作時，先取下具有珍珠層的貝殼切割成細長條狀，接著切成小方塊，最後經過反覆研磨、製成大小不同的圓形珠核，再透過植核手術植入阿古屋貝體內，刺激母貝持續分泌真珠質，逐漸形成養殖珍珠；植入珠核後，珍珠貝會重新放回海中養殖。部分資料提到，珍珠貝會放置於凹凸不平的杉葉中，以降低魚類、章魚及螃蟹等海洋生物啃食的機率；另有資料介紹，植核後的珍珠貝會放置於掛網，再固定於海面上的珍珠筏下方養殖。養殖期間若遇到海象或環境變化，還需要進行照護及移動；成熟後，工作人員將掛網拉回，回收珍珠貝，再送往工廠以人工方式取出珍珠；之後依序進行清洗、分級、加工，最後製作成各式珠寶及工藝作品。<br>日本人工養殖珍珠主要<span style="color: #d98b72;">使用阿古屋貝（Akoya）作為母貝</span>。阿古屋貝外殼較薄，除了作為珍珠養殖的重要母貝，每年11月至1月也是可食用的海鮮食材；在成熟的養殖技術下，阿古屋貝可培育出圓潤且光澤良好的珍珠。養殖一顆珍珠需要多年培育，但並非所有珍珠都能達到珠寶品質，約28-30%的珍珠可達良質，而最高等級的花珠約僅占5%。因此，即使人工養殖技術成熟，高品質珍珠仍屬少數。<br><br><span style="background-color: #fff3b8;">主要珍珠展品</span><br><span style="color: #6f7fa6;"><b>夢殿</b></span><br>以奈良縣法隆寺境內的夢殿為創作原型，於1993年為紀念人工養殖珍珠成功100週年所製作，採用珍珠、貝殼及漆器結合的傳統工藝技法完成。整件作品共使用9,320顆最高等級珍珠打造；夢殿中央設置一顆直徑40毫米的大型珍珠，四周環繞十二生肖金色雕像，每尊生肖手中各捧不同寶物，例如兔捧鑽石、龍捧祖母綠、蛇捧大型珍珠，使整件作品更具特色。<br><span style="color: #6f7fa6;"><b>御本木五重塔</b></span><br>以奈良縣法隆寺五重塔為創作原型。曾於1926年（大正15年）美國建國150週年舉辦的費城萬國博覽會展出。塔身主要採用被譽為珍珠瑰寶的大型珍珠貝白蝶貝製成，底部則鋪滿珍珠，整件作品共使用12,760顆珍珠。<br><span style="color: #6f7fa6;"><b>地球儀</b></span><br>於1990年完成，以珍珠、金屬及寶石結合傳統工藝製作而成。作品主體為直徑33公分的球體，陸地採用22K黃金製成，海洋及湖泊則鋪滿12,541顆珍珠，赤道由377顆紅寶石排列，黃道則使用373顆鑽石裝飾，北極另以一顆13毫米南洋珍珠為中心，搭配8顆9毫米珍珠、339顆鑽石及金屬錫製作出北極光效果。另有資料提到，此作品曾為御木本幸吉收藏。<br><span style="color: #6f7fa6;"><b>自由之鐘</b></span><br>以美國費城自由之鐘為創作原型。於1939年（昭和14年）紐約世界博覽會展出，也被稱為百萬美元之鐘。整件作品共使用12250顆珍珠、366顆鑽石，鐘面裂痕則利用藍色珍珠忠實重現真正自由之鐘上的裂縫；作品象徵世界和平，但第二次世界大戰也正是在該次世界博覽會舉辦期間爆發。<br><span style="color: #6f7fa6;"><b>真珠王冠一世</b></span><br>於1978年（昭和53年）開始製作。共使用872顆珍珠、188顆0.1克拉碎鑽、700公克18K黃金，外觀設計較為樸實，但實際使用的珍珠及碎鑽數量皆高於王冠二世。<br><span style="color: #6f7fa6;"><b>真珠王冠二世</b></span><br>以歐洲中世紀拜占庭風格王冠為設計原型，並參考埃及圖坦卡門短劍的黃金鑲嵌工藝。自1978年5月開始製作，歷時一年兩個月，於1979年完成；資料中對珍珠數量有不同記載，一份資料記載使用796顆珍珠，另一份資料則記載除頂端16毫米主珠外，另使用795顆珍珠，此外還使用：16毫米主珍珠1顆、17顆0.1克拉鑽石、950公克18K黃金；館內另設有紙製真珠王冠二世複製品，提供遊客試戴拍照。<br><span style="color: #6f7fa6;"><b>矢車</b></span><br>為御木本代表性的珍珠工藝飾品，也是部分門票所使用的圖案。中央主珠直徑8.75毫米，左右兩側各排列20顆由大至小、大小、色澤及圓潤度一致的珍珠，再搭配碎鑽、藍寶石及祖母綠組成。其造型源自日本每年5月5日男兒節鯉魚旗頂端的「矢車」。<br><span style="color: #6f7fa6;"><b>真珠佛像</b></span><br>館內展示源自中國的真珠佛像。其製作方式是在珍珠形成過程中，以人工方式影響珍珠生長方向，使佛像自然形成於貝殼內，而非後天雕刻。資料提到，此技術最早可追溯至宋代《文昌雜錄》，後來經由傳教士傳入歐洲，也影響了西方珍珠養殖技術的研究發展。<br><br><span style="background-color: #fff3b8;">館內體驗</span><br>館內有重現海上珍珠筏的場景，參觀者可穿著珍珠養殖工作服，站上珍珠筏拍照留念 ；另設珍珠挑選與分級體驗，可觀察珍珠大小、形狀、顏色及光澤差異以了解珍珠分級方式；亦有展示放大後的珍珠，可更清楚觀察不同珍珠的色澤及外型。`
+html: `<span style="background-color: #fff3b8;">博物館簡介</span><br>於1985年開館，是日本第一座以珍珠為主題的博物館。館內透過實物、標本、模型、圖片、影片及專業人員解說，介紹珍珠從天然形成到人工養殖、採收、加工製作成珠寶的完整過程，同時展示天然珍珠時代的古董珠寶、御木本經典收藏，以及各式珍珠工藝作品。館藏橫跨約兩千年前帝政羅馬時代至十九世紀歐洲使用天然珍珠製作的古董珠寶，也收藏明治至昭和時代誕生的御木本經典收藏。2016年伊勢志摩峰會期間，各國元首夫人曾參觀珍珠博物館。<br>珍珠博物館主要可分為兩個展區。<span style="color: #d98b72;">一樓主要介紹珍珠從形成到完成珠寶的整個過程</span>，包括天然珍珠形成原理、人工養殖技術、植核、培育、採收、分級及加工流程，也展示珍珠養殖使用的工具、母貝及珍珠筏等。<span style="color: #d98b72;">二樓則展示珍珠工藝作品及珠寶收藏</span>，包含大型藝術作品以及各式珍珠首飾與工藝品。館內另設有專人解說區，利用實物、標本及影片介紹珍珠知識，讓參觀者了解珍珠如何形成，以及養殖珍珠與天然珍珠之間的差異。<br><br><span style="background-color: #fff3b8;">關於珍珠</span><br>並非所有貝類都能產生珍珠，只有具有珍珠層的貝類才能形成珍珠。天然珍珠是在貝類生長過程中，當沙粒、微生物或其他異物進入貝殼內部，而貝類無法將異物排出時，便會持續分泌真珠質，一層層將異物包覆，最後形成珍珠。<span style="color: #d98b72;">真珠質主要成分為碳酸鈣</span>，約占95%；蛋白質約占4.5%；其餘約0.5%為水分及其他雜質。每一層真珠質厚度約0.3～0.4微米，可堆疊數千層，因此珍珠具有柔和且富有層次的光澤。由於天然形成過程無法控制，因此天然珍珠大小、形狀及顏色皆不固定，真正圓潤且品質優良的天然珍珠十分稀少，因此價格也相當昂貴。<br><span style="color: #d98b72;">珍珠顏色則與形成過程有關</span>。粉紅色主要來自光線經過數千層真珠質折射後所產生的色澤；附著於真珠質上的蛋白質可能呈現黃色或黑色，因此經層層包覆後，珍珠可能呈現金色或黑色；若形成過程中包覆到母貝本身的黑色或棕色物質，則可能呈現藍色。<br>珍珠除了製作珠寶及藝術工藝品外，珍珠貝各部位也可加工製成珍珠粉或作為保養品原料，使其不僅具有珠寶價值，也能應用於食品及保養品。<br><br><span style="background-color: #fff3b8;">人工養殖珍珠</span><br>十九世紀末，天然珍珠受到世界各地喜愛，日本大量採捕天然珍珠貝，使珍珠貝數量驟降，因此御木本幸吉開始投入人工養殖珍珠研究。1893年7月，御木本幸吉成功培育人工養殖珍珠，使珍珠得以大量生產，也讓過去價格十分高昂的珍珠逐漸成為較多人能負擔的珠寶。人工養殖珍珠的方式，是<span style="color: #d98b72;">先採集活體珍珠貝</span>，再將人工製作的珠核<span style="color: #d98b72;">植入母貝體內</span>，使母貝持續分泌真珠質包覆珠核，最後形成珍珠，一般約需三年至五年才能完成養殖。<br>人工養殖珍珠所使用的珠核取自美國<span style="color: #d98b72;">密西西比河的淡水二枚貝</span>。製作時，先取下具有珍珠層的貝殼切割成細長條狀，接著切成小方塊，最後經過反覆研磨、製成大小不同的圓形珠核，再透過植核手術植入阿古屋貝體內，刺激母貝持續分泌真珠質，逐漸形成養殖珍珠；植入珠核後，珍珠貝會重新放回海中養殖。部分資料提到，珍珠貝會放置於凹凸不平的杉葉中，以降低魚類、章魚及螃蟹等海洋生物啃食的機率；另有資料介紹，植核後的珍珠貝會放置於掛網，再固定於海面上的珍珠筏下方養殖。養殖期間若遇到海象或環境變化，還需要進行照護及移動；成熟後，工作人員將掛網拉回，回收珍珠貝，再送往工廠以人工方式取出珍珠；之後依序進行清洗、分級、加工，最後製作成各式珠寶及工藝作品。<br>日本人工養殖珍珠主要<span style="color: #d98b72;">使用阿古屋貝（Akoya）作為母貝</span>。阿古屋貝外殼較薄，除了作為珍珠養殖的重要母貝，每年11月至1月也是可食用的海鮮食材；在成熟的養殖技術下，阿古屋貝可培育出圓潤且光澤良好的珍珠。養殖一顆珍珠需要多年培育，但並非所有珍珠都能達到珠寶品質，約28-30%的珍珠可達良質，而最高等級的花珠約僅占5%。因此，即使人工養殖技術成熟，高品質珍珠仍屬少數。<br><br><span style="background-color: #fff3b8;">主要珍珠展品</span><br><span style="color: #6f7fa6;"><b>夢殿</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-yumedono.jpg" alt="夢殿"><br>以奈良縣法隆寺境內的夢殿為創作原型，於1993年為紀念人工養殖珍珠成功100週年所製作，採用珍珠、貝殼及漆器結合的傳統工藝技法完成。整件作品共使用9,320顆最高等級珍珠打造；夢殿中央設置一顆直徑40毫米的大型珍珠，四周環繞十二生肖金色雕像，每尊生肖手中各捧不同寶物，例如兔捧鑽石、龍捧祖母綠、蛇捧大型珍珠，使整件作品更具特色。<br><span style="color: #6f7fa6;"><b>御本木五重塔</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-five-storied-pagoda.jpg" alt="御本木五重塔"><br>以奈良縣法隆寺五重塔為創作原型。曾於1926年（大正15年）美國建國150週年舉辦的費城萬國博覽會展出。塔身主要採用被譽為珍珠瑰寶的大型珍珠貝白蝶貝製成，底部則鋪滿珍珠，整件作品共使用12,760顆珍珠。<br><span style="color: #6f7fa6;"><b>地球儀</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-globe.jpg" alt="地球儀"><br>於1990年完成，以珍珠、金屬及寶石結合傳統工藝製作而成。作品主體為直徑33公分的球體，陸地採用22K黃金製成，海洋及湖泊則鋪滿12,541顆珍珠，赤道由377顆紅寶石排列，黃道則使用373顆鑽石裝飾，北極另以一顆13毫米南洋珍珠為中心，搭配8顆9毫米珍珠、339顆鑽石及金屬錫製作出北極光效果。另有資料提到，此作品曾為御木本幸吉收藏。<br><span style="color: #6f7fa6;"><b>自由之鐘</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-liberty-bell.jpg" alt="自由之鐘"><br>以美國費城自由之鐘為創作原型。於1939年（昭和14年）紐約世界博覽會展出，也被稱為百萬美元之鐘。整件作品共使用12250顆珍珠、366顆鑽石，鐘面裂痕則利用藍色珍珠忠實重現真正自由之鐘上的裂縫；作品象徵世界和平，但第二次世界大戰也正是在該次世界博覽會舉辦期間爆發。<br><span style="color: #6f7fa6;"><b>真珠王冠一世</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-crown-1.jpg" alt="真珠王冠一世"><br>於1978年（昭和53年）開始製作。共使用872顆珍珠、188顆0.1克拉碎鑽、700公克18K黃金，外觀設計較為樸實，但實際使用的珍珠及碎鑽數量皆高於王冠二世。<br><span style="color: #6f7fa6;"><b>真珠王冠二世</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-crown-2.jpg" alt="真珠王冠二世"><br>以歐洲中世紀拜占庭風格王冠為設計原型，並參考埃及圖坦卡門短劍的黃金鑲嵌工藝。自1978年5月開始製作，歷時一年兩個月，於1979年完成；資料中對珍珠數量有不同記載，一份資料記載使用796顆珍珠，另一份資料則記載除頂端16毫米主珠外，另使用795顆珍珠，此外還使用：16毫米主珍珠1顆、17顆0.1克拉鑽石、950公克18K黃金；館內另設有紙製真珠王冠二世複製品，提供遊客試戴拍照。<br><span style="color: #6f7fa6;"><b>矢車</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-yaguruma.jpg" alt="矢車"><br>為御木本代表性的珍珠工藝飾品，也是部分門票所使用的圖案。中央主珠直徑8.75毫米，左右兩側各排列20顆由大至小、大小、色澤及圓潤度一致的珍珠，再搭配碎鑽、藍寶石及祖母綠組成。其造型源自日本每年5月5日男兒節鯉魚旗頂端的「矢車」。<br><span style="color: #6f7fa6;"><b>真珠佛像</b></span><br><img class="note-inline-photo" src="images/details/pearl-museum-buddha.png" alt="真珠佛像"><br>館內展示源自中國的真珠佛像。其製作方式是在珍珠形成過程中，以人工方式影響珍珠生長方向，使佛像自然形成於貝殼內，而非後天雕刻。資料提到，此技術最早可追溯至宋代《文昌雜錄》，後來經由傳教士傳入歐洲，也影響了西方珍珠養殖技術的研究發展。<br><br><span style="background-color: #fff3b8;">館內體驗</span><br>館內有重現海上珍珠筏的場景，參觀者可穿著珍珠養殖工作服，站上珍珠筏拍照留念 ；另設珍珠挑選與分級體驗，可觀察珍珠大小、形狀、顏色及光澤差異以了解珍珠分級方式；亦有展示放大後的珍珠，可更清楚觀察不同珍珠的色澤及外型。`
 }]
 })];
 if (title !== '海女表演觀賞台') return [];
@@ -6497,6 +6511,16 @@ if (node.nodeType === Node.TEXT_NODE) return document.createTextNode(node.textCo
 if (node.nodeType !== Node.ELEMENT_NODE) return document.createTextNode('');
 const tag = node.tagName.toLowerCase();
 if (tag === 'br') return document.createElement('br');
+if (tag === 'img') {
+const src = (node.getAttribute('src') || '').trim();
+if (!/^images\/details\/[a-z0-9._/-]+\.(?:jpg|jpeg|png|webp)$/i.test(src)) return document.createTextNode('');
+const img = document.createElement('img');
+img.className = 'note-inline-photo';
+img.src = src;
+img.alt = (node.getAttribute('alt') || '').trim();
+img.loading = 'lazy';
+return img;
+}
 const fragment = document.createDocumentFragment();
 Array.from(node.childNodes).forEach(child => fragment.appendChild(cleanNode(child)));
 if (tag === 'li') {
@@ -6609,7 +6633,14 @@ pendingPlain = [];
 }
 function flushSection() {
 if (!currentSection) return;
-const bodyHtml = currentSection.body.map(line => `<span class="note-body-line">${line.html}</span>`).join('<br>');
+const bodyHtml = currentSection.body.map(line => {
+const hasInlinePhoto = /class=(["'])[^"']*\bnote-inline-photo\b[^"']*\1/.test(line.html);
+return { html: `<span class="note-body-line${hasInlinePhoto ? ' has-inline-photo' : ''}">${line.html}</span>`, hasInlinePhoto };
+}).reduce((parts, line, index) => {
+if (index && !currentSection.body[index - 1].html.includes('note-inline-photo')) parts.push('<br>');
+parts.push(line.html);
+return parts;
+}, []).join('');
 output.push(`<div class="note-highlight-section"><span class="note-highlight-heading">${currentSection.heading.html}</span>${bodyHtml ? `<div class="note-highlight-body is-collapsible"><div class="note-highlight-body-content">${bodyHtml}</div><button type="button" class="note-highlight-body-toggle btn-press-effect" onclick="toggleNoteHighlightBody(event, this)">...查看更多</button></div>` : ''}</div>`);
 currentSection = null;
 }
@@ -7286,6 +7317,11 @@ if (!Number.isInteger(blockIndex)) return;
 currentNoteImageBlockIndex = blockIndex;
 saveFieldDraftsToCard();
 renderDetailFields();
+}
+function handleNoteInlinePhotoClick(event) {
+const img = event.target.closest('.note-inline-photo');
+if (!img) return;
+openImagePreview(event, img);
 }
 function selectCurrentNoteImageBlock(block) {
 const blockIndex = Number(block?.dataset.blockIndex);
@@ -9756,9 +9792,23 @@ window.showSaveStatus = showSaveStatus;
 
 
 let startX = 0, startY = 0, isMoving = false;
+let rootTouchStartY = 0;
 let bottomSnapStartY = 0, bottomSnapStartTime = 0;
 function shouldIgnorePageTouch(target) {
 return isModalOpen || isMenuShowing || target.closest('.date-nav') || target.closest('.modal-content') || target.closest('.float-icon');
+}
+function shouldIgnoreViewportOverscrollTouch(target) {
+return isModalOpen || target.closest('.modal-content') || target.closest('.float-icon');
+}
+function preventViewportOverscroll(event) {
+if (!event.cancelable || !event.touches.length || shouldIgnoreViewportOverscrollTouch(event.target)) return;
+const scroller = document.scrollingElement || document.documentElement;
+const scrollTop = window.pageYOffset || scroller.scrollTop || document.body.scrollTop || 0;
+const maxScroll = Math.max(0, scroller.scrollHeight - window.innerHeight);
+const deltaY = event.touches[0].clientY - rootTouchStartY;
+const pullingPastTop = scrollTop <= 0 && deltaY > 0;
+const pullingPastBottom = scrollTop >= maxScroll - 1 && deltaY < 0;
+if (pullingPastTop || pullingPastBottom) event.preventDefault();
 }
 function snapToItineraryBottomIfClose(dy, elapsed) {
 if (isEditMode || isModalOpen || dy < 70 || elapsed > 520) return;
@@ -9772,6 +9822,7 @@ window.scrollTo({ top: maxScroll, left: 0, behavior: 'auto' });
 requestAnimationFrame(triggerItineraryBottomBounce);
 }
 document.getElementById('swipe-body').addEventListener('touchstart', e => {
+if (e.touches.length) rootTouchStartY = e.touches[0].clientY;
 if (shouldIgnorePageTouch(e.target)) return;
 startX = e.touches[0].clientX;
 startY = e.touches[0].clientY;
@@ -9780,11 +9831,12 @@ bottomSnapStartTime = performance.now();
 isMoving = true;
 }, { passive: true });
 document.getElementById('swipe-body').addEventListener('touchmove', e => {
+preventViewportOverscroll(e);
 if (!isMoving || !e.touches.length) return;
 const dx = startX - e.touches[0].clientX;
 const dy = startY - e.touches[0].clientY;
 if (Math.abs(dy) > 28 && Math.abs(dy) > Math.abs(dx) * 1.15) isMoving = false;
-}, { passive: true });
+}, { passive: false });
 document.getElementById('swipe-body').addEventListener('touchend', e => {
 if (!e.changedTouches.length || shouldIgnorePageTouch(e.target)) return;
 const bottomDy = bottomSnapStartY - e.changedTouches[0].clientY;
@@ -9811,6 +9863,7 @@ window.addEventListener('keydown', handlePasswordKeyboard);
 window.addEventListener('scroll', triggerItineraryBottomBounce, { passive: true });
 document.addEventListener('click', closeDocMenus);
 document.getElementById('day-content')?.addEventListener('click', handleRouteInlineClick);
+document.getElementById('itinerary-detail-fields')?.addEventListener('click', handleNoteInlinePhotoClick);
 const initialDay = getInitialTripDay();
 switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();
@@ -10043,6 +10096,14 @@ document.addEventListener('paste', handlePlainTextPaste);
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
