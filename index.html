@@ -9803,8 +9803,10 @@ return isModalOpen || target.closest('.modal-content') || target.closest('.float
 function preventViewportOverscroll(event) {
 if (!event.cancelable || !event.touches.length || shouldIgnoreViewportOverscrollTouch(event.target)) return;
 const scroller = document.scrollingElement || document.documentElement;
-const scrollTop = window.pageYOffset || scroller.scrollTop || document.body.scrollTop || 0;
-const maxScroll = Math.max(0, scroller.scrollHeight - window.innerHeight);
+const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || scroller.scrollTop || 0;
+const pageHeight = Math.max(scroller.scrollHeight || 0, document.documentElement.scrollHeight || 0, document.body.scrollHeight || 0);
+const maxScroll = Math.max(0, pageHeight - window.innerHeight);
+if (maxScroll <= 1) return;
 const deltaY = event.touches[0].clientY - rootTouchStartY;
 const pullingPastTop = scrollTop <= 0 && deltaY > 0;
 const pullingPastBottom = scrollTop >= maxScroll - 1 && deltaY < 0;
