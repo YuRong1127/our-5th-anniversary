@@ -98,6 +98,13 @@ body.day-3-theme {
 
 * { box-sizing: border-box; }
 html, body { height: 100%; overscroll-behavior-x: none; overscroll-behavior-y: none; overflow-x: hidden; }
+html {
+scrollbar-width: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+display: none;
+}
 body {
 margin: 0;
 min-height: 100vh;
@@ -9846,7 +9853,7 @@ snapToItineraryBottomIfClose(bottomDy, performance.now() - bottomSnapStartTime);
 if (!isMoving || isModalOpen) return;
 const dx = startX - e.changedTouches[0].clientX;
 const dy = startY - e.changedTouches[0].clientY;
-const isHorizontalSwipe = Math.abs(dx) > 82 && Math.abs(dy) < 62 && Math.abs(dx) > Math.abs(dy) * 1.7;
+const isHorizontalSwipe = Math.abs(dx) > 58 && Math.abs(dy) < 70 && Math.abs(dx) > Math.abs(dy) * 1.35;
 if (isHorizontalSwipe) {
 if (dx > 0) {
 if (currentDay < 5) switchDay(currentDay + 1);
