@@ -936,12 +936,18 @@ transform: scaleX(-1);
 background-image: url("data:image/svg+xml,%3Csvg width='108' height='48' viewBox='0 0 108 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 29C23 14 41 12 58 22C73 31 89 27 101 13' stroke='%23b9d9cf' stroke-width='2'/%3E%3Cpath d='M33 20c-4-7-1-12 6-8c2-8 9-8 10 0c7-4 11 1 6 8c8 1 8 8 0 9c4 7-1 12-8 7c-3 7-10 6-10-2c-8 3-11-3-4-14Z' fill='%23f76576' stroke='%23e88791' stroke-width='1.4'/%3E%3Ccircle cx='44' cy='23' r='4.2' fill='%23fff6ca' stroke='%23e5c468' stroke-width='1.1'/%3E%3Cpath d='M15 27c6-1 10 1 13 5M18 22c5-3 10-3 14 0M70 20c4-7 10-9 16-5M74 25c7-3 14-1 18 3M84 14c4-3 8-3 12 0' stroke='%238bcbbb' stroke-width='2'/%3E%3Cpath d='M76 31c4-2 8-1 11 2M23 34c3 3 7 4 12 3' stroke='%23c5e2d9' stroke-width='1.6'/%3E%3Ccircle cx='82' cy='32' r='3.2' fill='%23f6d86f' stroke='%23efc86a' stroke-width='1'/%3E%3Ccircle cx='90' cy='33' r='2.4' fill='%23fff1b8'/%3E%3C/g%3E%3C/svg%3E");
 }
 #details-modal,
-#settle-modal,
 #stats-modal {
 align-items: flex-start;
 overflow-y: auto;
 padding-top: max(12px, calc(env(safe-area-inset-top) + 10px));
 padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 10px));
+}
+#settle-modal,
+#stats-modal {
+align-items: center;
+overflow-y: auto;
+padding-top: max(12px, env(safe-area-inset-top));
+padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 #wallet-modal {
 align-items: center;
@@ -953,6 +959,11 @@ padding-bottom: max(10px, calc(env(safe-area-inset-bottom) + 8px));
 #details-modal .modal-container,
 #settle-modal .modal-container,
 #stats-modal .modal-container { padding-top: 18px; padding-bottom: 12px; }
+#details-modal .modal-container,
+#settle-modal .modal-container,
+#stats-modal .modal-container {
+width: min(86%, 360px);
+}
 #wallet-modal .modal-content { padding-top: 16px; padding-bottom: 16px; }
 #wallet-modal .modal-title { margin-bottom: 8px; }
 #wallet-modal {
@@ -2805,6 +2816,11 @@ object-fit: contain;
 .icon-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 7px; }
 .icon-picker-item { min-height: 40px; aspect-ratio: 1/1; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; font-size: 1.32rem; display: flex; align-items: center; justify-content: center; }
 .wishlist-category-wrap { position: relative; margin-bottom: 7px; padding-top: 1px; }
+#wishlist-modal .wishlist-category-wrap {
+width: calc(100% - 20px);
+margin-left: auto;
+margin-right: auto;
+}
 .wishlist-title-row {
 display: grid;
 grid-template-columns: minmax(0, 1fr) auto;
@@ -3478,7 +3494,7 @@ height: auto;
 max-height: none;
 scrollbar-width: thin;
 scrollbar-color: #e5aaa0 #fff4f0;
-padding-right: 10px;
+padding: 5px 0;
 }
 #wishlist-modal .modal-scroll-area::-webkit-scrollbar {
 width: 12px;
@@ -3513,10 +3529,13 @@ display: none;
 }
 #wishlist-list {
 display: grid;
-grid-template-columns: repeat(2, minmax(0, 1fr));
+grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 gap: 10px;
 align-items: start;
 min-height: 0;
+width: calc(100% - 20px);
+margin-left: auto;
+margin-right: auto;
 }
 #wishlist-list.is-short {
 height: 100%;
@@ -3525,11 +3544,16 @@ grid-template-rows: auto 1fr;
 .wishlist-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 42px 32px; align-items: center; gap: 8px; padding: 10px 10px; border: 1px solid #f4e4df; border-radius: 18px; background: #fff; box-shadow: 0 5px 14px rgba(141,110,99,.045); cursor: pointer; }
 #wishlist-list .wishlist-item {
 position: relative;
-grid-template-columns: 24px minmax(0, 1fr);
-gap: 4px;
-padding: 7px 7px 6px;
-border-radius: 17px;
+width: 100%;
+min-width: 0;
+box-sizing: border-box;
+grid-template-columns: 22px minmax(0, 1fr);
+column-gap: 4px;
+row-gap: 0;
+padding: 0;
+border-radius: 10px;
 align-items: center;
+box-shadow: 0 4px 10px rgba(141,110,99,.035);
 }
 #wishlist-list .wishlist-photo-btn {
 grid-column: 1 / -1;
@@ -3537,30 +3561,56 @@ order: 1;
 width: 100%;
 height: auto;
 aspect-ratio: 1 / 1;
-border-radius: 14px;
-background: #fff8f5;
+border: 0;
+border-radius: 9px 9px 0 0;
+background: transparent;
+box-shadow: none;
 font-size: 1.18rem;
+padding: 0;
+overflow: hidden;
+}
+#wishlist-list .wishlist-photo-btn img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+#wishlist-list .wishlist-photo-btn img[src$="muji-tear-resistant-kitchen-paper.jpg"] {
+transform: scale(1.32);
+transform-origin: center center;
 }
 #wishlist-list .wishlist-check {
 order: 2;
-width: 16px;
-height: 16px;
+width: 14px;
+height: 14px;
+justify-self: center;
 align-self: center;
+margin: 0 0 0 8px;
 background: #fffaf7;
 box-shadow: none;
-font-size: .62rem;
+font-size: .56rem;
 line-height: 1;
 }
 #wishlist-list .wishlist-name {
 order: 3;
-height: 18px;
+height: 30px;
 font-size: .76rem;
 font-weight: 700;
-line-height: 18px;
+line-height: 1;
 overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
 word-break: normal;
+display: flex;
+align-items: center;
+gap: 3px;
+margin: 0 8px 0 0;
+}
+#wishlist-list .wishlist-name-text {
+min-width: 0;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
 }
 .wishlist-gift-line {
 display: inline-flex;
@@ -3606,6 +3656,46 @@ color: #d99a92;
 font-size: .86rem;
 line-height: 1;
 box-shadow: 0 1px 5px rgba(141,110,99,.06);
+}
+#wishlist-list .wishlist-qty-control {
+position: absolute;
+right: 4px;
+top: 4px;
+z-index: 3;
+display: inline-flex;
+align-items: center;
+flex: 0 0 auto;
+height: 21px;
+gap: 1px;
+padding: 0 4px;
+border: 1px solid rgba(238, 196, 185, .8);
+border-radius: 999px;
+background: rgba(255, 250, 247, .95);
+box-shadow: 0 2px 8px rgba(141,110,99,.08);
+backdrop-filter: blur(3px);
+}
+#wishlist-list .wishlist-qty-btn {
+width: 12px;
+height: 19px;
+border: 0;
+background: transparent;
+color: #d0837a;
+font-size: .78rem;
+font-weight: 900;
+line-height: 1;
+padding: 0;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+}
+#wishlist-list .wishlist-qty-value {
+min-width: 11px;
+padding: 0 2px;
+color: #8d6e63;
+font-size: .72rem;
+font-weight: 900;
+line-height: 1;
+text-align: center;
 }
 #wishlist-list .wishlist-empty {
 position: relative;
@@ -3779,26 +3869,29 @@ display: block;
 .h-full { opacity: 0; color: var(--heart-pink); transform: scale(.5); transition: all .2s; }
 .heart-slot.active .h-full { opacity: 1; transform: scale(1); }
 .heart-slot.active .h-empty { opacity: 0; }
-.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 2px; min-height: 44px; margin: 0 0 6px; color: #c5aaa1; font-size: clamp(.98rem, 4.2vw, 1.12rem); font-weight: 700; text-align: center; line-height: 1.2; white-space: nowrap; }
+.pw-hint-text { display: flex; justify-content: center; align-items: center; gap: 1px; width: 100%; min-height: 44px; margin: 0 0 6px; color: #c5aaa1; font-size: clamp(.98rem, 4.2vw, 1.12rem); font-weight: 700; text-align: center; line-height: 1.2; white-space: nowrap; }
 .pw-hint-pig {
-position: relative;
-left: -5px;
 display: block;
-width: 50px;
-height: 48px;
-flex: 0 0 auto;
-align-self: center;
-margin-left: -8;
-transform: translateX(-3px);
+width: 56px;
+height: 54px;
+margin-left: -10px;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
+flex: 0 0 auto;
+transform: translateY(3px);
+pointer-events: none;
+}
+.pw-hint-pig-docs {
+width: 42px;
+height: 34px;
+margin-left: 0;
+transform: translateY(-2px);
+filter: contrast(1.16) saturate(1.08) brightness(.98) drop-shadow(0 4px 8px rgba(141,110,99,.1));
 }
 .pw-hint-pig.angry {
 width: 28px;
 height: 26px;
-margin-left: 6px;
-transform: translateY(-3px);
-vertical-align: middle;
+transform: translateY(-1px);
 }
 .pw-keypad {
 display: grid;
@@ -3858,8 +3951,9 @@ body.edit-mode .route-inline { width: calc(100vw - 95px); }
 .pw-keypad { grid-template-columns: repeat(3, 68px); gap: 8px; }
 .pw-keypad button { width: 68px; height: 46px; }
 .pw-hint-text { font-size: .94rem; }
-.pw-hint-pig { width: 36px; height: 34px; }
-.pw-hint-pig.angry { width: 24px; height: 22px; transform: translateY(-1.5px); }
+.pw-hint-pig { width: 50px; height: 48px; margin-left: -9px; }
+.pw-hint-pig-docs { width: 38px; height: 31px; transform: translateY(-2px); }
+.pw-hint-pig.angry { width: 24px; height: 22px; transform: translateY(-1px); }
 }
 @media (max-width: 390px), (max-height: 700px) {
 #details-modal,
@@ -3878,6 +3972,11 @@ padding-bottom: max(8px, calc(env(safe-area-inset-bottom) + 6px));
 #stats-modal .modal-container {
 width: 96%;
 padding: 14px 10px 10px;
+}
+#details-modal .modal-container,
+#settle-modal .modal-container,
+#stats-modal .modal-container {
+width: 90%;
 }
 #wallet-modal .modal-content,
 .panel-modal-content {
@@ -4527,7 +4626,7 @@ window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 
 const SECURE_DOCS_URL = new URL('secure-docs/vault.json?v=20260611-password-2', window.location.href).href;
 const editPasswordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="images/pigs/typing-pig.png" alt="打字小豬">';
-const docsPasswordPromptHtml = '請輸入密碼以查看重要資料<img class="pw-hint-pig" src="images/pigs/typing-pig.png" alt="打字小豬">';
+const docsPasswordPromptHtml = '請輸入密碼以查看重要資料<img class="pw-hint-pig pw-hint-pig-docs" src="images/pigs/password-docs-pig.png" alt="查看資料小豬">';
 let passwordPromptHtml = editPasswordPromptHtml;
 const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="images/pigs/angry-pig-inline.png" alt="生氣小豬">';
 let passwordAuthMode = 'edit';
@@ -8847,6 +8946,7 @@ id: Date.now(),
 category,
 title,
 done: false,
+qty: 1,
 imageSrc: pendingWishlistImageSrc || '',
 buyer: isGift ? currentWishlistGiftBuyer : '',
 recipient
@@ -8869,6 +8969,21 @@ function toggleWishlistItem(id) {
 const item = wishItems.find(wish => wish.id === id);
 if (!item) return;
 item.done = !item.done;
+renderWishlist();
+queueTripCloudSave();
+}
+function getWishlistItemQty(item) {
+return Math.max(1, Number(item?.qty) || 1);
+}
+function changeWishlistQty(id, delta) {
+const item = wishItems.find(wish => wish.id === id);
+if (!item) return;
+const nextQty = getWishlistItemQty(item) + delta;
+if (nextQty <= 0) {
+deleteWishlistItem(id);
+return;
+}
+item.qty = nextQty;
 renderWishlist();
 queueTripCloudSave();
 }
@@ -8958,15 +9073,15 @@ list.innerHTML = `<div class="wishlist-empty">這格還有空位可以放心願<
 return;
 }
 list.classList.remove('is-empty');
-list.classList.toggle('is-short', items.length < 5);
-scrollArea?.classList.toggle('is-short-list', items.length < 5);
+list.classList.toggle('is-short', items.length < 3);
+scrollArea?.classList.toggle('is-short-list', items.length < 3);
 const moreHint = items.length < 3 ? `<button type="button" class="wishlist-more-hint btn-press-effect" onclick="event.stopPropagation(); toggleWishlistItemForm(true)"><span>想起來的時候</span><span>再把下一個小心願夾進這頁</span></button>` : '';
 list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}" onclick="handleWishlistItemClick(event, ${item.id})">
+<span class="wishlist-qty-control" aria-label="購買數量"><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${item.id}, -1)">-</button><span class="wishlist-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${item.id}, 1)">+</button></span>
 <button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${item.id})">${item.done ? '✓' : ''}</button>
-<div class="wishlist-name">${renderWishlistItemTitle(item)}</div>
+<div class="wishlist-name"><span class="wishlist-name-text">${renderWishlistItemTitle(item)}</span></div>
 <button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${item.id})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(getWishlistImageSrc(item))}" alt="${escapeHtml(item.title)}圖片">` : '📷'}</button>
 <input type="file" id="wishlist-photo-input-${item.id}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistImage(${item.id}, event)">
-<button type="button" class="wishlist-delete btn-press-effect" onclick="event.stopPropagation(); deleteWishlistItem(${item.id})">×</button>
 </div>`).join('') + moreHint;
 }
 function openDocsFolder() {
