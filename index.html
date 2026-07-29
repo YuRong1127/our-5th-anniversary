@@ -2740,28 +2740,47 @@ background: rgba(65,49,45,.72);
 backdrop-filter: blur(8px);
 }
 #image-preview-modal .modal-container {
-width: 96%;
-max-width: 720px;
-padding: 20px 10px;
+position: relative;
+width: fit-content;
+max-width: min(88vw, 720px);
+padding: 0;
+background: transparent;
+box-shadow: none;
+border-radius: 0;
+overflow: visible;
+}
+#image-preview-modal .modal-close-btn {
+right: 4px;
+top: 4px;
+z-index: 5;
 }
 .image-preview-content {
+position: relative;
 display: flex;
 align-items: center;
 justify-content: center;
-max-height: calc(94vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+width: min(78vw, 520px);
+height: min(78vw, 520px);
+max-height: calc(82vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 padding: 0;
 border: 0;
 border-radius: 24px;
 background: transparent;
 box-shadow: none;
+overflow: hidden;
 }
 .image-preview-content img {
 display: block;
-max-width: 100%;
-max-height: calc(90vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-border-radius: 18px;
+width: 100%;
+height: 100%;
+border-radius: inherit;
 box-shadow: 0 14px 50px rgba(0,0,0,.3);
-object-fit: contain;
+object-fit: cover;
+overflow: hidden;
+}
+.image-preview-content img[src$="muji-tear-resistant-kitchen-paper.jpg"] {
+transform: scale(1.34);
+transform-origin: center center;
 }
 .expense-card { margin-bottom: 14px; padding: 18px; border: 1px solid #fdf5f2; border-radius: 24px; background: #fff; box-shadow: 0 4px 15px rgba(141,110,99,.06); }
 .expense-top { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; min-height: 52px; }
@@ -3076,6 +3095,34 @@ height: 42px;
 padding: 10px 12px;
 font-size: .84rem;
 }
+.wishlist-convenience-fields {
+display: none;
+width: 100%;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 7px;
+padding: 4px;
+border: 1px solid #ead8d1;
+border-radius: 16px;
+background: #fffaf7;
+}
+.wishlist-convenience-fields.show {
+display: grid;
+}
+.wishlist-convenience-option {
+height: 34px;
+border: 0;
+border-radius: 12px;
+background: transparent;
+color: #b7aaa5;
+font-size: .78rem;
+font-weight: 900;
+white-space: nowrap;
+}
+.wishlist-convenience-option.active {
+background: #fff;
+color: #cf6f63;
+box-shadow: 0 5px 13px rgba(141,110,99,.08);
+}
 .wishlist-new-photo-btn {
 width: 100%;
 min-height: 48px;
@@ -3090,6 +3137,13 @@ font-weight: 900;
 border-style: solid;
 background: #fff4ef;
 color: #c2766a;
+}
+.wishlist-new-tools {
+display: block;
+width: 100%;
+}
+.wishlist-new-tools .wishlist-new-photo-btn {
+width: 100%;
 }
 #wishlist-item-form .wishlist-add-btn {
 width: 100%;
@@ -3130,6 +3184,7 @@ border-radius: 15px;
 background: #fff8f5;
 }
 .wishlist-subtabs.show { display: grid; }
+.wishlist-subtabs.is-hidden { display: none; }
 .wishlist-subtab {
 height: 28px;
 min-width: 0;
@@ -3579,6 +3634,56 @@ display: block;
 transform: scale(1.32);
 transform-origin: center center;
 }
+#wishlist-list .wishlist-store-badge {
+position: absolute;
+top: 6px;
+left: 6px;
+z-index: 2;
+max-width: calc(100% - 72px);
+min-width: 42px;
+height: 18px;
+padding: 3px 6px;
+border-radius: 999px;
+background: rgba(255,250,247,.94);
+color: #cf6f63;
+font-size: .68rem;
+font-weight: 900;
+line-height: 1.1;
+box-shadow: 0 4px 10px rgba(141,110,99,.08);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+}
+#wishlist-list .wishlist-store-badge.store-711 {
+background: rgba(255,255,255,.94);
+box-shadow: inset 0 0 0 1px rgba(0,111,72,.12), 0 4px 10px rgba(141,110,99,.08);
+}
+#wishlist-list .wishlist-store-badge.store-family {
+background: rgba(255,255,255,.94);
+box-shadow: inset 0 0 0 1px rgba(0,128,198,.14), 0 4px 10px rgba(141,110,99,.08);
+}
+#wishlist-list .wishlist-store-badge.store-lawson {
+background: rgba(255,255,255,.94);
+box-shadow: inset 0 0 0 1px rgba(0,136,213,.16), 0 4px 10px rgba(141,110,99,.08);
+}
+#wishlist-list .wishlist-store-badge img {
+width: auto;
+max-width: 54px;
+height: 12px;
+object-fit: contain;
+display: block;
+}
+#wishlist-list .wishlist-store-badge.store-family img {
+height: 11px;
+max-width: 66px;
+}
+#wishlist-list .wishlist-store-badge.store-lawson img {
+height: 13px;
+max-width: 62px;
+}
 #wishlist-list .wishlist-check {
 order: 2;
 width: 14px;
@@ -3639,6 +3744,82 @@ max-width: 44px;
 min-width: 0;
 overflow: hidden;
 text-overflow: ellipsis;
+}
+#wishlist-list.is-gift-list {
+display: flex;
+flex-direction: column;
+gap: 9px;
+width: calc(100% - 20px);
+}
+#wishlist-list.is-gift-list.is-short {
+height: auto;
+}
+#wishlist-list.is-gift-list .wishlist-item {
+display: grid;
+grid-template-columns: 22px minmax(0, 1fr) auto;
+gap: 8px;
+min-height: 50px;
+padding: 9px 10px;
+border-radius: 16px;
+background: #fff;
+box-shadow: 0 5px 14px rgba(141,110,99,.045);
+}
+#wishlist-list.is-gift-list .wishlist-check {
+order: 1;
+width: 16px;
+height: 16px;
+margin: 0;
+justify-self: center;
+align-self: center;
+}
+#wishlist-list.is-gift-list .wishlist-name {
+order: 2;
+height: auto;
+min-height: 28px;
+margin: 0;
+font-size: .82rem;
+line-height: 1.2;
+}
+#wishlist-list.is-gift-list .wishlist-qty-control {
+position: static;
+order: 3;
+display: inline-flex;
+height: 24px;
+min-width: 48px;
+padding: 0 3px;
+align-self: center;
+justify-self: end;
+}
+#wishlist-list.is-gift-list .wishlist-name-text,
+#wishlist-list.is-gift-list .wishlist-gift-line,
+#wishlist-list.is-gift-list .wishlist-gift-title {
+width: 100%;
+}
+#wishlist-list.is-gift-list .wishlist-gift-line {
+gap: 6px;
+}
+#wishlist-list.is-gift-list .wishlist-gift-title {
+flex: 1 1 auto;
+color: #b99d95;
+}
+#wishlist-list.is-gift-list .wishlist-gift-person-img {
+width: 24px;
+height: 24px;
+}
+#wishlist-list.is-gift-list .wishlist-gift-recipient {
+color: #705b55;
+font-size: .76rem;
+max-width: 72px;
+}
+#wishlist-list.is-gift-list .wishlist-photo-btn {
+display: none;
+}
+#wishlist-list.is-gift-list .wishlist-item.done .wishlist-gift-title,
+#wishlist-list.is-gift-list .wishlist-item.done .wishlist-gift-recipient {
+color: var(--light-brown);
+text-decoration-line: line-through;
+text-decoration-thickness: 2px;
+text-decoration-color: #d17a6d;
 }
 #wishlist-list .wishlist-delete {
 position: absolute;
@@ -4373,7 +4554,7 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <div id="settle-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div id="settle-content" class="panel-content settle-panel-content"></div></div></div></div></div>
 <div id="stats-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="stats-title-row"><div class="stats-main-title">📊 統計</div><div class="stats-tabs"><button type="button" class="stats-tab active btn-press-effect" data-stats-page="pie" onclick="setStatsPage('pie')">大餅圖</button><button type="button" class="stats-tab btn-press-effect" data-stats-page="bar" onclick="setStatsPage('bar')">柱狀圖</button></div></div><div class="modal-scroll-area"><div id="stats-content" class="panel-content"></div></div></div></div></div>
 <div id="time-range-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-fields"><div class="time-range-field"><label for="time-range-start">開始</label><input id="time-range-start" class="time-range-input" type="text" inputmode="numeric" maxlength="5" placeholder="08:00" oninput="formatTimeRangeInput(this)"></div><div class="time-range-field"><label for="time-range-end">結束</label><input id="time-range-end" class="time-range-input" type="text" inputmode="numeric" maxlength="5" placeholder="09:10" oninput="formatTimeRangeInput(this)"></div></div><div class="time-range-actions"><button type="button" class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()">未定</button><button type="button" class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()">儲存時間</button></div></div></div></div>
-<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="wishlist-title-row"><div class="modal-title">🧺 想買的哩哩扣扣</div><div class="wishlist-title-actions"><button type="button" id="wishlist-add-item-toggle" class="wishlist-title-action btn-press-effect" onclick="toggleWishlistItemForm()">＋新增品項</button><button type="button" id="wishlist-category-edit-toggle" class="wishlist-title-action btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯分類</button></div></div><div class="wishlist-category-wrap"><div class="wishlist-tabs" id="wishlist-tabs"></div><div id="wishlist-subtabs" class="wishlist-subtabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div id="wishlist-item-form" class="wishlist-form"><div class="wishlist-form-head"><strong id="wishlist-item-form-title">新增 3coins</strong></div><div class="wishlist-form-row"><div id="wishlist-gift-fields" class="wishlist-gift-fields"><div class="wishlist-gift-buyer" aria-label="誰買的"><button type="button" class="wishlist-gift-buyer-btn active btn-press-effect" data-buyer="大豬" onclick="setWishlistGiftBuyer('大豬')" aria-label="大豬"><img class="wishlist-gift-buyer-img" src="images/pigs/wishlist-big-pig.png" alt="大豬"></button><button type="button" class="wishlist-gift-buyer-btn btn-press-effect" data-buyer="小豬" onclick="setWishlistGiftBuyer('小豬')" aria-label="小豬"><img class="wishlist-gift-buyer-img" src="images/pigs/wishlist-small-pig.png" alt="小豬"></button></div><input type="text" id="wishlist-gift-recipient" class="wishlist-input" placeholder="買給誰？"></div><input type="text" id="wishlist-input" class="wishlist-input" placeholder="我要買什麼？" onkeydown="handleWishlistKey(event)"><button type="button" id="wishlist-new-photo-btn" class="wishlist-new-photo-btn btn-press-effect" onclick="chooseNewWishlistPhoto()">📷 新增照片</button><input type="file" id="wishlist-new-photo-input" accept="image/*" style="display:none" onchange="attachNewWishlistPhoto(event)"><div class="wishlist-form-actions"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">確定</button><button type="button" class="wishlist-form-cancel btn-press-effect" onclick="toggleWishlistItemForm(false)">取消</button></div></div></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
+<div id="wishlist-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="wishlist-title-row"><div class="modal-title">🧺 想買的哩哩扣扣</div><div class="wishlist-title-actions"><button type="button" id="wishlist-add-item-toggle" class="wishlist-title-action btn-press-effect" onclick="toggleWishlistItemForm()">＋新增品項</button><button type="button" id="wishlist-category-edit-toggle" class="wishlist-title-action btn-press-effect" onclick="toggleWishlistCategoryEditMode()">編輯分類</button></div></div><div class="wishlist-category-wrap"><div class="wishlist-tabs" id="wishlist-tabs"></div><div id="wishlist-subtabs" class="wishlist-subtabs"></div></div><div id="wishlist-category-form" class="wishlist-category-form"><input type="text" id="wishlist-category-input" class="wishlist-input" placeholder="例如：藥妝店必買" onkeydown="handleWishlistCategoryKey(event)"><button type="button" class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()">新增</button><button type="button" class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)">取消</button></div><div id="wishlist-item-form" class="wishlist-form"><div class="wishlist-form-head"><strong id="wishlist-item-form-title">新增 3coins</strong></div><div class="wishlist-form-row"><div id="wishlist-gift-fields" class="wishlist-gift-fields"><div class="wishlist-gift-buyer" aria-label="誰買的"><button type="button" class="wishlist-gift-buyer-btn active btn-press-effect" data-buyer="大豬" onclick="setWishlistGiftBuyer('大豬')" aria-label="大豬"><img class="wishlist-gift-buyer-img" src="images/pigs/wishlist-big-pig.png" alt="大豬"></button><button type="button" class="wishlist-gift-buyer-btn btn-press-effect" data-buyer="小豬" onclick="setWishlistGiftBuyer('小豬')" aria-label="小豬"><img class="wishlist-gift-buyer-img" src="images/pigs/wishlist-small-pig.png" alt="小豬"></button></div><input type="text" id="wishlist-gift-recipient" class="wishlist-input" placeholder="買給誰？"></div><input type="text" id="wishlist-input" class="wishlist-input" placeholder="我要買什麼？" onkeydown="handleWishlistKey(event)"><div class="wishlist-new-tools"><button type="button" id="wishlist-new-photo-btn" class="wishlist-new-photo-btn btn-press-effect" onclick="chooseNewWishlistPhoto()">📷 新增照片</button></div><input type="file" id="wishlist-new-photo-input" accept="image/*" style="display:none" onchange="attachNewWishlistPhoto(event)"><div class="wishlist-form-actions"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addWishlistItem()">確定</button><button type="button" class="wishlist-form-cancel btn-press-effect" onclick="toggleWishlistItemForm(false)">取消</button></div></div></div><div class="modal-scroll-area"><div id="wishlist-list" class="wishlist-list"></div></div></div></div></div>
 <div id="prep-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button type="button" class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')">出行必備</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')">生活日用</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')">衣服配飾</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')">藥品健康</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')">數位電器</button><button type="button" class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')">妝髮用品</button></div><div class="wishlist-form"><input type="text" id="prep-input" class="wishlist-input" placeholder="例如：護照、充電器、旅平險..." onkeydown="handlePrepKey(event)"><button type="button" class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()">＋</button></div><div class="modal-scroll-area"><div id="prep-list" class="wishlist-list"></div></div></div></div></div>
 <div id="docs-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeSecureDocs()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🔐 重要資料夾</div><p class="docs-security-note">完整憑證只在這台裝置暫時解密，關閉後會重新上鎖</p><div class="modal-scroll-area"><div id="docs-list" class="wishlist-list docs-list"></div></div></div></div></div>
 <div id="icon-picker-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div id="icon-picker-grid" class="icon-picker-grid"></div></div><button type="button" onclick="closeModal('icon-picker-modal')" class="modal-btn-primary btn-press-effect" style="margin-top:14px">取消</button></div></div></div>
@@ -4422,9 +4603,12 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 107, category: '3coins', title: '對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
-{ id: 110, category: '3coins', title: '兩用油瓶460ml', done: false, imageSrc: 'wishlist-images/threecoins-2way-oil-bottle-460ml.jpg' },
-{ id: 111, category: '無印良品', title: '鋁製伸縮衣架', done: false, imageSrc: 'wishlist-images/muji-aluminum-telescopic-hanger.jpg' },
-{ id: 112, category: '3coins', title: '壓縮機&壓縮袋', done: false, imageSrc: 'wishlist-images/threecoins-compression-pump-bag.jpg' }
+{ id: 310, category: '3coins', title: '兩用油瓶460ml', done: false, imageSrc: 'wishlist-images/threecoins-2way-oil-bottle-460ml.jpg' },
+{ id: 311, category: '無印良品', title: '鋁製伸縮衣架', done: false, imageSrc: 'wishlist-images/muji-aluminum-telescopic-hanger.jpg' },
+{ id: 312, category: '3coins', title: '壓縮機&壓縮袋', done: false, imageSrc: 'wishlist-images/threecoins-compression-pump-bag.jpg' },
+{ id: 313, category: '無印良品', title: '藥用BB霜#03', done: false, imageSrc: 'wishlist-images/muji-bb-cream-03.png' },
+{ id: 314, category: '無印良品', title: '精油護手霜', done: false, imageSrc: 'wishlist-images/muji-essential-oil-hand-cream.png' },
+{ id: 315, category: '無印良品', title: '頭皮護理液', done: false, imageSrc: 'wishlist-images/muji-scalp-care-essence.jpg' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
@@ -4436,15 +4620,21 @@ let wishItems = [
 { id: 107, category: '3coins', title: '兒童對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
-{ id: 110, category: '3coins', title: '兩用油瓶460ml', done: false, imageSrc: 'wishlist-images/threecoins-2way-oil-bottle-460ml.jpg' },
-{ id: 111, category: '無印良品', title: '鋁製伸縮衣架', done: false, imageSrc: 'wishlist-images/muji-aluminum-telescopic-hanger.jpg' },
-{ id: 112, category: '3coins', title: '壓縮機&壓縮袋', done: false, imageSrc: 'wishlist-images/threecoins-compression-pump-bag.jpg' }
+{ id: 310, category: '3coins', title: '兩用油瓶460ml', done: false, imageSrc: 'wishlist-images/threecoins-2way-oil-bottle-460ml.jpg' },
+{ id: 311, category: '無印良品', title: '鋁製伸縮衣架', done: false, imageSrc: 'wishlist-images/muji-aluminum-telescopic-hanger.jpg' },
+{ id: 312, category: '3coins', title: '壓縮機&壓縮袋', done: false, imageSrc: 'wishlist-images/threecoins-compression-pump-bag.jpg' },
+{ id: 313, category: '無印良品', title: '藥用BB霜#03', done: false, imageSrc: 'wishlist-images/muji-bb-cream-03.png' },
+{ id: 314, category: '無印良品', title: '精油護手霜', done: false, imageSrc: 'wishlist-images/muji-essential-oil-hand-cream.png' },
+{ id: 315, category: '無印良品', title: '頭皮護理液', done: false, imageSrc: 'wishlist-images/muji-scalp-care-essence.jpg' }
 ];
 const CONVENIENCE_WISHLIST_PARENT = '超商';
 const CONVENIENCE_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson'];
+const CONVENIENCE_WISHLIST_UNKNOWN = '未知';
+const CONVENIENCE_WISHLIST_DISPLAY_CATEGORIES = [...CONVENIENCE_WISHLIST_CATEGORIES, CONVENIENCE_WISHLIST_UNKNOWN];
 let wishlistCategories = ['3coins', '無印良品', 'Uniqlo', CONVENIENCE_WISHLIST_PARENT, '藥妝店', '機場必買', '伴手禮'];
 let currentWishlistCategory = '3coins';
 let currentConvenienceCategory = '全家';
+let currentWishlistConvenienceDraft = '';
 let wishlistCategoryEditMode = false;
 const DEFAULT_WISHLIST_CATEGORIES = ['3coins', '無印良品', 'Uniqlo', CONVENIENCE_WISHLIST_PARENT, '藥妝店', '機場必買', '伴手禮'];
 const REMOVED_WISHLIST_CATEGORIES = [];
@@ -4480,6 +4670,14 @@ let added = false;
 const beforeCount = wishItems.length;
 wishItems = wishItems.filter(item => !OBSOLETE_WISHLIST_TITLES.includes(item.title));
 if (wishItems.length !== beforeCount) added = true;
+wishItems.forEach(item => {
+if (item.id === 313 || (item.category === '無印良品' && item.title === 'BB霜 #03')) {
+if (item.title !== '藥用BB霜#03') {
+item.title = '藥用BB霜#03';
+added = true;
+}
+}
+});
 REQUIRED_WISHLIST_ITEMS.forEach(requiredItem => {
 const existingItem = wishItems.find(item => item.category === requiredItem.category && item.title === requiredItem.title);
 if (existingItem) {
@@ -8703,7 +8901,8 @@ const normalized = WISHLIST_CATEGORY_ALIASES[category] || category;
 return CONVENIENCE_WISHLIST_CATEGORIES.includes(normalized) ? CONVENIENCE_WISHLIST_PARENT : normalized;
 }
 function getEffectiveWishlistCategory() {
-return isConvenienceWishlistCategory() ? currentConvenienceCategory : currentWishlistCategory;
+if (!isConvenienceWishlistCategory()) return currentWishlistCategory;
+return currentConvenienceCategory === CONVENIENCE_WISHLIST_UNKNOWN ? CONVENIENCE_WISHLIST_PARENT : currentConvenienceCategory;
 }
 function getWishlistCategoryDisplayName() {
 return isConvenienceWishlistCategory() ? currentConvenienceCategory : currentWishlistCategory;
@@ -8716,7 +8915,7 @@ if (CONVENIENCE_WISHLIST_CATEGORIES.includes(currentWishlistCategory)) {
 currentConvenienceCategory = currentWishlistCategory;
 currentWishlistCategory = CONVENIENCE_WISHLIST_PARENT;
 }
-if (!CONVENIENCE_WISHLIST_CATEGORIES.includes(currentConvenienceCategory)) currentConvenienceCategory = CONVENIENCE_WISHLIST_CATEGORIES[0];
+if (!CONVENIENCE_WISHLIST_DISPLAY_CATEGORIES.includes(currentConvenienceCategory)) currentConvenienceCategory = CONVENIENCE_WISHLIST_CATEGORIES[0];
 wishItems.forEach(item => {
 if (item && WISHLIST_CATEGORY_ALIASES[item.category]) item.category = WISHLIST_CATEGORY_ALIASES[item.category];
 });
@@ -8761,16 +8960,12 @@ updateWishlistAddFormTitle();
 function renderWishlistSubcategories() {
 const subtabs = document.getElementById('wishlist-subtabs');
 if (!subtabs) return;
-const show = isConvenienceWishlistCategory();
-subtabs.classList.toggle('show', show);
-if (!show) {
+subtabs.classList.remove('show');
+subtabs.classList.add('is-hidden');
 subtabs.innerHTML = '';
-return;
-}
-subtabs.innerHTML = CONVENIENCE_WISHLIST_CATEGORIES.map(category => `<button type="button" class="wishlist-subtab btn-press-effect ${category === currentConvenienceCategory ? 'active' : ''}" onclick="setConvenienceWishlistCategory('${escapeJsString(category)}')">${escapeHtml(category)}</button>`).join('');
 }
 function setConvenienceWishlistCategory(category) {
-if (!CONVENIENCE_WISHLIST_CATEGORIES.includes(category)) return;
+if (!CONVENIENCE_WISHLIST_DISPLAY_CATEGORIES.includes(category)) return;
 currentWishlistCategory = CONVENIENCE_WISHLIST_PARENT;
 currentConvenienceCategory = category;
 toggleWishlistCategoryForm(false);
@@ -8824,13 +9019,14 @@ input.value = '';
 const recipient = document.getElementById('wishlist-gift-recipient');
 if (recipient) recipient.value = '';
 pendingWishlistImageSrc = '';
+currentWishlistConvenienceDraft = '';
 updateNewWishlistPhotoButton();
 wishlistItemFormCloseTimer = null;
 }, 190);
 }
 function updateWishlistAddFormTitle() {
 const title = document.getElementById('wishlist-item-form-title');
-if (title) title.textContent = `新增 ${getWishlistCategoryDisplayName() || '品項'}`;
+if (title) title.textContent = `新增 ${isConvenienceWishlistCategory() ? CONVENIENCE_WISHLIST_PARENT : (getWishlistCategoryDisplayName() || '品項')}`;
 updateWishlistGiftForm();
 }
 function isWishlistGiftCategory() {
@@ -8843,6 +9039,41 @@ document.querySelectorAll('.wishlist-gift-buyer-btn').forEach(btn => {
 btn.classList.toggle('active', btn.dataset.buyer === buyer);
 });
 }
+function ensureWishlistConvenienceForm() {
+let fields = document.getElementById('wishlist-convenience-fields');
+if (fields) {
+fields.style.gridTemplateColumns = `repeat(${CONVENIENCE_WISHLIST_CATEGORIES.length}, minmax(0, 1fr))`;
+return fields;
+}
+const formRow = document.querySelector('#wishlist-item-form .wishlist-form-row');
+const giftFields = document.getElementById('wishlist-gift-fields');
+if (!formRow || !giftFields) return null;
+fields = document.createElement('div');
+fields.id = 'wishlist-convenience-fields';
+fields.className = 'wishlist-convenience-fields';
+fields.style.gridTemplateColumns = `repeat(${CONVENIENCE_WISHLIST_CATEGORIES.length}, minmax(0, 1fr))`;
+fields.setAttribute('aria-label', '選擇超商');
+fields.innerHTML = CONVENIENCE_WISHLIST_CATEGORIES.map(category => `<button type="button" class="wishlist-convenience-option btn-press-effect" data-convenience="${escapeHtml(category)}" onclick="setWishlistConvenienceDraft('${escapeJsString(category)}')">${escapeHtml(category)}</button>`).join('');
+giftFields.insertAdjacentElement('afterend', fields);
+return fields;
+}
+function setWishlistConvenienceDraft(category) {
+currentWishlistConvenienceDraft = CONVENIENCE_WISHLIST_CATEGORIES.includes(category) ? category : '';
+document.querySelectorAll('.wishlist-convenience-option').forEach(btn => {
+btn.classList.toggle('active', btn.dataset.convenience === currentWishlistConvenienceDraft);
+});
+}
+function updateWishlistConvenienceForm() {
+const fields = ensureWishlistConvenienceForm();
+if (!fields) return;
+const show = isConvenienceWishlistCategory();
+fields.classList.toggle('show', show);
+if (show) {
+setWishlistConvenienceDraft(currentWishlistConvenienceDraft);
+} else {
+currentWishlistConvenienceDraft = '';
+}
+}
 function updateWishlistGiftForm() {
 const fields = document.getElementById('wishlist-gift-fields');
 const recipient = document.getElementById('wishlist-gift-recipient');
@@ -8852,6 +9083,7 @@ fields?.classList.toggle('show', isGift);
 if (input && isGift) input.placeholder = '買什麼東西？';
 if (!isGift && recipient) recipient.value = '';
 setWishlistGiftBuyer(currentWishlistGiftBuyer);
+updateWishlistConvenienceForm();
 }
 function updateNewWishlistPhotoButton() {
 const btn = document.getElementById('wishlist-new-photo-btn');
@@ -8935,7 +9167,7 @@ toggleWishlistCategoryForm(false);
 function updateWishlistPlaceholder() {
 const input = document.getElementById('wishlist-input');
 const category = getEffectiveWishlistCategory();
-if (input) input.placeholder = WISHLIST_PLACEHOLDERS[category] || WISHLIST_PLACEHOLDERS[currentWishlistCategory] || '新增想買的東西...';
+if (input) input.placeholder = isConvenienceWishlistCategory() ? WISHLIST_PLACEHOLDERS[CONVENIENCE_WISHLIST_PARENT] : (WISHLIST_PLACEHOLDERS[category] || WISHLIST_PLACEHOLDERS[currentWishlistCategory] || '新增想買的東西...');
 updateWishlistGiftForm();
 }
 function addWishlistItem() {
@@ -8944,7 +9176,7 @@ const recipientInput = document.getElementById('wishlist-gift-recipient');
 const title = input.value.trim();
 if (!title) return showAlert('先寫一個想買的小東西吧 🧺');
 if (!currentWishlistCategory) return showAlert('先新增一個分類，再把心動小物放進去喔 🧺');
-const category = getEffectiveWishlistCategory();
+const category = isConvenienceWishlistCategory() ? (currentWishlistConvenienceDraft || CONVENIENCE_WISHLIST_PARENT) : getEffectiveWishlistCategory();
 const isGift = category === WISHLIST_GIFT_CATEGORY;
 const recipient = isGift ? (recipientInput?.value || '').trim() : '';
 wishItems.unshift({
@@ -8971,8 +9203,11 @@ event.preventDefault();
 addWishlistItem();
 }
 }
-function toggleWishlistItem(id) {
-const item = wishItems.find(wish => wish.id === id);
+function getWishlistItemByKey(key) {
+return wishItems[Number(key)] || null;
+}
+function toggleWishlistItem(key) {
+const item = getWishlistItemByKey(key);
 if (!item) return;
 item.done = !item.done;
 renderWishlist();
@@ -8981,27 +9216,28 @@ queueTripCloudSave();
 function getWishlistItemQty(item) {
 return Math.max(1, Number(item?.qty) || 1);
 }
-function changeWishlistQty(id, delta) {
-const item = wishItems.find(wish => wish.id === id);
+function changeWishlistQty(key, delta) {
+const item = getWishlistItemByKey(key);
 if (!item) return;
 const nextQty = getWishlistItemQty(item) + delta;
 if (nextQty <= 0) {
-deleteWishlistItem(id);
+deleteWishlistItem(key);
 return;
 }
 item.qty = nextQty;
 renderWishlist();
 queueTripCloudSave();
 }
-function handleWishlistItemClick(event, id) {
+function handleWishlistItemClick(event, key) {
 if (event.target.closest('button, input, label')) return;
-toggleWishlistItem(id);
+toggleWishlistItem(key);
 }
-function deleteWishlistItem(id) {
-const item = wishItems.find(wish => wish.id === id);
+function deleteWishlistItem(key) {
+const item = getWishlistItemByKey(key);
 if (!item) return;
 showConfirmAlert(`要刪掉「${item.title}」嗎？\n刪掉後就回不來囉`, () => {
-wishItems = wishItems.filter(wish => wish.id !== id);
+const index = wishItems.indexOf(item);
+if (index >= 0) wishItems.splice(index, 1);
 renderWishlist();
 queueTripCloudSave();
 });
@@ -9009,29 +9245,29 @@ queueTripCloudSave();
 function getWishlistImageSrc(item) {
 return item.imageSrc || item.photoSrc || item.image || '';
 }
-function openWishlistImage(event, id) {
+function openWishlistImage(event, key) {
 if (event) {
 event.preventDefault();
 event.stopPropagation();
 if (event.stopImmediatePropagation) event.stopImmediatePropagation();
 }
-const item = wishItems.find(wish => wish.id === id);
+const item = getWishlistItemByKey(key);
 const src = item ? getWishlistImageSrc(item) : '';
 if (!src) {
-document.getElementById(`wishlist-photo-input-${id}`)?.click();
+document.getElementById(`wishlist-photo-input-${key}`)?.click();
 return;
 }
 document.getElementById('image-preview-img').src = src;
 openOverlayModal('image-preview-modal');
 }
-async function attachWishlistImage(id, event) {
+async function attachWishlistImage(key, event) {
 if (event) {
 event.stopPropagation();
 if (event.stopImmediatePropagation) event.stopImmediatePropagation();
 }
 const file = event.target.files && event.target.files[0];
 if (!file || !file.type.startsWith('image/')) return;
-const item = wishItems.find(wish => wish.id === id);
+const item = getWishlistItemByKey(key);
 if (!item) return;
 item.imageSrc = await readImageFile(file);
 event.target.value = '';
@@ -9054,6 +9290,19 @@ const buyer = item.buyer && WISHLIST_GIFT_BUYER_IMAGES[item.buyer] ? item.buyer 
 const recipient = item.recipient ? `<span class="wishlist-gift-recipient">${escapeHtml(item.recipient)}</span>` : '';
 return `<span class="wishlist-gift-line"><img class="wishlist-gift-person-img" src="${WISHLIST_GIFT_BUYER_IMAGES[buyer]}" alt="${escapeHtml(buyer)}"><span class="wishlist-gift-title">${recipient}${recipient ? ' ' : ''}${renderWishlistTitle(item.title)}</span></span>`;
 }
+function renderWishlistStoreBadge(item) {
+if (!isConvenienceWishlistCategory(item.category)) return '';
+const category = WISHLIST_CATEGORY_ALIASES[item.category] || item.category;
+if (!CONVENIENCE_WISHLIST_CATEGORIES.includes(category)) return '';
+const storeClass = category === '7-11' ? 'store-711' : category === '全家' ? 'store-family' : category === 'Lawson' ? 'store-lawson' : '';
+const logoSrc = category === '7-11' ? 'images/icons/store-7-eleven.png' : category === '全家' ? 'images/icons/store-familymart.png' : category === 'Lawson' ? 'images/icons/store-lawson.png' : '';
+return `<span class="wishlist-store-badge ${storeClass}" aria-label="${escapeHtml(category)}">${logoSrc ? `<img src="${logoSrc}" alt="${escapeHtml(category)}">` : escapeHtml(category)}</span>`;
+}
+function getConvenienceWishlistSortIndex(item) {
+const category = WISHLIST_CATEGORY_ALIASES[item.category] || item.category;
+const index = CONVENIENCE_WISHLIST_CATEGORIES.indexOf(category);
+return index >= 0 ? index : CONVENIENCE_WISHLIST_CATEGORIES.length;
+}
 function renderWishlist() {
 const list = document.getElementById('wishlist-list');
 if (!list) return;
@@ -9068,10 +9317,25 @@ scrollArea?.classList.add('is-short-list');
 list.innerHTML = `<div class="wishlist-empty">現在還沒有心動的耶<br>想重新分類就先按「＋分類」</div>`;
 return;
 }
-const effectiveCategory = getEffectiveWishlistCategory();
-const displayCategory = getWishlistCategoryDisplayName();
-const items = wishItems.filter(wish => wish.category === effectiveCategory)
-.sort((a, b) => Number(Boolean(a.done)) - Number(Boolean(b.done)));
+const isConvenienceView = isConvenienceWishlistCategory();
+const effectiveCategory = isConvenienceView ? CONVENIENCE_WISHLIST_PARENT : getEffectiveWishlistCategory();
+const displayCategory = isConvenienceView ? CONVENIENCE_WISHLIST_PARENT : getWishlistCategoryDisplayName();
+list.classList.toggle('is-gift-list', effectiveCategory === WISHLIST_GIFT_CATEGORY);
+const items = wishItems.filter(wish => isConvenienceView ? getWishlistTopCategory(wish.category) === CONVENIENCE_WISHLIST_PARENT : wish.category === effectiveCategory)
+.sort((a, b) => {
+const doneSort = Number(Boolean(a.done)) - Number(Boolean(b.done));
+if (doneSort) return doneSort;
+if (isConvenienceView) {
+const storeSort = getConvenienceWishlistSortIndex(a) - getConvenienceWishlistSortIndex(b);
+if (storeSort) return storeSort;
+}
+if (effectiveCategory === WISHLIST_GIFT_CATEGORY) {
+const buyerOrder = { '大豬': 0, '小豬': 1 };
+const buyerSort = (buyerOrder[a.buyer] ?? 2) - (buyerOrder[b.buyer] ?? 2);
+if (buyerSort) return buyerSort;
+}
+return wishItems.indexOf(a) - wishItems.indexOf(b);
+});
 if (!items.length) {
 list.classList.add('is-empty');
 scrollArea?.classList.add('is-short-list');
@@ -9082,13 +9346,17 @@ list.classList.remove('is-empty');
 list.classList.toggle('is-short', items.length < 3);
 scrollArea?.classList.toggle('is-short-list', items.length < 3);
 const moreHint = items.length < 3 ? `<button type="button" class="wishlist-more-hint btn-press-effect" onclick="event.stopPropagation(); toggleWishlistItemForm(true)"><span>想起來的時候</span><span>再把下一個小心願夾進這頁</span></button>` : '';
-list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'done' : ''}" onclick="handleWishlistItemClick(event, ${item.id})">
-<span class="wishlist-qty-control" aria-label="購買數量"><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${item.id}, -1)">-</button><span class="wishlist-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${item.id}, 1)">+</button></span>
-<button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${item.id})">${item.done ? '✓' : ''}</button>
+list.innerHTML = items.map(item => {
+const itemKey = wishItems.indexOf(item);
+return `<div class="wishlist-item ${item.done ? 'done' : ''}" onclick="handleWishlistItemClick(event, ${itemKey})">
+${renderWishlistStoreBadge(item)}
+<span class="wishlist-qty-control" aria-label="購買數量"><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, -1)">-</button><span class="wishlist-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, 1)">+</button></span>
+<button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${itemKey})">${item.done ? '✓' : ''}</button>
 <div class="wishlist-name"><span class="wishlist-name-text">${renderWishlistItemTitle(item)}</span></div>
-<button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${item.id})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(getWishlistImageSrc(item))}" alt="${escapeHtml(item.title)}圖片">` : '📷'}</button>
-<input type="file" id="wishlist-photo-input-${item.id}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistImage(${item.id}, event)">
-</div>`).join('') + moreHint;
+<button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${itemKey})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(getWishlistImageSrc(item))}" alt="${escapeHtml(item.title)}圖片">` : '📷'}</button>
+<input type="file" id="wishlist-photo-input-${itemKey}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistImage(${itemKey}, event)">
+</div>`;
+}).join('') + moreHint;
 }
 function openDocsFolder() {
 closeMenu();
