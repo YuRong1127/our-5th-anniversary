@@ -8030,10 +8030,15 @@ if (!modal || !img) return;
 const currentZoom = Number(modal.dataset.zoom || 1);
 let focalRatioX = .5;
 let focalRatioY = .5;
+let viewportX = content ? content.clientWidth / 2 : 0;
+let viewportY = content ? content.clientHeight / 2 : 0;
 if (content && focalPoint) {
-const imgRect = img.getBoundingClientRect();
-focalRatioX = Math.max(0, Math.min(1, (focalPoint.clientX - imgRect.left) / Math.max(1, imgRect.width)));
-focalRatioY = Math.max(0, Math.min(1, (focalPoint.clientY - imgRect.top) / Math.max(1, imgRect.height)));
+const contentRect = content.getBoundingClientRect();
+const surfaceRect = (zoomSurface || img).getBoundingClientRect();
+viewportX = Math.max(0, Math.min(content.clientWidth, focalPoint.clientX - contentRect.left));
+viewportY = Math.max(0, Math.min(content.clientHeight, focalPoint.clientY - contentRect.top));
+focalRatioX = Math.max(0, Math.min(1, (focalPoint.clientX - surfaceRect.left) / Math.max(1, surfaceRect.width)));
+focalRatioY = Math.max(0, Math.min(1, (focalPoint.clientY - surfaceRect.top) / Math.max(1, surfaceRect.height)));
 } else if (content && currentZoom > 1) {
 focalRatioX = (content.scrollLeft + content.clientWidth / 2) / Math.max(1, content.scrollWidth);
 focalRatioY = (content.scrollTop + content.clientHeight / 2) / Math.max(1, content.scrollHeight);
@@ -8057,15 +8062,15 @@ zoomSurface.style.height = `${Math.max(1, Math.round(baseHeight * zoom))}px`;
 }
 }
 if (content) {
-requestAnimationFrame(() => {
 if (zoom === 1) {
 content.scrollLeft = 0;
 content.scrollTop = 0;
 return;
 }
-content.scrollLeft = Math.max(0, (content.scrollWidth * focalRatioX) - content.clientWidth / 2);
-content.scrollTop = Math.max(0, (content.scrollHeight * focalRatioY) - content.clientHeight / 2);
-});
+const maxScrollLeft = Math.max(0, content.scrollWidth - content.clientWidth);
+const maxScrollTop = Math.max(0, content.scrollHeight - content.clientHeight);
+content.scrollLeft = Math.max(0, Math.min(maxScrollLeft, (content.scrollWidth * focalRatioX) - viewportX));
+content.scrollTop = Math.max(0, Math.min(maxScrollTop, (content.scrollHeight * focalRatioY) - viewportY));
 }
 }
 function toggleImagePreviewZoom(event) {
