@@ -2810,8 +2810,13 @@ border: 0;
 border-radius: 24px;
 background: transparent;
 box-shadow: none;
-overflow: hidden;
+overflow: auto;
+overscroll-behavior: contain;
+scrollbar-width: none;
 touch-action: none;
+}
+.image-preview-content::-webkit-scrollbar {
+display: none;
 }
 .image-preview-zoom-surface {
 display: flex;
@@ -2847,7 +2852,7 @@ overflow: visible;
 align-items: flex-start;
 justify-content: flex-start;
 width: min(86vw, 500px);
-height: auto;
+height: min(86vh, 640px);
 max-height: calc(86vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 border-radius: 22px;
 overflow-y: auto;
@@ -8049,6 +8054,12 @@ startZoom: 1,
 centerX: 0,
 centerY: 0
 };
+function imagePreviewCanPan(content, modal) {
+if (!content || !modal) return false;
+return Number(modal.dataset.zoom || 1) > 1 ||
+content.scrollWidth > content.clientWidth + 2 ||
+content.scrollHeight > content.clientHeight + 2;
+}
 function getTouchDistance(touches) {
 if (!touches || touches.length < 2) return 0;
 const dx = touches[0].clientX - touches[1].clientX;
@@ -8068,28 +8079,27 @@ const content = modal?.querySelector('.image-preview-content');
 if (!modal || !img || !content) return;
 content.scrollLeft = 0;
 content.scrollTop = 0;
-if (modal.classList.contains('route-guide-preview')) {
-content.style.width = '';
-content.style.height = '';
-content.dataset.previewBaseWidth = '';
-content.dataset.previewBaseHeight = '';
-return;
-}
-const maxW = Math.min(window.innerWidth * .88, 640);
-const maxH = Math.min(window.innerHeight * .82, 640);
+const maxW = Math.min(window.innerWidth * .88, modal.classList.contains('route-guide-preview') ? 560 : 640);
+const maxH = Math.min(window.innerHeight * .82, modal.classList.contains('route-guide-preview') ? 720 : 640);
 const naturalW = img.naturalWidth || maxW;
 const naturalH = img.naturalHeight || maxH;
 const ratio = naturalW / Math.max(1, naturalH);
 let width = maxW;
 let height = width / ratio;
-if (height > maxH) {
+const isTallImage = naturalH > naturalW * 1.18;
+if (!isTallImage && height > maxH) {
 height = maxH;
 width = height * ratio;
 }
 content.style.width = `${Math.max(1, Math.round(width))}px`;
-content.style.height = `${Math.max(1, Math.round(height))}px`;
+content.style.height = `${Math.max(1, Math.round(Math.min(height, maxH)))}px`;
 content.dataset.previewBaseWidth = String(Math.max(1, Math.round(width)));
 content.dataset.previewBaseHeight = String(Math.max(1, Math.round(height)));
+const zoomSurface = document.getElementById('image-preview-zoom-surface');
+if (zoomSurface) {
+zoomSurface.style.width = `${Math.max(1, Math.round(width))}px`;
+zoomSurface.style.height = `${Math.max(1, Math.round(height))}px`;
+}
 }
 function setImagePreviewZoom(nextZoom, focalPoint = null) {
 const modal = document.getElementById('image-preview-modal');
@@ -8124,8 +8134,8 @@ const imgRect = img.getBoundingClientRect();
 const baseWidth = Number(content?.dataset.previewBaseWidth) || (imgRect.width / Math.max(1, currentZoom));
 const baseHeight = Number(content?.dataset.previewBaseHeight) || (imgRect.height / Math.max(1, currentZoom));
 if (zoom === 1) {
-zoomSurface.style.width = '100%';
-zoomSurface.style.height = modal.classList.contains('route-guide-preview') ? 'auto' : '100%';
+zoomSurface.style.width = `${Math.max(1, Math.round(baseWidth))}px`;
+zoomSurface.style.height = `${Math.max(1, Math.round(baseHeight))}px`;
 } else {
 zoomSurface.style.width = `${Math.max(1, Math.round(baseWidth * zoom))}px`;
 zoomSurface.style.height = `${Math.max(1, Math.round(baseHeight * zoom))}px`;
@@ -8133,8 +8143,8 @@ zoomSurface.style.height = `${Math.max(1, Math.round(baseHeight * zoom))}px`;
 }
 if (content) {
 if (zoom === 1) {
-content.scrollLeft = 0;
-content.scrollTop = 0;
+content.scrollLeft = Math.max(0, Math.min(content.scrollWidth - content.clientWidth, content.scrollLeft));
+content.scrollTop = Math.max(0, Math.min(content.scrollHeight - content.clientHeight, content.scrollTop));
 return;
 }
 const maxScrollLeft = Math.max(0, content.scrollWidth - content.clientWidth);
@@ -8165,7 +8175,7 @@ function startImagePreviewPan(event) {
 if (imagePreviewPinch.active || event?.pointerType === 'touch') return;
 const modal = document.getElementById('image-preview-modal');
 const content = modal?.querySelector('.image-preview-content');
-if (!modal || !content || Number(modal.dataset.zoom || 1) <= 1) return;
+if (!imagePreviewCanPan(content, modal)) return;
 event.preventDefault();
 event.stopPropagation();
 imagePreviewPan.active = true;
@@ -8224,7 +8234,7 @@ function startImagePreviewPinch(event) {
 const modal = document.getElementById('image-preview-modal');
 const content = modal?.querySelector('.image-preview-content');
 if (!event?.touches || !modal || !content) return;
-if (event.touches.length === 1 && Number(modal.dataset.zoom || 1) > 1) {
+if (event.touches.length === 1 && imagePreviewCanPan(content, modal)) {
 event.preventDefault();
 event.stopPropagation();
 imagePreviewPan.active = true;
