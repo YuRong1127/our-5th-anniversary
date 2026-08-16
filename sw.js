@@ -1,11 +1,12 @@
-const CACHE_VERSION = 'mie-anniversary-v20260816-stable-sync-3';
+﻿const CACHE_VERSION = 'mie-anniversary-v20260816-wallet-date-display-1';
 const APP_SHELL_URL = './index.html';
 const SECURE_VAULT_URL = './secure-docs/vault.json';
+const PIGGY_MENU_SOUND_URL = './sounds/piggy-menu-bubble.mp3';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.addAll([APP_SHELL_URL, SECURE_VAULT_URL]))
+    caches.open(CACHE_VERSION).then((cache) => cache.addAll([APP_SHELL_URL, SECURE_VAULT_URL, PIGGY_MENU_SOUND_URL]))
   );
 });
 
@@ -56,3 +57,31 @@ self.addEventListener('fetch', (event) => {
       .catch(() => caches.match(request))
   );
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

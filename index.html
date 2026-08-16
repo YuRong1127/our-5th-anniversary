@@ -1400,22 +1400,21 @@ overflow: hidden;
 }
 .route-schedule-popup {
 display: grid;
-gap: 10px;
+gap: 12px;
 width: fit-content;
-max-width: calc(100% - 44px);
+max-width: calc(100% - 18px);
 overflow: hidden;
 box-sizing: border-box;
 margin: 0 auto;
-transform: translateX(16px);
 }
 .route-schedule-popup-row {
 display: grid;
-grid-template-columns: max-content minmax(0, 1fr);
-gap: 10px;
+grid-template-columns: 74px max-content;
+gap: 8px;
 align-items: start;
 max-width: 100%;
 color: #9c877f;
-font-size: .82rem;
+font-size: .8rem;
 font-weight: 800;
 text-align: left;
 }
@@ -1427,10 +1426,11 @@ align-items: center;
 gap: 6px;
 }
 .route-schedule-popup-times {
-display: flex;
+display: grid;
+grid-template-columns: repeat(2, 102px);
 align-items: center;
-flex-wrap: wrap;
-gap: 6px;
+column-gap: 0;
+row-gap: 8px;
 min-width: 0;
 max-width: 100%;
 overflow: visible;
@@ -1442,29 +1442,46 @@ white-space: nowrap;
 }
 .route-schedule-popup-separator { display: none; }
 .route-schedule-popup-time {
+display: grid;
+grid-template-columns: 82px 14px;
+align-items: center;
+column-gap: 3px;
+box-sizing: border-box;
+color: #9c877f;
+line-height: 1.25;
+min-width: 99px;
+width: 99px;
+justify-content: center;
+justify-self: center;
+}
+.route-schedule-popup-time-text {
 display: inline-flex;
 align-items: center;
-gap: 4px;
+justify-content: center;
+width: 82px;
 box-sizing: border-box;
 padding: 3px 7px;
 border-radius: 999px;
 background: #fffaf8;
-color: #9c877f;
-line-height: 1.25;
+text-align: center;
 }
 .route-schedule-popup-time.is-picked {
-display: inline-flex;
+display: grid;
 align-items: center;
-gap: 4px;
-padding: 3px 8px;
-border-radius: 999px;
-background: #fff1ec;
 color: #c46f64;
 }
+.route-schedule-popup-time.is-picked .route-schedule-popup-time-text {
+background: #fff1ec;
+}
 .route-schedule-popup-picked {
-font-size: .64rem;
+font-size: .78rem;
 color: #d57c70;
-flex: 0 0 auto;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 14px;
+line-height: 1;
+pointer-events: none;
 }
 .alert-actions {
 display: flex;
@@ -1517,7 +1534,10 @@ overflow: hidden;
 .wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #6f5a54; font-size: .92rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
 .wallet-input::placeholder, .small-input::placeholder { color: #d3c3be; font-weight: 500; }
 .small-input { padding: 0 11px; font-size: .84rem; }
-.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; height: var(--wallet-control-height); min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 6px; padding: 0 13px; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #6f5a54; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
+.custom-datetime-container { display: flex; justify-content: space-between; align-items: center; gap: 18px; height: var(--wallet-control-height); min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 6px; padding: 0 13px; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #6f5a54; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
+#exp-time-text { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; justify-content: flex-start; gap: clamp(14px, 7vw, 44px); white-space: nowrap; }
+.exp-date-text, .exp-clock-text { display: inline-flex; align-items: center; line-height: 1; }
+.exp-clock-text { flex: 0 0 auto; }
 .time-range-content { align-items: stretch; max-width: 340px; padding: 24px 18px 18px; }
 .time-range-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0 14px; }
 .time-range-field { min-width: 0; }
@@ -1546,7 +1566,12 @@ font-size: 13px !important;
 #wallet-modal .flatpickr-calendar:not(.open) { display: none; }
 #wallet-modal .flatpickr-months { background: #fff3ef !important; border-radius: 24px 24px 0 0; }
 #wallet-modal .flatpickr-months .flatpickr-month {
+overflow: visible !important;
 height: 48px !important;
+}
+#wallet-modal .flatpickr-months,
+#wallet-modal .flatpickr-current-month {
+overflow: visible !important;
 }
 #wallet-modal .flatpickr-current-month {
 display: flex !important;
@@ -1567,6 +1592,21 @@ font-size: 1.04rem !important;
 font-weight: 400 !important;
 line-height: 28px !important;
 text-align: center;
+}
+#wallet-modal .flatpickr-current-month,
+#wallet-modal .flatpickr-current-month .flatpickr-monthDropdown-months,
+#wallet-modal .mie-year-button {
+cursor: pointer;
+}
+#wallet-modal .flatpickr-current-month .flatpickr-monthDropdown-months,
+#wallet-modal .flatpickr-current-month .flatpickr-monthDropdown-months:hover,
+#wallet-modal .flatpickr-current-month .flatpickr-monthDropdown-months:focus,
+#wallet-modal .mie-year-button,
+#wallet-modal .mie-year-button:hover,
+#wallet-modal .mie-year-button:focus {
+background: transparent !important;
+box-shadow: none !important;
+outline: 0 !important;
 }
 #wallet-modal .flatpickr-month { color: var(--main-brown) !important; }
 #wallet-modal .flatpickr-weekday { color: var(--light-brown) !important; font-weight: 700; }
@@ -1591,8 +1631,8 @@ flex: 0 0 calc(100% / 7) !important;
 }
 #wallet-modal .flatpickr-current-month .numInputWrapper,
 #wallet-modal .flatpickr-current-month input.cur-year {
-display: inline-block !important;
-pointer-events: auto !important;
+display: none !important;
+pointer-events: none !important;
 }
 #wallet-modal .flatpickr-current-month input.cur-year,
 #wallet-modal .flatpickr-time input,
@@ -1675,11 +1715,16 @@ font-size: .95rem !important;
 font-weight: 900 !important;
 line-height: 1 !important;
 }
-#wallet-modal .mie-year-select {
+#wallet-modal .mie-year-picker {
+position: relative;
+z-index: 40;
+display: inline-flex;
+align-items: center;
+justify-content: center;
 height: 28px;
-flex: 0 0 auto;
-margin-left: 0;
-padding: 0 22px 0 8px;
+}
+#wallet-modal .mie-year-button {
+height: 28px;
 border: 0;
 border-radius: 0;
 background: transparent;
@@ -1690,6 +1735,65 @@ font-weight: 400;
 line-height: 28px;
 text-align: center;
 outline: 0;
+cursor: pointer;
+appearance: none;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 0 6px;
+}
+#wallet-modal .mie-year-button::after {
+content: '⌄';
+font-size: .9rem;
+line-height: 1;
+color: #9f7d75;
+transform: translateY(-1px);
+}
+#wallet-modal .mie-year-menu {
+position: absolute;
+z-index: 80;
+top: calc(100% + 6px);
+left: 50%;
+display: none;
+width: 112px;
+max-height: 184px;
+overflow-y: auto;
+padding: 6px;
+border: 1px solid #efd8d1;
+border-radius: 16px;
+background: #fffaf7;
+box-shadow: 0 10px 24px rgba(141,110,99,.16);
+transform: translateX(-50%);
+}
+#wallet-modal .mie-year-picker.is-open .mie-year-menu {
+display: grid;
+gap: 2px;
+}
+#wallet-modal .mie-year-option {
+border: 0;
+border-radius: 12px;
+background: transparent;
+color: var(--main-brown);
+font-family: inherit;
+font-size: .96rem;
+font-weight: 700;
+line-height: 1;
+padding: 9px 8px;
+cursor: pointer;
+}
+#wallet-modal .mie-year-option:hover,
+#wallet-modal .mie-year-option:focus {
+background: #fff1ec;
+outline: 0;
+}
+#wallet-modal .mie-year-option.is-selected {
+background: #f7ded6;
+color: #b55f63;
+font-weight: 900;
+}
+#wallet-modal .flatpickr-current-month .flatpickr-monthDropdown-months,
+#wallet-modal .mie-year-button {
+appearance: none;
 }
 #wallet-modal .fp-confirm-wrap {
 padding: 10px 12px 12px;
@@ -2810,7 +2914,7 @@ border: 0;
 border-radius: 24px;
 background: transparent;
 box-shadow: none;
-overflow: auto;
+overflow: hidden;
 overscroll-behavior: contain;
 scrollbar-width: none;
 touch-action: none;
@@ -2826,6 +2930,9 @@ width: 100%;
 height: 100%;
 flex: 0 0 auto;
 border-radius: inherit;
+will-change: transform;
+transform-origin: 0 0;
+transform: translate3d(var(--preview-pan-x, 0px), var(--preview-pan-y, 0px), 0) scale(var(--preview-zoom, 1));
 }
 .image-preview-content img {
 display: block;
@@ -2840,8 +2947,8 @@ overflow: hidden;
 cursor: zoom-in;
 }
 #image-preview-modal.preview-zoomed .image-preview-zoom-surface {
-width: calc(var(--preview-zoom, 1) * 100%);
-height: calc(var(--preview-zoom, 1) * 100%);
+width: var(--preview-base-width, 100%);
+height: var(--preview-base-height, 100%);
 }
 #image-preview-modal.route-guide-preview .modal-container {
 max-width: min(92vw, 560px);
@@ -2855,8 +2962,7 @@ width: min(86vw, 500px);
 height: min(86vh, 640px);
 max-height: calc(86vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 border-radius: 22px;
-overflow-y: auto;
-overflow-x: auto;
+overflow: hidden;
 overscroll-behavior: contain;
 }
 #image-preview-modal.route-guide-preview .image-preview-content img {
@@ -2876,7 +2982,7 @@ cursor: zoom-out;
 #image-preview-modal.preview-zoomed .image-preview-content {
 align-items: flex-start;
 justify-content: flex-start;
-overflow: auto;
+overflow: hidden;
 scrollbar-width: none;
 cursor: grab;
 }
@@ -4155,12 +4261,14 @@ display: block;
 display: block;
 width: 56px;
 height: 54px;
-margin-left: -10px;
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 object-fit: contain;
 flex: 0 0 auto;
-transform: translateY(3px);
+transform: translateY(1px);
 pointer-events: none;
+}
+.pw-hint-pig-edit {
+margin-left: -5px;
 }
 .pw-hint-pig-docs {
 width: 42px;
@@ -4170,8 +4278,8 @@ transform: translateY(-2px);
 filter: drop-shadow(0 4px 8px rgba(141,110,99,.1));
 }
 .pw-hint-pig.angry {
-width: 28px;
-height: 26px;
+width: 30px;
+height: 28px;
 transform: translateY(-1px);
 }
 .pw-keypad {
@@ -4232,9 +4340,9 @@ body.edit-mode .route-inline { width: calc(100vw - 95px); }
 .pw-keypad { grid-template-columns: repeat(3, 68px); gap: 8px; }
 .pw-keypad button { width: 68px; height: 46px; }
 .pw-hint-text { font-size: .94rem; }
-.pw-hint-pig { width: 50px; height: 48px; margin-left: -9px; }
+.pw-hint-pig { width: 50px; height: 48px; }
 .pw-hint-pig-docs { width: 38px; height: 31px; transform: translateY(-2px); }
-.pw-hint-pig.angry { width: 24px; height: 22px; transform: translateY(-1px); }
+.pw-hint-pig.angry { width: 28px; height: 26px; transform: translateY(-1px); }
 }
 @media (max-width: 390px), (max-height: 700px) {
 #details-modal,
@@ -4358,7 +4466,7 @@ line-height: 1.2;
 
 行李
 大豬：無托運行李
-小豬：15 公斤 優先" data-map-place-value="桃園國際機場" data-detail-fields="[{&quot;name&quot;:&quot;&quot;,&quot;blocks&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;IT206 去程航班備忘\n票種：tigerlight\n出發：TPE 台北（桃園）T1，08:45\n抵達：NGO 名古屋 T2，12:25\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：15 公斤 優先&quot;,&quot;html&quot;:&quot;&lt;b&gt;IT206 去程航班備忘&lt;/b&gt;&lt;br&gt;票種：tigerlight&lt;br&gt;出發：TPE 台北（桃園）T1，08:45&lt;br&gt;抵達：NGO 名古屋 T2，12:25&lt;br&gt;&lt;br&gt;&lt;b&gt;座位&lt;/b&gt;&lt;br&gt;大豬：虎舒適 1B&lt;br&gt;小豬：虎舒適 1A&lt;br&gt;&lt;br&gt;&lt;b&gt;行李&lt;/b&gt;&lt;br&gt;大豬：無托運行李&lt;br&gt;小豬：15 公斤 &lt;span class=\&quot;flight-priority-badge\&quot;&gt;優先&lt;/span&gt;&quot;}]}]"><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable" contenteditable="false">06:00 - 08:45</span><div class="item-title editable" contenteditable="false">桃園機場 TPE<span class="terminal-badge">T1</span></div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">IT206，預計 12:25 抵達名古屋。</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect is-hidden" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect is-hidden" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect flight-detail-btn" onclick="openItineraryDetail(event, this)" aria-label="班機詳細資料" style="">🐯✈️</button></div></div><div class="connector-line flight-connector"><div class="flight-inline"><div class="flight-info-header"><div class="flight-info-title" contenteditable="false">飛行時間 2 小時 40 分</div><a class="flight-live-link btn-press-effect" href="https://tw.trip.com/flights/status-it206/" target="_blank" rel="noopener" onclick="event.stopPropagation()">查航班動態</a></div><div class="flight-info-grid"><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">登機門</span><span class="flight-info-value editable" contenteditable="false">待公布</span></div><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">最晚報到</span><span class="flight-info-value editable" contenteditable="false">待公布</span></div><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">報到櫃台</span><span class="flight-info-value editable" contenteditable="false">待公布</span></div><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">行李轉盤</span><span class="flight-info-value editable" contenteditable="false">抵達後公布</span></div></div></div></div><div class="card" data-hide-map-place-link="true" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable" contenteditable="false">12:25 - 13:05</span><div class="item-title editable" contenteditable="false">中部國際機場 NGO<span class="terminal-badge">T2</span></div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">μSKY 13:07-13:36、13:37-14:06 票價¥1430<br>特急 13:17-13:55、13:47-14:25 票價¥980</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect is-empty" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">小筆記📝</button></div></div><div class="connector-line has-route-plan" data-route-url="https://maps.app.goo.gl/HTaPzaw9MiuXZEmw5" data-route-text="μSKY -- 分 / 特急 -- 分"><div class="route-inline"><div class="route-text editable" contenteditable="false">μSKY -- 分 / 特急 -- 分</div><button type="button" class="route-edit-btn btn-press-effect" onclick="openRoutePlanEditor(event, this)">貼路線</button><a class="route-nav-link btn-press-effect" href="https://maps.app.goo.gl/HTaPzaw9MiuXZEmw5" onclick="openRouteLink(event, this)" target="_blank" rel="noopener" aria-label="Google Maps 導航" data-app-href="comgooglemaps://?saddr=%E4%B8%AD%E9%83%A8%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;daddr=%E5%90%8D%E9%90%B5%E5%90%8D%E5%8F%A4%E5%B1%8B&amp;directionsmode=transit"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s6.5-6.1 6.5-11.2A6.5 6.5 0 0 0 5.5 9.8C5.5 14.9 12 21 12 21Z" fill="#d9867b"></path><path d="M12 21s6.5-6.1 6.5-11.2c0-2.1-1-4-2.6-5.2L9.5 18.7C10.8 20.1 12 21 12 21Z" fill="#6fa48e"></path><path d="M6.5 13.5c.7 1.8 2 3.7 3.1 5.1l6.3-14A6.5 6.5 0 0 0 11.9 3L6.5 13.5Z" fill="#f0c96b"></path><circle cx="12" cy="9.6" r="2.45" fill="#fffaf7"></circle></svg></a></div></div><div class="card" data-detail-fields="{&quot;name&quot;:&quot;&quot;,&quot;blocks&quot;:[{&quot;html&quot;:&quot;名古屋車站有JR/名鐵/近鐵/地鐵\u003cbr\u003e\u003cspan style=\&quot;background-color: rgb(255, 243, 184);\&quot;\u003e\u003cb\u003e交通指南\u003c/b\u003e\u003c/span\u003e\u003cbr\u003e從機場抵達名古屋車站通常都是在\u003cspan style=\&quot;color: #d98b72;\&quot;\u003e第二月台\u003c/span\u003e，從第二月台手扶梯上去之後就是\u003cspan style=\&quot;color: #d98b72;\&quot;\u003e中央改札口出口\u003c/span\u003e\u003cspan style=\&quot;color: #6f7fa6;\&quot;\u003e\u003cb\u003e→\u003c/b\u003e\u003c/span\u003e出口往前走下兩小段樓梯\u003cspan style=\&quot;color: #6f7fa6;\&quot;\u003e\u003cb\u003e→\u003c/b\u003e\u003c/span\u003e左轉上樓梯，就會看到「置物櫃」及「東山線南改札口」&quot;,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;交通指南\n名古屋車站有JR/名鐵/近鐵/地鐵\n從機場抵達名古屋車站通常都是在第二月台，從第二月台手扶梯上去之後就是中央改札口出口→出口往前走下兩小段樓梯→左轉上樓梯，就會看到「置物櫃」及「東山線南改札口」&quot;},{&quot;width&quot;:100,&quot;type&quot;:&quot;image&quot;,&quot;src&quot;:&quot;images/details/meitetsu-nagoya-traffic-guide.jpg&quot;,&quot;cropLeft&quot;:0,&quot;cropRight&quot;:0,&quot;strokes&quot;:[],&quot;originalSrc&quot;:&quot;&quot;,&quot;cropHeight&quot;:0,&quot;cropTop&quot;:0},{&quot;html&quot;:&quot;\u003cspan style=\&quot;background-color: rgb(255, 243, 184);\&quot;\u003e\u003cb\u003e置物櫃位置圖\u003c/b\u003e\u003c/span\u003e\u003cbr\u003e優先放F跟H(有大置物櫃才放得下30吋箱)，滿倉則選擇J或I\u003cbr\u003e※地鐵置物櫃官網\u003ca href=\&quot;https://nagoya-locker.com/tw/#map\&quot; target=\&quot;_blank\&quot; rel=\&quot;noopener noreferrer\&quot; class=\&quot;note-link-black\&quot;\u003ehttps://nagoya-locker.com/tw/#map\u003c/a\u003e&quot;,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;置物櫃位置圖\n優先放F跟H(有大置物櫃才放得下30吋箱)，滿倉則選擇J或I\n※地鐵置物櫃官網https://nagoya-locker.com/tw/#map&quot;},{&quot;width&quot;:100,&quot;type&quot;:&quot;image&quot;,&quot;src&quot;:&quot;images/details/meitetsu-nagoya-locker-map.png&quot;,&quot;cropLeft&quot;:0,&quot;cropRight&quot;:0,&quot;strokes&quot;:[],&quot;originalSrc&quot;:&quot;&quot;,&quot;cropHeight&quot;:0,&quot;cropTop&quot;:0}]}" data-map-place-input="https://maps.app.goo.gl/G2UuQsDdGz7fWbvcA" data-map-place-value="名鐵名古屋"><span class="itinerary-icon btn-press-effect">🚊</span><div><span class="time-badge editable" contenteditable="false">14:10 - 14:20</span><div class="item-title editable" contenteditable="false">名鐵名古屋</div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">行李先寄放在車站置物櫃</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">小筆記📝</button></div></div><div class="connector-line has-route-plan" data-route-url="https://maps.app.goo.gl/c7wVdPmAAzPN5dcT9" data-route-text="步行 6 分"><div class="route-inline"><div class="route-text editable" contenteditable="false">步行 6 分</div><button type="button" class="route-edit-btn btn-press-effect" onclick="openRoutePlanEditor(event, this)">貼路線</button><a class="route-nav-link btn-press-effect" href="https://maps.app.goo.gl/c7wVdPmAAzPN5dcT9" onclick="openRouteLink(event, this)" target="_blank" rel="noopener" aria-label="Google Maps 導航" data-app-href="comgooglemaps://?saddr=%E5%90%8D%E9%90%B5%E5%90%8D%E5%8F%A4%E5%B1%8B&amp;daddr=%E3%81%A4%E3%81%B0%E3%82%81%E3%83%91%E3%83%B3%E5%90%8D%E9%A7%85%E5%BA%97&amp;directionsmode=transit"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s6.5-6.1 6.5-11.2A6.5 6.5 0 0 0 5.5 9.8C5.5 14.9 12 21 12 21Z" fill="#d9867b"></path><path d="M12 21s6.5-6.1 6.5-11.2c0-2.1-1-4-2.6-5.2L9.5 18.7C10.8 20.1 12 21 12 21Z" fill="#6fa48e"></path><path d="M6.5 13.5c.7 1.8 2 3.7 3.1 5.1l6.3-14A6.5 6.5 0 0 0 11.9 3L6.5 13.5Z" fill="#f0c96b"></path><circle cx="12" cy="9.6" r="2.45" fill="#fffaf7"></circle></svg></a></div></div><div class="card" data-map-place-input="https://maps.app.goo.gl/pxEL62KEB29eaui27" data-detail="交通指南
+小豬：15 公斤 優先" data-map-place-value="桃園國際機場" data-detail-fields="[{&quot;name&quot;:&quot;&quot;,&quot;blocks&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;IT206 去程航班備忘\n票種：tigerlight\n出發：TPE 台北（桃園）T1，08:45\n抵達：NGO 名古屋 T2，12:25\n\n座位\n大豬：虎舒適 1B\n小豬：虎舒適 1A\n\n行李\n大豬：無托運行李\n小豬：15 公斤 優先&quot;,&quot;html&quot;:&quot;&lt;b&gt;IT206 去程航班備忘&lt;/b&gt;&lt;br&gt;票種：tigerlight&lt;br&gt;出發：TPE 台北（桃園）T1，08:45&lt;br&gt;抵達：NGO 名古屋 T2，12:25&lt;br&gt;&lt;br&gt;&lt;b&gt;座位&lt;/b&gt;&lt;br&gt;大豬：虎舒適 1B&lt;br&gt;小豬：虎舒適 1A&lt;br&gt;&lt;br&gt;&lt;b&gt;行李&lt;/b&gt;&lt;br&gt;大豬：無托運行李&lt;br&gt;小豬：15 公斤 &lt;span class=\&quot;flight-priority-badge\&quot;&gt;優先&lt;/span&gt;&quot;}]}]"><span class="itinerary-icon btn-press-effect">🛫</span><div><span class="time-badge editable" contenteditable="false">06:00 - 09:00</span><div class="item-title editable" contenteditable="false">桃園機場 TPE<span class="terminal-badge">T1</span></div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">IT206：預計08:45起飛・12:25抵達名古屋。</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect is-hidden" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect is-hidden" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect flight-detail-btn" onclick="openItineraryDetail(event, this)" aria-label="班機詳細資料" style="">🐯✈️</button></div></div><div class="connector-line flight-connector"><div class="flight-inline"><div class="flight-info-header"><div class="flight-info-title" contenteditable="false">飛行時間 2 小時 40 分</div><a class="flight-live-link btn-press-effect" href="https://tw.trip.com/flights/status-it206/" target="_blank" rel="noopener" onclick="event.stopPropagation()">查航班動態</a></div><div class="flight-info-grid"><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">登機門</span><span class="flight-info-value editable" contenteditable="false">待公布</span></div><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">最晚報到</span><span class="flight-info-value editable" contenteditable="false">待公布</span></div><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">報到櫃台</span><span class="flight-info-value editable" contenteditable="false">待公布</span></div><div class="flight-info-item"><span class="flight-info-label" contenteditable="false">行李轉盤</span><span class="flight-info-value editable" contenteditable="false">抵達後公布</span></div></div></div></div><div class="card" data-hide-map-place-link="true" data-map-place-input="https://maps.app.goo.gl/o2Nf9V7cQQVyrLQe7" data-map-place-value="中部國際機場"><span class="itinerary-icon btn-press-effect">🛬</span><div><span class="time-badge editable" contenteditable="false">13:00 - 14:00</span><div class="item-title editable" contenteditable="false">中部國際機場 NGO<span class="terminal-badge">T2</span></div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">μSKY：票價¥143・名鐵特急：票價¥980</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect is-empty" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">小筆記📝</button></div></div><div class="connector-line has-route-plan" data-route-url="https://maps.app.goo.gl/CzjcenjhvG1jJYsb7" data-route-text="μ-SKY 29 分 / 名鐵特急 38 分" data-route-mode="大眾運輸" data-route-schedules="μ-SKY 13:37-14:06|μ-SKY 14:07-14:36|μ-SKY 14:37-15:06|名鐵特急 13:17-13:55|名鐵特急 13:47-14:25|名鐵特急 14:17-14:55" data-route-schedule-picks="μ-SKY 14:07-14:36|名鐵特急 14:17-14:55"><div class="route-inline"><div class="route-text editable" contenteditable="false">μ-SKY 29 分 / 名鐵特急 38 分</div><button type="button" class="route-edit-btn btn-press-effect" onclick="openRoutePlanEditor(event, this)">貼路線</button><a class="route-nav-link btn-press-effect" href="https://maps.app.goo.gl/CzjcenjhvG1jJYsb7" onclick="openRouteLink(event, this)" target="_blank" rel="noopener" aria-label="Google Maps 導航" data-app-href="comgooglemaps://?saddr=%E4%B8%AD%E9%83%A8%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4&amp;daddr=%E5%90%8D%E9%90%B5%E5%90%8D%E5%8F%A4%E5%B1%8B&amp;directionsmode=transit"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s6.5-6.1 6.5-11.2A6.5 6.5 0 0 0 5.5 9.8C5.5 14.9 12 21 12 21Z" fill="#d9867b"></path><path d="M12 21s6.5-6.1 6.5-11.2c0-2.1-1-4-2.6-5.2L9.5 18.7C10.8 20.1 12 21 12 21Z" fill="#6fa48e"></path><path d="M6.5 13.5c.7 1.8 2 3.7 3.1 5.1l6.3-14A6.5 6.5 0 0 0 11.9 3L6.5 13.5Z" fill="#f0c96b"></path><circle cx="12" cy="9.6" r="2.45" fill="#fffaf7"></circle></svg></a></div></div><div class="card" data-detail-fields="{&quot;name&quot;:&quot;&quot;,&quot;blocks&quot;:[{&quot;html&quot;:&quot;名古屋車站有JR/名鐵/近鐵/地鐵\u003cbr\u003e\u003cspan style=\&quot;background-color: rgb(255, 243, 184);\&quot;\u003e\u003cb\u003e交通指南\u003c/b\u003e\u003c/span\u003e\u003cbr\u003e從機場抵達名古屋車站通常都是在\u003cspan style=\&quot;color: #d98b72;\&quot;\u003e第二月台\u003c/span\u003e，從第二月台手扶梯上去之後就是\u003cspan style=\&quot;color: #d98b72;\&quot;\u003e中央改札口出口\u003c/span\u003e\u003cspan style=\&quot;color: #6f7fa6;\&quot;\u003e\u003cb\u003e→\u003c/b\u003e\u003c/span\u003e出口往前走下兩小段樓梯\u003cspan style=\&quot;color: #6f7fa6;\&quot;\u003e\u003cb\u003e→\u003c/b\u003e\u003c/span\u003e左轉上樓梯，就會看到「置物櫃」及「東山線南改札口」&quot;,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;交通指南\n名古屋車站有JR/名鐵/近鐵/地鐵\n從機場抵達名古屋車站通常都是在第二月台，從第二月台手扶梯上去之後就是中央改札口出口→出口往前走下兩小段樓梯→左轉上樓梯，就會看到「置物櫃」及「東山線南改札口」&quot;},{&quot;width&quot;:100,&quot;type&quot;:&quot;image&quot;,&quot;src&quot;:&quot;images/details/meitetsu-nagoya-traffic-guide.jpg&quot;,&quot;cropLeft&quot;:0,&quot;cropRight&quot;:0,&quot;strokes&quot;:[],&quot;originalSrc&quot;:&quot;&quot;,&quot;cropHeight&quot;:0,&quot;cropTop&quot;:0},{&quot;html&quot;:&quot;\u003cspan style=\&quot;background-color: rgb(255, 243, 184);\&quot;\u003e\u003cb\u003e置物櫃位置圖\u003c/b\u003e\u003c/span\u003e\u003cbr\u003e優先放F跟H(有大置物櫃才放得下30吋箱)，滿倉則選擇J或I\u003cbr\u003e※地鐵置物櫃官網\u003ca href=\&quot;https://nagoya-locker.com/tw/#map\&quot; target=\&quot;_blank\&quot; rel=\&quot;noopener noreferrer\&quot; class=\&quot;note-link-black\&quot;\u003ehttps://nagoya-locker.com/tw/#map\u003c/a\u003e&quot;,&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;置物櫃位置圖\n優先放F跟H(有大置物櫃才放得下30吋箱)，滿倉則選擇J或I\n※地鐵置物櫃官網https://nagoya-locker.com/tw/#map&quot;},{&quot;width&quot;:100,&quot;type&quot;:&quot;image&quot;,&quot;src&quot;:&quot;images/details/meitetsu-nagoya-locker-map.png&quot;,&quot;cropLeft&quot;:0,&quot;cropRight&quot;:0,&quot;strokes&quot;:[],&quot;originalSrc&quot;:&quot;&quot;,&quot;cropHeight&quot;:0,&quot;cropTop&quot;:0}]}" data-map-place-input="https://maps.app.goo.gl/G2UuQsDdGz7fWbvcA" data-map-place-value="名鐵名古屋"><span class="itinerary-icon btn-press-effect">🚊</span><div><span class="time-badge editable" contenteditable="false">14:10 - 14:20</span><div class="item-title editable" contenteditable="false">名鐵名古屋</div><span class="map-place-control"><button type="button" class="card-tool-btn map-place-btn btn-press-effect has-map-place" onclick="openMapPlaceEditor(event, this)" aria-label="設定地圖定位" title="設定地圖定位">✓</button></span><div class="item-desc editable" contenteditable="false">行李先放「地鐵置物櫃」大行李¥800/個</div></div><div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div><button type="button" class="delete-card-btn btn-press-effect" onclick="deleteItineraryCard(event, this)" aria-label="刪除行程">×</button><div class="card-extra-controls"><button type="button" class="card-tool-btn more-info-btn btn-press-effect" onclick="openItineraryDetail(event, this)" aria-label="行程介紹">小筆記📝</button></div></div><div class="connector-line has-route-plan" data-route-url="https://maps.app.goo.gl/c7wVdPmAAzPN5dcT9" data-route-text="步行 6 分"><div class="route-inline"><div class="route-text editable" contenteditable="false">步行 6 分</div><button type="button" class="route-edit-btn btn-press-effect" onclick="openRoutePlanEditor(event, this)">貼路線</button><a class="route-nav-link btn-press-effect" href="https://maps.app.goo.gl/c7wVdPmAAzPN5dcT9" onclick="openRouteLink(event, this)" target="_blank" rel="noopener" aria-label="Google Maps 導航" data-app-href="comgooglemaps://?saddr=%E5%90%8D%E9%90%B5%E5%90%8D%E5%8F%A4%E5%B1%8B&amp;daddr=%E3%81%A4%E3%81%B0%E3%82%81%E3%83%91%E3%83%B3%E5%90%8D%E9%A7%85%E5%BA%97&amp;directionsmode=transit"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s6.5-6.1 6.5-11.2A6.5 6.5 0 0 0 5.5 9.8C5.5 14.9 12 21 12 21Z" fill="#d9867b"></path><path d="M12 21s6.5-6.1 6.5-11.2c0-2.1-1-4-2.6-5.2L9.5 18.7C10.8 20.1 12 21 12 21Z" fill="#6fa48e"></path><path d="M6.5 13.5c.7 1.8 2 3.7 3.1 5.1l6.3-14A6.5 6.5 0 0 0 11.9 3L6.5 13.5Z" fill="#f0c96b"></path><circle cx="12" cy="9.6" r="2.45" fill="#fffaf7"></circle></svg></a></div></div><div class="card" data-map-place-input="https://maps.app.goo.gl/pxEL62KEB29eaui27" data-detail="交通指南
 1.選擇往車尾（南側）方向的車廂。
 2.下車後從南改札口出站。
 3.出站後，沿著近鐵電車（Kintetsu）或地下街的指標前行。
@@ -4524,7 +4632,7 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <div class="wallet-card">
 <label class="wallet-label">日期 & 時間</label>
 <div class="custom-datetime-container" onclick="focusExpenseTime()">
-<span id="exp-time-text"></span>
+<span id="exp-time-text"><span class="exp-date-text"></span><span class="exp-clock-text"></span></span>
 <span class="calendar-icon-styled" aria-hidden="true">
 <svg viewBox="0 0 24 24" fill="none">
 <rect x="3.5" y="5.8" width="17" height="15" rx="4" fill="#fff7f3" stroke="#b0897e" stroke-width="1.8"/>
@@ -4630,7 +4738,7 @@ GekuNaiku(chokokan)line 6 分</div><button type="button" class="route-edit-btn b
 <div id="image-preview-modal" class="modal-overlay" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="toggleImagePreviewZoom(event)" onwheel="handleImagePreviewWheel(event)" ontouchstart="startImagePreviewPinch(event)" ontouchmove="moveImagePreviewPinch(event)" ontouchend="endImagePreviewPinch(event)" ontouchcancel="endImagePreviewPinch(event)" onpointerdown="startImagePreviewPan(event)" onpointermove="moveImagePreviewPan(event)" onpointerup="endImagePreviewPan(event)" onpointercancel="endImagePreviewPan(event)" onpointerleave="endImagePreviewPan(event)"><div id="image-preview-zoom-surface" class="image-preview-zoom-surface"><img id="image-preview-img" src="" alt="行程照片預覽"></div></div></div></div>
 <div id="alert-modal" class="modal-overlay"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button type="button" id="alert-cancel-btn" onclick="closeAlertModal(false)" class="alert-cancel-btn btn-press-effect">取消</button><button type="button" id="alert-primary-btn" onclick="closeAlertModal(true)" class="modal-btn-primary btn-press-effect">好滴！我知道了</button></div></div></div></div>
 <div id="save-status-toast" class="save-status-toast" role="status" aria-live="polite"></div>
-<div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig" src="images/pigs/typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
+<div id="password-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" onclick="focusPassword()" id="heart-row"></div><input type="text" id="pw-input" class="hidden-input" maxlength="8" readonly inputmode="none"><p id="pw-hint" class="pw-hint-text">請輸入密碼以編輯行程<img class="pw-hint-pig pw-hint-pig-edit" src="images/pigs/typing-pig.png" alt="打字小豬"></p><div class="pw-keypad" id="pw-keypad"><button type="button" class="btn-press-effect" onclick="pressPwKey('1')">1</button><button type="button" class="btn-press-effect" onclick="pressPwKey('2')">2</button><button type="button" class="btn-press-effect" onclick="pressPwKey('3')">3</button><button type="button" class="btn-press-effect" onclick="pressPwKey('4')">4</button><button type="button" class="btn-press-effect" onclick="pressPwKey('5')">5</button><button type="button" class="btn-press-effect" onclick="pressPwKey('6')">6</button><button type="button" class="btn-press-effect" onclick="pressPwKey('7')">7</button><button type="button" class="btn-press-effect" onclick="pressPwKey('8')">8</button><button type="button" class="btn-press-effect" onclick="pressPwKey('9')">9</button><button type="button" class="btn-press-effect" onclick="clearPwKey()">清除</button><button type="button" class="btn-press-effect" onclick="pressPwKey('0')">0</button><button type="button" class="btn-press-effect" onclick="deletePwKey()">⌫</button></div><button type="button" id="auth-cancel-btn" class="auth-cancel-btn btn-press-effect" onclick="cancelPasswordAuth()">取消認證</button></div></div></div>
 <div id="work-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">還沒要出發喔</div><div class="boundary-speech">ㄟ...上班內容沒上排程餒</div><img class="boundary-modal-img work-sticker" src="images/modals/work-schedule-reminder.png" alt="上班內容沒上排程提醒"><button type="button" ontouchend="return closeBoundaryModal(event, 'work-modal')" onpointerup="return closeBoundaryModal(event, 'work-modal')" onclick="return closeBoundaryModal(event, 'work-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg); width: 180px; padding: 12px 0;">不小心滑到啦!</button></div></div></div>
 <div id="finish-modal" class="modal-overlay"><div class="modal-container"><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">旅程結束了喔</div><div class="boundary-speech">繼續上班存錢錢💛再一起出去玩</div><img class="boundary-modal-img finish-sticker" src="images/modals/trip-finished-hug.png" alt="旅程結束陪你小圖" style="width: 75%; max-width: 200px;margin-top: 10px; margin-bottom: 5px;"><button type="button" ontouchend="return closeBoundaryModal(event, 'finish-modal')" onpointerup="return closeBoundaryModal(event, 'finish-modal')" onclick="return closeBoundaryModal(event, 'finish-modal')" class="modal-btn-primary btn-press-effect" style="background:var(--save-bg); width: 180px; padding: 12px 0;">沒有問題!</button></div></div></div>
 
@@ -4927,7 +5035,7 @@ const STATIC_CONTENT_VERSION = '2026-05-19-naiku-detail-v1';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 
 const SECURE_DOCS_URL = new URL('secure-docs/vault.json?v=20260611-password-2', window.location.href).href;
-const editPasswordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig" src="images/pigs/typing-pig.png" alt="打字小豬">';
+const editPasswordPromptHtml = '請輸入密碼以編輯行程<img class="pw-hint-pig pw-hint-pig-edit" src="images/pigs/typing-pig.png" alt="打字小豬">';
 const docsPasswordPromptHtml = '請輸入密碼以查看重要資料<img class="pw-hint-pig pw-hint-pig-docs" src="images/pigs/password-docs-pig.png" alt="查看資料小豬">';
 let passwordPromptHtml = editPasswordPromptHtml;
 const passwordWrongHtml = '阿賀❣️哩歐北來<img class="pw-hint-pig angry" src="images/pigs/angry-pig-inline.png" alt="生氣小豬">';
@@ -5591,7 +5699,7 @@ event.stopPropagation();
 const connector = btn.closest('.connector-line');
 const schedules = getConnectorSchedules(connector);
 if (!schedules.length) return;
-const pickedSchedule = String(connector?.dataset.routeSchedulePick || '').trim();
+const pickedSchedules = String(connector?.dataset.routeSchedulePicks || connector?.dataset.routeSchedulePick || '').split('|').map(item => item.trim()).filter(Boolean);
 const grouped = [];
 schedules.forEach(schedule => {
 const match = String(schedule).match(/^(.*?)(\d{2}:\d{2}\s*-\s*\d{2}:\d{2})$/);
@@ -5602,16 +5710,16 @@ if (!group) {
 group = { train, times: [] };
 grouped.push(group);
 }
-group.times.push({ text: time, picked: String(schedule).trim() === pickedSchedule });
+group.times.push({ text: time, picked: pickedSchedules.includes(String(schedule).trim()) });
 });
-const renderTime = item => `<span class="route-schedule-popup-time${item.picked ? ' is-picked' : ''}">${escapeHtml(item.text)}${item.picked ? '<span class="route-schedule-popup-picked">⭐</span>' : ''}</span>`;
+const renderTime = item => `<span class="route-schedule-popup-time${item.picked ? ' is-picked' : ''}"><span class="route-schedule-popup-time-text">${escapeHtml(item.text)}</span>${item.picked ? '<span class="route-schedule-popup-picked">⭐</span>' : ''}</span>`;
 const renderTimes = times => times.map(renderTime).join('<span class="route-schedule-popup-separator">、</span>');
 showAlertHtml(`<span class="route-schedule-popup">${grouped.map(item => {
 const timesHtml = renderTimes(item.times);
 return item.train
 ? `<span class="route-schedule-popup-row"><span class="route-schedule-popup-train">▪️${escapeHtml(item.train)}</span><span class="route-schedule-popup-times">${timesHtml}</span></span>`
 : `<span class="route-schedule-popup-row" style="grid-template-columns:1fr;"><span class="route-schedule-popup-times">${timesHtml}</span></span>`;
-}).join('')}</span>`, '⌚班次時刻表', '馬上出發GOGO');
+}).join('')}</span>`, '班次時刻表', '馬上出發GOGO');
 }
 function getMapIconSvg() {
 return `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s6.5-6.1 6.5-11.2A6.5 6.5 0 0 0 5.5 9.8C5.5 14.9 12 21 12 21Z" fill="#d9867b"/><path d="M12 21s6.5-6.1 6.5-11.2c0-2.1-1-4-2.6-5.2L9.5 18.7C10.8 20.1 12 21 12 21Z" fill="#6fa48e"/><path d="M6.5 13.5c.7 1.8 2 3.7 3.1 5.1l6.3-14A6.5 6.5 0 0 0 11.9 3L6.5 13.5Z" fill="#f0c96b"/><circle cx="12" cy="9.6" r="2.45" fill="#fffaf7"/></svg>`;
@@ -6168,8 +6276,13 @@ const schedules = selectedRouteMode === '大眾運輸' ? getRouteSchedules() : [
 if (schedules.length) currentRouteConnector.dataset.routeSchedules = schedules.join('|');
 else delete currentRouteConnector.dataset.routeSchedules;
 const pickedSchedule = selectedRouteMode === '大眾運輸' ? getRouteSchedulePick() : '';
-if (pickedSchedule && schedules.includes(pickedSchedule)) currentRouteConnector.dataset.routeSchedulePick = pickedSchedule;
-else delete currentRouteConnector.dataset.routeSchedulePick;
+if (pickedSchedule && schedules.includes(pickedSchedule)) {
+currentRouteConnector.dataset.routeSchedulePick = pickedSchedule;
+delete currentRouteConnector.dataset.routeSchedulePicks;
+} else {
+delete currentRouteConnector.dataset.routeSchedulePick;
+delete currentRouteConnector.dataset.routeSchedulePicks;
+}
 enhanceRouteConnectors();
 queueTripCloudSave();
 closeRoutePlanModal();
@@ -6181,6 +6294,7 @@ delete currentRouteConnector.dataset.routeText;
 delete currentRouteConnector.dataset.routeMode;
 delete currentRouteConnector.dataset.routeSchedules;
 delete currentRouteConnector.dataset.routeSchedulePick;
+delete currentRouteConnector.dataset.routeSchedulePicks;
 const textEl = currentRouteConnector.querySelector('.route-text');
 if (textEl) textEl.textContent = '編輯移動方式';
 enhanceRouteConnectors();
@@ -8000,15 +8114,19 @@ const isRouteGuide = /(?:route|guide)/i.test(String(src));
 previewModal?.classList.toggle('route-guide-preview', isRouteGuide);
 const previewContent = previewModal?.querySelector('.image-preview-content');
 if (previewContent) {
-previewContent.scrollLeft = 0;
-previewContent.scrollTop = 0;
 previewContent.style.width = '';
 previewContent.style.height = '';
 }
 imagePreviewPan.active = false;
 imagePreviewPan.dragged = false;
 imagePreviewPan.justToggled = false;
-setImagePreviewZoom(1);
+imagePreviewPan.panX = 0;
+imagePreviewPan.panY = 0;
+imagePreviewPinch.active = false;
+previewModal.dataset.zoom = '1';
+previewModal.style.setProperty('--preview-pan-x', '0px');
+previewModal.style.setProperty('--preview-pan-y', '0px');
+previewModal.style.setProperty('--preview-zoom', '1');
 const previewImg = document.getElementById('image-preview-img');
 previewImg.onload = () => configureImagePreviewFrame();
 previewImg.src = src;
@@ -8029,7 +8147,13 @@ event.preventDefault();
 event.stopPropagation();
 }
 document.getElementById('image-preview-img').src = '';
-setImagePreviewZoom(1);
+const modal = document.getElementById('image-preview-modal');
+if (modal) {
+modal.dataset.zoom = '1';
+modal.style.setProperty('--preview-pan-x', '0px');
+modal.style.setProperty('--preview-pan-y', '0px');
+modal.style.setProperty('--preview-zoom', '1');
+}
 const previewContent = document.getElementById('image-preview-modal')?.querySelector('.image-preview-content');
 if (previewContent) {
 previewContent.style.width = '';
@@ -8044,21 +8168,27 @@ dragged: false,
 justToggled: false,
 startX: 0,
 startY: 0,
-scrollLeft: 0,
-scrollTop: 0
+startPanX: 0,
+startPanY: 0,
+panX: 0,
+panY: 0
 };
 const imagePreviewPinch = {
 active: false,
 startDistance: 0,
 startZoom: 1,
 centerX: 0,
-centerY: 0
+centerY: 0,
+startLocalX: 0,
+startLocalY: 0
 };
 function imagePreviewCanPan(content, modal) {
 if (!content || !modal) return false;
-return Number(modal.dataset.zoom || 1) > 1 ||
-content.scrollWidth > content.clientWidth + 2 ||
-content.scrollHeight > content.clientHeight + 2;
+const zoomSurface = document.getElementById('image-preview-zoom-surface');
+const baseWidth = Number(content.dataset.previewBaseWidth) || zoomSurface?.offsetWidth || 0;
+const baseHeight = Number(content.dataset.previewBaseHeight) || zoomSurface?.offsetHeight || 0;
+const zoom = Number(modal.dataset.zoom || 1);
+return zoom > 1 || baseWidth * zoom > content.clientWidth + 2 || baseHeight * zoom > content.clientHeight + 2;
 }
 function getTouchDistance(touches) {
 if (!touches || touches.length < 2) return 0;
@@ -8072,13 +8202,52 @@ clientX: (touches[0].clientX + touches[1].clientX) / 2,
 clientY: (touches[0].clientY + touches[1].clientY) / 2
 };
 }
+function getImagePreviewMetrics() {
+const modal = document.getElementById('image-preview-modal');
+const content = modal?.querySelector('.image-preview-content');
+const zoomSurface = document.getElementById('image-preview-zoom-surface');
+const zoom = Math.max(1, Number(modal?.dataset.zoom || 1));
+const baseWidth = Number(content?.dataset.previewBaseWidth) || zoomSurface?.offsetWidth || 1;
+const baseHeight = Number(content?.dataset.previewBaseHeight) || zoomSurface?.offsetHeight || 1;
+return { modal, content, zoomSurface, zoom, baseWidth, baseHeight };
+}
+function clampImagePreviewPan(panX, panY, zoom = null) {
+const { content, baseWidth, baseHeight } = getImagePreviewMetrics();
+if (!content) return { x: 0, y: 0 };
+const currentZoom = zoom || Number(document.getElementById('image-preview-modal')?.dataset.zoom || 1);
+const scaledWidth = baseWidth * currentZoom;
+const scaledHeight = baseHeight * currentZoom;
+let x = panX;
+let y = panY;
+if (scaledWidth <= content.clientWidth) {
+x = (content.clientWidth - scaledWidth) / 2;
+} else {
+x = Math.max(content.clientWidth - scaledWidth, Math.min(0, x));
+}
+if (scaledHeight <= content.clientHeight) {
+y = (content.clientHeight - scaledHeight) / 2;
+} else {
+y = Math.max(content.clientHeight - scaledHeight, Math.min(0, y));
+}
+return { x, y };
+}
+function applyImagePreviewTransform(panX = imagePreviewPan.panX, panY = imagePreviewPan.panY, zoom = null) {
+const { modal, zoomSurface } = getImagePreviewMetrics();
+if (!modal || !zoomSurface) return;
+const currentZoom = zoom || Number(modal.dataset.zoom || 1);
+const clamped = clampImagePreviewPan(panX, panY, currentZoom);
+imagePreviewPan.panX = clamped.x;
+imagePreviewPan.panY = clamped.y;
+modal.style.setProperty('--preview-pan-x', `${clamped.x}px`);
+modal.style.setProperty('--preview-pan-y', `${clamped.y}px`);
+modal.style.setProperty('--preview-zoom', currentZoom);
+zoomSurface.style.transform = `translate3d(${clamped.x}px, ${clamped.y}px, 0) scale(${currentZoom})`;
+}
 function configureImagePreviewFrame() {
 const modal = document.getElementById('image-preview-modal');
 const img = document.getElementById('image-preview-img');
 const content = modal?.querySelector('.image-preview-content');
 if (!modal || !img || !content) return;
-content.scrollLeft = 0;
-content.scrollTop = 0;
 const maxW = Math.min(window.innerWidth * .88, modal.classList.contains('route-guide-preview') ? 560 : 640);
 const maxH = Math.min(window.innerHeight * .82, modal.classList.contains('route-guide-preview') ? 720 : 640);
 const naturalW = img.naturalWidth || maxW;
@@ -8099,59 +8268,37 @@ const zoomSurface = document.getElementById('image-preview-zoom-surface');
 if (zoomSurface) {
 zoomSurface.style.width = `${Math.max(1, Math.round(width))}px`;
 zoomSurface.style.height = `${Math.max(1, Math.round(height))}px`;
+modal.style.setProperty('--preview-base-width', `${Math.max(1, Math.round(width))}px`);
+modal.style.setProperty('--preview-base-height', `${Math.max(1, Math.round(height))}px`);
 }
+modal.dataset.zoom = '1';
+modal.classList.remove('preview-zoomed', 'preview-dragging');
+const initialPan = clampImagePreviewPan(0, isTallImage ? 0 : (content.clientHeight - height) / 2, 1);
+imagePreviewPan.panX = initialPan.x;
+imagePreviewPan.panY = initialPan.y;
+applyImagePreviewTransform(initialPan.x, initialPan.y, 1);
 }
 function setImagePreviewZoom(nextZoom, focalPoint = null) {
 const modal = document.getElementById('image-preview-modal');
-const img = document.getElementById('image-preview-img');
 const content = modal?.querySelector('.image-preview-content');
-const zoomSurface = document.getElementById('image-preview-zoom-surface');
-if (!modal || !img) return;
+if (!modal || !content) return;
 const currentZoom = Number(modal.dataset.zoom || 1);
-let focalRatioX = .5;
-let focalRatioY = .5;
-let viewportX = content ? content.clientWidth / 2 : 0;
-let viewportY = content ? content.clientHeight / 2 : 0;
+let viewportX = content.clientWidth / 2;
+let viewportY = content.clientHeight / 2;
 if (content && focalPoint) {
 const contentRect = content.getBoundingClientRect();
-const surfaceRect = (zoomSurface || img).getBoundingClientRect();
 viewportX = Math.max(0, Math.min(content.clientWidth, focalPoint.clientX - contentRect.left));
 viewportY = Math.max(0, Math.min(content.clientHeight, focalPoint.clientY - contentRect.top));
-focalRatioX = Math.max(0, Math.min(1, (focalPoint.clientX - surfaceRect.left) / Math.max(1, surfaceRect.width)));
-focalRatioY = Math.max(0, Math.min(1, (focalPoint.clientY - surfaceRect.top) / Math.max(1, surfaceRect.height)));
-} else if (content && currentZoom > 1) {
-focalRatioX = (content.scrollLeft + content.clientWidth / 2) / Math.max(1, content.scrollWidth);
-focalRatioY = (content.scrollTop + content.clientHeight / 2) / Math.max(1, content.scrollHeight);
 }
+const localX = (viewportX - imagePreviewPan.panX) / Math.max(.001, currentZoom);
+const localY = (viewportY - imagePreviewPan.panY) / Math.max(.001, currentZoom);
 const zoom = Math.max(1, Math.min(5, Number(nextZoom) || 1));
 modal.dataset.zoom = String(zoom);
 modal.style.setProperty('--preview-zoom', zoom);
 modal.classList.toggle('preview-zoomed', zoom > 1);
-img.style.width = '';
-img.style.height = '';
-if (zoomSurface) {
-const imgRect = img.getBoundingClientRect();
-const baseWidth = Number(content?.dataset.previewBaseWidth) || (imgRect.width / Math.max(1, currentZoom));
-const baseHeight = Number(content?.dataset.previewBaseHeight) || (imgRect.height / Math.max(1, currentZoom));
-if (zoom === 1) {
-zoomSurface.style.width = `${Math.max(1, Math.round(baseWidth))}px`;
-zoomSurface.style.height = `${Math.max(1, Math.round(baseHeight))}px`;
-} else {
-zoomSurface.style.width = `${Math.max(1, Math.round(baseWidth * zoom))}px`;
-zoomSurface.style.height = `${Math.max(1, Math.round(baseHeight * zoom))}px`;
-}
-}
-if (content) {
-if (zoom === 1) {
-content.scrollLeft = Math.max(0, Math.min(content.scrollWidth - content.clientWidth, content.scrollLeft));
-content.scrollTop = Math.max(0, Math.min(content.scrollHeight - content.clientHeight, content.scrollTop));
-return;
-}
-const maxScrollLeft = Math.max(0, content.scrollWidth - content.clientWidth);
-const maxScrollTop = Math.max(0, content.scrollHeight - content.clientHeight);
-content.scrollLeft = Math.max(0, Math.min(maxScrollLeft, (content.scrollWidth * focalRatioX) - viewportX));
-content.scrollTop = Math.max(0, Math.min(maxScrollTop, (content.scrollHeight * focalRatioY) - viewportY));
-}
+const panX = viewportX - localX * zoom;
+const panY = viewportY - localY * zoom;
+applyImagePreviewTransform(panX, panY, zoom);
 }
 function toggleImagePreviewZoom(event) {
 if (event) {
@@ -8182,8 +8329,8 @@ imagePreviewPan.active = true;
 imagePreviewPan.dragged = false;
 imagePreviewPan.startX = event.clientX;
 imagePreviewPan.startY = event.clientY;
-imagePreviewPan.scrollLeft = content.scrollLeft;
-imagePreviewPan.scrollTop = content.scrollTop;
+imagePreviewPan.startPanX = imagePreviewPan.panX;
+imagePreviewPan.startPanY = imagePreviewPan.panY;
 modal.classList.add('preview-dragging');
 content.setPointerCapture?.(event.pointerId);
 }
@@ -8197,8 +8344,7 @@ event.stopPropagation();
 const dx = event.clientX - imagePreviewPan.startX;
 const dy = event.clientY - imagePreviewPan.startY;
 if (Math.abs(dx) > 3 || Math.abs(dy) > 3) imagePreviewPan.dragged = true;
-content.scrollLeft = imagePreviewPan.scrollLeft - dx;
-content.scrollTop = imagePreviewPan.scrollTop - dy;
+applyImagePreviewTransform(imagePreviewPan.startPanX + dx, imagePreviewPan.startPanY + dy);
 }
 function endImagePreviewPan(event) {
 if (!imagePreviewPan.active) return;
@@ -8241,8 +8387,8 @@ imagePreviewPan.active = true;
 imagePreviewPan.dragged = false;
 imagePreviewPan.startX = event.touches[0].clientX;
 imagePreviewPan.startY = event.touches[0].clientY;
-imagePreviewPan.scrollLeft = content.scrollLeft;
-imagePreviewPan.scrollTop = content.scrollTop;
+imagePreviewPan.startPanX = imagePreviewPan.panX;
+imagePreviewPan.startPanY = imagePreviewPan.panY;
 modal.classList.add('preview-dragging');
 return;
 }
@@ -8257,6 +8403,11 @@ imagePreviewPinch.startZoom = Number(modal.dataset.zoom || 1);
 const center = getTouchCenter(event.touches);
 imagePreviewPinch.centerX = center.clientX;
 imagePreviewPinch.centerY = center.clientY;
+const contentRect = content.getBoundingClientRect();
+const viewportX = center.clientX - contentRect.left;
+const viewportY = center.clientY - contentRect.top;
+imagePreviewPinch.startLocalX = (viewportX - imagePreviewPan.panX) / Math.max(.001, imagePreviewPinch.startZoom);
+imagePreviewPinch.startLocalY = (viewportY - imagePreviewPan.panY) / Math.max(.001, imagePreviewPinch.startZoom);
 modal.classList.add('preview-dragging');
 }
 function moveImagePreviewPinch(event) {
@@ -8270,11 +8421,13 @@ event.stopPropagation();
 const dx = event.touches[0].clientX - imagePreviewPan.startX;
 const dy = event.touches[0].clientY - imagePreviewPan.startY;
 if (Math.abs(dx) > 3 || Math.abs(dy) > 3) imagePreviewPan.dragged = true;
-content.scrollLeft = imagePreviewPan.scrollLeft - dx;
-content.scrollTop = imagePreviewPan.scrollTop - dy;
+applyImagePreviewTransform(imagePreviewPan.startPanX + dx, imagePreviewPan.startPanY + dy);
 return;
 }
 if (!imagePreviewPinch.active || !event?.touches || event.touches.length < 2) return;
+const modal = document.getElementById('image-preview-modal');
+const content = modal?.querySelector('.image-preview-content');
+if (!modal || !content) return;
 event.preventDefault();
 event.stopPropagation();
 const distance = getTouchDistance(event.touches);
@@ -8283,7 +8436,15 @@ const center = getTouchCenter(event.touches);
 imagePreviewPinch.centerX = center.clientX;
 imagePreviewPinch.centerY = center.clientY;
 const nextZoom = imagePreviewPinch.startZoom * (distance / imagePreviewPinch.startDistance);
-setImagePreviewZoom(nextZoom, center);
+const zoom = Math.max(1, Math.min(5, Number(nextZoom) || 1));
+const contentRect = content.getBoundingClientRect();
+const viewportX = center.clientX - contentRect.left;
+const viewportY = center.clientY - contentRect.top;
+modal.dataset.zoom = String(zoom);
+modal.classList.toggle('preview-zoomed', zoom > 1);
+const panX = viewportX - imagePreviewPinch.startLocalX * zoom;
+const panY = viewportY - imagePreviewPinch.startLocalY * zoom;
+applyImagePreviewTransform(panX, panY, zoom);
 }
 function endImagePreviewPinch(event) {
 if (!imagePreviewPinch.active && imagePreviewPan.active) {
@@ -9141,7 +9302,6 @@ const hint = document.getElementById('pw-hint');
 const input = document.getElementById('pw-input');
 if (value.length === 8 && !passwordCheckInProgress) {
 passwordCheckInProgress = true;
-hint.textContent = '解鎖中...';
 try {
 const vault = await decryptSecureVault(value);
 if (passwordAuthMode === 'docs') createSecureDocItems(vault.documents);
@@ -9155,6 +9315,7 @@ toggleEditMode(true);
 }
 }, 250);
 } catch (error) {
+playPasswordErrorSound();
 hint.innerHTML = passwordWrongHtml;
 document.getElementById('auth-cancel-btn').style.display = 'none';
 setTimeout(() => {
@@ -9171,18 +9332,24 @@ passwordCheckInProgress = false;
 function pressPwKey(num) {
 const input = document.getElementById('pw-input');
 if (input.value.length >= 8) return;
+unlockCuteClickSound();
+playPasswordKeySound({ textContent: num });
 vibrateKeypad(12);
 input.value += num;
 handlePasswordValue(input.value);
 }
 function deletePwKey() {
 const input = document.getElementById('pw-input');
+unlockCuteClickSound();
+playPasswordKeySound({ textContent: '⌫' });
 vibrateKeypad(10);
 input.value = input.value.slice(0, -1);
 handlePasswordValue(input.value);
 }
 function clearPwKey() {
 const input = document.getElementById('pw-input');
+unlockCuteClickSound();
+playPasswordKeySound({ textContent: '清除' });
 vibrateKeypad(16);
 input.value = '';
 handlePasswordValue('');
@@ -10228,13 +10395,31 @@ const D = String(d.getDate()).padStart(2, '0');
 const Y = d.getFullYear();
 const H = String(d.getHours()).padStart(2, '0');
 const m = String(d.getMinutes()).padStart(2, '0');
-document.getElementById('exp-time-text').textContent = `${M}/${D}/${Y} ${H}:${m}`;
+setExpenseTimeText(`${Y}/${M}/${D}`, `${H}:${m}`);
 input.value = `${Y}-${M}-${D}T${H}:${m}`;
+}
+function setExpenseTimeText(dateText, timeText) {
+const host = document.getElementById('exp-time-text');
+if (!host) return;
+let dateEl = host.querySelector('.exp-date-text');
+let timeEl = host.querySelector('.exp-clock-text');
+if (!dateEl || !timeEl) {
+host.textContent = '';
+dateEl = document.createElement('span');
+dateEl.className = 'exp-date-text';
+timeEl = document.createElement('span');
+timeEl.className = 'exp-clock-text';
+host.appendChild(dateEl);
+host.appendChild(timeEl);
+}
+dateEl.textContent = dateText;
+timeEl.textContent = timeText;
 }
 function focusExpenseTime() {
 const input = document.getElementById('exp-time');
 if (input && input._flatpickr) {
 input._flatpickr.setDate((input.value || getNowString()).replace('T', ' '), false, 'Y-m-d H:i');
+input._flatpickr.jumpToDate((input.value || getNowString()).replace('T', ' '));
 refreshYearSelect(input._flatpickr);
 input._flatpickr.open();
 }
@@ -10252,39 +10437,69 @@ const D = String(d.getDate()).padStart(2, '0');
 const H = String(d.getHours()).padStart(2, '0');
 const m = String(d.getMinutes()).padStart(2, '0');
 document.getElementById('exp-time').value = `${Y}-${M}-${D}T${H}:${m}`;
-document.getElementById('exp-time-text').textContent = `${M}/${D}/${Y} ${H}:${m}`;
+setExpenseTimeText(`${Y}/${M}/${D}`, `${H}:${m}`);
 }
 function refreshYearSelect(instance) {
 if (!instance || !instance.calendarContainer) return;
 const monthHost = instance.calendarContainer.querySelector('.flatpickr-current-month');
 if (!monthHost) return;
-let select = monthHost.querySelector('.mie-year-select');
+let picker = monthHost.querySelector('.mie-year-picker');
 const selectedYear = instance.currentYear || new Date().getFullYear();
-if (!select) {
-select = document.createElement('select');
-select.className = 'mie-year-select';
-select.setAttribute('aria-label', '選擇年份');
+if (!picker) {
+picker = document.createElement('span');
+picker.className = 'mie-year-picker';
+const button = document.createElement('button');
+button.type = 'button';
+button.className = 'mie-year-button';
+button.setAttribute('aria-label', '選擇年份');
+const menu = document.createElement('span');
+menu.className = 'mie-year-menu';
 const baseYear = new Date().getFullYear();
 for (let year = baseYear - 5; year <= baseYear + 10; year++) {
-const option = document.createElement('option');
-option.value = String(year);
+const option = document.createElement('button');
+option.type = 'button';
+option.className = 'mie-year-option';
+option.dataset.year = String(year);
 option.textContent = `${year}年`;
-select.appendChild(option);
+menu.appendChild(option);
 }
-select.addEventListener('change', () => {
-instance.changeYear(Number(select.value));
-setExpensePickerValue(instance);
-refreshYearSelect(instance);
+picker.appendChild(button);
+picker.appendChild(menu);
+monthHost.appendChild(picker);
+}
+const button = picker.querySelector('.mie-year-button');
+const menu = picker.querySelector('.mie-year-menu');
+if (button) {
+button.onclick = (event) => {
+event.preventDefault();
+event.stopPropagation();
+document.querySelectorAll('.mie-year-picker.is-open').forEach((openPicker) => {
+if (openPicker !== picker) openPicker.classList.remove('is-open');
 });
-monthHost.appendChild(select);
+picker.classList.toggle('is-open');
+};
 }
-if (!Array.from(select.options).some(option => Number(option.value) === selectedYear)) {
-const option = document.createElement('option');
-option.value = String(selectedYear);
+if (!menu.querySelector(`[data-year="${selectedYear}"]`)) {
+const option = document.createElement('button');
+option.type = 'button';
+option.className = 'mie-year-option';
+option.dataset.year = String(selectedYear);
 option.textContent = `${selectedYear}年`;
-select.appendChild(option);
+menu.appendChild(option);
 }
-select.value = String(selectedYear);
+if (button) button.textContent = `${selectedYear}年`;
+menu.querySelectorAll('.mie-year-option').forEach((option) => {
+option.onclick = (event) => {
+event.preventDefault();
+event.stopPropagation();
+instance.changeYear(Number(option.dataset.year));
+setExpensePickerValue(instance);
+picker.classList.remove('is-open');
+refreshMonthLabels(instance);
+refreshYearSelect(instance);
+};
+option.classList.toggle('is-selected', Number(option.dataset.year) === selectedYear);
+});
 }
 function refreshMonthLabels(instance) {
 if (!instance || !instance.calendarContainer) return;
@@ -10295,6 +10510,9 @@ const monthNumber = Number(option.value) + 1;
 if (Number.isFinite(monthNumber)) option.textContent = `${monthNumber}月`;
 });
 }
+document.addEventListener('click', () => {
+document.querySelectorAll('.mie-year-picker.is-open').forEach((picker) => picker.classList.remove('is-open'));
+});
 function attachDateConfirmButton(instance) {
 const calendar = instance.calendarContainer;
 if (!calendar || calendar.querySelector('.fp-confirm-wrap')) return;
@@ -10316,11 +10534,12 @@ const input = document.getElementById('exp-time');
 const host = document.getElementById('exp-time-picker-host');
 if (!input || !host || typeof flatpickr === 'undefined') return;
 if (fp) fp.destroy();
+const initialDate = (input.value || getNowString()).replace('T', ' ');
 fp = flatpickr(input, {
 enableTime: true,
 dateFormat: 'Y-m-d H:i',
 time_24hr: true,
-defaultDate: new Date(),
+defaultDate: initialDate,
 disableMobile: true,
 allowInput: true,
 closeOnSelect: false,
@@ -10328,12 +10547,15 @@ monthSelectorType: 'dropdown',
 appendTo: host,
 onReady: function(selectedDates, dateStr, instance) {
 attachDateConfirmButton(instance);
+instance.setDate((input.value || getNowString()).replace('T', ' '), false, 'Y-m-d H:i');
 refreshMonthLabels(instance);
 refreshYearSelect(instance);
 if (selectedDates && selectedDates[0]) setExpensePickerValue(instance);
 },
 onOpen: function(selectedDates, dateStr, instance) {
 attachDateConfirmButton(instance);
+instance.setDate((input.value || getNowString()).replace('T', ' '), false, 'Y-m-d H:i');
+instance.jumpToDate((input.value || getNowString()).replace('T', ' '));
 refreshMonthLabels(instance);
 refreshYearSelect(instance);
 },
@@ -10966,7 +11188,193 @@ else if (!isEditMode) openSimpleModal('work-modal');
 isMoving = false;
 }, { passive: true });
 
+let cuteClickAudioContext = null;
+let cuteClickLastAt = 0;
+function getCuteClickAudioContext() {
+try {
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+if (!AudioCtx) return null;
+if (!cuteClickAudioContext) cuteClickAudioContext = new AudioCtx();
+return cuteClickAudioContext;
+} catch (error) {
+return null;
+}
+}
+function unlockCuteClickSound() {
+const ctx = getCuteClickAudioContext();
+if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+}
+function findCuteClickTarget(target) {
+if (!target || target.closest('input, textarea, select, [contenteditable="true"], [data-silent-click-sound="true"]')) return null;
+const control = target.closest('button, a, .btn-press-effect, .date-item, .route-inline, .wishlist-item, .menu-action, .float-icon');
+if (!control) return null;
+if (control.matches('button') && control.disabled) return null;
+return control;
+}
+function playSinglePiggyBubble(ctx, start, baseFreq, peak) {
+const t = ctx.currentTime + start;
+const length = 0.18;
+const osc = ctx.createOscillator();
+const warm = ctx.createOscillator();
+const gain = ctx.createGain();
+const warmGain = ctx.createGain();
+const filter = ctx.createBiquadFilter();
+osc.type = 'sine';
+warm.type = 'sine';
+filter.type = 'lowpass';
+filter.frequency.setValueAtTime(720, t);
+filter.frequency.exponentialRampToValueAtTime(560, t + length);
+osc.frequency.setValueAtTime(baseFreq * 0.94, t);
+osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.16, t + 0.055);
+osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.88, t + length);
+warm.frequency.setValueAtTime(baseFreq * 1.5, t);
+warm.frequency.exponentialRampToValueAtTime(baseFreq * 1.32, t + length);
+gain.gain.setValueAtTime(0.0001, t);
+gain.gain.exponentialRampToValueAtTime(peak, t + 0.026);
+gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+warmGain.gain.setValueAtTime(0.0001, t);
+warmGain.gain.exponentialRampToValueAtTime(peak * 0.18, t + 0.035);
+warmGain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+osc.connect(filter).connect(gain).connect(ctx.destination);
+warm.connect(warmGain).connect(ctx.destination);
+osc.start(t);
+warm.start(t);
+osc.stop(t + length + 0.02);
+warm.stop(t + length + 0.02);
+}
+function playPiggyMenuBubbleSound() {
+const ctx = getCuteClickAudioContext();
+if (!ctx || ctx.state !== 'running') return;
+playSinglePiggyBubble(ctx, 0, 430, 0.043);
+playSinglePiggyBubble(ctx, 0.115, 520, 0.034);
+}
+function playPasswordKeySound(control) {
+const ctx = getCuteClickAudioContext();
+if (!ctx || ctx.state !== 'running') return;
+const now = ctx.currentTime;
+const label = (control?.textContent || '').trim();
+const isDelete = label === '⌫' || label === '清除';
+const duration = isDelete ? 0.055 : 0.045;
+const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+const data = noiseBuffer.getChannelData(0);
+for (let i = 0; i < bufferSize; i += 1) {
+const fade = 1 - (i / bufferSize);
+data[i] = (Math.random() * 2 - 1) * fade;
+}
+const noise = ctx.createBufferSource();
+noise.buffer = noiseBuffer;
+const body = ctx.createOscillator();
+const gain = ctx.createGain();
+const bodyGain = ctx.createGain();
+const highpass = ctx.createBiquadFilter();
+const lowpass = ctx.createBiquadFilter();
+body.type = 'sine';
+highpass.type = 'highpass';
+lowpass.type = 'lowpass';
+highpass.frequency.setValueAtTime(1300, now);
+lowpass.frequency.setValueAtTime(isDelete ? 5200 : 6200, now);
+body.frequency.setValueAtTime(isDelete ? 720 : 920, now);
+body.frequency.exponentialRampToValueAtTime(isDelete ? 520 : 700, now + duration);
+gain.gain.setValueAtTime(0.0001, now);
+gain.gain.exponentialRampToValueAtTime(isDelete ? 0.032 : 0.038, now + 0.002);
+gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+bodyGain.gain.setValueAtTime(0.0001, now);
+bodyGain.gain.exponentialRampToValueAtTime(isDelete ? 0.01 : 0.013, now + 0.003);
+bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+noise.connect(highpass).connect(lowpass).connect(gain).connect(ctx.destination);
+body.connect(bodyGain).connect(ctx.destination);
+noise.start(now);
+body.start(now);
+noise.stop(now + duration + 0.01);
+body.stop(now + duration + 0.01);
+}
+function playPasswordErrorSound() {
+const ctx = getCuteClickAudioContext();
+if (!ctx || ctx.state !== 'running') return;
+const now = ctx.currentTime;
+[
+{ start: 0, from: 420, to: 270, peak: 0.045 },
+{ start: 0.13, from: 360, to: 210, peak: 0.036 }
+].forEach(({ start, from, to, peak }) => {
+const t = now + start;
+const osc = ctx.createOscillator();
+const gain = ctx.createGain();
+const filter = ctx.createBiquadFilter();
+osc.type = 'sine';
+filter.type = 'lowpass';
+filter.frequency.setValueAtTime(780, t);
+filter.frequency.exponentialRampToValueAtTime(460, t + 0.16);
+osc.frequency.setValueAtTime(from, t);
+osc.frequency.exponentialRampToValueAtTime(to, t + 0.16);
+gain.gain.setValueAtTime(0.0001, t);
+gain.gain.exponentialRampToValueAtTime(peak, t + 0.018);
+gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+osc.connect(filter).connect(gain).connect(ctx.destination);
+osc.start(t);
+osc.stop(t + 0.2);
+});
+}
+function playCuteClickSound(control) {
+const nowMs = performance.now();
+if (nowMs - cuteClickLastAt < 55) return;
+if (control?.closest?.('#main-btn, .main-piggy')) {
+cuteClickLastAt = nowMs;
+playPiggyMenuBubbleSound();
+return;
+}
+if (control?.closest?.('#pw-keypad')) return;
+const ctx = getCuteClickAudioContext();
+if (!ctx || ctx.state !== 'running') return;
+cuteClickLastAt = nowMs;
+const now = ctx.currentTime;
+const isCloseOrDelete = control?.matches('.delete-card-btn, .modal-close-btn, .wishlist-delete, .note-image-delete-btn, .note-color-popover-close') || /[×✕⌫]/.test((control?.textContent || '').trim());
+const baseFreq = isCloseOrDelete ? 520 : 760;
+const endFreq = isCloseOrDelete ? 390 : 1180;
+const mainGain = ctx.createGain();
+const sparkleGain = ctx.createGain();
+const mainOsc = ctx.createOscillator();
+const sparkleOsc = ctx.createOscillator();
+mainOsc.type = 'sine';
+sparkleOsc.type = 'triangle';
+mainOsc.frequency.setValueAtTime(baseFreq, now);
+mainOsc.frequency.exponentialRampToValueAtTime(endFreq, now + 0.075);
+sparkleOsc.frequency.setValueAtTime(baseFreq * 1.9, now + 0.025);
+sparkleOsc.frequency.exponentialRampToValueAtTime(baseFreq * 2.35, now + 0.12);
+mainGain.gain.setValueAtTime(0.0001, now);
+mainGain.gain.exponentialRampToValueAtTime(0.045, now + 0.01);
+mainGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+sparkleGain.gain.setValueAtTime(0.0001, now + 0.018);
+sparkleGain.gain.exponentialRampToValueAtTime(0.018, now + 0.038);
+sparkleGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+mainOsc.connect(mainGain).connect(ctx.destination);
+sparkleOsc.connect(sparkleGain).connect(ctx.destination);
+mainOsc.start(now);
+sparkleOsc.start(now + 0.018);
+mainOsc.stop(now + 0.16);
+sparkleOsc.stop(now + 0.14);
+}
+function setupCuteClickSounds() {
+if (window.__cuteClickSoundReady) return;
+window.__cuteClickSoundReady = true;
+const tapEvent = window.PointerEvent ? 'pointerup' : 'touchend';
+document.addEventListener('pointerdown', unlockCuteClickSound, { capture: true, passive: true });
+document.addEventListener('touchstart', unlockCuteClickSound, { capture: true, passive: true });
+document.addEventListener(tapEvent, (event) => {
+const control = findCuteClickTarget(event.target);
+if (control) playCuteClickSound(control);
+}, { capture: true, passive: true });
+document.addEventListener('keydown', (event) => {
+if (event.key !== 'Enter' && event.key !== ' ') return;
+const control = findCuteClickTarget(event.target);
+if (!control) return;
+unlockCuteClickSound();
+playCuteClickSound(control);
+}, true);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+setupCuteClickSounds();
 document.getElementById('heart-row').innerHTML = Array.from({ length: 8 }, () => `<div class="heart-slot"><span class="h-empty">\u2661</span><span class="h-full">\u2665</span></div>`).join('');
 window.addEventListener('keydown', handlePasswordKeyboard);
 window.addEventListener('scroll', triggerItineraryBottomBounce, { passive: true });
@@ -11206,6 +11614,18 @@ document.addEventListener('paste', handlePlainTextPaste);
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
