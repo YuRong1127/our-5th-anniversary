@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'mie-anniversary-v20260816-stable-sync-2';
+const CACHE_VERSION = 'mie-anniversary-v20260816-stable-sync-3';
 const APP_SHELL_URL = './index.html';
 const SECURE_VAULT_URL = './secure-docs/vault.json';
 
