@@ -10874,6 +10874,10 @@ clearTimeout(saveStatusTimer);
 saveStatusTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 function queueTripCloudSave(showStatus = false, options = {}) {
+if (showStatus && typeof showStatus === 'object') {
+options = showStatus;
+showStatus = !!options.showStatus;
+}
 if (!CLOUD_SYNC_ENABLED) return;
 if (isApplyingCloudData || typeof window.saveTripToCloud !== 'function') return;
 return window.saveTripToCloud(collectTripCloudData(options), { showStatus });
@@ -10998,6 +11002,7 @@ import {
   getFirestore,
   doc,
   getDoc,
+  getDocFromServer,
   setDoc,
   onSnapshot,
   serverTimestamp,
@@ -11078,7 +11083,7 @@ window.compactTripCloudDraft = async () => {
 window.addEventListener('DOMContentLoaded', async () => {
   if (window.CLOUD_SYNC_ENABLED === false) return;
   try {
-    const snapshot = await getDoc(tripRef);
+    const snapshot = await getDocFromServer(tripRef).catch(() => getDoc(tripRef));
     if (!snapshot.exists()) {
       await setDoc(tripRef, {
         ...window.collectTripCloudData(),
@@ -11095,7 +11100,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (!docSnapshot.exists()) return;
       if (Date.now() < (window.suppressCloudApplyUntil || 0)) return;
       const data = docSnapshot.data();
-      if (docSnapshot.metadata?.fromCache && data.dayContentHTML) return;
+      if (docSnapshot.metadata?.fromCache) return;
       if (data.updatedAt && latestCloudUpdatedAt && data.updatedAt <= latestCloudUpdatedAt) return;
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
       window.applyTripCloudData(data);

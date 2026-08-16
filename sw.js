@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'mie-anniversary-v20260611-secure-docs-2';
+const CACHE_VERSION = 'mie-anniversary-v20260816-stable-sync-2';
 const APP_SHELL_URL = './index.html';
 const SECURE_VAULT_URL = './secure-docs/vault.json';
 
@@ -41,16 +41,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  const requestUrl = new URL(request.url);
+  const sameOrigin = requestUrl.origin === self.location.origin;
+
   event.respondWith(
-    caches.match(request).then((cached) => {
-      const fresh = fetch(request).then((response) => {
-        if (response && response.ok) {
+    (sameOrigin ? fetch(request, { cache: 'no-store' }) : fetch(request))
+      .then((response) => {
+        if (sameOrigin && response && response.ok) {
           const copy = response.clone();
           caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
         }
         return response;
-      }).catch(() => cached);
-      return cached || fresh;
-    })
+      })
+      .catch(() => caches.match(request))
   );
 });
