@@ -1402,18 +1402,19 @@ overflow: hidden;
 }
 .route-schedule-popup {
 display: grid;
-gap: 12px;
-width: fit-content;
-max-width: calc(100% - 18px);
-overflow: hidden;
+gap: 7px;
+width: min(100%, 302px);
+max-width: 100%;
+overflow: visible;
 box-sizing: border-box;
 margin: 0 auto;
 }
 .route-schedule-popup-row {
 display: grid;
-grid-template-columns: 74px max-content;
-gap: 8px;
+grid-template-columns: 72px minmax(0, 1fr);
+gap: 6px;
 align-items: start;
+width: 100%;
 max-width: 100%;
 color: #9c877f;
 font-size: .8rem;
@@ -1426,13 +1427,15 @@ color: #8f7a73;
 display: inline-flex;
 align-items: center;
 gap: 6px;
+min-width: 0;
 }
 .route-schedule-popup-times {
 display: grid;
-grid-template-columns: repeat(2, 102px);
+grid-template-columns: repeat(2, minmax(0, 1fr));
 align-items: center;
-column-gap: 0;
-row-gap: 8px;
+column-gap: 4px;
+row-gap: 4px;
+width: 100%;
 min-width: 0;
 max-width: 100%;
 overflow: visible;
@@ -1445,24 +1448,27 @@ white-space: nowrap;
 .route-schedule-popup-separator { display: none; }
 .route-schedule-popup-time {
 display: grid;
-grid-template-columns: 82px 14px;
+grid-template-columns: 15px minmax(0, auto) 15px;
 align-items: center;
 column-gap: 3px;
 box-sizing: border-box;
 color: #9c877f;
 line-height: 1.25;
-min-width: 99px;
-width: 99px;
+min-width: 0;
+width: 100%;
 justify-content: center;
 justify-self: center;
+overflow: visible;
 }
 .route-schedule-popup-time-text {
 display: inline-flex;
 align-items: center;
 justify-content: center;
-width: 82px;
+grid-column: 2;
+width: auto;
+max-width: 100%;
 box-sizing: border-box;
-padding: 3px 7px;
+padding: 3px 5px;
 border-radius: 999px;
 background: #fffaf8;
 text-align: center;
@@ -1476,14 +1482,17 @@ color: #c46f64;
 background: #fff1ec;
 }
 .route-schedule-popup-picked {
-font-size: .78rem;
+grid-column: 3;
+font-size: .98rem;
 color: #d57c70;
 display: inline-flex;
 align-items: center;
 justify-content: center;
-width: 14px;
+width: 15px;
+min-width: 15px;
 line-height: 1;
 pointer-events: none;
+transform: translateX(1px);
 }
 .alert-actions {
 display: flex;
@@ -11222,6 +11231,7 @@ isMoving = false;
 
 let cuteClickAudioContext = null;
 let cuteClickLastAt = 0;
+let cuteClickPrimed = false;
 function getCuteClickAudioContext() {
 try {
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -11232,9 +11242,31 @@ return cuteClickAudioContext;
 return null;
 }
 }
+function primeCuteClickSound(ctx) {
+if (!ctx || cuteClickPrimed || ctx.state !== 'running') return;
+cuteClickPrimed = true;
+try {
+const silent = ctx.createBufferSource();
+const gain = ctx.createGain();
+silent.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.01);
+silent.connect(gain).connect(ctx.destination);
+silent.start(ctx.currentTime);
+silent.stop(ctx.currentTime + 0.01);
+} catch (error) {}
+}
 function unlockCuteClickSound() {
 const ctx = getCuteClickAudioContext();
-if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+if (!ctx) return Promise.resolve(null);
+if (ctx.state === 'suspended') {
+return ctx.resume().then(() => {
+primeCuteClickSound(ctx);
+return ctx;
+}).catch(() => null);
+}
+primeCuteClickSound(ctx);
+return Promise.resolve(ctx);
 }
 function findCuteClickTarget(target) {
 if (!target || target.closest('input, textarea, select, [contenteditable="true"], [data-silent-click-sound="true"]')) return null;
@@ -11389,19 +11421,23 @@ sparkleOsc.stop(now + 0.14);
 function setupCuteClickSounds() {
 if (window.__cuteClickSoundReady) return;
 window.__cuteClickSoundReady = true;
-const tapEvent = window.PointerEvent ? 'pointerup' : 'touchend';
-document.addEventListener('pointerdown', unlockCuteClickSound, { capture: true, passive: true });
-document.addEventListener('touchstart', unlockCuteClickSound, { capture: true, passive: true });
-document.addEventListener(tapEvent, (event) => {
+const playFromPointer = (event) => {
 const control = findCuteClickTarget(event.target);
+unlockCuteClickSound().then(() => {
 if (control) playCuteClickSound(control);
-}, { capture: true, passive: true });
+});
+};
+if (window.PointerEvent) {
+document.addEventListener('pointerdown', playFromPointer, { capture: true, passive: true });
+} else {
+document.addEventListener('touchstart', playFromPointer, { capture: true, passive: true });
+document.addEventListener('mousedown', playFromPointer, { capture: true, passive: true });
+}
 document.addEventListener('keydown', (event) => {
 if (event.key !== 'Enter' && event.key !== ' ') return;
 const control = findCuteClickTarget(event.target);
 if (!control) return;
-unlockCuteClickSound();
-playCuteClickSound(control);
+unlockCuteClickSound().then(() => playCuteClickSound(control));
 }, true);
 }
 
