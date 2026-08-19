@@ -1388,6 +1388,40 @@ font-size: 1.52rem;
 color: #9d6f65;
 }
 #alert-modal { align-items: flex-start; padding-top: 22vh; }
+#alert-modal .modal-container {
+width: min(92%, 440px);
+max-width: 440px;
+padding: 20px;
+box-sizing: border-box;
+}
+#alert-modal .modal-content {
+width: 100%;
+box-sizing: border-box;
+align-items: center;
+text-align: center;
+padding: 30px 20px;
+border-radius: 30px;
+}
+#alert-modal .modal-title {
+margin-bottom: 0;
+font-size: 1.4rem;
+}
+#alert-modal .alert-stack-pig.discard-pig {
+width: 210px;
+height: 150px;
+margin: -4px 0 -18px;
+object-fit: contain;
+transform: translateX(-10px);
+}
+#alert-modal .alert-actions {
+width: 100%;
+box-sizing: border-box;
+}
+#alert-modal .modal-btn-primary,
+#alert-modal .alert-cancel-btn {
+min-height: 58px;
+box-sizing: border-box;
+}
 #alert-modal .modal-content { align-items: center; text-align: center; }
 #alert-modal .modal-title { margin-bottom: 0; }
 #alert-modal p {
@@ -1421,35 +1455,29 @@ overflow: hidden;
 }
 
 .route-schedule-popup-train {
-  display: grid;
-  grid-template-columns: 18px minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  min-height: 28px;
-  width: 100%;
+  justify-content: center;
+  width: calc(100% - 16px);
+  min-height: 31px;
+  margin: 0 auto 4px;
+  padding: 0 0 5px;
   box-sizing: border-box;
-  color: #8f7a73;
-  font-size: .78rem;
+  border-bottom: 1.5px solid #f1ded8;
+  color: #806c66;
+  font-size: .92rem;
   font-weight: 900;
   line-height: 1.25;
   text-align: center;
   white-space: nowrap;
 }
-
-.route-schedule-popup-train-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  min-width: 18px;
-}
-
 .route-schedule-popup-train-label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   min-width: 0;
 }
-
 .route-schedule-popup-times {
   display: flex;
   flex-direction: column;
@@ -1459,57 +1487,81 @@ overflow: hidden;
   min-width: 0;
   margin-top: 5px;
 }
-
 .route-schedule-popup-time {
-  display: grid;
-  grid-template-columns: 18px minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  min-height: 28px;
+  justify-content: center;
   width: 100%;
+  min-width: 0;
+  min-height: 28px;
+  margin: 0;
+  padding: 3px 0;
   box-sizing: border-box;
-  border-radius: 999px;
+  background: transparent;
   color: #9c877f;
   font-size: .76rem;
   font-weight: 800;
   line-height: 1.25;
   text-align: center;
-}
-
-.route-schedule-popup-time-text {
-  grid-column: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 0;
-  min-height: 28px;
-  padding: 3px 2px;
-  box-sizing: border-box;
-  border-radius: 999px;
-  background: #fffaf8;
   white-space: nowrap;
 }
-
+.route-schedule-popup-time-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  min-width: 0;
+  min-height: 22px;
+  box-sizing: border-box;
+}
+.route-schedule-popup-time-text {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 0;
+  min-height: 22px;
+  padding: 0;
+  box-sizing: border-box;
+  background: transparent;
+  text-align: center;
+  white-space: nowrap;
+}
 .route-schedule-popup-time.is-picked {
   color: #c46f64;
+}
+.route-schedule-popup-time.is-picked .route-schedule-popup-time-pill::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: -7px;
+  bottom: 0;
+  left: -22px;
+  border-radius: 999px;
   background: #fff1ec;
 }
-
 .route-schedule-popup-time.is-picked .route-schedule-popup-time-text {
   background: transparent;
 }
-
 .route-schedule-popup-picked {
-  grid-column: 1;
+  position: absolute;
+  z-index: 2;
+  left: -18px;
+  top: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  min-width: 18px;
-  font-size: .88rem;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  font-size: .84rem;
   line-height: 1;
   pointer-events: none;
 }
-
 .route-schedule-popup-separator {
   display: none;
 }
@@ -5784,11 +5836,21 @@ cancelDayDrag();
 
 
 
-function buildRouteHref(origin, destination) {
-return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=transit`;
+function buildRouteHref(origin, destination, travelMode = 'transit') {
+return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=${encodeURIComponent(travelMode)}`;
 }
-function buildRouteAppHref(origin, destination) {
-return `comgooglemaps://?saddr=${encodeURIComponent(origin)}&daddr=${encodeURIComponent(destination)}&directionsmode=transit`;
+function buildRouteAppHref(origin, destination, travelMode = 'transit') {
+return `comgooglemaps://?saddr=${encodeURIComponent(origin)}&daddr=${encodeURIComponent(destination)}&directionsmode=${encodeURIComponent(travelMode)}`;
+}
+function getRouteTravelMode(connector) {
+const routeText = connector?.dataset.routeText || connector?.querySelector('.route-text')?.textContent || '';
+const mode = connector?.dataset.routeMode || routeTextToParts(routeText).mode || routeUrlToMode(connector?.dataset.routeUrl || '');
+return {
+'步行': 'walking',
+'騎車': 'bicycling',
+'開車': 'driving',
+'大眾運輸': 'transit'
+}[mode] || 'transit';
 }
 function extractMapPlaceValue(value, fallback = '') {
 const raw = String(value || '').trim();
@@ -5892,8 +5954,12 @@ delete connector.dataset.routeSchedulePicks;
 const navEl = connector.querySelector('.route-nav-link');
 const textEl = connector.querySelector('.route-text');
 if (navEl) {
-navEl.href = hasValidSavedRoute ? connector.dataset.routeUrl : buildRouteHref(origin, destination);
-navEl.dataset.appHref = buildRouteAppHref(origin, destination);
+const travelMode = getRouteTravelMode(connector);
+const generatedHref = buildRouteHref(origin, destination, travelMode);
+// Walking/driving/cycling routes must use the current mode even if an old short URL was saved.
+const useSavedRoute = hasValidSavedRoute && travelMode === 'transit';
+navEl.href = useSavedRoute ? connector.dataset.routeUrl : generatedHref;
+navEl.dataset.appHref = buildRouteAppHref(origin, destination, travelMode);
 }
 if (textEl && connector.dataset.routeText && textEl.textContent !== connector.dataset.routeText) {
 textEl.textContent = connector.dataset.routeText;
@@ -5952,12 +6018,12 @@ group.times.push({ text: time, picked: pickedSchedules.includes(String(schedule)
 });
 
 const renderTimes = times => times.map(renderTime).join('');
-const renderTime = item => `<span class="route-schedule-popup-time${item.picked ? ' is-picked' : ''}"><span class="route-schedule-popup-picked" aria-hidden="true">${item.picked ? '⭐' : ''}</span><span class="route-schedule-popup-time-text">${escapeHtml(item.text)}</span></span>`;
+const renderTime = item => `<span class="route-schedule-popup-time${item.picked ? ' is-picked' : ''}"><span class="route-schedule-popup-time-pill"><span class="route-schedule-popup-picked" aria-hidden="true">${item.picked ? '⭐' : ''}</span><span class="route-schedule-popup-time-text">${escapeHtml(item.text)}</span></span></span>`;
 const columnsHtml = grouped.map(item => {
   const timesHtml = renderTimes(item.times);
   return `
     <span class="route-schedule-popup-column">
-      <span class="route-schedule-popup-train"><span class="route-schedule-popup-train-mark">▪️</span><span class="route-schedule-popup-train-label">${escapeHtml(item.train)}</span></span>
+      <span class="route-schedule-popup-train"><span class="route-schedule-popup-train-label">${escapeHtml(item.train)}</span></span>
       <span class="route-schedule-popup-times">
         ${timesHtml}
       </span>
