@@ -6346,7 +6346,7 @@ return card;
 function isFlightDetailCard(card) {
 const title = card.querySelector('.item-title')?.textContent || '';
 const desc = card.querySelector('.item-desc')?.textContent || '';
-return /IT20[67]/.test(desc) || title.includes('桃園機場 TPE') || (title.includes('中部國際機場 NGO') && desc.includes('建議'));
+return /IT206|IT707/.test(desc) || title.includes('桃園機場 TPE') || (title.includes('中部國際機場 NGO') && desc.includes('建議'));
 }
 function getLockedFlightPairKey(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
