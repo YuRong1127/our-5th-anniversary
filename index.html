@@ -10825,7 +10825,7 @@ if (button) {
 button.onclick = (event) => {
 event.preventDefault();
 event.stopPropagation();
-document.querySelectorAll('.mie-year-picker.is-open').forEach((openPicker) => {
+document.querySelectorAll('.mie-year-picker.is-open, .mie-month-picker.is-open').forEach((openPicker) => {
 if (openPicker !== picker) openPicker.classList.remove('is-open');
 });
 picker.classList.toggle('is-open');
@@ -12049,15 +12049,3 @@ document.addEventListener('paste', handlePlainTextPaste);
 </script>
 </body>
 </html>
-
-/* Restore the original discard-confirm proportions: narrow Cancel, wide Confirm. */
-#alert-modal:has(.wallet-unsaved-pig) .alert-actions > .alert-cancel-btn {
-  flex: 0 0 132px !important;
-  width: 132px !important;
-  max-width: 132px !important;
-}
-#alert-modal:has(.wallet-unsaved-pig) .alert-actions > .modal-btn-primary {
-  flex: 1 1 auto !important;
-  width: auto !important;
-  max-width: none !important;
-}
