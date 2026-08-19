@@ -1516,6 +1516,31 @@ overflow: hidden;
 .alert-actions .modal-btn-primary {
 flex: 1;
 }
+
+/* Confirm dialogs: keep Cancel and Confirm side by side. */
+#alert-modal .alert-actions {
+display: flex !important;
+flex-direction: row !important;
+flex-wrap: nowrap !important;
+align-items: center;
+justify-content: center;
+gap: 10px;
+width: 100%;
+}
+#alert-modal .alert-actions > .alert-cancel-btn,
+#alert-modal .alert-actions > .modal-btn-primary {
+display: flex !important;
+flex: 1 1 0 !important;
+width: auto !important;
+min-width: 0;
+margin: 0;
+}
+#alert-modal .alert-actions > .alert-cancel-btn {
+order: 1;
+}
+#alert-modal .alert-actions > .modal-btn-primary {
+order: 2;
+}
 #alert-modal:has(.wallet-unsaved-pig) p {
 margin-bottom: 0;
 }
@@ -1744,9 +1769,18 @@ font-size: .95rem !important;
 font-weight: 900 !important;
 line-height: 1 !important;
 }
+#wallet-modal .flatpickr-current-month {
+position: relative !important;
+z-index: 2000 !important;
+overflow: visible !important;
+}
+#wallet-modal .flatpickr-months,
+#wallet-modal .flatpickr-month {
+overflow: visible !important;
+}
 #wallet-modal .mie-year-picker {
 position: relative;
-z-index: 120;
+z-index: 3000;
 display: inline-flex;
 align-items: center;
 justify-content: center;
@@ -1756,12 +1790,12 @@ pointer-events: auto;
 #wallet-modal .mie-year-button {
 height: 28px;
 border: 0;
-border-radius: 0;
+border-radius: 8px;
 background: transparent;
 color: var(--main-brown);
 font-family: inherit;
 font-size: 1.04rem;
-font-weight: 400;
+font-weight: 700;
 line-height: 28px;
 text-align: center;
 outline: 0;
@@ -1769,34 +1803,57 @@ cursor: pointer;
 appearance: none;
 display: inline-flex;
 align-items: center;
-gap: 8px;
-padding: 0 6px;
+gap: 7px;
+padding: 0 8px;
+position: relative;
+z-index: 3001;
+pointer-events: auto;
+}
+#wallet-modal .mie-year-button:hover,
+#wallet-modal .mie-year-button:focus,
+#wallet-modal .mie-year-picker.is-open .mie-year-button {
+background: #fff1ec !important;
+box-shadow: none !important;
 }
 #wallet-modal .mie-year-button::after {
-content: '⌄';
-font-size: .9rem;
-line-height: 1;
-color: #9f7d75;
-transform: translateY(-1px);
+content: '';
+width: 0;
+height: 0;
+border-left: 4px solid transparent;
+border-right: 4px solid transparent;
+border-top: 5px solid #9f7d75;
+transform: translateY(1px);
+}
+#wallet-modal .mie-year-picker.is-open .mie-year-button::after {
+transform: rotate(180deg) translateY(1px);
 }
 #wallet-modal .mie-year-menu {
 position: absolute;
-z-index: 10000;
+z-index: 4000 !important;
 top: calc(100% + 6px);
 left: 50%;
 display: none;
-width: 112px;
-max-height: 184px;
+width: 124px;
+max-height: 190px;
 overflow-y: auto;
 padding: 6px;
 border: 1px solid #efd8d1;
 border-radius: 16px;
 background: #fffaf7 !important;
-box-shadow: 0 14px 32px rgba(141,110,99,.24), 0 0 0 999px rgba(255,250,247,.01);
+box-shadow: 0 14px 32px rgba(141,110,99,.24);
 transform: translateX(-50%);
-pointer-events: auto;
+pointer-events: auto !important;
 isolation: isolate;
 touch-action: pan-y;
+}
+#wallet-modal .mie-year-picker.is-open .mie-year-menu {
+display: grid !important;
+gap: 2px;
+}
+#wallet-modal .mie-year-option {
+position: relative;
+z-index: 4001;
+pointer-events: auto !important;
 }
 #wallet-modal .mie-year-picker.is-open .mie-year-menu {
 display: grid;
@@ -1827,6 +1884,112 @@ background: #fff1ec;
 outline: 0;
 }
 #wallet-modal .mie-year-option.is-selected {
+background: #f7ded6;
+color: #b55f63;
+font-weight: 900;
+}
+#wallet-modal .flatpickr-current-month .flatpickr-monthDropdown-months {
+display: none !important;
+}
+#wallet-modal .mie-month-picker {
+position: relative;
+z-index: 3000;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+height: 28px;
+pointer-events: auto;
+}
+#wallet-modal .mie-month-button {
+height: 28px;
+border: 0;
+border-radius: 8px;
+background: transparent;
+color: var(--main-brown);
+font-family: inherit;
+font-size: 1.04rem;
+font-weight: 700;
+line-height: 28px;
+text-align: center;
+outline: 0;
+cursor: pointer;
+appearance: none;
+display: inline-flex;
+align-items: center;
+gap: 7px;
+padding: 0 8px;
+position: relative;
+z-index: 3001;
+pointer-events: auto;
+}
+#wallet-modal .mie-month-button:hover,
+#wallet-modal .mie-month-button:focus,
+#wallet-modal .mie-month-picker.is-open .mie-month-button {
+background: #fff1ec !important;
+box-shadow: none !important;
+}
+#wallet-modal .mie-month-button::after {
+content: '';
+width: 0;
+height: 0;
+border-left: 4px solid transparent;
+border-right: 4px solid transparent;
+border-top: 5px solid #9f7d75;
+transform: translateY(1px);
+}
+#wallet-modal .mie-month-picker.is-open .mie-month-button::after {
+transform: rotate(180deg) translateY(1px);
+}
+#wallet-modal .mie-month-menu {
+position: absolute;
+z-index: 4000 !important;
+top: calc(100% + 6px);
+left: 50%;
+display: none;
+width: 112px;
+max-height: 190px;
+overflow-y: auto;
+padding: 6px;
+border: 1px solid #efd8d1;
+border-radius: 16px;
+background: #fffaf7 !important;
+box-shadow: 0 14px 32px rgba(141,110,99,.24);
+transform: translateX(-50%);
+pointer-events: auto !important;
+isolation: isolate;
+touch-action: pan-y;
+}
+#wallet-modal .mie-month-picker.is-open .mie-month-menu {
+display: grid !important;
+gap: 2px;
+}
+#wallet-modal .mie-month-option {
+position: relative;
+z-index: 4001;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+box-sizing: border-box;
+border: 0;
+border-radius: 12px;
+background: #fffaf7;
+color: var(--main-brown);
+font-family: inherit;
+font-size: .96rem;
+font-weight: 700;
+line-height: 1;
+padding: 9px 8px;
+cursor: pointer;
+pointer-events: auto !important;
+touch-action: manipulation;
+}
+#wallet-modal .mie-month-option:hover,
+#wallet-modal .mie-month-option:focus {
+background: #fff1ec;
+outline: 0;
+}
+#wallet-modal .mie-month-option.is-selected {
 background: #f7ded6;
 color: #b55f63;
 font-weight: 900;
@@ -5662,21 +5825,39 @@ const prevPlaces = getCardSamePlaceKeys(prevCard);
 const nextPlaces = getCardSamePlaceKeys(nextCard);
 return prevPlaces.some(place => nextPlaces.includes(place));
 }
+function getRoutePairKeyForConnector(connector) {
+const prevCard = connector?.previousElementSibling?.classList.contains('card') ? connector.previousElementSibling : null;
+const nextCard = connector?.nextElementSibling?.classList.contains('card') ? connector.nextElementSibling : null;
+const origin = prevCard ? (getCardRoutePoint(prevCard) || prevCard.querySelector('.item-title')?.textContent || '目前位置') : '目前位置';
+const destination = nextCard ? (getCardRoutePoint(nextCard) || nextCard.querySelector('.item-title')?.textContent || '下一站') : '下一站';
+return `${normalizePlaceKey(origin)}=>${normalizePlaceKey(destination)}`;
+}
 function refreshRouteHref(connector) {
 const prevCard = connector.previousElementSibling;
 const nextCard = connector.nextElementSibling;
 const origin = prevCard ? (getCardRoutePoint(prevCard) || '目前位置') : '目前位置';
 const destination = nextCard ? (getCardRoutePoint(nextCard) || '下一站') : '下一站';
+const currentPair = getRoutePairKeyForConnector(connector);
+const savedPair = connector.dataset.routePair || '';
+const hasValidSavedRoute = Boolean(savedPair && savedPair === currentPair && connector.dataset.routeUrl);
+if (savedPair && savedPair !== currentPair) {
+delete connector.dataset.routeUrl;
+delete connector.dataset.routeText;
+delete connector.dataset.routeMode;
+delete connector.dataset.routeSchedules;
+delete connector.dataset.routeSchedulePick;
+delete connector.dataset.routeSchedulePicks;
+}
 const navEl = connector.querySelector('.route-nav-link');
 const textEl = connector.querySelector('.route-text');
 if (navEl) {
-navEl.href = connector.dataset.routeUrl || buildRouteHref(origin, destination);
+navEl.href = hasValidSavedRoute ? connector.dataset.routeUrl : buildRouteHref(origin, destination);
 navEl.dataset.appHref = buildRouteAppHref(origin, destination);
 }
 if (textEl && connector.dataset.routeText && textEl.textContent !== connector.dataset.routeText) {
 textEl.textContent = connector.dataset.routeText;
-} else if (textEl && textEl.textContent.trim() === '交通方式：可補上步行/巴士/地鐵/轉乘站資訊') {
-textEl.textContent = '編輯移動方式';
+} else if (textEl && (!connector.dataset.routeText || textEl.textContent.trim() === '交通方式：可補上步行/巴士/地鐵/轉乘站資訊')) {
+textEl.textContent = connector.dataset.routeText || '編輯移動方式';
 }
 refreshRouteScheduleLink(connector);
 }
@@ -6106,23 +6287,22 @@ function toggleRouteSchedulePick(btn) {
 const pair = btn?.closest('.route-schedule-pair');
 if (!pair) return;
 const isActive = btn.classList.contains('is-active');
-document.querySelectorAll('.route-schedule-pick').forEach(pick => {
-pick.classList.remove('is-active');
-pick.textContent = '☆';
-pick.setAttribute('aria-label', '設為預計搭乘');
-});
-if (!isActive) {
-btn.classList.add('is-active');
-btn.textContent = '★';
-btn.setAttribute('aria-label', '已設為預計搭乘');
-}
+btn.classList.toggle('is-active', !isActive);
+btn.textContent = isActive ? '☆' : '★';
+btn.setAttribute('aria-label', isActive ? '設為預計搭乘' : '已設為預計搭乘');
 }
 function getRouteSchedules() {
 return getRouteSchedulePairs().map(pair => getRouteSchedulePairText(pair)).filter(Boolean);
 }
+function getRouteSchedulePicks() {
+return getRouteSchedulePairs()
+.filter(item => item.pick?.classList.contains('is-active'))
+.map(item => getRouteSchedulePairText(item))
+.filter(Boolean)
+.join('|');
+}
 function getRouteSchedulePick() {
-const pair = getRouteSchedulePairs().find(item => item.pick?.classList.contains('is-active'));
-return pair ? getRouteSchedulePairText(pair) : '';
+return getRouteSchedulePicks().split('|')[0] || '';
 }
 function normalizeRouteScheduleInputs() {
 getRouteScheduleInputs().forEach(input => {
@@ -6136,8 +6316,7 @@ activeRouteTimeInput = null;
 const visibleCount = Math.max(1, values.length);
 ensureRouteScheduleRows(visibleCount);
 const pairs = getRouteSchedulePairs();
-pickedValue = String(pickedValue || '').trim();
-const normalizedPickedValue = normalizeRouteScheduleForCompare(pickedValue);
+const normalizedPickedValues = String(pickedValue || '').split('|').map(item => normalizeRouteScheduleForCompare(item)).filter(Boolean);
 pairs.forEach((pair, index) => {
 if (pair.train) pair.train.value = '';
 if (pair.pick) {
@@ -6151,7 +6330,7 @@ const match = String(values[index] || '').match(/^(.*?)(\d{2}:\d{2})\s*-\s*(\d{2
 if (pair.train) pair.train.value = match ? match[1].trim() : '';
 pair.start.value = match ? match[2] : '';
 pair.end.value = match ? match[3] : '';
-if (pair.pick && normalizedPickedValue && normalizeRouteScheduleForCompare(getRouteSchedulePairText(pair)) === normalizedPickedValue) {
+if (pair.pick && normalizedPickedValues.includes(normalizeRouteScheduleForCompare(getRouteSchedulePairText(pair)))) {
 pair.pick.classList.add('is-active');
 pair.pick.textContent = '★';
 pair.pick.setAttribute('aria-label', '已設為預計搭乘');
@@ -6269,7 +6448,7 @@ if (!isEditMode) return;
 currentRouteConnector = btn.closest('.connector-line');
 document.getElementById('route-plan-url').value = currentRouteConnector?.dataset.routeUrl || '';
 setRoutePlanEditorValue(currentRouteConnector?.dataset.routeText || '', currentRouteConnector?.dataset.routeMode || '');
-setRouteSchedules(currentRouteConnector?.dataset.routeSchedules || '', currentRouteConnector?.dataset.routeSchedulePick || '');
+setRouteSchedules(currentRouteConnector?.dataset.routeSchedules || '', currentRouteConnector?.dataset.routeSchedulePicks || currentRouteConnector?.dataset.routeSchedulePick || '');
 updateRoutePlanPreview();
 openSimpleModal('route-plan-modal');
 }
@@ -6297,16 +6476,17 @@ return;
 }
 if (routeUrl) currentRouteConnector.dataset.routeUrl = routeUrl;
 else delete currentRouteConnector.dataset.routeUrl;
+currentRouteConnector.dataset.routePair = getRoutePairKeyForConnector(currentRouteConnector);
 currentRouteConnector.dataset.routeText = routeText || '已設定移動方式';
 if (selectedRouteMode) currentRouteConnector.dataset.routeMode = selectedRouteMode;
 else delete currentRouteConnector.dataset.routeMode;
 const schedules = selectedRouteMode === '大眾運輸' ? getRouteSchedules() : [];
 if (schedules.length) currentRouteConnector.dataset.routeSchedules = schedules.join('|');
 else delete currentRouteConnector.dataset.routeSchedules;
-const pickedSchedule = selectedRouteMode === '大眾運輸' ? getRouteSchedulePick() : '';
-if (pickedSchedule && schedules.includes(pickedSchedule)) {
-currentRouteConnector.dataset.routeSchedulePick = pickedSchedule;
-delete currentRouteConnector.dataset.routeSchedulePicks;
+const pickedSchedules = selectedRouteMode === '大眾運輸' ? getRouteSchedulePicks() : '';
+if (pickedSchedules) {
+currentRouteConnector.dataset.routeSchedulePicks = pickedSchedules;
+delete currentRouteConnector.dataset.routeSchedulePick;
 } else {
 delete currentRouteConnector.dataset.routeSchedulePick;
 delete currentRouteConnector.dataset.routeSchedulePicks;
@@ -6318,6 +6498,7 @@ closeRoutePlanModal();
 function clearRoutePlan() {
 if (currentRouteConnector) {
 delete currentRouteConnector.dataset.routeUrl;
+delete currentRouteConnector.dataset.routePair;
 delete currentRouteConnector.dataset.routeText;
 delete currentRouteConnector.dataset.routeMode;
 delete currentRouteConnector.dataset.routeSchedules;
@@ -6916,6 +7097,7 @@ const connector = connectorByPair.get(key) || document.createElement('div');
 connector.classList.add('connector-line');
 if (!connectorByPair.has(key)) {
 connector.removeAttribute('data-route-url');
+connector.removeAttribute('data-route-pair');
 connector.removeAttribute('data-route-text');
 connector.removeAttribute('data-route-mode');
 connector.removeAttribute('data-route-schedules');
@@ -10515,7 +10697,7 @@ const button = document.createElement('button');
 button.type = 'button';
 button.className = 'mie-year-button';
 button.setAttribute('aria-label', '選擇年份');
-const menu = document.createElement('span');
+const menu = document.createElement('div');
 menu.className = 'mie-year-menu';
 const baseYear = new Date().getFullYear();
 for (let year = baseYear - 5; year <= baseYear + 10; year++) {
@@ -10566,16 +10748,66 @@ option.classList.toggle('is-selected', Number(option.dataset.year) === selectedY
 }
 function refreshMonthLabels(instance) {
 if (!instance || !instance.calendarContainer) return;
-const monthSelect = instance.calendarContainer.querySelector('.flatpickr-monthDropdown-months');
-if (!monthSelect) return;
-Array.from(monthSelect.options).forEach((option) => {
-const monthNumber = Number(option.value) + 1;
-if (Number.isFinite(monthNumber)) option.textContent = `${monthNumber}月`;
+const monthHost = instance.calendarContainer.querySelector('.flatpickr-current-month');
+const monthSelect = monthHost?.querySelector('.flatpickr-monthDropdown-months');
+if (!monthHost || !monthSelect) return;
+monthSelect.style.display = 'none';
+let picker = monthHost.querySelector('.mie-month-picker');
+if (!picker) {
+picker = document.createElement('span');
+picker.className = 'mie-month-picker';
+const button = document.createElement('button');
+button.type = 'button';
+button.className = 'mie-month-button';
+button.setAttribute('aria-label', '選擇月份');
+const menu = document.createElement('div');
+menu.className = 'mie-month-menu';
+for (let month = 0; month < 12; month++) {
+const option = document.createElement('button');
+option.type = 'button';
+option.className = 'mie-month-option';
+option.dataset.month = String(month);
+option.textContent = `${month + 1}月`;
+menu.appendChild(option);
+}
+picker.appendChild(button);
+picker.appendChild(menu);
+monthHost.insertBefore(picker, monthSelect);
+}
+const button = picker.querySelector('.mie-month-button');
+const menu = picker.querySelector('.mie-month-menu');
+const selectedMonth = Number.isInteger(instance.currentMonth) ? instance.currentMonth : Number(monthSelect.value || 0);
+if (button) {
+button.textContent = `${selectedMonth + 1}月`;
+button.onclick = (event) => {
+event.preventDefault();
+event.stopPropagation();
+document.querySelectorAll('.mie-year-picker.is-open, .mie-month-picker.is-open').forEach((openPicker) => {
+if (openPicker !== picker) openPicker.classList.remove('is-open');
+});
+picker.classList.toggle('is-open');
+};
+}
+menu.querySelectorAll('.mie-month-option').forEach((option) => {
+const month = Number(option.dataset.month);
+option.classList.toggle('is-selected', month === selectedMonth);
+option.onclick = (event) => {
+event.preventDefault();
+event.stopPropagation();
+instance.changeMonth(month - selectedMonth);
+setExpensePickerValue(instance);
+picker.classList.remove('is-open');
+refreshMonthLabels(instance);
+refreshYearSelect(instance);
+};
 });
 }
 document.addEventListener('click', () => {
-document.querySelectorAll('.mie-year-picker.is-open').forEach((picker) => picker.classList.remove('is-open'));
+document.querySelectorAll('.mie-year-picker.is-open, .mie-month-picker.is-open').forEach((picker) => picker.classList.remove('is-open'));
 });
+document.addEventListener('pointerdown', (event) => {
+if (event.target.closest('.mie-year-picker, .mie-month-picker')) event.stopPropagation();
+}, true);
 function attachDateConfirmButton(instance) {
 const calendar = instance.calendarContainer;
 if (!calendar || calendar.querySelector('.fp-confirm-wrap')) return;
