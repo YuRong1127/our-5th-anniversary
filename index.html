@@ -4762,6 +4762,59 @@ line-height: 1.2;
   margin-bottom: 0;
 }
 </style>
+
+<style id="final-confirm-button-layout">
+/* Final confirmation layout: Cancel narrow, Confirm wide, both labels centered. */
+#alert-modal .alert-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+#alert-modal .alert-actions > .alert-cancel-btn {
+  display: none;
+  flex: 0 0 112px !important;
+  width: 112px !important;
+  min-width: 112px !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1.15 !important;
+}
+#alert-modal .alert-actions > .alert-cancel-btn[style*="display: block"] {
+  display: flex !important;
+}
+#alert-modal .alert-actions > .modal-btn-primary {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  margin: 0 !important;
+  padding: 0 18px !important;
+  box-sizing: border-box !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1.15 !important;
+}
+#alert-modal .alert-actions > .alert-cancel-btn,
+#alert-modal .alert-actions > .modal-btn-primary {
+  font-size: 1.05rem !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+</style>
 </head>
 <body id="swipe-body">
 <div class="floating-bg" id="floating-bg"></div>
