@@ -6887,20 +6887,47 @@ if (!canMoveItineraryCard(card, direction)) {
 showAlert('搭機的出發和抵達行程要綁在一起，不能插入其他行程喔 ✈️');
 return;
 }
-const data = cards.map(item => ({
-card: item,
-nextConnector: item.nextElementSibling?.classList.contains('connector-line') ? item.nextElementSibling : null
-}));
-const [moved] = data.splice(from, 1);
-data.splice(to, 0, moved);
-section.innerHTML = '';
-data.forEach((item, index) => {
-section.appendChild(item.card);
-if (index < data.length - 1) {
-section.appendChild(item.nextConnector || document.createElement('div'));
-section.lastElementChild.className = 'connector-line';
-}
+
+// 建立原本「起點 → 終點」與交通線的對應，避免搬動後沿用錯誤路線。
+const routePointKey = item => normalizePlaceKey(
+getCardRoutePoint(item) || item.querySelector('.item-title')?.textContent || ''
+);
+const pairKey = (fromCard, toCard) => `${routePointKey(fromCard)}=>${routePointKey(toCard)}`;
+const connectorByPair = new Map();
+const currentConnectors = Array.from(section.querySelectorAll(':scope > .connector-line'));
+currentConnectors.forEach(connector => {
+const fromCard = connector.previousElementSibling?.classList.contains('card') ? connector.previousElementSibling : null;
+const toCard = connector.nextElementSibling?.classList.contains('card') ? connector.nextElementSibling : null;
+if (fromCard && toCard) connectorByPair.set(pairKey(fromCard, toCard), connector);
 });
+
+const nextCards = cards.slice();
+const [moved] = nextCards.splice(from, 1);
+nextCards.splice(to, 0, moved);
+
+// 先移除目前所有卡片與連接線，再依新順序重建相鄰關係。
+Array.from(section.querySelectorAll(':scope > .card, :scope > .connector-line')).forEach(node => node.remove());
+nextCards.forEach((currentCard, index) => {
+section.appendChild(currentCard);
+if (index >= nextCards.length - 1) return;
+const nextCard = nextCards[index + 1];
+const key = pairKey(currentCard, nextCard);
+const connector = connectorByPair.get(key) || document.createElement('div');
+connector.classList.add('connector-line');
+if (!connectorByPair.has(key)) {
+connector.removeAttribute('data-route-url');
+connector.removeAttribute('data-route-text');
+connector.removeAttribute('data-route-mode');
+connector.removeAttribute('data-route-schedules');
+connector.removeAttribute('data-route-schedule-picks');
+connector.removeAttribute('data-route-schedule-pick');
+connector.removeAttribute('data-same-building');
+connector.innerHTML = '';
+}
+section.appendChild(connector);
+});
+
+// 依新的前後卡片重新判斷航班、路線連結、同地點樣式與班次入口。
 enhanceRouteConnectors();
 updateReorderButtons();
 card.scrollIntoView({ behavior: 'smooth', block: 'center' });
