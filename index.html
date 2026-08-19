@@ -1403,7 +1403,7 @@ overflow: hidden;
 .route-schedule-popup {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 8px;
   width: min(100%, 302px);
   max-width: 100%;
   margin: 0 auto;
@@ -1420,15 +1420,33 @@ overflow: hidden;
 }
 
 .route-schedule-popup-train {
-  display: flex;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
   min-height: 28px;
+  width: 100%;
+  box-sizing: border-box;
   color: #8f7a73;
   font-size: .78rem;
   font-weight: 900;
   line-height: 1.25;
+  text-align: center;
   white-space: nowrap;
+}
+
+.route-schedule-popup-train-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  min-width: 18px;
+}
+
+.route-schedule-popup-train-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
 }
 
 .route-schedule-popup-times {
@@ -1443,11 +1461,12 @@ overflow: hidden;
 
 .route-schedule-popup-time {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 18px;
+  grid-template-columns: 18px minmax(0, 1fr);
   align-items: center;
   min-height: 28px;
   width: 100%;
   box-sizing: border-box;
+  border-radius: 999px;
   color: #9c877f;
   font-size: .76rem;
   font-weight: 800;
@@ -1456,7 +1475,7 @@ overflow: hidden;
 }
 
 .route-schedule-popup-time-text {
-  grid-column: 1;
+  grid-column: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1465,36 +1484,33 @@ overflow: hidden;
   padding: 3px 2px;
   box-sizing: border-box;
   border-radius: 999px;
+  background: #fffaf8;
   white-space: nowrap;
 }
 
 .route-schedule-popup-time.is-picked {
   color: #c46f64;
-}
-
-.route-schedule-popup-time.is-picked .route-schedule-popup-time-text {
   background: #fff1ec;
 }
 
+.route-schedule-popup-time.is-picked .route-schedule-popup-time-text {
+  background: transparent;
+}
+
 .route-schedule-popup-picked {
-  grid-column: 2;
+  grid-column: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 18px;
   min-width: 18px;
-  font-size: .9rem;
+  font-size: .88rem;
   line-height: 1;
   pointer-events: none;
 }
 
 .route-schedule-popup-separator {
   display: none;
-}
-.alert-actions {
-display: flex;
-gap: 10px;
-width: 100%;
 }
 .alert-actions .modal-btn-primary {
 flex: 1;
@@ -5736,16 +5752,14 @@ grouped.push(group);
 }
 group.times.push({ text: time, picked: pickedSchedules.includes(String(schedule).trim()) });
 });
-const renderTime = item => `<span class="route-schedule-popup-time${item.picked ? ' is-picked' : ''}"><span class="route-schedule-popup-time-text">${escapeHtml(item.text)}</span>${item.picked ? '<span class="route-schedule-popup-picked">⭐</span>' : ''}</span>`;
-const renderTimes = times => times.map(renderTime).join('');
 
+const renderTimes = times => times.map(renderTime).join('');
+const renderTime = item => `<span class="route-schedule-popup-time${item.picked ? ' is-picked' : ''}"><span class="route-schedule-popup-picked" aria-hidden="true">${item.picked ? '⭐' : ''}</span><span class="route-schedule-popup-time-text">${escapeHtml(item.text)}</span></span>`;
 const columnsHtml = grouped.map(item => {
   const timesHtml = renderTimes(item.times);
   return `
     <span class="route-schedule-popup-column">
-      <span class="route-schedule-popup-train">
-        ▪️${escapeHtml(item.train)}
-      </span>
+      <span class="route-schedule-popup-train"><span class="route-schedule-popup-train-mark">▪️</span><span class="route-schedule-popup-train-label">${escapeHtml(item.train)}</span></span>
       <span class="route-schedule-popup-times">
         ${timesHtml}
       </span>
