@@ -4879,6 +4879,24 @@ header {
   padding: 0;
 }
 </style>
+<style id="stable-note-and-menu-loading-style">
+/* Wait for note images to decode before opening the modal, so its first frame is stable. */
+#itinerary-detail-modal .modal-container {
+  width: min(92%, 430px);
+}
+#itinerary-detail-modal .modal-content {
+  contain: layout paint;
+}
+/* Reserve the menu icon box from the first frame while images decode. */
+#floating-menu .float-icon {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+}
+#floating-menu .menu-icon-img {
+  display: block;
+}
+</style>
 </head>
 <body id="swipe-body">
 <div class="floating-bg" id="floating-bg"></div>
@@ -9581,6 +9599,8 @@ detailTitle.textContent = isFlight ? (flightPairKey === 'IT707' ? '回程航班�
 document.querySelector('#itinerary-detail-modal .modal-btn-primary').textContent = '儲存介紹';
 document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode && !isFlight ? 'flex' : 'none';
 if (isFlight) await warmFlightDetailImages(flightPairKey);
+const detailImageSources = [...new Set(getNoteBlocks(currentDetailCard).filter(block => block.type === 'image' && block.src).map(block => block.src))];
+if (detailImageSources.length) await warmImages(detailImageSources);
 renderDetailFields();
 openSimpleModal('itinerary-detail-modal');
 if (!isEditMode) setTimeout(() => updateNoteHighlightCollapses(document.getElementById('itinerary-detail-fields')), 30);
@@ -9979,6 +9999,18 @@ function warmFlightDetailImages(flightPairKey = '') {
 const sources = ['images/flight/goodboy.png', 'images/flight/goodgirl.png'];
 if (flightPairKey === 'IT206') sources.push('images/wallet/wallet-corner-friends.png');
 if (flightPairKey === 'IT707') sources.push('images/flight/flight-return-corner-friends.png');
+return warmImages(sources);
+}
+function warmMenuImages() {
+const sources = [
+'images/menu/menu-edit-computer.png',
+'images/menu/menu-prep-bag.png',
+'images/menu/menu-wishlist-gift.png',
+'images/menu/menu-docs-writing.png',
+'images/menu/menu-wallet-money.png',
+'images/pigs/piggy-main.png',
+'images/pigs/piggy-open.png'
+];
 return warmImages(sources);
 }
 function saveEditChanges() {
@@ -12053,6 +12085,7 @@ const initialDay = getInitialTripDay();
 switchDay(initialDay, { auto: true, skipHistory: true });
 initFloatingBackground();
 initCategoryMenu();
+warmMenuImages();
 initIconPicker();
 initNoteToolbarTouchFix();
 initNoteImageCanvasEditor();
