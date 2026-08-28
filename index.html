@@ -4542,6 +4542,33 @@ height: 100%;
 object-fit: cover;
 display: block;
 }
+.wishlist-photo-btn.image-load-failed {
+background: #fffaf7;
+border-color: #f0d9d2;
+}
+.wishlist-image-fallback {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+color: #caa79d;
+font-size: .82rem;
+line-height: 1;
+}
+.image-preview-load-failed {
+min-height: 120px;
+}
+.image-preview-load-failed::after {
+content: '圖片暫時無法載入，請關閉後再試一次';
+display: block;
+padding: 28px 20px;
+color: #fff8f5;
+font-size: .9rem;
+font-weight: 800;
+text-align: center;
+line-height: 1.6;
+}
 .wishlist-item.done { background: #fffaf7; opacity: .78; }
 .wishlist-item.done .wishlist-name { color: var(--light-brown); text-decoration-line: line-through; text-decoration-thickness: 2px; text-decoration-color: #d17a6d; }
 .wishlist-item.done .wishlist-check { background: var(--heart-pink); color: #fff; border-color: var(--heart-pink); }
@@ -5216,7 +5243,7 @@ GekuNaiku(chokokan)line 6 分</div><button class="route-edit-btn btn-press-effec
 <div class="modal-overlay" id="note-color-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div class="note-color-grid" id="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
 <div class="note-color-popover" id="note-color-popover"><button class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()" type="button">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid"><button aria-label="莓果粉" class="note-color-option btn-press-effect" data-note-color="#c86f77" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#c86f77" type="button"></button><button aria-label="玫瑰紅" class="note-color-option btn-press-effect" data-note-color="#d96d7f" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#d96d7f" type="button"></button><button aria-label="蜜桃橘" class="note-color-option btn-press-effect" data-note-color="#d98b72" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#d98b72" type="button"></button><button aria-label="珊瑚粉" class="note-color-option btn-press-effect" data-note-color="#e6a19a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#e6a19a" type="button"></button><button aria-label="奶油黃" class="note-color-option btn-press-effect" data-note-color="#c9a64a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#c9a64a" type="button"></button><button aria-label="鼠尾草綠" class="note-color-option btn-press-effect" data-note-color="#6d8f6b" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#6d8f6b" type="button"></button><button aria-label="湖水綠" class="note-color-option btn-press-effect" data-note-color="#5f9c92" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#5f9c92" type="button"></button><button aria-label="霧藍紫" class="note-color-option btn-press-effect" data-note-color="#6f7fa6" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#6f7fa6" type="button"></button></div></div>
 <div class="modal-overlay" id="note-image-tools-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNoteImageTools()"><div class="modal-close-circle">✕</div></div><div class="modal-content note-image-tools-content"><div class="modal-title">畫筆標記</div><div class="note-image-tools-preview"><canvas id="note-image-edit-canvas"></canvas></div><div class="note-image-tools-row"><button class="note-image-tool-btn btn-press-effect" onclick="undoNoteImageStroke()" type="button">回上一筆</button><button class="note-image-tool-btn btn-press-effect" onclick="resetNoteImageCanvas()" type="button">清除全部</button></div><button class="modal-btn-primary btn-press-effect" onclick="saveNoteImageEdits()" type="button">套用標記</button></div></div></div>
-<div class="modal-overlay" id="image-preview-modal" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="toggleImagePreviewZoom(event)" onpointercancel="endImagePreviewPan(event)" onpointerdown="startImagePreviewPan(event)" onpointerleave="endImagePreviewPan(event)" onpointermove="moveImagePreviewPan(event)" onpointerup="endImagePreviewPan(event)" ontouchcancel="endImagePreviewPinch(event)" ontouchend="endImagePreviewPinch(event)" ontouchmove="moveImagePreviewPinch(event)" ontouchstart="startImagePreviewPinch(event)" onwheel="handleImagePreviewWheel(event)"><div class="image-preview-zoom-surface" id="image-preview-zoom-surface"><img alt="行程照片預覽" id="image-preview-img" src=""/></div></div></div></div>
+<div class="modal-overlay" id="image-preview-modal" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()" onpointercancel="endImagePreviewPan(event)" onpointerdown="startImagePreviewPan(event)" onpointerleave="endImagePreviewPan(event)" onpointermove="moveImagePreviewPan(event)" onpointerup="endImagePreviewPan(event)" ontouchcancel="endImagePreviewPinch(event)" ontouchend="endImagePreviewPinch(event)" ontouchmove="moveImagePreviewPinch(event)" ontouchstart="startImagePreviewPinch(event)" onwheel="handleImagePreviewWheel(event)"><div class="image-preview-zoom-surface" id="image-preview-zoom-surface"><img alt="行程照片預覽" id="image-preview-img" src=""/></div></div></div></div>
 <div class="modal-overlay" id="alert-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button class="alert-cancel-btn btn-press-effect" id="alert-cancel-btn" onclick="closeAlertModal(false)" type="button">取消</button><button class="modal-btn-primary btn-press-effect" id="alert-primary-btn" onclick="closeAlertModal(true)" type="button">好滴！我知道了</button></div></div></div></div>
 <div aria-live="polite" class="save-status-toast" id="save-status-toast" role="status"></div>
 <div class="modal-overlay" id="password-modal"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" id="heart-row" onclick="focusPassword()"></div><input class="hidden-input" id="pw-input" inputmode="none" maxlength="8" readonly="" type="text"/><p class="pw-hint-text" id="pw-hint">請輸入密碼以編輯行程<img alt="打字小豬" class="pw-hint-pig pw-hint-pig-edit" src="images/pigs/typing-pig.png"/></p><div class="pw-keypad" id="pw-keypad"><button class="btn-press-effect" onclick="pressPwKey('1')" type="button">1</button><button class="btn-press-effect" onclick="pressPwKey('2')" type="button">2</button><button class="btn-press-effect" onclick="pressPwKey('3')" type="button">3</button><button class="btn-press-effect" onclick="pressPwKey('4')" type="button">4</button><button class="btn-press-effect" onclick="pressPwKey('5')" type="button">5</button><button class="btn-press-effect" onclick="pressPwKey('6')" type="button">6</button><button class="btn-press-effect" onclick="pressPwKey('7')" type="button">7</button><button class="btn-press-effect" onclick="pressPwKey('8')" type="button">8</button><button class="btn-press-effect" onclick="pressPwKey('9')" type="button">9</button><button class="btn-press-effect" onclick="clearPwKey()" type="button">清除</button><button class="btn-press-effect" onclick="pressPwKey('0')" type="button">0</button><button class="btn-press-effect" onclick="deletePwKey()" type="button">⌫</button></div><button class="auth-cancel-btn btn-press-effect" id="auth-cancel-btn" onclick="cancelPasswordAuth()" type="button">取消認證</button></div></div></div>
@@ -5272,7 +5299,8 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 332, category: '藥妝店', title: '鼻下保濕棒', done: false, imageSrc: 'wishlist-images/under-nose-moisturizing-stick.png' },
 { id: 333, category: '藥妝店', title: '大正感冒藥', done: false, imageSrc: 'wishlist-images/taisho-cold-medicine.png' },
 { id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
-{ id: 336, category: '全家', title: 'AT奶茶冰沙', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' }
+{ id: 336, category: '全家', title: 'AT奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
+{ id: 337, category: '7-11', title: '抹茶軟餅乾', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-soft-cookie.webp' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
@@ -5309,7 +5337,8 @@ let wishItems = [
 { id: 332, category: '藥妝店', title: '鼻下保濕棒', done: false, imageSrc: 'wishlist-images/under-nose-moisturizing-stick.png' },
 { id: 333, category: '藥妝店', title: '大正感冒藥', done: false, imageSrc: 'wishlist-images/taisho-cold-medicine.png' },
 { id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
-{ id: 336, category: '全家', title: 'AT奶茶冰沙', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' }
+{ id: 336, category: '全家', title: 'AT奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
+{ id: 337, category: '7-11', title: '抹茶軟餅乾', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-soft-cookie.webp' }
 ];
 const CONVENIENCE_WISHLIST_PARENT = '超商';
 const CONVENIENCE_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson'];
@@ -5360,7 +5389,25 @@ item.title = '藥用BB霜#03';
 added = true;
 }
 }
+if (item.id === 336 || (item.category === '全家' && item.title === 'AT奶茶冰沙')) {
+if (item.title !== 'AT奶茶冰沙*冷藏櫃') {
+item.title = 'AT奶茶冰沙*冷藏櫃';
+added = true;
+}
+}
 });
+const legacyAtMilkTeaItems = wishItems.filter(item => item.category === '全家' && (item.title === 'AT奶茶冰沙' || item.title === 'AT奶茶冰沙*冷藏櫃'));
+if (legacyAtMilkTeaItems.length > 1) {
+const canonicalAtMilkTea = legacyAtMilkTeaItems.find(item => item.title === 'AT奶茶冰沙*冷藏櫃') || legacyAtMilkTeaItems[0];
+const duplicateAtMilkTea = legacyAtMilkTeaItems.filter(item => item !== canonicalAtMilkTea);
+canonicalAtMilkTea.title = 'AT奶茶冰沙*冷藏櫃';
+if (!getWishlistImageSrc(canonicalAtMilkTea)) canonicalAtMilkTea.imageSrc = 'wishlist-images/AT奶茶冰沙.jpg';
+if (duplicateAtMilkTea.some(item => item.done) && !canonicalAtMilkTea.done) canonicalAtMilkTea.done = true;
+const duplicateQty = duplicateAtMilkTea.reduce((sum, item) => sum + Math.max(0, Number(item.qty) || 0), 0);
+if (duplicateQty) canonicalAtMilkTea.qty = (Math.max(1, Number(canonicalAtMilkTea.qty) || 1)) + duplicateQty;
+wishItems = wishItems.filter(item => !duplicateAtMilkTea.includes(item));
+added = true;
+}
 REQUIRED_WISHLIST_ITEMS.forEach(requiredItem => {
 const existingItem = wishItems.find(item => item.category === requiredItem.category && item.title === requiredItem.title);
 if (existingItem) {
@@ -8692,11 +8739,13 @@ blocks.push(block);
 });
 return [normalizeDetailField({ name: '', blocks })];
 }
-function showImagePreviewSrc(src) {
+function showImagePreviewSrc(src, options = {}) {
 if (!src) return;
 const previewModal = document.getElementById('image-preview-modal');
 const isRouteGuide = /(?:route|guide)/i.test(String(src));
+const directZoom = Boolean(options.directZoom) && !isRouteGuide;
 previewModal?.classList.toggle('route-guide-preview', isRouteGuide);
+if (previewModal) previewModal.dataset.previewDirectZoom = directZoom ? '1' : '0';
 const previewContent = previewModal?.querySelector('.image-preview-content');
 if (previewContent) {
 previewContent.style.width = '';
@@ -8708,23 +8757,45 @@ imagePreviewPan.justToggled = false;
 imagePreviewPan.panX = 0;
 imagePreviewPan.panY = 0;
 imagePreviewPinch.active = false;
-previewModal.dataset.zoom = '1';
+previewModal.dataset.zoom = directZoom ? '2' : '1';
 previewModal.style.setProperty('--preview-pan-x', '0px');
 previewModal.style.setProperty('--preview-pan-y', '0px');
-previewModal.style.setProperty('--preview-zoom', '1');
+previewModal.style.setProperty('--preview-zoom', directZoom ? '2' : '1');
 const previewImg = document.getElementById('image-preview-img');
-previewImg.onload = () => configureImagePreviewFrame();
-previewImg.src = src;
-if (previewImg.complete) configureImagePreviewFrame();
+const previewSource = resolveWishlistImageSrc(src);
+previewImg.dataset.previewOriginalSrc = previewSource;
+previewImg.dataset.previewRetry = '0';
+previewImg.classList.remove('image-preview-load-failed');
+previewContent?.classList.remove('image-preview-load-failed');
+previewImg.onload = () => {
+previewImg.classList.remove('image-preview-load-failed');
+previewContent?.classList.remove('image-preview-load-failed');
+configureImagePreviewFrame();
+};
+previewImg.onerror = () => {
+if (previewImg.dataset.previewRetry !== '1') {
+previewImg.dataset.previewRetry = '1';
+const retrySrc = getWishlistImageRetrySrc(previewImg.dataset.previewOriginalSrc || previewImg.src);
+if (retrySrc && retrySrc !== previewImg.src) {
+previewImg.src = retrySrc;
+return;
+}
+}
+previewImg.removeAttribute('src');
+previewImg.alt = '圖片暫時無法載入，請關閉後再試一次';
+previewContent?.classList.add('image-preview-load-failed');
+};
+previewImg.src = previewSource;
+if (previewImg.complete && previewImg.naturalWidth > 0) configureImagePreviewFrame();
 openOverlayModal('image-preview-modal');
 }
-function openImagePreview(event, img) {
+function openImagePreview(event, img, options = {}) {
 if (event) {
 event.preventDefault();
 event.stopPropagation();
 }
 if (isEditMode || !img?.src) return;
-showImagePreviewSrc(img.src);
+showImagePreviewSrc(img.src, options);
 }
 function closeImagePreview(event) {
 if (event) {
@@ -8856,12 +8927,14 @@ zoomSurface.style.height = `${Math.max(1, Math.round(height))}px`;
 modal.style.setProperty('--preview-base-width', `${Math.max(1, Math.round(width))}px`);
 modal.style.setProperty('--preview-base-height', `${Math.max(1, Math.round(height))}px`);
 }
-modal.dataset.zoom = '1';
-modal.classList.remove('preview-zoomed', 'preview-dragging');
-const initialPan = clampImagePreviewPan(0, isTallImage ? 0 : (content.clientHeight - height) / 2, 1);
+const initialZoom = modal.dataset.previewDirectZoom === '1' ? 2 : 1;
+modal.dataset.zoom = String(initialZoom);
+modal.classList.toggle('preview-zoomed', initialZoom > 1);
+modal.classList.remove('preview-dragging');
+const initialPan = clampImagePreviewPan(0, isTallImage ? 0 : (content.clientHeight - height) / 2, initialZoom);
 imagePreviewPan.panX = initialPan.x;
 imagePreviewPan.panY = initialPan.y;
-applyImagePreviewTransform(initialPan.x, initialPan.y, 1);
+applyImagePreviewTransform(initialPan.x, initialPan.y, initialZoom);
 }
 function setImagePreviewZoom(nextZoom, focalPoint = null) {
 const modal = document.getElementById('image-preview-modal');
@@ -8884,24 +8957,6 @@ modal.classList.toggle('preview-zoomed', zoom > 1);
 const panX = viewportX - localX * zoom;
 const panY = viewportY - localY * zoom;
 applyImagePreviewTransform(panX, panY, zoom);
-}
-function toggleImagePreviewZoom(event) {
-if (event) {
-event.preventDefault();
-event.stopPropagation();
-}
-if (imagePreviewPan.justToggled) {
-imagePreviewPan.justToggled = false;
-return;
-}
-if (imagePreviewPinch.active) return;
-if (imagePreviewPan.dragged) {
-imagePreviewPan.dragged = false;
-return;
-}
-const modal = document.getElementById('image-preview-modal');
-const currentZoom = Number(modal?.dataset.zoom || 1);
-setImagePreviewZoom(currentZoom > 1 ? 1 : 2, event);
 }
 function startImagePreviewPan(event) {
 if (imagePreviewPinch.active || event?.pointerType === 'touch') return;
@@ -8935,7 +8990,6 @@ function endImagePreviewPan(event) {
 if (!imagePreviewPan.active) return;
 const modal = document.getElementById('image-preview-modal');
 const content = modal?.querySelector('.image-preview-content');
-const shouldToggleZoom = !imagePreviewPan.dragged;
 if (event) {
 event.preventDefault();
 event.stopPropagation();
@@ -8943,11 +8997,6 @@ content?.releasePointerCapture?.(event.pointerId);
 }
 imagePreviewPan.active = false;
 modal?.classList.remove('preview-dragging');
-if (shouldToggleZoom) {
-const currentZoom = Number(modal?.dataset.zoom || 1);
-imagePreviewPan.justToggled = true;
-setImagePreviewZoom(currentZoom > 1 ? 1 : 2, event);
-}
 setTimeout(() => {
 imagePreviewPan.dragged = false;
 imagePreviewPan.justToggled = false;
@@ -9072,7 +9121,7 @@ event.preventDefault();
 event.stopPropagation();
 }
 if (!isEditMode) {
-openImagePreview(event, img);
+openImagePreview(event, img, { directZoom: true });
 return;
 }
 const block = img?.closest?.('.note-block[data-block-type="image"]');
@@ -9083,9 +9132,9 @@ saveFieldDraftsToCard();
 renderDetailFields();
 }
 function handleNoteInlinePhotoClick(event) {
-const img = event.target.closest('.note-inline-photo');
-if (!img) return;
-openImagePreview(event, img);
+const image = event.target.closest('.note-inline-photo img') || event.target.closest('img.note-inline-photo') || event.target.closest('.note-inline-photo')?.querySelector?.('img');
+if (!image) return;
+openImagePreview(event, image, { directZoom: true });
 }
 function selectCurrentNoteImageBlock(block) {
 const blockIndex = Number(block?.dataset.blockIndex);
@@ -10280,14 +10329,17 @@ fields.id = 'wishlist-convenience-fields';
 fields.className = 'wishlist-convenience-fields';
 fields.style.gridTemplateColumns = `repeat(${CONVENIENCE_WISHLIST_CATEGORIES.length}, minmax(0, 1fr))`;
 fields.setAttribute('aria-label', '選擇超商');
-fields.innerHTML = CONVENIENCE_WISHLIST_CATEGORIES.map(category => `<button type="button" class="wishlist-convenience-option btn-press-effect" data-convenience="${escapeHtml(category)}" onclick="setWishlistConvenienceDraft('${escapeJsString(category)}')">${escapeHtml(category)}</button>`).join('');
+fields.innerHTML = CONVENIENCE_WISHLIST_CATEGORIES.map(category => `<button type="button" class="wishlist-convenience-option btn-press-effect" data-convenience="${escapeHtml(category)}" aria-pressed="false" onclick="setWishlistConvenienceDraft('${escapeJsString(category)}')">${escapeHtml(category)}</button>`).join('');
 giftFields.insertAdjacentElement('afterend', fields);
 return fields;
 }
 function setWishlistConvenienceDraft(category) {
-currentWishlistConvenienceDraft = CONVENIENCE_WISHLIST_CATEGORIES.includes(category) ? category : '';
+const normalized = CONVENIENCE_WISHLIST_CATEGORIES.includes(category) ? category : '';
+currentWishlistConvenienceDraft = normalized && currentWishlistConvenienceDraft === normalized ? '' : normalized;
 document.querySelectorAll('.wishlist-convenience-option').forEach(btn => {
-btn.classList.toggle('active', btn.dataset.convenience === currentWishlistConvenienceDraft);
+const isSelected = btn.dataset.convenience === currentWishlistConvenienceDraft;
+btn.classList.toggle('active', isSelected);
+btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
 });
 }
 function updateWishlistConvenienceForm() {
@@ -10472,6 +10524,65 @@ queueTripCloudSave();
 function getWishlistImageSrc(item) {
 return item.imageSrc || item.photoSrc || item.image || '';
 }
+function resolveWishlistImageSrc(src) {
+const value = String(src || '').trim();
+if (!value) return '';
+if (/^(?:data:|blob:|https?:|\/\/)/i.test(value)) return value;
+try {
+return encodeURI(value);
+} catch (error) {
+return value;
+}
+}
+function getWishlistImageRetrySrc(src) {
+const normalized = resolveWishlistImageSrc(src);
+if (!normalized || /^(?:data:|blob:)/i.test(normalized)) return normalized;
+const separator = normalized.includes('?') ? '&' : '?';
+return `${normalized}${separator}wishlistRetry=${Date.now()}`;
+}
+function handleWishlistImageError(image, key) {
+if (!image) return;
+const originalSrc = image.dataset.originalSrc || image.getAttribute('src') || image.src || '';
+if (image.dataset.retryAttempted !== '1') {
+image.dataset.retryAttempted = '1';
+const retrySrc = getWishlistImageRetrySrc(originalSrc);
+if (retrySrc && retrySrc !== originalSrc) {
+image.src = retrySrc;
+return;
+}
+}
+const button = image.closest('.wishlist-photo-btn');
+if (!button) return;
+button.classList.remove('has-image');
+button.classList.add('image-load-failed');
+button.setAttribute('aria-label', '圖片載入失敗，點擊重試');
+button.onclick = (event) => retryWishlistImage(event, key);
+button.innerHTML = '<span class="wishlist-image-fallback" aria-hidden="true">📷</span>';
+}
+function retryWishlistImage(event, key) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+}
+const item = getWishlistItemByKey(key);
+const src = item ? getWishlistImageSrc(item) : '';
+if (!src) {
+document.getElementById(`wishlist-photo-input-${key}`)?.click();
+return;
+}
+const button = event?.currentTarget || document.querySelector(`#wishlist-list .wishlist-photo-btn.image-load-failed`);
+if (!button) {
+renderWishlist();
+return;
+}
+const retrySrc = getWishlistImageRetrySrc(src);
+button.classList.add('has-image');
+button.classList.remove('image-load-failed');
+button.setAttribute('aria-label', '查看圖片');
+button.onclick = (retryEvent) => openWishlistImage(retryEvent, key);
+button.innerHTML = `<img src="${escapeHtml(retrySrc)}" data-original-src="${escapeHtml(resolveWishlistImageSrc(src))}" alt="${escapeHtml(item.title)}圖片" loading="eager" decoding="async" onerror="handleWishlistImageError(this, ${key})">`;
+}
 function openWishlistImage(event, key) {
 if (event) {
 event.preventDefault();
@@ -10579,7 +10690,7 @@ ${renderWishlistStoreBadge(item)}
 <span class="wishlist-qty-control" aria-label="購買數量"><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, -1)">-</button><span class="wishlist-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, 1)">+</button></span>
 <button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${itemKey})">${item.done ? '✓' : ''}</button>
 <div class="wishlist-name"><span class="wishlist-name-text">${renderWishlistItemTitle(item)}</span></div>
-<button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${itemKey})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(getWishlistImageSrc(item))}" alt="${escapeHtml(item.title)}圖片">` : '📷'}</button>
+<button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${itemKey})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(resolveWishlistImageSrc(getWishlistImageSrc(item)))}" data-original-src="${escapeHtml(resolveWishlistImageSrc(getWishlistImageSrc(item)))}" alt="${escapeHtml(item.title)}圖片" loading="eager" decoding="async" onerror="handleWishlistImageError(this, ${itemKey})">` : '📷'}</button>
 <input type="file" id="wishlist-photo-input-${itemKey}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistImage(${itemKey}, event)">
 </div>`;
 }).join('') + moreHint;
