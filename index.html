@@ -4949,6 +4949,66 @@ header {
   max-height: none;
 }
 </style>
+<style id="note-image-preview-toolbar-style">
+#image-preview-modal.note-image-preview-active .modal-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+#image-preview-modal.note-image-preview-active > .modal-container > .modal-close-btn { display: none; }
+.note-image-preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: min(88vw, 540px);
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 5px 7px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 16px;
+  background: rgba(30, 32, 35, .94);
+  box-shadow: 0 10px 28px rgba(0,0,0,.28);
+  color: #fff;
+  overflow-x: auto;
+  scrollbar-width: none;
+  touch-action: manipulation;
+}
+.note-image-preview-toolbar::-webkit-scrollbar { display: none; }
+.note-image-preview-toolbar[hidden] { display: none !important; }
+.note-preview-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #fff;
+  font-size: 1.14rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+.note-preview-tool:hover { background: rgba(255,255,255,.13); }
+.note-preview-tool:disabled { opacity: .38; cursor: default; }
+.note-preview-tool:active { transform: scale(.96); }
+.note-preview-edit { gap: 6px; min-width: 142px; background: #258ddd; font-size: .8rem; }
+.note-preview-edit:hover { background: #369ce8; }
+.note-preview-fit { gap: 1px; padding-inline: 6px; font-size: 1rem; }
+.note-preview-fit span:last-child { font-size: .82rem; margin-top: 2px; }
+.note-preview-download { font-size: 1.5rem; }
+.note-preview-toolbar-separator { width: 1px; height: 24px; flex: 0 0 1px; margin: 0 3px; background: rgba(255,255,255,.3); }
+.note-preview-zoom-btn { font-size: 1.45rem; }
+.note-preview-zoom-label { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 43px; color: #fff; font-size: .82rem; font-weight: 800; }
+.note-preview-close { margin-left: 2px; font-size: 1.25rem; }
+@media (max-width: 520px) {
+  .note-image-preview-toolbar { width: min(92vw, 420px); gap: 2px; padding: 5px; }
+  .note-preview-tool { min-width: 34px; width: 34px; padding: 0; }
+  .note-preview-edit { min-width: 34px; width: 34px; }
+  .note-preview-tool-label { display: none; }
+  .note-preview-toolbar-separator { margin: 0 1px; }
+}
+</style>
 </head>
 <body id="swipe-body">
 <div class="floating-bg" id="floating-bg"></div>
@@ -5243,7 +5303,7 @@ GekuNaiku(chokokan)line 6 分</div><button class="route-edit-btn btn-press-effec
 <div class="modal-overlay" id="note-color-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeOverlayModal('note-color-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content note-color-modal-content"><div class="modal-title">選擇文字顏色</div><div class="note-color-grid" id="note-color-grid"></div><div class="note-color-hint">選一個柔柔的顏色，文字會直接套用到選取範圍</div></div></div></div>
 <div class="note-color-popover" id="note-color-popover"><button class="note-color-popover-close btn-press-effect" onclick="closeNoteColorPopover()" type="button">×</button><div class="note-color-popover-title">選擇文字顏色</div><div class="note-color-grid"><button aria-label="莓果粉" class="note-color-option btn-press-effect" data-note-color="#c86f77" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#c86f77" type="button"></button><button aria-label="玫瑰紅" class="note-color-option btn-press-effect" data-note-color="#d96d7f" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#d96d7f" type="button"></button><button aria-label="蜜桃橘" class="note-color-option btn-press-effect" data-note-color="#d98b72" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#d98b72" type="button"></button><button aria-label="珊瑚粉" class="note-color-option btn-press-effect" data-note-color="#e6a19a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#e6a19a" type="button"></button><button aria-label="奶油黃" class="note-color-option btn-press-effect" data-note-color="#c9a64a" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#c9a64a" type="button"></button><button aria-label="鼠尾草綠" class="note-color-option btn-press-effect" data-note-color="#6d8f6b" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#6d8f6b" type="button"></button><button aria-label="湖水綠" class="note-color-option btn-press-effect" data-note-color="#5f9c92" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#5f9c92" type="button"></button><button aria-label="霧藍紫" class="note-color-option btn-press-effect" data-note-color="#6f7fa6" onclick="return chooseNoteColorFromEvent(event, this)" ontouchstart="return chooseNoteColorFromEvent(event, this)" style="--swatch-color:#6f7fa6" type="button"></button></div></div>
 <div class="modal-overlay" id="note-image-tools-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNoteImageTools()"><div class="modal-close-circle">✕</div></div><div class="modal-content note-image-tools-content"><div class="modal-title">畫筆標記</div><div class="note-image-tools-preview"><canvas id="note-image-edit-canvas"></canvas></div><div class="note-image-tools-row"><button class="note-image-tool-btn btn-press-effect" onclick="undoNoteImageStroke()" type="button">回上一筆</button><button class="note-image-tool-btn btn-press-effect" onclick="resetNoteImageCanvas()" type="button">清除全部</button></div><button class="modal-btn-primary btn-press-effect" onclick="saveNoteImageEdits()" type="button">套用標記</button></div></div></div>
-<div class="modal-overlay" id="image-preview-modal" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()" onpointercancel="endImagePreviewPan(event)" onpointerdown="startImagePreviewPan(event)" onpointerleave="endImagePreviewPan(event)" onpointermove="moveImagePreviewPan(event)" onpointerup="endImagePreviewPan(event)" ontouchcancel="endImagePreviewPinch(event)" ontouchend="endImagePreviewPinch(event)" ontouchmove="moveImagePreviewPinch(event)" ontouchstart="startImagePreviewPinch(event)" onwheel="handleImagePreviewWheel(event)"><div class="image-preview-zoom-surface" id="image-preview-zoom-surface"><img alt="行程照片預覽" id="image-preview-img" src=""/></div></div></div></div>
+<div class="modal-overlay" id="image-preview-modal" onclick="closeImagePreview()"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeImagePreview(event)"><div class="modal-close-circle">✕</div></div><div class="modal-content image-preview-content" onclick="event.stopPropagation()" onpointercancel="endImagePreviewPan(event)" onpointerdown="startImagePreviewPan(event)" onpointerleave="endImagePreviewPan(event)" onpointermove="moveImagePreviewPan(event)" onpointerup="endImagePreviewPan(event)" ontouchcancel="endImagePreviewPinch(event)" ontouchend="endImagePreviewPinch(event)" ontouchmove="moveImagePreviewPinch(event)" ontouchstart="startImagePreviewPinch(event)" onwheel="handleImagePreviewWheel(event)"><div class="image-preview-zoom-surface" id="image-preview-zoom-surface"><img alt="行程照片預覽" id="image-preview-img" src=""/></div></div><div class="note-image-preview-toolbar" id="note-image-preview-toolbar" hidden aria-hidden="true"><button type="button" class="note-preview-tool note-preview-edit btn-press-effect" onclick="openNoteImagePreviewEditor(event)" aria-label="在畫布中編輯"><span aria-hidden="true">✎</span><span class="note-preview-tool-label">在畫布中編輯</span></button><button type="button" class="note-preview-tool note-preview-fit btn-press-effect" onclick="toggleImagePreviewFit(event)" aria-label="切換適合視窗與放大檢視"><span aria-hidden="true">▣</span><span aria-hidden="true">⌄</span></button><button type="button" class="note-preview-tool note-preview-download btn-press-effect" onclick="downloadNoteImagePreview(event)" aria-label="下載圖片"><span aria-hidden="true">⇩</span></button><span class="note-preview-toolbar-separator" aria-hidden="true"></span><button type="button" class="note-preview-tool note-preview-zoom-btn btn-press-effect" data-zoom-direction="-1" onclick="changeImagePreviewZoom(event, -1)" aria-label="縮小">−</button><span class="note-preview-zoom-label" id="note-image-preview-zoom-label">100%</span><button type="button" class="note-preview-tool note-preview-zoom-btn btn-press-effect" data-zoom-direction="1" onclick="changeImagePreviewZoom(event, 1)" aria-label="放大">＋</button><button type="button" class="note-preview-tool note-preview-close btn-press-effect" onclick="closeImagePreview(event)" aria-label="關閉">✕</button></div></div></div>
 <div class="modal-overlay" id="alert-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeAlertModal(false)"><div class="modal-close-circle">✕</div></div><div class="modal-content" style="text-align:center"><div class="modal-title" style="color:var(--heart-pink)">提醒事項</div><p id="alert-message"></p><div class="alert-actions"><button class="alert-cancel-btn btn-press-effect" id="alert-cancel-btn" onclick="closeAlertModal(false)" type="button">取消</button><button class="modal-btn-primary btn-press-effect" id="alert-primary-btn" onclick="closeAlertModal(true)" type="button">好滴！我知道了</button></div></div></div></div>
 <div aria-live="polite" class="save-status-toast" id="save-status-toast" role="status"></div>
 <div class="modal-overlay" id="password-modal"><div class="modal-container"><div class="modal-content" style="text-align:center;align-items:center"><div class="modal-title">身份認證</div><div class="heart-row" id="heart-row" onclick="focusPassword()"></div><input class="hidden-input" id="pw-input" inputmode="none" maxlength="8" readonly="" type="text"/><p class="pw-hint-text" id="pw-hint">請輸入密碼以編輯行程<img alt="打字小豬" class="pw-hint-pig pw-hint-pig-edit" src="images/pigs/typing-pig.png"/></p><div class="pw-keypad" id="pw-keypad"><button class="btn-press-effect" onclick="pressPwKey('1')" type="button">1</button><button class="btn-press-effect" onclick="pressPwKey('2')" type="button">2</button><button class="btn-press-effect" onclick="pressPwKey('3')" type="button">3</button><button class="btn-press-effect" onclick="pressPwKey('4')" type="button">4</button><button class="btn-press-effect" onclick="pressPwKey('5')" type="button">5</button><button class="btn-press-effect" onclick="pressPwKey('6')" type="button">6</button><button class="btn-press-effect" onclick="pressPwKey('7')" type="button">7</button><button class="btn-press-effect" onclick="pressPwKey('8')" type="button">8</button><button class="btn-press-effect" onclick="pressPwKey('9')" type="button">9</button><button class="btn-press-effect" onclick="clearPwKey()" type="button">清除</button><button class="btn-press-effect" onclick="pressPwKey('0')" type="button">0</button><button class="btn-press-effect" onclick="deletePwKey()" type="button">⌫</button></div><button class="auth-cancel-btn btn-press-effect" id="auth-cancel-btn" onclick="cancelPasswordAuth()" type="button">取消認證</button></div></div></div>
@@ -5522,6 +5582,8 @@ let editSnapshotHeaderHTML = '';
 let currentIconTarget = null;
 let currentDetailCard = null;
 let currentNoteImageBlockIndex = null;
+let currentNoteImagePreviewSrc = '';
+let pendingNoteImagePreviewEdit = false;
 let lastNoteImageDeleteRequestAt = 0;
 let currentNoteImageOriginalSrc = '';
 let noteImageDrawMode = false;
@@ -8743,8 +8805,16 @@ function showImagePreviewSrc(src, options = {}) {
 if (!src) return;
 const previewModal = document.getElementById('image-preview-modal');
 const isRouteGuide = /(?:route|guide)/i.test(String(src));
+const isNoteImagePreview = Boolean(options.noteImageToolbar) && !isRouteGuide && Boolean(currentDetailCard);
 const directZoom = Boolean(options.directZoom) && !isRouteGuide;
+currentNoteImagePreviewSrc = isNoteImagePreview ? src : '';
 previewModal?.classList.toggle('route-guide-preview', isRouteGuide);
+previewModal?.classList.toggle('note-image-preview-active', isNoteImagePreview);
+const noteToolbar = document.getElementById('note-image-preview-toolbar');
+if (noteToolbar) {
+  noteToolbar.hidden = !isNoteImagePreview;
+  noteToolbar.setAttribute('aria-hidden', isNoteImagePreview ? 'false' : 'true');
+}
 if (previewModal) previewModal.dataset.previewDirectZoom = directZoom ? '1' : '0';
 const previewContent = previewModal?.querySelector('.image-preview-content');
 if (previewContent) {
@@ -8761,6 +8831,7 @@ previewModal.dataset.zoom = directZoom ? '2' : '1';
 previewModal.style.setProperty('--preview-pan-x', '0px');
 previewModal.style.setProperty('--preview-pan-y', '0px');
 previewModal.style.setProperty('--preview-zoom', directZoom ? '2' : '1');
+updateNoteImagePreviewZoomLabel();
 const previewImg = document.getElementById('image-preview-img');
 const previewSource = resolveWishlistImageSrc(src);
 previewImg.dataset.previewOriginalSrc = previewSource;
@@ -8802,6 +8873,12 @@ if (event) {
 event.preventDefault();
 event.stopPropagation();
 }
+currentNoteImagePreviewSrc = '';
+const noteToolbar = document.getElementById('note-image-preview-toolbar');
+if (noteToolbar) {
+  noteToolbar.hidden = true;
+  noteToolbar.setAttribute('aria-hidden', 'true');
+}
 document.getElementById('image-preview-img').src = '';
 const modal = document.getElementById('image-preview-modal');
 if (modal) {
@@ -8815,7 +8892,10 @@ if (previewContent) {
 previewContent.style.width = '';
 previewContent.style.height = '';
 }
-document.getElementById('image-preview-modal')?.classList.remove('route-guide-preview', 'preview-zoomed', 'preview-dragging');
+document.getElementById('image-preview-modal')?.classList.remove('route-guide-preview', 'note-image-preview-active', 'preview-zoomed', 'preview-dragging');
+const previewModal = document.getElementById('image-preview-modal');
+if (previewModal) previewModal.dataset.previewDirectZoom = '0';
+updateNoteImagePreviewZoomLabel();
 closeOverlayModal('image-preview-modal');
 }
 const imagePreviewPan = {
@@ -8935,6 +9015,77 @@ const initialPan = clampImagePreviewPan(0, isTallImage ? 0 : (content.clientHeig
 imagePreviewPan.panX = initialPan.x;
 imagePreviewPan.panY = initialPan.y;
 applyImagePreviewTransform(initialPan.x, initialPan.y, initialZoom);
+updateNoteImagePreviewZoomLabel();
+}
+function updateNoteImagePreviewZoomLabel() {
+const modal = document.getElementById('image-preview-modal');
+const toolbar = document.getElementById('note-image-preview-toolbar');
+const label = document.getElementById('note-image-preview-zoom-label');
+if (!modal || !toolbar || !label) return;
+const zoom = Math.max(1, Math.min(5, Number(modal.dataset.zoom || 1)));
+label.textContent = `${Math.round(zoom * 100)}%`;
+const zoomButtons = toolbar.querySelectorAll('.note-preview-zoom-btn');
+zoomButtons.forEach(button => {
+  const direction = Number(button.dataset.zoomDirection || 0);
+  button.disabled = direction < 0 ? zoom <= 1.001 : zoom >= 4.999;
+});
+}
+function changeImagePreviewZoom(event, direction) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const modal = document.getElementById('image-preview-modal');
+if (!modal?.classList.contains('note-image-preview-active')) return;
+const currentZoom = Number(modal.dataset.zoom || 1);
+const nextZoom = Math.max(1, Math.min(5, currentZoom + (Number(direction) < 0 ? -.25 : .25)));
+setImagePreviewZoom(nextZoom);
+}
+function toggleImagePreviewFit(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const modal = document.getElementById('image-preview-modal');
+if (!modal?.classList.contains('note-image-preview-active')) return;
+const currentZoom = Number(modal.dataset.zoom || 1);
+setImagePreviewZoom(currentZoom > 1.001 ? 1 : 2);
+}
+function downloadNoteImagePreview(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const modal = document.getElementById('image-preview-modal');
+const image = document.getElementById('image-preview-img');
+if (!modal?.classList.contains('note-image-preview-active') || !image?.src || image.naturalWidth === 0) return;
+const source = image.dataset.previewOriginalSrc || currentNoteImagePreviewSrc || image.currentSrc || image.src;
+if (!source) return;
+const title = currentDetailCard?.querySelector('.item-title')?.textContent?.trim() || '筆記圖片';
+const safeTitle = title.replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_').slice(0, 50) || '筆記圖片';
+const extensionMatch = source.match(/\.(jpe?g|png|webp|gif|bmp)(?:[?#].*)?$/i);
+const extension = extensionMatch ? `.${extensionMatch[1].toLowerCase().replace('jpeg', 'jpg')}` : '.png';
+const link = document.createElement('a');
+link.href = image.currentSrc || image.src;
+link.download = `${safeTitle}${extension}`;
+link.rel = 'noopener';
+document.body.appendChild(link);
+link.click();
+link.remove();
+}
+function openNoteImagePreviewEditor(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+if (!currentDetailCard || !Number.isInteger(currentNoteImageBlockIndex)) return;
+closeImagePreview(event);
+if (isEditMode) {
+  setTimeout(() => openNoteImageEditor(), 0);
+  return;
+}
+pendingNoteImagePreviewEdit = true;
+handleEditClick();
 }
 function setImagePreviewZoom(nextZoom, focalPoint = null) {
 const modal = document.getElementById('image-preview-modal');
@@ -8957,6 +9108,7 @@ modal.classList.toggle('preview-zoomed', zoom > 1);
 const panX = viewportX - localX * zoom;
 const panY = viewportY - localY * zoom;
 applyImagePreviewTransform(panX, panY, zoom);
+updateNoteImagePreviewZoomLabel();
 }
 function startImagePreviewPan(event) {
 if (imagePreviewPinch.active || event?.pointerType === 'touch') return;
@@ -9087,6 +9239,7 @@ modal.classList.toggle('preview-zoomed', zoom > 1);
 const panX = viewportX - imagePreviewPinch.startLocalX * zoom;
 const panY = viewportY - imagePreviewPinch.startLocalY * zoom;
 applyImagePreviewTransform(panX, panY, zoom);
+updateNoteImagePreviewZoomLabel();
 }
 function endImagePreviewPinch(event) {
 if (!imagePreviewPinch.active && imagePreviewPan.active) {
@@ -9120,12 +9273,13 @@ if (event) {
 event.preventDefault();
 event.stopPropagation();
 }
-if (!isEditMode) {
-openImagePreview(event, img, { directZoom: true });
-return;
-}
 const block = img?.closest?.('.note-block[data-block-type="image"]');
 const blockIndex = Number(block?.dataset.blockIndex);
+if (!isEditMode) {
+if (Number.isInteger(blockIndex)) currentNoteImageBlockIndex = blockIndex;
+openImagePreview(event, img, { directZoom: true, noteImageToolbar: true });
+return;
+}
 if (!Number.isInteger(blockIndex)) return;
 currentNoteImageBlockIndex = blockIndex;
 saveFieldDraftsToCard();
@@ -9134,7 +9288,10 @@ renderDetailFields();
 function handleNoteInlinePhotoClick(event) {
 const image = event.target.closest('.note-inline-photo img') || event.target.closest('img.note-inline-photo') || event.target.closest('.note-inline-photo')?.querySelector?.('img');
 if (!image) return;
-openImagePreview(event, image, { directZoom: true });
+const imageSrc = image.getAttribute('src') || image.src || '';
+const blockIndex = currentDetailCard ? getNoteBlocks(currentDetailCard).findIndex(block => block.type === 'image' && (block.src === imageSrc || block.originalSrc === imageSrc || resolveWishlistImageSrc(block.src) === resolveWishlistImageSrc(imageSrc))) : -1;
+if (Number.isInteger(blockIndex) && blockIndex >= 0) currentNoteImageBlockIndex = blockIndex;
+openImagePreview(event, image, { directZoom: true, noteImageToolbar: true });
 }
 function selectCurrentNoteImageBlock(block) {
 const blockIndex = Number(block?.dataset.blockIndex);
@@ -9750,6 +9907,7 @@ currentMapPlaceCard = null;
 closeModal('map-place-modal');
 }
 function closeItineraryDetailModal() {
+pendingNoteImagePreviewEdit = false;
 currentDetailCard = null;
 currentNoteImageBlockIndex = null;
 closeNoteImageTools();
@@ -9893,6 +10051,7 @@ updateHearts('');
 openSimpleModal('password-modal');
 }
 function cancelPasswordAuth() {
+pendingNoteImagePreviewEdit = false;
 document.getElementById('pw-input').value = '';
 document.getElementById('auth-cancel-btn').style.display = '';
 document.getElementById('pw-hint').innerHTML = passwordPromptHtml;
@@ -9956,6 +10115,11 @@ renderDocsFolder();
 openSimpleModal('docs-modal');
 } else {
 toggleEditMode(true);
+if (pendingNoteImagePreviewEdit && currentDetailCard) {
+  pendingNoteImagePreviewEdit = false;
+  renderDetailFields();
+  setTimeout(() => openNoteImageEditor(), 60);
+}
 }
 }, 250);
 } catch (error) {
