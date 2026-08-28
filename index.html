@@ -130,6 +130,11 @@ width: 100% !important;
 touch-action: none !important;
 }
 button, input { font: inherit; }
+img {
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
+}
 .btn-press-effect { cursor: pointer; user-select: none; touch-action: manipulation; transition: opacity .1s ease-out, transform .1s ease-out; }
 .btn-press-effect:active { opacity: .65 !important; transform: scale(.98); }
 
@@ -1013,6 +1018,14 @@ box-sizing: border-box;
 scrollbar-gutter: stable;
 }
 .panel-modal-content { height: auto; max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); border-radius: 35px; background: #fdfaf8; }
+#itinerary-detail-modal {
+padding-top: max(22px, calc(env(safe-area-inset-top) + 14px));
+padding-bottom: max(22px, calc(env(safe-area-inset-bottom) + 14px));
+box-sizing: border-box;
+}
+#itinerary-detail-modal .panel-modal-content {
+max-height: calc(100dvh - max(22px, calc(env(safe-area-inset-top) + 14px)) - max(22px, calc(env(safe-area-inset-bottom) + 14px)));
+}
 .panel-modal-content.compact-empty-modal {
 max-height: 86vh;
 border-radius: 30px;
@@ -3245,6 +3258,10 @@ box-shadow: 0 14px 50px rgba(0,0,0,.3);
 object-fit: contain;
 overflow: hidden;
 cursor: zoom-in;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
+pointer-events: auto;
 }
 #image-preview-modal.preview-zoomed .image-preview-zoom-surface {
 width: var(--preview-base-width, 100%);
@@ -5406,7 +5423,8 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 344, category: '超商', title: '生起司包', done: false, imageSrc: 'wishlist-images/convenience-cheese-wrap.jpg' },
 { id: 345, category: '超商', title: '皇家卡士達布丁', done: false, imageSrc: 'wishlist-images/convenience-royal-custard-pudding.jpg' },
 { id: 346, category: '超商', title: '含咖啡因提神飲', done: false, imageSrc: 'wishlist-images/convenience-caffeinated-energy-drink.jpg' },
-{ id: 347, category: '超商', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' }
+{ id: 347, category: '超商', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' },
+{ id: 348, category: '藥妝店', title: 'DHC GABA', done: false, imageSrc: 'wishlist-images/dhc-gaba.webp' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
@@ -5454,7 +5472,8 @@ let wishItems = [
 { id: 344, category: '超商', title: '生起司包', done: false, imageSrc: 'wishlist-images/convenience-cheese-wrap.jpg' },
 { id: 345, category: '超商', title: '皇家卡士達布丁', done: false, imageSrc: 'wishlist-images/convenience-royal-custard-pudding.jpg' },
 { id: 346, category: '超商', title: '含咖啡因提神飲', done: false, imageSrc: 'wishlist-images/convenience-caffeinated-energy-drink.jpg' },
-{ id: 347, category: '超商', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' }
+{ id: 347, category: '超商', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' },
+{ id: 348, category: '藥妝店', title: 'DHC GABA', done: false, imageSrc: 'wishlist-images/dhc-gaba.webp' }
 ];
 const CONVENIENCE_WISHLIST_PARENT = '超商';
 const CONVENIENCE_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson'];
@@ -12436,8 +12455,23 @@ unlockCuteClickSound().then(() => playCuteClickSound(control));
 }, true);
 }
 
+function setupAppLikeImageBehavior() {
+if (window.__appLikeImageBehaviorReady) return;
+window.__appLikeImageBehaviorReady = true;
+document.addEventListener('contextmenu', (event) => {
+  if (event.target?.closest?.('img')) event.preventDefault();
+}, { capture: true });
+document.addEventListener('dragstart', (event) => {
+  if (event.target?.closest?.('img')) event.preventDefault();
+}, { capture: true });
+document.addEventListener('selectstart', (event) => {
+  if (event.target?.closest?.('img')) event.preventDefault();
+}, { capture: true });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 setupCuteClickSounds();
+setupAppLikeImageBehavior();
 document.getElementById('heart-row').innerHTML = Array.from({ length: 8 }, () => `<div class="heart-slot"><span class="h-empty">\u2661</span><span class="h-full">\u2665</span></div>`).join('');
 window.addEventListener('keydown', handlePasswordKeyboard);
 window.addEventListener('scroll', triggerItineraryBottomBounce, { passive: true });
