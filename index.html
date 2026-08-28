@@ -8851,7 +8851,7 @@ function showImagePreviewSrc(src, options = {}) {
 if (!src) return;
 const previewModal = document.getElementById('image-preview-modal');
 const isRouteGuide = /(?:route|guide)/i.test(String(src));
-const isNoteImagePreview = Boolean(options.noteImageToolbar) && !isRouteGuide && Boolean(currentDetailCard) && !isEditMode;
+const isNoteImagePreview = Boolean(options.noteImageToolbar) && Boolean(currentDetailCard) && !isEditMode;
 const directZoom = Boolean(options.directZoom) && !isRouteGuide;
 currentNoteImagePreviewSrc = isNoteImagePreview ? src : '';
 previewModal?.classList.toggle('route-guide-preview', isRouteGuide);
@@ -9326,7 +9326,7 @@ const block = img?.closest?.('.note-block[data-block-type="image"]');
 const blockIndex = Number(block?.dataset.blockIndex);
 if (!isEditMode) {
 if (Number.isInteger(blockIndex)) currentNoteImageBlockIndex = blockIndex;
-openImagePreview(event, img, { directZoom: true, noteImageToolbar: true });
+openImagePreview(event, img, { noteImageToolbar: true });
 return;
 }
 if (!Number.isInteger(blockIndex)) return;
@@ -9340,7 +9340,7 @@ if (!image) return;
 const imageSrc = image.getAttribute('src') || image.src || '';
 const blockIndex = currentDetailCard ? getNoteBlocks(currentDetailCard).findIndex(block => block.type === 'image' && (block.src === imageSrc || block.originalSrc === imageSrc || resolveWishlistImageSrc(block.src) === resolveWishlistImageSrc(imageSrc))) : -1;
 if (Number.isInteger(blockIndex) && blockIndex >= 0) currentNoteImageBlockIndex = blockIndex;
-openImagePreview(event, image, { directZoom: true, noteImageToolbar: true });
+openImagePreview(event, image, { noteImageToolbar: true });
 }
 function selectCurrentNoteImageBlock(block) {
 const blockIndex = Number(block?.dataset.blockIndex);
