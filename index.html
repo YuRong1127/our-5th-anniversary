@@ -29,11 +29,13 @@
 <link as="image" href="images/pigs/fund-topup-success-pig-inline.png" rel="preload"/>
 <link as="image" href="images/pigs/wallet-unsaved-pig-inline-hd.png" rel="preload"/>
 <link as="image" href="images/pigs/discard-unsaved-pig.png" rel="preload"/>
-<link as="image" href="images/menu/menu-edit-computer.png" rel="preload"/>
-<link as="image" href="images/menu/menu-prep-bag.png" rel="preload"/>
-<link as="image" href="images/menu/menu-wishlist-gift.png" rel="preload"/>
-<link as="image" href="images/menu/menu-docs-writing.png" rel="preload"/>
-<link as="image" href="images/menu/menu-wallet-money.png" rel="preload"/>
+<link as="image" href="images/menu/menu-edit-computer.webp" rel="preload"/>
+<link as="image" href="images/menu/menu-prep-bag.webp" rel="preload"/>
+<link as="image" href="images/menu/menu-wishlist-gift.webp" rel="preload"/>
+<link as="image" href="images/menu/menu-docs-writing.webp" rel="preload"/>
+<link as="image" href="images/menu/menu-wallet-money.webp" rel="preload"/>
+<link as="image" href="images/pigs/piggy-main.webp" rel="preload"/>
+<link as="image" href="images/pigs/piggy-open.webp" rel="preload"/>
 <link as="image" href="images/wallet/wallet-corner-friends.png" rel="preload"/>
 <link as="image" href="images/cards/ooishiya-dinner-card.png" rel="preload"/>
 <link as="image" href="images/cards/toda-stay-card.png" rel="preload"/>
@@ -5315,13 +5317,13 @@ GekuNaiku(chokokan)line 6 分</div><button class="route-edit-btn btn-press-effec
 </div>
 <div class="menu-backdrop" id="menu-backdrop" onclick="closeMenu()"></div>
 <div class="floating-menu" id="floating-menu">
-<div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon"><img alt="編輯行程" class="menu-icon-img menu-icon-edit" src="images/menu/menu-edit-computer.png"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon"><img alt="出發清單" class="menu-icon-img menu-icon-prep" src="images/menu/menu-prep-bag.png"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon"><img alt="願望清單" class="menu-icon-img menu-icon-wishlist" src="images/menu/menu-wishlist-gift.png"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon"><img alt="重要資料" class="menu-icon-img menu-icon-docs" src="images/menu/menu-docs-writing.png"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon"><img alt="記帳錢包" class="menu-icon-img menu-icon-wallet" src="images/menu/menu-wallet-money.png"/></div></div>
+<div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon"><img alt="編輯行程" class="menu-icon-img menu-icon-edit" decoding="async" src="images/menu/menu-edit-computer.webp"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon"><img alt="出發清單" class="menu-icon-img menu-icon-prep" decoding="async" src="images/menu/menu-prep-bag.webp"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon"><img alt="願望清單" class="menu-icon-img menu-icon-wishlist" decoding="async" src="images/menu/menu-wishlist-gift.webp"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon"><img alt="重要資料" class="menu-icon-img menu-icon-docs" decoding="async" src="images/menu/menu-docs-writing.webp"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon"><img alt="記帳錢包" class="menu-icon-img menu-icon-wallet" decoding="async" src="images/menu/menu-wallet-money.webp"/></div></div>
 </div>
-<button aria-label="開啟小豬選單" class="float-icon main-piggy btn-press-effect" id="main-btn" onclick="handlePiggyMenuClick(event)" onpointerup="handlePiggyMenuPointer(event)" type="button"><img alt="小豬選單" src="images/pigs/piggy-main.png"/></button>
+<button aria-label="開啟小豬選單" class="float-icon main-piggy btn-press-effect" id="main-btn" onclick="handlePiggyMenuClick(event)" onpointerup="handlePiggyMenuPointer(event)" type="button"><img alt="小豬選單" decoding="async" fetchpriority="high" src="images/pigs/piggy-main.webp"/></button>
 <button class="add-itinerary-btn btn-press-effect" id="add-itinerary-btn" onclick="addItineraryItem()" type="button">＋</button>
 <script>
 let currentDay = 1;
@@ -9988,7 +9990,7 @@ if (!menu || !backdrop || !mainBtn) return;
 if (!isMenuShowing) {
 menu.style.display = 'flex';
 backdrop.style.display = 'block';
-if (piggyImg) piggyImg.src = 'images/pigs/piggy-open.png';
+if (piggyImg) piggyImg.src = 'images/pigs/piggy-open.webp';
 mainBtn?.classList.add('is-open');
 requestAnimationFrame(() => {
 menu.classList.add('show');
@@ -10017,7 +10019,7 @@ const backdrop = document.getElementById('menu-backdrop');
 if (!menu || !isMenuShowing) return;
 const mainBtn = document.getElementById('main-btn');
 const piggyImg = document.querySelector('#main-btn img');
-if (piggyImg) piggyImg.src = 'images/pigs/piggy-main.png';
+if (piggyImg) piggyImg.src = 'images/pigs/piggy-main.webp';
 mainBtn?.classList.remove('is-open');
 menu.classList.remove('show');
 backdrop?.classList.remove('show');
@@ -10245,13 +10247,13 @@ return warmImages(sources);
 }
 function warmMenuImages() {
 const sources = [
-'images/menu/menu-edit-computer.png',
-'images/menu/menu-prep-bag.png',
-'images/menu/menu-wishlist-gift.png',
-'images/menu/menu-docs-writing.png',
-'images/menu/menu-wallet-money.png',
-'images/pigs/piggy-main.png',
-'images/pigs/piggy-open.png'
+'images/menu/menu-edit-computer.webp',
+'images/menu/menu-prep-bag.webp',
+'images/menu/menu-wishlist-gift.webp',
+'images/menu/menu-docs-writing.webp',
+'images/menu/menu-wallet-money.webp',
+'images/pigs/piggy-main.webp',
+'images/pigs/piggy-open.webp'
 ];
 return warmImages(sources);
 }
