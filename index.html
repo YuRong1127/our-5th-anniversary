@@ -119,6 +119,9 @@ font-family: 'Kosugi Maru', 'Noto Sans TC', sans-serif;
 letter-spacing: 0;
 touch-action: pan-y;
 -webkit-tap-highlight-color: transparent;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
 }
 body.edit-mode {
 padding-bottom: calc(150px + env(safe-area-inset-bottom));
@@ -130,6 +133,13 @@ width: 100% !important;
 touch-action: none !important;
 }
 button, input { font: inherit; }
+input,
+textarea,
+[contenteditable="true"] {
+-webkit-touch-callout: default;
+-webkit-user-select: text;
+user-select: text;
+}
 img {
 -webkit-touch-callout: none;
 -webkit-user-select: none;
@@ -4303,9 +4313,9 @@ white-space: normal;
 }
 .wishlist-gift-line {
 display: grid;
-grid-template-columns: 52px minmax(0, 1fr);
+grid-template-columns: 48px minmax(0, 1fr);
 align-items: start;
-gap: 8px;
+gap: 3px;
 min-width: 0;
 max-width: 100%;
 vertical-align: middle;
@@ -4367,7 +4377,7 @@ display: grid;
 grid-template-columns: 22px minmax(0, 1fr) auto;
 gap: 6px;
 min-height: 50px;
-padding: 9px 10px;
+padding: 9px 6px 9px 4px;
 border-radius: 16px;
 background: #fff;
 box-shadow: 0 5px 14px rgba(141,110,99,.045);
@@ -4467,10 +4477,10 @@ width: 100%;
 }
 #wishlist-list.is-gift-list .wishlist-gift-product {
 display: grid;
-grid-template-columns: 18px minmax(0, 1fr) 20px 40px;
+grid-template-columns: 14px minmax(0, 1fr) 20px 40px;
 height: 22px;
 align-items: center;
-gap: 5px;
+gap: 3px;
 color: #705b55;
 font-size: .84rem;
 font-weight: 900;
@@ -4502,8 +4512,11 @@ font-weight: inherit;
 line-height: inherit;
 }
 #wishlist-list.is-gift-list .wishlist-gift-product-check {
-width: 16px;
-height: 16px;
+width: 14px;
+height: 14px;
+box-sizing: border-box;
+position: relative;
+top: -1px;
 border: 1px solid #efd9d2;
 border-radius: 50%;
 background: #fffaf7;
@@ -4607,7 +4620,7 @@ height: 28px;
 grid-template-rows: 22px 10px 22px;
 gap: 0;
 align-self: center;
-width: 52px;
+width: 48px;
 }
 #wishlist-list.is-gift-list .wishlist-gift-arrow {
 display: flex;
@@ -5782,7 +5795,10 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 352, category: '7-11', title: '芝士漢堡排', done: false, imageSrc: 'wishlist-images/seven-eleven-cheese-hamburg.jpeg' },
 { id: 353, category: '無印良品', title: '四合一面膜', done: false, imageSrc: 'wishlist-images/muji-all-in-one-mask.jpg' },
 { id: 354, category: '無印良品', title: '精華棉片', done: false, imageSrc: 'wishlist-images/muji-essence-pads.jpeg' },
-{ id: 355, category: '無印良品', title: '可可夾心餅', done: false, imageSrc: 'wishlist-images/muji-cocoa-sandwich-biscuit.avif' }
+{ id: 355, category: '無印良品', title: '可可夾心餅', done: false, imageSrc: 'wishlist-images/muji-cocoa-sandwich-biscuit.avif' },
+{ id: 356, category: '超商', title: '森永燒布丁', done: false, imageSrc: 'wishlist-images/convenience-morinaga-baked-pudding.jpg' },
+{ id: 357, category: '藥妝店', title: 'DOU卸妝膏', done: false, imageSrc: 'wishlist-images/drugstore-dou-cleansing-balm.jpg' },
+{ id: 358, category: 'Lawson', title: '砂糖吐司脆餅', done: false, imageSrc: 'wishlist-images/lawson-sugar-toast-rusk.avif' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
@@ -5838,7 +5854,10 @@ let wishItems = [
 { id: 352, category: '7-11', title: '芝士漢堡排', done: false, imageSrc: 'wishlist-images/seven-eleven-cheese-hamburg.jpeg' },
 { id: 353, category: '無印良品', title: '四合一面膜', done: false, imageSrc: 'wishlist-images/muji-all-in-one-mask.jpg' },
 { id: 354, category: '無印良品', title: '精華棉片', done: false, imageSrc: 'wishlist-images/muji-essence-pads.jpeg' },
-{ id: 355, category: '無印良品', title: '可可夾心餅', done: false, imageSrc: 'wishlist-images/muji-cocoa-sandwich-biscuit.avif' }
+{ id: 355, category: '無印良品', title: '可可夾心餅', done: false, imageSrc: 'wishlist-images/muji-cocoa-sandwich-biscuit.avif' },
+{ id: 356, category: '超商', title: '森永燒布丁', done: false, imageSrc: 'wishlist-images/convenience-morinaga-baked-pudding.jpg' },
+{ id: 357, category: '藥妝店', title: 'DOU卸妝膏', done: false, imageSrc: 'wishlist-images/drugstore-dou-cleansing-balm.jpg' },
+{ id: 358, category: 'Lawson', title: '砂糖吐司脆餅', done: false, imageSrc: 'wishlist-images/lawson-sugar-toast-rusk.avif' }
 ];
 const CONVENIENCE_WISHLIST_PARENT = '超商';
 const CONVENIENCE_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson'];
@@ -13178,14 +13197,17 @@ unlockCuteClickSound().then(() => playCuteClickSound(control));
 function setupAppLikeImageBehavior() {
 if (window.__appLikeImageBehaviorReady) return;
 window.__appLikeImageBehaviorReady = true;
+const isEditableTarget = target => Boolean(target?.closest?.('input, textarea, [contenteditable="true"]'));
 document.addEventListener('contextmenu', (event) => {
-  if (event.target?.closest?.('img')) event.preventDefault();
+  if (isEditableTarget(event.target)) return;
+  if (event.target?.closest?.('#wishlist-list .wishlist-item')) return;
+  event.preventDefault();
 }, { capture: true });
 document.addEventListener('dragstart', (event) => {
   if (event.target?.closest?.('img')) event.preventDefault();
 }, { capture: true });
 document.addEventListener('selectstart', (event) => {
-  if (event.target?.closest?.('img')) event.preventDefault();
+  if (!isEditableTarget(event.target)) event.preventDefault();
 }, { capture: true });
 }
 
