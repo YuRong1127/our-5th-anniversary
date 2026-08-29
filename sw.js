@@ -1,4 +1,4 @@
-﻿const CACHE_VERSION = 'mie-anniversary-v20260818-schedule-popup-balanced-1';
+﻿const CACHE_VERSION = 'mie-anniversary-v20260830-platform-copy-mode-1';
 const APP_SHELL_URL = './index.html';
 const SECURE_VAULT_URL = './secure-docs/vault.json';
 const PIGGY_MENU_SOUND_URL = './sounds/piggy-menu-bubble.mp3';
