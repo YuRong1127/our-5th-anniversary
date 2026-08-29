@@ -1633,15 +1633,24 @@ order: 1;
 order: 2;
 }
 #alert-modal:has(.wallet-unsaved-pig) p {
-margin-bottom: 0;
+margin-bottom: 14px;
 }
 #alert-modal:has(.wallet-unsaved-pig) .alert-stack {
-gap: 2px;
+gap: 10px;
 }
 #alert-modal:has(.wallet-unsaved-pig) .alert-actions {
 justify-content: center;
 gap: 8px;
-margin-top: -4px;
+margin-top: 0;
+}
+#alert-modal .alert-stack-pig.wallet-unsaved-pig {
+width: 170px;
+height: auto;
+margin: 0;
+object-fit: contain;
+object-position: center;
+clip-path: inset(2px round 17px);
+filter: none;
 }
 #alert-modal:has(.wallet-unsaved-pig) .alert-actions .modal-btn-primary,
 #alert-modal:has(.wallet-unsaved-pig) .alert-cancel-btn {
@@ -1696,6 +1705,12 @@ body.edit-mode .time-badge::after { content: '  ✎'; color: #d3aaa0; font-size:
 .calendar-icon-styled { width: 30px; height: 30px; flex: 0 0 30px; display: flex; align-items: center; justify-content: center; }
 .calendar-icon-styled svg { display: block; width: 26px; height: 26px; }
 #exp-time-picker-host { width: 100%; }
+#exp-time-picker-host,
+#exp-time-picker-host * {
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
+}
 #wallet-modal .flatpickr-calendar {
 position: static !important;
 width: 100% !important;
@@ -13210,7 +13225,12 @@ function setupAppLikeImageBehavior() {
 if (window.__appLikeImageBehaviorReady) return;
 window.__appLikeImageBehaviorReady = true;
 const isEditableTarget = target => Boolean(target?.closest?.('input, textarea, [contenteditable="true"]'));
+const isExpenseTimePickerTarget = target => Boolean(target?.closest?.('#exp-time-picker-host'));
 document.addEventListener('contextmenu', (event) => {
+  if (isExpenseTimePickerTarget(event.target)) {
+    event.preventDefault();
+    return;
+  }
   if (isEditableTarget(event.target)) return;
   if (event.target?.closest?.('#wishlist-list .wishlist-item')) return;
   event.preventDefault();
@@ -13219,6 +13239,10 @@ document.addEventListener('dragstart', (event) => {
   if (event.target?.closest?.('img')) event.preventDefault();
 }, { capture: true });
 document.addEventListener('selectstart', (event) => {
+  if (isExpenseTimePickerTarget(event.target)) {
+    event.preventDefault();
+    return;
+  }
   if (!isEditableTarget(event.target)) event.preventDefault();
 }, { capture: true });
 }
