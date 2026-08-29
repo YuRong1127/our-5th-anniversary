@@ -6,6 +6,15 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
 <title>2026 MIE Anniversary Journey</title>
+<script>
+(() => {
+  const isStandaloneApp = window.matchMedia('(display-mode: standalone)').matches
+    || window.matchMedia('(display-mode: fullscreen)').matches
+    || window.navigator.standalone === true;
+  document.documentElement.classList.toggle('pwa-app-mode', isStandaloneApp);
+  document.documentElement.classList.toggle('browser-mode', !isStandaloneApp);
+})();
+</script>
 <meta content="yes" name="apple-mobile-web-app-capable"/>
 <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
 <meta content="三重之旅" name="apple-mobile-web-app-title"/>
@@ -119,6 +128,19 @@ font-family: 'Kosugi Maru', 'Noto Sans TC', sans-serif;
 letter-spacing: 0;
 touch-action: pan-y;
 -webkit-tap-highlight-color: transparent;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
+}
+html.browser-mode body:not(.edit-mode) {
+-webkit-touch-callout: default;
+-webkit-user-select: text;
+user-select: text;
+}
+html.browser-mode body:not(.edit-mode) button,
+html.browser-mode body:not(.edit-mode) a,
+html.browser-mode body:not(.edit-mode) img,
+html.browser-mode body:not(.edit-mode) .btn-press-effect {
 -webkit-touch-callout: none;
 -webkit-user-select: none;
 user-select: none;
@@ -2814,6 +2836,14 @@ white-space: pre-wrap;
 word-break: break-all;
 text-align: justify;
 overflow-wrap: break-word;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
+}
+html.browser-mode .note-text-view {
+-webkit-touch-callout: default;
+-webkit-user-select: text;
+user-select: text;
 }
 .note-text-view span[style*="background-color"],
 .note-text-input span[style*="background-color"] {
@@ -4152,10 +4182,14 @@ box-shadow: 0 0 0 3px rgba(209,122,109,.08);
 }
 .wishlist-add-btn { width: 52px; flex: 0 0 52px; border: 0; border-radius: 16px; background: var(--heart-pink); color: #fff; font-size: 1.35rem; font-weight: 900; box-shadow: 0 4px 12px rgba(209,122,109,.18); }
 .wishlist-list { display: flex; flex-direction: column; gap: 9px; min-height: 120px; }
+#wishlist-modal .modal-container {
+padding-top: 8px;
+padding-bottom: 8px;
+}
 #wishlist-modal .panel-modal-content {
 position: relative;
-height: min(500px, calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
-max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+height: min(700px, calc(100vh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+max-height: calc(100vh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 padding: 18px;
 border-radius: 30px;
 overflow: hidden;
@@ -4201,7 +4235,7 @@ display: none;
 }
 #wishlist-list {
 display: grid;
-grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+grid-template-columns: repeat(2, minmax(0, 1fr));
 gap: 10px;
 align-items: start;
 min-height: 0;
