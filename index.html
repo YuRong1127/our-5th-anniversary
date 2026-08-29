@@ -1303,10 +1303,12 @@ image-rendering: auto;
 filter: drop-shadow(0 7px 14px rgba(93,120,112,.16));
 }
 .alert-stack-pig.discard-pig {
-width: 210px;
-height: 150px;
+width: min(210px, 68vw);
+height: auto;
+aspect-ratio: 230 / 177;
 margin: -4px 0 -18px;
 object-fit: contain;
+object-position: center;
 transform: translateX(-10px);
 }
 .boundary-modal-img {
@@ -1422,6 +1424,7 @@ box-sizing: border-box;
 #alert-modal .modal-content {
 width: 100%;
 box-sizing: border-box;
+overflow: visible;
 align-items: center;
 text-align: center;
 padding: 30px 20px;
@@ -1432,10 +1435,12 @@ margin-bottom: 0;
 font-size: 1.4rem;
 }
 #alert-modal .alert-stack-pig.discard-pig {
-width: 210px;
-height: 150px;
+width: min(210px, 68vw);
+height: auto;
+aspect-ratio: 230 / 177;
 margin: -4px 0 -18px;
 object-fit: contain;
+object-position: center;
 transform: translateX(-10px);
 }
 #alert-modal .alert-actions {
@@ -1458,7 +1463,7 @@ white-space: pre-line;
 #alert-message {
 width: 100%;
 max-width: 100%;
-overflow: hidden;
+overflow: visible;
 }
 .route-schedule-popup {
   display: grid;
@@ -10552,6 +10557,7 @@ document.getElementById('auth-cancel-btn').style.display = '';
 document.getElementById('pw-hint').innerHTML = passwordPromptHtml;
 updateHearts('');
 openSimpleModal('password-modal');
+preloadSecureVault().catch(() => {});
 }
 function cancelPasswordAuth() {
 pendingNoteImagePreviewEdit = false;
@@ -10572,10 +10578,22 @@ function base64ToBytes(value) {
 const binary = atob(value);
 return Uint8Array.from(binary, char => char.charCodeAt(0));
 }
-async function decryptSecureVault(password) {
-const response = await fetch(SECURE_DOCS_URL, { cache: 'no-store' });
+let secureVaultPromise = null;
+function preloadSecureVault() {
+if (secureVaultPromise) return secureVaultPromise;
+secureVaultPromise = fetch(SECURE_DOCS_URL, { cache: 'no-store' })
+.then(response => {
 if (!response.ok) throw new Error('Secure vault could not be loaded');
-const vault = await response.json();
+return response.json();
+})
+.catch(error => {
+secureVaultPromise = null;
+throw error;
+});
+return secureVaultPromise;
+}
+async function decryptSecureVault(password) {
+const vault = await preloadSecureVault();
 const keyMaterial = await crypto.subtle.importKey(
 'raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']
 );
@@ -10610,6 +10628,7 @@ if (value.length === 8 && !passwordCheckInProgress) {
 passwordCheckInProgress = true;
 try {
 const vault = await decryptSecureVault(value);
+playPasswordSuccessSound();
 if (passwordAuthMode === 'docs') createSecureDocItems(vault.documents);
 setTimeout(() => {
 closeModal('password-modal');
@@ -10624,7 +10643,7 @@ if (pendingNoteImagePreviewEdit && currentDetailCard) {
   setTimeout(() => openNoteImageEditor(), 60);
 }
 }
-}, 250);
+}, 80);
 } catch (error) {
 playPasswordErrorSound();
 hint.innerHTML = passwordWrongHtml;
@@ -10644,7 +10663,7 @@ function pressPwKey(num) {
 const input = document.getElementById('pw-input');
 if (input.value.length >= 8) return;
 unlockCuteClickSound();
-playPasswordKeySound({ textContent: num });
+playPasswordKeySound();
 vibrateKeypad(12);
 input.value += num;
 handlePasswordValue(input.value);
@@ -10652,7 +10671,7 @@ handlePasswordValue(input.value);
 function deletePwKey() {
 const input = document.getElementById('pw-input');
 unlockCuteClickSound();
-playPasswordKeySound({ textContent: '⌫' });
+playPasswordKeySound();
 vibrateKeypad(10);
 input.value = input.value.slice(0, -1);
 handlePasswordValue(input.value);
@@ -10660,7 +10679,7 @@ handlePasswordValue(input.value);
 function clearPwKey() {
 const input = document.getElementById('pw-input');
 unlockCuteClickSound();
-playPasswordKeySound({ textContent: '清除' });
+playPasswordKeySound();
 vibrateKeypad(16);
 input.value = '';
 handlePasswordValue('');
@@ -11713,6 +11732,7 @@ document.getElementById('pw-hint').innerHTML = passwordPromptHtml;
 updateHearts('');
 document.activeElement?.blur?.();
 openSimpleModal('password-modal');
+preloadSecureVault().catch(() => {});
 }
 function closeSecureDocs() {
 closeModal('docs-modal');
@@ -13061,46 +13081,80 @@ if (!ctx || ctx.state !== 'running') return;
 playSinglePiggyBubble(ctx, 0, 430, 0.043);
 playSinglePiggyBubble(ctx, 0.115, 520, 0.034);
 }
-function playPasswordKeySound(control) {
+function playPasswordKeySound() {
 const ctx = getCuteClickAudioContext();
 if (!ctx || ctx.state !== 'running') return;
 const now = ctx.currentTime;
-const label = (control?.textContent || '').trim();
-const isDelete = label === '⌫' || label === '清除';
-const duration = isDelete ? 0.055 : 0.045;
-const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
-const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-const data = noiseBuffer.getChannelData(0);
-for (let i = 0; i < bufferSize; i += 1) {
-const fade = 1 - (i / bufferSize);
-data[i] = (Math.random() * 2 - 1) * fade;
+const duration = 0.14;
+const baseFrequency = 659.25;
+const endFrequency = 739.99;
+const note = ctx.createOscillator();
+const shimmer = ctx.createOscillator();
+const noteGain = ctx.createGain();
+const shimmerGain = ctx.createGain();
+const filter = ctx.createBiquadFilter();
+note.type = 'sine';
+shimmer.type = 'triangle';
+filter.type = 'lowpass';
+filter.frequency.setValueAtTime(2400, now);
+filter.frequency.exponentialRampToValueAtTime(1700, now + duration);
+note.frequency.setValueAtTime(baseFrequency, now);
+note.frequency.exponentialRampToValueAtTime(endFrequency, now + duration * 0.72);
+shimmer.frequency.setValueAtTime(baseFrequency * 2.01, now);
+shimmer.frequency.exponentialRampToValueAtTime(endFrequency * 2.01, now + duration * 0.72);
+noteGain.gain.setValueAtTime(0.0001, now);
+noteGain.gain.exponentialRampToValueAtTime(0.042, now + 0.008);
+noteGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+shimmerGain.gain.setValueAtTime(0.0001, now);
+shimmerGain.gain.exponentialRampToValueAtTime(0.0055, now + 0.012);
+shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + duration * 0.82);
+note.connect(filter).connect(noteGain).connect(ctx.destination);
+shimmer.connect(filter).connect(shimmerGain).connect(ctx.destination);
+note.start(now);
+shimmer.start(now);
+note.stop(now + duration + 0.02);
+shimmer.stop(now + duration + 0.02);
 }
-const noise = ctx.createBufferSource();
-noise.buffer = noiseBuffer;
-const body = ctx.createOscillator();
-const gain = ctx.createGain();
-const bodyGain = ctx.createGain();
-const highpass = ctx.createBiquadFilter();
-const lowpass = ctx.createBiquadFilter();
-body.type = 'sine';
-highpass.type = 'highpass';
-lowpass.type = 'lowpass';
-highpass.frequency.setValueAtTime(1300, now);
-lowpass.frequency.setValueAtTime(isDelete ? 5200 : 6200, now);
-body.frequency.setValueAtTime(isDelete ? 720 : 920, now);
-body.frequency.exponentialRampToValueAtTime(isDelete ? 520 : 700, now + duration);
-gain.gain.setValueAtTime(0.0001, now);
-gain.gain.exponentialRampToValueAtTime(isDelete ? 0.032 : 0.038, now + 0.002);
-gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-bodyGain.gain.setValueAtTime(0.0001, now);
-bodyGain.gain.exponentialRampToValueAtTime(isDelete ? 0.01 : 0.013, now + 0.003);
-bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-noise.connect(highpass).connect(lowpass).connect(gain).connect(ctx.destination);
-body.connect(bodyGain).connect(ctx.destination);
-noise.start(now);
-body.start(now);
-noise.stop(now + duration + 0.01);
-body.stop(now + duration + 0.01);
+function playPasswordSuccessSound() {
+const ctx = getCuteClickAudioContext();
+if (!ctx || ctx.state !== 'running') return;
+const now = ctx.currentTime + 0.015;
+const notes = [
+{ start: 0, frequency: 523.25 },
+{ start: 0.1, frequency: 659.25 },
+{ start: 0.2, frequency: 783.99 },
+{ start: 0.3, frequency: 1046.5 }
+];
+notes.forEach(({ start, frequency }, index) => {
+const t = now + start;
+const length = index === notes.length - 1 ? 0.34 : 0.22;
+const note = ctx.createOscillator();
+const sparkle = ctx.createOscillator();
+const noteGain = ctx.createGain();
+const sparkleGain = ctx.createGain();
+const filter = ctx.createBiquadFilter();
+note.type = 'sine';
+sparkle.type = 'triangle';
+filter.type = 'lowpass';
+filter.frequency.setValueAtTime(3200, t);
+filter.frequency.exponentialRampToValueAtTime(2100, t + length);
+note.frequency.setValueAtTime(frequency, t);
+note.frequency.exponentialRampToValueAtTime(frequency * 1.025, t + length * 0.7);
+sparkle.frequency.setValueAtTime(frequency * 2.01, t);
+sparkle.frequency.exponentialRampToValueAtTime(frequency * 2.01, t + length);
+noteGain.gain.setValueAtTime(0.0001, t);
+noteGain.gain.exponentialRampToValueAtTime(index === notes.length - 1 ? 0.052 : 0.038, t + 0.012);
+noteGain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+sparkleGain.gain.setValueAtTime(0.0001, t);
+sparkleGain.gain.exponentialRampToValueAtTime(index === notes.length - 1 ? 0.009 : 0.0045, t + 0.018);
+sparkleGain.gain.exponentialRampToValueAtTime(0.0001, t + length * 0.86);
+note.connect(filter).connect(noteGain).connect(ctx.destination);
+sparkle.connect(filter).connect(sparkleGain).connect(ctx.destination);
+note.start(t);
+sparkle.start(t);
+note.stop(t + length + 0.03);
+sparkle.stop(t + length + 0.03);
+});
 }
 function playPasswordErrorSound() {
 const ctx = getCuteClickAudioContext();
