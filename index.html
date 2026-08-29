@@ -8,9 +8,21 @@
 <title>2026 MIE Anniversary Journey</title>
 <script>
 (() => {
-  const isStandaloneApp = window.matchMedia('(display-mode: standalone)').matches
-    || window.matchMedia('(display-mode: fullscreen)').matches
-    || window.navigator.standalone === true;
+  // 只有獨立執行的 PWA、原生 WebView，或明確標記為 App 的容器，才啟用 App-like 限制。
+  // ?app=1 可供原生 App/WebView 在無法提供 display-mode 時明確指定；?app=0 可用於瀏覽器預覽。
+  const appModeOverride = new URLSearchParams(window.location.search).get('app');
+  const userAgent = window.navigator.userAgent || '';
+  const isEmbeddedWebView = /(;\s*wv\)|\bwv\b|Version\/4\.0.*Chrome\/)/i.test(userAgent)
+    || (/iPhone|iPad|iPod/i.test(userAgent) && !/Safari/i.test(userAgent));
+  const isStandaloneApp = appModeOverride === '1'
+    || appModeOverride === 'true'
+    || (appModeOverride !== '0' && (
+      window.matchMedia('(display-mode: standalone)').matches
+      || window.matchMedia('(display-mode: fullscreen)').matches
+      || window.navigator.standalone === true
+      || isEmbeddedWebView
+    ));
+  window.__isPwaAppMode = isStandaloneApp;
   document.documentElement.classList.toggle('pwa-app-mode', isStandaloneApp);
   document.documentElement.classList.toggle('browser-mode', !isStandaloneApp);
 })();
@@ -132,18 +144,13 @@ touch-action: pan-y;
 -webkit-user-select: none;
 user-select: none;
 }
-html.browser-mode body:not(.edit-mode) {
+/* 一般瀏覽器版不套用 App 的長按、選取與複製限制。 */
+html.browser-mode body,
+html.browser-mode body .note-text-view,
+html.browser-mode body .route-text {
 -webkit-touch-callout: default;
 -webkit-user-select: text;
 user-select: text;
-}
-html.browser-mode body:not(.edit-mode) button,
-html.browser-mode body:not(.edit-mode) a,
-html.browser-mode body:not(.edit-mode) img,
-html.browser-mode body:not(.edit-mode) .btn-press-effect {
--webkit-touch-callout: none;
--webkit-user-select: none;
-user-select: none;
 }
 body.edit-mode {
 padding-bottom: calc(150px + env(safe-area-inset-bottom));
@@ -672,6 +679,8 @@ overflow: visible;
 .route-text { min-width: 0; flex: 1; color: #9c877f; font-size: .76rem; line-height: 1.35;white-space: pre-wrap !important; }
 .route-text {
 caret-color: transparent;
+}
+html.pwa-app-mode .route-text {
 user-select: none;
 -webkit-user-select: none;
 }
@@ -2836,14 +2845,11 @@ white-space: pre-wrap;
 word-break: break-all;
 text-align: justify;
 overflow-wrap: break-word;
+}
+html.pwa-app-mode .note-text-view {
 -webkit-touch-callout: none;
 -webkit-user-select: none;
 user-select: none;
-}
-html.browser-mode .note-text-view {
--webkit-touch-callout: default;
--webkit-user-select: text;
-user-select: text;
 }
 .note-text-view span[style*="background-color"],
 .note-text-input span[style*="background-color"] {
@@ -8897,7 +8903,7 @@ const cropWidth = Math.max(20, 100 - cropLeft - cropRight);
 const frameStyle = `--note-image-width:${width}%;--note-crop-left:${cropLeft};--note-crop-width:${cropWidth};--note-crop-top:${cropTop};${cropHeight ? `--note-image-crop:${cropHeight}px;` : ''}`;
 const strokesData = escapeHtml(JSON.stringify(block.strokes || []));
 const imageControls = isEditMode && selected ? `<button type="button" class="note-image-delete-btn btn-press-effect" aria-label="刪除圖片" title="刪除圖片" ontouchend="requestRemoveDetailBlockFromButton(event)" onclick="requestRemoveDetailBlockFromButton(event)">×</button><button type="button" class="note-image-resize-handle" aria-label="調整圖片大小" title="拖曳調整圖片大小" onpointerdown="startCurrentNoteImageResize(event)">↘</button>` : '';
-return `<div class="note-block photo-preview-item ${extraClass} ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="return false" onclick="openNoteImageFromClick(event, this)"></div>${imageControls}</div>`;
+return `<div class="note-block photo-preview-item ${extraClass} ${selected ? 'is-selected' : ''}" data-block-index="${blockIndex}" data-block-type="image" data-src="${escapeHtml(block.src)}" data-original-src="${escapeHtml(block.originalSrc || '')}" data-strokes="${strokesData}" data-width="${width}" data-crop-height="${cropHeight}" data-crop-top="${cropTop}" data-crop-left="${cropLeft}" data-crop-right="${cropRight}" style="${frameStyle}"><div class="note-image-frame ${cropHeight ? 'is-cropped' : ''}"><img src="${escapeHtml(block.src)}" alt="行程照片" draggable="false" oncontextmenu="if (window.__isPwaAppMode) return false" onclick="openNoteImageFromClick(event, this)"></div>${imageControls}</div>`;
 }
 function mergeNoteImagesIntoPreviousTextBlocks(blocks) {
 const merged = [];
@@ -11375,6 +11381,7 @@ wishlistLongPressTimer = null;
 wishlistLongPressPointer = null;
 }
 function startWishlistActionPress(event, key) {
+if (!window.__isPwaAppMode) return;
 if (event.target.closest('button, input, label')) return;
 const item = getWishlistItemByKey(key);
 if (!item) return;
@@ -11746,7 +11753,7 @@ const moreHint = items.length < 3 ? `<button type="button" class="wishlist-more-
 list.innerHTML = items.map(item => {
 const itemKey = wishItems.indexOf(item);
 const hasGiftProducts = itemUsesWishlistGiftProducts(item);
-return `<div class="wishlist-item ${item.done ? 'done' : ''} ${hasGiftProducts ? 'has-gift-products' : ''}" data-wishlist-key="${itemKey}" onclick="handleWishlistItemClick(event, ${itemKey})" oncontextmenu="event.preventDefault(); openWishlistActionMenu(${itemKey}, event.clientX, event.clientY)" onpointerdown="startWishlistActionPress(event, ${itemKey})" onpointermove="moveWishlistActionPress(event)" onpointerup="cancelWishlistActionPress()" onpointercancel="cancelWishlistActionPress()" onpointerleave="cancelWishlistActionPress()">
+return `<div class="wishlist-item ${item.done ? 'done' : ''} ${hasGiftProducts ? 'has-gift-products' : ''}" data-wishlist-key="${itemKey}" onclick="handleWishlistItemClick(event, ${itemKey})" oncontextmenu="if (window.__isPwaAppMode) { event.preventDefault(); openWishlistActionMenu(${itemKey}, event.clientX, event.clientY); }" onpointerdown="startWishlistActionPress(event, ${itemKey})" onpointermove="moveWishlistActionPress(event)" onpointerup="cancelWishlistActionPress()" onpointercancel="cancelWishlistActionPress()" onpointerleave="cancelWishlistActionPress()">
 ${renderWishlistStoreBadge(item)}
 <span class="wishlist-qty-control" aria-label="購買數量"><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, -1)">-</button><span class="wishlist-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, 1)">+</button></span>
 <button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${itemKey})">${item.done ? '✓' : ''}</button>
@@ -13310,7 +13317,7 @@ unlockCuteClickSound().then(() => playCuteClickSound(control));
 }
 
 function setupAppLikeImageBehavior() {
-if (window.__appLikeImageBehaviorReady) return;
+if (!window.__isPwaAppMode || window.__appLikeImageBehaviorReady) return;
 window.__appLikeImageBehaviorReady = true;
 const isEditableTarget = target => Boolean(target?.closest?.('input, textarea, [contenteditable="true"]'));
 const isExpenseTimePickerTarget = target => Boolean(target?.closest?.('#exp-time-picker-host'));
