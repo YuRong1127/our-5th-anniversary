@@ -3563,7 +3563,7 @@ gap: 10px;
 }
 .wishlist-gift-fields {
 display: none;
-grid-template-columns: 94px minmax(0, 1fr);
+grid-template-columns: 118px minmax(0, 1fr);
 gap: 8px;
 align-items: center;
 }
@@ -3574,10 +3574,14 @@ display: grid;
 position: relative;
 display: grid;
 grid-template-columns: 1fr 1fr;
+width: 100%;
+max-width: none;
+min-width: 0;
 height: 42px;
 padding: 0;
+box-sizing: border-box;
 border: 1px solid #f1dfda;
-border-radius: 18px;
+border-radius: 999px;
 background: #fff8f5;
 overflow: hidden;
 }
@@ -3605,7 +3609,8 @@ filter: saturate(.75) blur(.15px);
 transition: background .18s ease, opacity .18s ease, filter .18s ease;
 }
 .wishlist-gift-buyer-btn.active {
-background: #fff;
+background: transparent;
+border-radius: 0;
 box-shadow: none;
 transform: none;
 opacity: 1;
@@ -3671,6 +3676,61 @@ width: 100%;
 }
 .wishlist-new-tools .wishlist-new-photo-btn {
 width: 100%;
+}
+.wishlist-gift-product-editor {
+display: none;
+gap: 8px;
+}
+.wishlist-form-row.is-gift-form .wishlist-gift-product-editor {
+display: grid;
+}
+.wishlist-form-row.is-gift-form > #wishlist-input,
+.wishlist-form-row.is-gift-form > .wishlist-new-tools,
+.wishlist-form-row.is-gift-form > #wishlist-new-photo-input {
+display: none;
+}
+.wishlist-gift-product-edit-row {
+display: grid;
+grid-template-columns: minmax(0, 1fr) 94px 30px;
+gap: 7px;
+align-items: center;
+}
+.wishlist-gift-product-edit-row .wishlist-input {
+width: 100%;
+height: 42px;
+}
+.wishlist-gift-product-photo-btn {
+height: 42px;
+border: 1px dashed #e9c8bf;
+border-radius: 16px;
+background: #fffaf7;
+color: #a88980;
+font-size: .75rem;
+font-weight: 900;
+}
+.wishlist-gift-product-photo-btn.has-image {
+border-style: solid;
+background: #fff4ef;
+color: #c2766a;
+}
+.wishlist-gift-product-remove-btn {
+width: 30px;
+height: 30px;
+border: 0;
+border-radius: 50%;
+background: #f4e8e4;
+color: #b5847b;
+font-size: 1rem;
+font-weight: 900;
+}
+.wishlist-gift-product-add-row {
+height: 38px;
+border: 1px dashed #e9c8bf;
+border-radius: 14px;
+background: transparent;
+color: #b27f75;
+font-size: .8rem;
+font-weight: 900;
 }
 #wishlist-item-form .wishlist-add-btn {
 width: 100%;
@@ -4221,24 +4281,25 @@ line-height: 1;
 }
 #wishlist-list .wishlist-name {
 order: 3;
-height: 30px;
+height: auto;
+min-height: 30px;
 font-size: .76rem;
 font-weight: 700;
-line-height: 1;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
-word-break: normal;
+line-height: 1.25;
+overflow: visible;
+text-overflow: clip;
+white-space: normal;
+word-break: break-word;
 display: flex;
 align-items: center;
 gap: 3px;
-margin: 0 46px 0 0;
+margin: 0;
 }
 #wishlist-list .wishlist-name-text {
 min-width: 0;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+overflow: visible;
+text-overflow: clip;
+white-space: normal;
 }
 .wishlist-gift-line {
 display: grid;
@@ -4384,7 +4445,7 @@ width: 100%;
 white-space: normal;
 }
 #wishlist-list.is-gift-list .wishlist-gift-line {
-align-items: start;
+align-items: center;
 }
 #wishlist-list.is-gift-list .wishlist-gift-title {
 flex: 1 1 auto;
@@ -4398,27 +4459,51 @@ min-width: 0;
 width: 100%;
 }
 #wishlist-list.is-gift-list .wishlist-gift-products {
-display: flex;
-flex-direction: column;
-gap: 5px;
+display: grid;
+grid-auto-rows: 22px;
+gap: 10px;
 min-width: 0;
 width: 100%;
 }
 #wishlist-list.is-gift-list .wishlist-gift-product {
 display: grid;
-grid-template-columns: 16px minmax(0, 1fr) 22px 44px;
+grid-template-columns: 18px minmax(0, 1fr) 20px 40px;
+height: 22px;
 align-items: center;
 gap: 5px;
 color: #705b55;
-font-size: .78rem;
+font-size: .84rem;
 font-weight: 900;
 line-height: 1.28;
 overflow: hidden;
 text-overflow: ellipsis;
 }
+#wishlist-list.is-gift-list .wishlist-gift-product-check,
+#wishlist-list.is-gift-list .wishlist-gift-product-photo,
+#wishlist-list.is-gift-list .wishlist-gift-product-qty {
+justify-self: center;
+align-self: center;
+}
+#wishlist-list.is-gift-list .wishlist-gift-product-text {
+display: flex;
+align-items: center;
+min-width: 0;
+height: 22px;
+font-size: .84rem;
+font-weight: 900;
+line-height: 1;
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+}
+#wishlist-list.is-gift-list .wishlist-gift-product-text .wishlist-name-note {
+margin-left: 3px;
+font-size: inherit;
+font-weight: inherit;
+line-height: inherit;
+}
 #wishlist-list.is-gift-list .wishlist-gift-product-check {
-width: 14px;
-height: 14px;
+width: 16px;
+height: 16px;
 border: 1px solid #efd9d2;
 border-radius: 50%;
 background: #fffaf7;
@@ -4443,8 +4528,8 @@ text-decoration-thickness: 2px;
 text-decoration-color: #d17a6d;
 }
 #wishlist-list.is-gift-list .wishlist-gift-product-photo {
-width: 22px;
-height: 22px;
+width: 20px;
+height: 20px;
 border: 1px solid #efd9d2;
 border-radius: 8px;
 background: #fffaf7;
@@ -4463,13 +4548,22 @@ height: 100%;
 object-fit: cover;
 display: block;
 }
+#wishlist-list.is-gift-list .wishlist-gift-product-photo-emoji {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+line-height: 1;
+transform: translateY(-.5px);
+}
 #wishlist-list.is-gift-list .wishlist-gift-product-qty {
 height: 20px;
-width: 44px;
-min-width: 44px;
+width: 40px;
+min-width: 40px;
 padding: 0 2px;
 border: 1px solid #f0d4cc;
-border-radius: 999px;
+border-radius: 8px;
 background: #fffaf7;
 display: inline-flex;
 align-items: center;
@@ -4506,8 +4600,31 @@ grid-column: 1 / -1;
 display: none;
 }
 #wishlist-list.is-gift-list .wishlist-gift-person-img {
-width: 24px;
-height: 24px;
+width: 28px;
+height: 28px;
+}
+#wishlist-list.is-gift-list .wishlist-gift-route {
+grid-template-rows: 22px 10px 22px;
+gap: 0;
+align-self: center;
+width: 52px;
+}
+#wishlist-list.is-gift-list .wishlist-gift-arrow {
+display: flex;
+align-items: center;
+justify-content: center;
+justify-self: stretch;
+width: 100%;
+height: 10px;
+padding: 0;
+text-align: center;
+text-indent: 0;
+transform: translateY(2px);
+overflow: visible;
+}
+#wishlist-list.is-gift-list .wishlist-gift-recipient {
+height: 22px;
+align-items: center;
 }
 #wishlist-list.is-gift-list .wishlist-gift-buyer {
 border: 0;
@@ -4525,7 +4642,7 @@ display: none;
 }
 #wishlist-list.is-gift-list .wishlist-gift-recipient {
 color: #b99d95;
-font-size: .7rem;
+font-size: .76rem;
 max-width: 72px;
 }
 #wishlist-list.is-gift-list .wishlist-photo-btn {
@@ -4540,34 +4657,43 @@ text-decoration-thickness: 2px;
 text-decoration-color: #d17a6d;
 }
 .wishlist-action-menu {
-position: fixed;
+position: absolute;
+inset: 0;
 z-index: 10000;
 display: none;
-min-width: 112px;
-padding: 7px;
-border: 1px solid #f1d6cd;
-border-radius: 15px;
-background: rgba(255, 250, 248, .98);
-box-shadow: 0 12px 26px rgba(126, 89, 80, .18);
-backdrop-filter: blur(8px);
+width: 100%;
+height: 100%;
+padding: 0;
+border: 0;
+border-radius: inherit;
+background: transparent;
+box-shadow: none;
+backdrop-filter: blur(2px);
+overflow: hidden;
 }
 .wishlist-action-menu.show {
 display: grid;
-gap: 5px;
+grid-template-rows: repeat(2, minmax(0, 1fr));
+gap: 0;
 }
 .wishlist-action-menu button {
-height: 34px;
+height: 100%;
 border: 0;
-border-radius: 11px;
-background: transparent;
-color: #9b766e;
+border-radius: 0;
+background: rgba(238, 224, 219, .94);
+color: #8f6b63;
 font-weight: 900;
-font-size: .8rem;
+font-size: .98rem;
 cursor: pointer;
+}
+.wishlist-action-menu button + button {
+border-top: 1px solid rgba(225, 194, 185, .72);
+background: rgba(229, 163, 151, .92);
+color: #fff;
 }
 .wishlist-action-menu button:active,
 .wishlist-action-menu button:hover {
-background: #f7e8e3;
+filter: brightness(.97);
 }
 #wishlist-list .wishlist-delete {
 position: absolute;
@@ -5571,7 +5697,7 @@ GekuNaiku(chokokan)line 6 分</div><button class="route-edit-btn btn-press-effec
 <div class="modal-overlay" id="settle-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div class="panel-content settle-panel-content" id="settle-content"></div></div></div></div></div>
 <div class="modal-overlay" id="stats-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="stats-title-row"><div class="stats-main-title">📊 統計</div><div class="stats-tabs"><button class="stats-tab active btn-press-effect" data-stats-page="pie" onclick="setStatsPage('pie')" type="button">大餅圖</button><button class="stats-tab btn-press-effect" data-stats-page="bar" onclick="setStatsPage('bar')" type="button">柱狀圖</button></div></div><div class="modal-scroll-area"><div class="panel-content" id="stats-content"></div></div></div></div></div>
 <div class="modal-overlay" id="time-range-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-fields"><div class="time-range-field"><label for="time-range-start">開始</label><input class="time-range-input" id="time-range-start" inputmode="numeric" maxlength="5" oninput="formatTimeRangeInput(this)" placeholder="08:00" type="text"/></div><div class="time-range-field"><label for="time-range-end">結束</label><input class="time-range-input" id="time-range-end" inputmode="numeric" maxlength="5" oninput="formatTimeRangeInput(this)" placeholder="09:10" type="text"/></div></div><div class="time-range-actions"><button class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()" type="button">未定</button><button class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()" type="button">儲存時間</button></div></div></div></div>
-<div class="modal-overlay" id="wishlist-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="wishlist-title-row"><div class="modal-title">🧺 想買的</div><div class="wishlist-title-actions"><button class="wishlist-title-action btn-press-effect" id="wishlist-add-item-toggle" onclick="openWishlistItemCreator()" type="button">＋新增品項</button><button class="wishlist-title-action btn-press-effect" id="wishlist-category-edit-toggle" onclick="toggleWishlistCategoryEditMode()" type="button">編輯分類</button></div></div><div class="wishlist-category-wrap"><div class="wishlist-tabs" id="wishlist-tabs"></div><div class="wishlist-subtabs" id="wishlist-subtabs"></div></div><div class="wishlist-category-form" id="wishlist-category-form"><input class="wishlist-input" id="wishlist-category-input" onkeydown="handleWishlistCategoryKey(event)" placeholder="例如：藥妝店必買" type="text"/><button class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()" type="button">新增</button><button class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)" type="button">取消</button></div><div class="wishlist-form" id="wishlist-item-form"><div class="wishlist-form-head"><strong id="wishlist-item-form-title">新增 3coins</strong></div><div class="wishlist-form-row"><div class="wishlist-gift-fields" id="wishlist-gift-fields"><div aria-label="誰買的" class="wishlist-gift-buyer"><button aria-label="大豬" class="wishlist-gift-buyer-btn active btn-press-effect" data-buyer="大豬" onclick="setWishlistGiftBuyer('大豬')" type="button"><img alt="大豬" class="wishlist-gift-buyer-img" src="images/pigs/wishlist-big-pig.png"/></button><button aria-label="小豬" class="wishlist-gift-buyer-btn btn-press-effect" data-buyer="小豬" onclick="setWishlistGiftBuyer('小豬')" type="button"><img alt="小豬" class="wishlist-gift-buyer-img" src="images/pigs/wishlist-small-pig.png"/></button></div><input class="wishlist-input" id="wishlist-gift-recipient" placeholder="買給誰？" type="text"/></div><input class="wishlist-input" id="wishlist-input" onkeydown="handleWishlistKey(event)" placeholder="我要買什麼？" type="text"/><div class="wishlist-new-tools"><button class="wishlist-new-photo-btn btn-press-effect" id="wishlist-new-photo-btn" onclick="chooseNewWishlistPhoto()" type="button">📷 新增照片</button></div><input accept="image/*" id="wishlist-new-photo-input" onchange="attachNewWishlistPhoto(event)" style="display:none" type="file"/><div class="wishlist-form-actions"><button class="wishlist-add-btn btn-press-effect" id="wishlist-save-item-btn" onclick="saveWishlistItem()" type="button">確定</button><button class="wishlist-form-cancel btn-press-effect" onclick="toggleWishlistItemForm(false)" type="button">取消</button></div></div></div><div class="modal-scroll-area"><div class="wishlist-list" id="wishlist-list"></div></div></div></div><div class="wishlist-action-menu" id="wishlist-action-menu" onclick="event.stopPropagation()"><button class="btn-press-effect" onclick="editWishlistActionItem(event)" type="button">編輯</button><button class="btn-press-effect" onclick="deleteWishlistActionItem(event)" type="button">刪除</button></div></div>
+<div class="modal-overlay" id="wishlist-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="wishlist-title-row"><div class="modal-title">🧺 想買的</div><div class="wishlist-title-actions"><button class="wishlist-title-action btn-press-effect" id="wishlist-add-item-toggle" onclick="openWishlistItemCreator()" type="button">＋新增品項</button><button class="wishlist-title-action btn-press-effect" id="wishlist-category-edit-toggle" onclick="toggleWishlistCategoryEditMode()" type="button">編輯分類</button></div></div><div class="wishlist-category-wrap"><div class="wishlist-tabs" id="wishlist-tabs"></div><div class="wishlist-subtabs" id="wishlist-subtabs"></div></div><div class="wishlist-category-form" id="wishlist-category-form"><input class="wishlist-input" id="wishlist-category-input" onkeydown="handleWishlistCategoryKey(event)" placeholder="例如：藥妝店必買" type="text"/><button class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()" type="button">新增</button><button class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)" type="button">取消</button></div><div class="wishlist-form" id="wishlist-item-form"><div class="wishlist-form-head"><strong id="wishlist-item-form-title">新增 3coins</strong></div><div class="wishlist-form-row"><div class="wishlist-gift-fields" id="wishlist-gift-fields"><div aria-label="誰買的" class="wishlist-gift-buyer"><button aria-label="大豬" class="wishlist-gift-buyer-btn active btn-press-effect" data-buyer="大豬" onclick="setWishlistGiftBuyer('大豬')" type="button"><img alt="大豬" class="wishlist-gift-buyer-img" src="images/pigs/wishlist-big-pig.png"/></button><button aria-label="小豬" class="wishlist-gift-buyer-btn btn-press-effect" data-buyer="小豬" onclick="setWishlistGiftBuyer('小豬')" type="button"><img alt="小豬" class="wishlist-gift-buyer-img" src="images/pigs/wishlist-small-pig.png"/></button></div><input class="wishlist-input" id="wishlist-gift-recipient" placeholder="買給誰？" type="text"/></div><div class="wishlist-gift-product-editor" id="wishlist-gift-product-editor"></div><input accept="image/*" id="wishlist-gift-product-photo-input" onchange="attachPendingWishlistGiftProductPhoto(event)" style="display:none" type="file"/><input class="wishlist-input" id="wishlist-input" onkeydown="handleWishlistKey(event)" placeholder="我要買什麼？" type="text"/><div class="wishlist-new-tools"><button class="wishlist-new-photo-btn btn-press-effect" id="wishlist-new-photo-btn" onclick="chooseNewWishlistPhoto()" type="button">📷 新增照片</button></div><input accept="image/*" id="wishlist-new-photo-input" onchange="attachNewWishlistPhoto(event)" style="display:none" type="file"/><div class="wishlist-form-actions"><button class="wishlist-add-btn btn-press-effect" id="wishlist-save-item-btn" onclick="saveWishlistItem()" type="button">確定</button><button class="wishlist-form-cancel btn-press-effect" onclick="toggleWishlistItemForm(false)" type="button">取消</button></div></div></div><div class="modal-scroll-area"><div class="wishlist-list" id="wishlist-list"></div></div></div></div><div class="wishlist-action-menu" id="wishlist-action-menu" onclick="event.stopPropagation()"><button class="btn-press-effect" onclick="editWishlistActionItem(event)" type="button">編輯</button><button class="btn-press-effect" onclick="deleteWishlistActionItem(event)" type="button">刪除</button></div></div>
 <div class="modal-overlay" id="prep-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')" type="button">出行必備</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')" type="button">生活日用</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')" type="button">衣服配飾</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')" type="button">藥品健康</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')" type="button">數位電器</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')" type="button">妝髮用品</button></div><div class="wishlist-form"><input class="wishlist-input" id="prep-input" onkeydown="handlePrepKey(event)" placeholder="例如：護照、充電器、旅平險..." type="text"/><button class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()" type="button">＋</button></div><div class="modal-scroll-area"><div class="wishlist-list" id="prep-list"></div></div></div></div></div>
 <div class="modal-overlay" id="docs-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeSecureDocs()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🔐 重要資料夾</div><p class="docs-security-note">完整憑證只在這台裝置暫時解密，關閉後會重新上鎖</p><div class="modal-scroll-area"><div class="wishlist-list docs-list" id="docs-list"></div></div></div></div></div>
 <div class="modal-overlay" id="icon-picker-modal"><div class="modal-container"><div class="modal-content"><div class="modal-title">選擇圖標</div><div class="modal-scroll-area"><div class="icon-picker-grid" id="icon-picker-grid"></div></div><button class="modal-btn-primary btn-press-effect" onclick="closeModal('icon-picker-modal')" style="margin-top:14px" type="button">取消</button></div></div></div>
@@ -5605,9 +5731,9 @@ GekuNaiku(chokokan)line 6 分</div><button class="route-edit-btn btn-press-effec
 let currentDay = 1;
 let expenses = [];
 const REQUIRED_WISHLIST_ITEMS = [
-{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎噴劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
-{ id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
-{ id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'wishlist-images/biore-cleansing-oil-mist.jpg' },
+{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
+{ id: 104, category: '藥妝店', title: '無類固醇止癢膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
+{ id: 105, category: '藥妝店', title: 'Biore卸妝噴霧', done: false, imageSrc: 'wishlist-images/biore-cleansing-oil-mist.jpg' },
 { id: 107, category: '3coins', title: '對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
@@ -5637,7 +5763,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 332, category: '藥妝店', title: '鼻下保濕棒', done: false, imageSrc: 'wishlist-images/under-nose-moisturizing-stick.png' },
 { id: 333, category: '藥妝店', title: '大正感冒藥', done: false, imageSrc: 'wishlist-images/taisho-cold-medicine.png' },
 { id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
-{ id: 336, category: '全家', title: 'AT奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
+{ id: 336, category: '全家', title: '奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
 { id: 337, category: '7-11', title: '抹茶軟餅乾', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-soft-cookie.webp' },
 { id: 338, category: '無印良品', title: '水凝保濕乳霜', done: false, imageSrc: 'wishlist-images/muji-hydrating-gel-cream-instagram.jpg' },
 { id: 339, category: '7-11', title: '洋蔥酸奶薯條', done: false, imageSrc: 'wishlist-images/seven-eleven-onion-yogurt-fries.webp' },
@@ -5651,14 +5777,16 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 347, category: '超商', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' },
 { id: 348, category: '藥妝店', title: 'DHC GABA', done: false, imageSrc: 'wishlist-images/dhc-gaba.webp' },
 { id: 349, category: '藥妝店', title: '命之母生理期', done: false, imageSrc: 'wishlist-images/inochi-no-haha-period.jpg' },
-{ id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '小罐DUO(紅色)、三重限定吉伊卡哇', done: false }
+{ id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '小罐DUO(紅色)、三重限定吉伊卡哇', done: false },
+{ id: 351, category: '7-11', title: '本格紅茶', done: false, imageSrc: 'wishlist-images/seven-eleven-honkaku-tea.jpg' },
+{ id: 352, category: '7-11', title: '芝士漢堡排', done: false, imageSrc: 'wishlist-images/seven-eleven-cheese-hamburg.jpeg' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false },
-{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎噴劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
-{ id: 104, category: '藥妝店', title: '無類固醇止癢軟膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
-{ id: 105, category: '藥妝店', title: 'Biore卸妝噴霧油', done: false, imageSrc: 'wishlist-images/biore-cleansing-oil-mist.jpg' },
+{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
+{ id: 104, category: '藥妝店', title: '無類固醇止癢膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
+{ id: 105, category: '藥妝店', title: 'Biore卸妝噴霧', done: false, imageSrc: 'wishlist-images/biore-cleansing-oil-mist.jpg' },
 { id: 107, category: '3coins', title: '兒童對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
@@ -5688,7 +5816,7 @@ let wishItems = [
 { id: 332, category: '藥妝店', title: '鼻下保濕棒', done: false, imageSrc: 'wishlist-images/under-nose-moisturizing-stick.png' },
 { id: 333, category: '藥妝店', title: '大正感冒藥', done: false, imageSrc: 'wishlist-images/taisho-cold-medicine.png' },
 { id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
-{ id: 336, category: '全家', title: 'AT奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
+{ id: 336, category: '全家', title: '奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
 { id: 337, category: '7-11', title: '抹茶軟餅乾', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-soft-cookie.webp' },
 { id: 338, category: '無印良品', title: '水凝保濕乳霜', done: false, imageSrc: 'wishlist-images/muji-hydrating-gel-cream-instagram.jpg' },
 { id: 339, category: '7-11', title: '洋蔥酸奶薯條', done: false, imageSrc: 'wishlist-images/seven-eleven-onion-yogurt-fries.webp' },
@@ -5702,7 +5830,9 @@ let wishItems = [
 { id: 347, category: '超商', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' },
 { id: 348, category: '藥妝店', title: 'DHC GABA', done: false, imageSrc: 'wishlist-images/dhc-gaba.webp' },
 { id: 349, category: '藥妝店', title: '命之母生理期', done: false, imageSrc: 'wishlist-images/inochi-no-haha-period.jpg' },
-{ id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '小罐DUO(紅色)、三重限定吉伊卡哇', done: false }
+{ id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '小罐DUO(紅色)、三重限定吉伊卡哇', done: false },
+{ id: 351, category: '7-11', title: '本格紅茶', done: false, imageSrc: 'wishlist-images/seven-eleven-honkaku-tea.jpg' },
+{ id: 352, category: '7-11', title: '芝士漢堡排', done: false, imageSrc: 'wishlist-images/seven-eleven-cheese-hamburg.jpeg' }
 ];
 const CONVENIENCE_WISHLIST_PARENT = '超商';
 const CONVENIENCE_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson'];
@@ -5739,6 +5869,8 @@ const WISHLIST_GIFT_BUYER_IMAGES = {
 '小豬': 'images/pigs/wishlist-small-pig.png'
 };
 let pendingWishlistImageSrc = '';
+let pendingWishlistGiftProducts = [];
+let pendingWishlistGiftPhotoIndex = null;
 let wishlistItemFormCloseTimer = null;
 let currentWishlistGiftBuyer = '大豬';
 let editingWishlistItemKey = null;
@@ -5748,24 +5880,33 @@ const beforeCount = wishItems.length;
 wishItems = wishItems.filter(item => !OBSOLETE_WISHLIST_TITLES.includes(item.title));
 if (wishItems.length !== beforeCount) added = true;
 wishItems.forEach(item => {
+const renamedWishlistItem = [
+{ id: 103, oldTitle: '喉嚨殺菌消炎噴劑', newTitle: '喉嚨殺菌消炎劑' },
+{ id: 104, oldTitle: '無類固醇止癢軟膏', newTitle: '無類固醇止癢膏' },
+{ id: 105, oldTitle: 'Biore卸妝噴霧油', newTitle: 'Biore卸妝噴霧' }
+].find(entry => item.id === entry.id || (item.category === '藥妝店' && item.title === entry.oldTitle));
+if (renamedWishlistItem && item.title !== renamedWishlistItem.newTitle) {
+item.title = renamedWishlistItem.newTitle;
+added = true;
+}
 if (item.id === 313 || (item.category === '無印良品' && item.title === 'BB霜 #03')) {
 if (item.title !== '藥用BB霜#03') {
 item.title = '藥用BB霜#03';
 added = true;
 }
 }
-if (item.id === 336 || (item.category === '全家' && item.title === 'AT奶茶冰沙')) {
-if (item.title !== 'AT奶茶冰沙*冷藏櫃') {
-item.title = 'AT奶茶冰沙*冷藏櫃';
+if (item.id === 336 || (item.category === '全家' && (item.title === 'AT奶茶冰沙' || item.title === 'AT奶茶冰沙*冷藏櫃'))) {
+if (item.title !== '奶茶冰沙*冷藏櫃') {
+item.title = '奶茶冰沙*冷藏櫃';
 added = true;
 }
 }
 });
-const legacyAtMilkTeaItems = wishItems.filter(item => item.category === '全家' && (item.title === 'AT奶茶冰沙' || item.title === 'AT奶茶冰沙*冷藏櫃'));
+const legacyAtMilkTeaItems = wishItems.filter(item => item.category === '全家' && (item.title === 'AT奶茶冰沙' || item.title === 'AT奶茶冰沙*冷藏櫃' || item.title === '奶茶冰沙*冷藏櫃'));
 if (legacyAtMilkTeaItems.length > 1) {
-const canonicalAtMilkTea = legacyAtMilkTeaItems.find(item => item.title === 'AT奶茶冰沙*冷藏櫃') || legacyAtMilkTeaItems[0];
+const canonicalAtMilkTea = legacyAtMilkTeaItems.find(item => item.title === '奶茶冰沙*冷藏櫃') || legacyAtMilkTeaItems[0];
 const duplicateAtMilkTea = legacyAtMilkTeaItems.filter(item => item !== canonicalAtMilkTea);
-canonicalAtMilkTea.title = 'AT奶茶冰沙*冷藏櫃';
+canonicalAtMilkTea.title = '奶茶冰沙*冷藏櫃';
 if (!getWishlistImageSrc(canonicalAtMilkTea)) canonicalAtMilkTea.imageSrc = 'wishlist-images/AT奶茶冰沙.jpg';
 if (duplicateAtMilkTea.some(item => item.done) && !canonicalAtMilkTea.done) canonicalAtMilkTea.done = true;
 const duplicateQty = duplicateAtMilkTea.reduce((sum, item) => sum + Math.max(0, Number(item.qty) || 0), 0);
@@ -6162,6 +6303,7 @@ openSimpleModal('alert-modal');
 function showConfirmAlert(msg, onConfirm) {
 pendingAlertConfirm = typeof onConfirm === 'function' ? onConfirm : null;
 document.getElementById('alert-cancel-btn').style.display = 'block';
+document.getElementById('alert-cancel-btn').textContent = '取消';
 document.getElementById('alert-primary-btn').textContent = '確定';
 document.querySelector('#alert-modal .modal-title').textContent = '提醒事項';
 document.getElementById('alert-message').innerText = msg;
@@ -6170,6 +6312,7 @@ openSimpleModal('alert-modal');
 function showConfirmAlertHtml(msgHtml, onConfirm, title = '提醒事項') {
 pendingAlertConfirm = typeof onConfirm === 'function' ? onConfirm : null;
 document.getElementById('alert-cancel-btn').style.display = 'block';
+document.getElementById('alert-cancel-btn').textContent = '取消';
 document.getElementById('alert-primary-btn').textContent = '確定';
 document.querySelector('#alert-modal .modal-title').textContent = title;
 document.getElementById('alert-message').innerHTML = msgHtml;
@@ -10771,6 +10914,7 @@ const recipient = document.getElementById('wishlist-gift-recipient');
 if (recipient) recipient.value = '';
 pendingWishlistImageSrc = '';
 currentWishlistConvenienceDraft = '';
+pendingWishlistGiftProducts = [];
 updateNewWishlistPhotoButton();
 wishlistItemFormCloseTimer = null;
 }, 190);
@@ -10833,12 +10977,56 @@ function updateWishlistGiftForm() {
 const fields = document.getElementById('wishlist-gift-fields');
 const recipient = document.getElementById('wishlist-gift-recipient');
 const input = document.getElementById('wishlist-input');
+const formRow = document.querySelector('#wishlist-item-form .wishlist-form-row');
 const isGift = isWishlistGiftCategory();
 fields?.classList.toggle('show', isGift);
+formRow?.classList.toggle('is-gift-form', isGift);
 if (input && isGift) input.placeholder = '買什麼東西？';
 if (!isGift && recipient) recipient.value = '';
 setWishlistGiftBuyer(currentWishlistGiftBuyer);
+if (isGift) renderPendingWishlistGiftProducts();
 updateWishlistConvenienceForm();
+}
+function renderPendingWishlistGiftProducts() {
+const editor = document.getElementById('wishlist-gift-product-editor');
+if (!editor) return;
+if (!pendingWishlistGiftProducts.length) pendingWishlistGiftProducts = [{ title: '', imageSrc: '', done: false, qty: 1 }];
+editor.innerHTML = pendingWishlistGiftProducts.map((product, index) => `<div class="wishlist-gift-product-edit-row"><input class="wishlist-input" value="${escapeHtml(product.title || '')}" placeholder="要買什麼呢" oninput="updatePendingWishlistGiftProductTitle(${index}, this.value)" onkeydown="handlePendingWishlistGiftProductKey(event, ${index})" type="text"><button class="wishlist-gift-product-photo-btn ${product.imageSrc ? 'has-image' : ''} btn-press-effect" onclick="choosePendingWishlistGiftProductPhoto(${index})" type="button">${product.imageSrc ? '📷 已有相片' : '📷 新增相片'}</button><button class="wishlist-gift-product-remove-btn btn-press-effect" aria-label="移除這個品項" onclick="removePendingWishlistGiftProduct(${index})" type="button">×</button></div>`).join('') + '<button class="wishlist-gift-product-add-row btn-press-effect" onclick="addPendingWishlistGiftProduct()" type="button">＋ 新增下一個想買的</button>';
+}
+function updatePendingWishlistGiftProductTitle(index, value) {
+if (pendingWishlistGiftProducts[index]) pendingWishlistGiftProducts[index].title = value;
+}
+function addPendingWishlistGiftProduct() {
+pendingWishlistGiftProducts.push({ title: '', imageSrc: '', done: false, qty: 1 });
+renderPendingWishlistGiftProducts();
+setTimeout(() => document.querySelectorAll('#wishlist-gift-product-editor .wishlist-input')[pendingWishlistGiftProducts.length - 1]?.focus(), 0);
+}
+function removePendingWishlistGiftProduct(index) {
+if (pendingWishlistGiftProducts.length <= 1) {
+pendingWishlistGiftProducts[0] = { title: '', imageSrc: '', done: false, qty: 1 };
+} else {
+pendingWishlistGiftProducts.splice(index, 1);
+}
+renderPendingWishlistGiftProducts();
+}
+function handlePendingWishlistGiftProductKey(event, index) {
+if (event.key !== 'Enter') return;
+event.preventDefault();
+if (index === pendingWishlistGiftProducts.length - 1) addPendingWishlistGiftProduct();
+else document.querySelectorAll('#wishlist-gift-product-editor .wishlist-input')[index + 1]?.focus();
+}
+function choosePendingWishlistGiftProductPhoto(index) {
+pendingWishlistGiftPhotoIndex = index;
+document.getElementById('wishlist-gift-product-photo-input')?.click();
+}
+async function attachPendingWishlistGiftProductPhoto(event) {
+const file = event.target.files && event.target.files[0];
+const index = pendingWishlistGiftPhotoIndex;
+if (!file || !file.type.startsWith('image/') || index === null || !pendingWishlistGiftProducts[index]) return;
+pendingWishlistGiftProducts[index].imageSrc = await readImageFile(file);
+event.target.value = '';
+pendingWishlistGiftPhotoIndex = null;
+renderPendingWishlistGiftProducts();
 }
 function updateNewWishlistPhotoButton() {
 const btn = document.getElementById('wishlist-new-photo-btn');
@@ -10928,6 +11116,7 @@ updateWishlistGiftForm();
 function openWishlistItemCreator() {
 editingWishlistItemKey = null;
 pendingWishlistImageSrc = '';
+pendingWishlistGiftProducts = [{ title: '', imageSrc: '', done: false, qty: 1 }];
 currentWishlistConvenienceDraft = '';
 const input = document.getElementById('wishlist-input');
 const recipientInput = document.getElementById('wishlist-gift-recipient');
@@ -10939,23 +11128,23 @@ toggleWishlistItemForm();
 function saveWishlistItem() {
 const input = document.getElementById('wishlist-input');
 const recipientInput = document.getElementById('wishlist-gift-recipient');
-const title = input.value.trim();
-if (!title) return showAlert('先寫一個想買的小東西吧 🧺');
 if (!currentWishlistCategory) return showAlert('先新增一個分類，再把心動小物放進去喔 🧺');
 const category = isConvenienceWishlistCategory() ? (currentWishlistConvenienceDraft || CONVENIENCE_WISHLIST_PARENT) : getEffectiveWishlistCategory();
 const isGift = category === WISHLIST_GIFT_CATEGORY;
+const giftProductsDraft = pendingWishlistGiftProducts.map(product => ({ ...product, title: String(product.title || '').trim() })).filter(product => product.title);
+const title = input.value.trim();
+if (isGift ? !giftProductsDraft.length : !title) return showAlert('先寫一個想買的小東西吧 🧺');
 const recipient = isGift ? (recipientInput?.value || '').trim() : '';
 if (editingWishlistItemKey !== null) {
 const item = getWishlistItemByKey(editingWishlistItemKey);
 if (!item) return;
-const previousProducts = getWishlistGiftProductList(item).map(product => ({ ...product }));
 item.category = category;
 item.buyer = isGift ? currentWishlistGiftBuyer : '';
 item.recipient = recipient;
 if (isGift) {
 item.title = '';
 item.imageSrc = '';
-item.products = buildWishlistGiftProductsFromText(title, previousProducts, pendingWishlistImageSrc);
+item.products = giftProductsDraft;
 normalizeWishlistGiftProducts(item);
 } else {
 item.title = title;
@@ -10974,7 +11163,7 @@ imageSrc: isGift ? '' : (pendingWishlistImageSrc || ''),
 buyer: isGift ? currentWishlistGiftBuyer : '',
 recipient
 };
-if (isGift) newItem.products = buildWishlistGiftProductsFromText(title, [], pendingWishlistImageSrc);
+if (isGift) newItem.products = giftProductsDraft;
 wishItems.unshift({
 ...newItem
 });
@@ -10982,6 +11171,7 @@ wishItems.unshift({
 input.value = '';
 if (recipientInput) recipientInput.value = '';
 pendingWishlistImageSrc = '';
+pendingWishlistGiftProducts = [];
 editingWishlistItemKey = null;
 updateNewWishlistPhotoButton();
 toggleWishlistItemForm(false);
@@ -11052,6 +11242,10 @@ queueTripCloudSave();
 }
 function handleWishlistItemClick(event, key) {
 if (event.target.closest('button, input, label')) return;
+if (wishlistLongPressTriggered) {
+wishlistLongPressTriggered = false;
+return;
+}
 const item = getWishlistItemByKey(key);
 if (itemUsesWishlistGiftProducts(item)) return;
 toggleWishlistItem(key);
@@ -11059,9 +11253,15 @@ toggleWishlistItem(key);
 let wishlistActionMenuItemKey = null;
 let wishlistLongPressTimer = null;
 let wishlistLongPressPointer = null;
+let wishlistLongPressTriggered = false;
 function closeWishlistActionMenu() {
 const menu = document.getElementById('wishlist-action-menu');
-if (menu) menu.classList.remove('show');
+if (menu) {
+menu.classList.remove('show');
+menu.removeAttribute('style');
+const modal = document.getElementById('wishlist-modal');
+if (modal && menu.parentElement !== modal) modal.appendChild(menu);
+}
 wishlistActionMenuItemKey = null;
 }
 function cancelWishlistActionPress() {
@@ -11072,11 +11272,14 @@ wishlistLongPressPointer = null;
 function startWishlistActionPress(event, key) {
 if (event.target.closest('button, input, label')) return;
 const item = getWishlistItemByKey(key);
-if (!itemUsesWishlistGiftProducts(item)) return;
+if (!item) return;
 closeWishlistActionMenu();
+wishlistLongPressTriggered = false;
 wishlistLongPressPointer = { x: event.clientX, y: event.clientY };
 wishlistLongPressTimer = setTimeout(() => {
+wishlistLongPressTriggered = true;
 openWishlistActionMenu(key, wishlistLongPressPointer.x, wishlistLongPressPointer.y);
+setTimeout(() => { wishlistLongPressTriggered = false; }, 800);
 wishlistLongPressTimer = null;
 }, 520);
 }
@@ -11088,15 +11291,12 @@ if (distance > 10) cancelWishlistActionPress();
 function openWishlistActionMenu(key, x, y) {
 const item = getWishlistItemByKey(key);
 const menu = document.getElementById('wishlist-action-menu');
-if (!item || !itemUsesWishlistGiftProducts(item) || !menu) return;
+if (!item || !menu) return;
+const itemRow = document.querySelector(`#wishlist-list .wishlist-item[data-wishlist-key="${Number(key)}"]`);
+if (!itemRow) return;
 wishlistActionMenuItemKey = Number(key);
+itemRow.appendChild(menu);
 menu.classList.add('show');
-const rect = menu.getBoundingClientRect();
-const margin = 10;
-const left = Math.min(Math.max(x - rect.width / 2, margin), window.innerWidth - rect.width - margin);
-const top = Math.min(Math.max(y + 10, margin), window.innerHeight - rect.height - margin);
-menu.style.left = `${left}px`;
-menu.style.top = `${top}px`;
 }
 function editWishlistActionItem(event) {
 event?.preventDefault();
@@ -11112,6 +11312,11 @@ const key = wishlistActionMenuItemKey;
 closeWishlistActionMenu();
 if (key !== null) deleteWishlistItem(key);
 }
+document.addEventListener('pointerdown', event => {
+const menu = document.getElementById('wishlist-action-menu');
+if (!menu?.classList.contains('show') || menu.contains(event.target)) return;
+closeWishlistActionMenu();
+});
 function openWishlistItemEditor(event, key) {
 if (event) {
 event.preventDefault();
@@ -11128,14 +11333,18 @@ currentWishlistConvenienceDraft = CONVENIENCE_WISHLIST_CATEGORIES.includes(item.
 editingWishlistItemKey = Number(key);
 const giftProducts = getWishlistGiftProductList(item);
 pendingWishlistImageSrc = giftProducts[0]?.imageSrc || getWishlistImageSrc(item);
+pendingWishlistGiftProducts = giftProducts.length ? giftProducts.map(product => ({ ...product })) : [{ title: item.title || '', imageSrc: getWishlistImageSrc(item), done: Boolean(item.done), qty: getWishlistItemQty(item) }];
 currentWishlistGiftBuyer = item.buyer && WISHLIST_GIFT_BUYER_IMAGES[item.buyer] ? item.buyer : '大豬';
 renderWishlistCategories();
 toggleWishlistItemForm(true);
 const input = document.getElementById('wishlist-input');
 const recipientInput = document.getElementById('wishlist-gift-recipient');
 if (input) {
-input.value = giftProducts.length ? giftProducts.map(product => product.title).join('、') : (item.title || '');
-setTimeout(() => input.focus(), 80);
+input.value = itemUsesWishlistGiftProducts(item) ? '' : (item.title || '');
+setTimeout(() => {
+if (isWishlistGiftCategory()) document.querySelector('#wishlist-gift-product-editor .wishlist-input')?.focus();
+else input.focus();
+}, 80);
 }
 if (recipientInput) recipientInput.value = item.recipient || '';
 updateWishlistAddFormTitle();
@@ -11144,14 +11353,14 @@ updateNewWishlistPhotoButton();
 function deleteWishlistItem(key) {
 const item = getWishlistItemByKey(key);
 if (!item) return;
-const giftProducts = getWishlistGiftProductList(item);
-const confirmName = giftProducts.length ? [item.recipient, giftProducts.map(product => product.title).filter(Boolean).join('、')].filter(Boolean).join('：') : item.title;
-showConfirmAlert(`要刪掉「${confirmName || '這個品項'}」嗎？\n刪掉後就回不來囉`, () => {
+showConfirmAlert('真的不買給他了嗎？🥺', () => {
 const index = wishItems.indexOf(item);
 if (index >= 0) wishItems.splice(index, 1);
 renderWishlist();
 queueTripCloudSave();
 });
+document.getElementById('alert-cancel-btn').textContent = '再猶豫一下';
+document.getElementById('alert-primary-btn').textContent = '就是不想買了';
 }
 function getWishlistImageSrc(item) {
 return item.imageSrc || item.photoSrc || item.image || '';
@@ -11362,7 +11571,7 @@ const products = normalizeWishlistGiftProducts(item);
 if (!products.length) return renderWishlistTitle(item.title);
 return `<span class="wishlist-gift-products">${products.map((product, index) => {
 const imageSrc = getWishlistGiftProductImageSrc(product);
-return `<span class="wishlist-gift-product ${product.done ? 'is-done' : ''}"><button type="button" class="wishlist-gift-product-check btn-press-effect" aria-label="切換${escapeHtml(product.title)}完成狀態" aria-pressed="${product.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistGiftProduct(${itemKey}, ${index})">${product.done ? '✓' : ''}</button><span class="wishlist-gift-product-text">${renderWishlistTitle(product.title)}</span><button type="button" class="wishlist-gift-product-photo btn-press-effect" aria-label="${imageSrc ? '查看圖片' : '新增圖片'}" onclick="openWishlistGiftProductImage(event, ${itemKey}, ${index})">${imageSrc ? `<img src="${escapeHtml(resolveWishlistImageSrc(imageSrc))}" alt="${escapeHtml(product.title)}圖片" loading="eager" decoding="async">` : '📷'}</button><span class="wishlist-gift-product-qty" aria-label="${escapeHtml(product.title)}購買數量"><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, -1)">-</button><span class="wishlist-gift-product-qty-value">${getWishlistItemQty(product)}</span><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, 1)">+</button></span><input type="file" id="wishlist-gift-photo-input-${itemKey}-${index}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistGiftProductImage(${itemKey}, ${index}, event)"></span>`;
+return `<span class="wishlist-gift-product ${product.done ? 'is-done' : ''}"><button type="button" class="wishlist-gift-product-check btn-press-effect" aria-label="切換${escapeHtml(product.title)}完成狀態" aria-pressed="${product.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistGiftProduct(${itemKey}, ${index})">${product.done ? '✓' : ''}</button><span class="wishlist-gift-product-text">${renderWishlistTitle(product.title)}</span><button type="button" class="wishlist-gift-product-photo btn-press-effect" aria-label="${imageSrc ? '查看圖片' : '新增圖片'}" onclick="openWishlistGiftProductImage(event, ${itemKey}, ${index})">${imageSrc ? `<img src="${escapeHtml(resolveWishlistImageSrc(imageSrc))}" alt="${escapeHtml(product.title)}圖片" loading="eager" decoding="async">` : '<span class="wishlist-gift-product-photo-emoji">📷</span>'}</button><span class="wishlist-gift-product-qty" aria-label="${escapeHtml(product.title)}購買數量"><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, -1)">-</button><span class="wishlist-gift-product-qty-value">${getWishlistItemQty(product)}</span><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, 1)">+</button></span><input type="file" id="wishlist-gift-photo-input-${itemKey}-${index}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistGiftProductImage(${itemKey}, ${index}, event)"></span>`;
 }).join('')}</span>`;
 }
 function renderWishlistItemTitle(item, itemKey) {
@@ -11432,12 +11641,11 @@ const moreHint = items.length < 3 ? `<button type="button" class="wishlist-more-
 list.innerHTML = items.map(item => {
 const itemKey = wishItems.indexOf(item);
 const hasGiftProducts = itemUsesWishlistGiftProducts(item);
-return `<div class="wishlist-item ${item.done ? 'done' : ''} ${hasGiftProducts ? 'has-gift-products' : ''}" onclick="handleWishlistItemClick(event, ${itemKey})" oncontextmenu="event.preventDefault(); openWishlistActionMenu(${itemKey}, event.clientX, event.clientY)" onpointerdown="startWishlistActionPress(event, ${itemKey})" onpointermove="moveWishlistActionPress(event)" onpointerup="cancelWishlistActionPress()" onpointercancel="cancelWishlistActionPress()" onpointerleave="cancelWishlistActionPress()">
+return `<div class="wishlist-item ${item.done ? 'done' : ''} ${hasGiftProducts ? 'has-gift-products' : ''}" data-wishlist-key="${itemKey}" onclick="handleWishlistItemClick(event, ${itemKey})" oncontextmenu="event.preventDefault(); openWishlistActionMenu(${itemKey}, event.clientX, event.clientY)" onpointerdown="startWishlistActionPress(event, ${itemKey})" onpointermove="moveWishlistActionPress(event)" onpointerup="cancelWishlistActionPress()" onpointercancel="cancelWishlistActionPress()" onpointerleave="cancelWishlistActionPress()">
 ${renderWishlistStoreBadge(item)}
 <span class="wishlist-qty-control" aria-label="購買數量"><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, -1)">-</button><span class="wishlist-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, 1)">+</button></span>
 <button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${itemKey})">${item.done ? '✓' : ''}</button>
 <div class="wishlist-name"><span class="wishlist-name-text">${renderWishlistItemTitle(item, itemKey)}</span></div>
-<button type="button" class="wishlist-edit-btn btn-press-effect" aria-label="編輯品項" onclick="openWishlistItemEditor(event, ${itemKey})">編輯</button>
 <button type="button" class="wishlist-photo-btn ${getWishlistImageSrc(item) ? 'has-image' : ''} btn-press-effect" aria-label="${getWishlistImageSrc(item) ? '查看圖片' : '新增圖片'}" onclick="openWishlistImage(event, ${itemKey})">${getWishlistImageSrc(item) ? `<img src="${escapeHtml(resolveWishlistImageSrc(getWishlistImageSrc(item)))}" data-original-src="${escapeHtml(resolveWishlistImageSrc(getWishlistImageSrc(item)))}" alt="${escapeHtml(item.title)}圖片" loading="eager" decoding="async" onerror="handleWishlistImageError(this, ${itemKey})">` : '📷'}</button>
 <input type="file" id="wishlist-photo-input-${itemKey}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistImage(${itemKey}, event)">
 </div>`;
