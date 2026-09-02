@@ -5810,7 +5810,6 @@ let expenses = [];
 const REQUIRED_WISHLIST_ITEMS = [
 { id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
 { id: 104, category: '藥妝店', title: '無類固醇止癢膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
-{ id: 105, category: '藥妝店', title: 'Biore卸妝噴霧', done: false, imageSrc: 'wishlist-images/biore-cleansing-oil-mist.jpg' },
 { id: 107, category: '3coins', title: '對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
@@ -5875,7 +5874,6 @@ let wishItems = [
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false },
 { id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
 { id: 104, category: '藥妝店', title: '無類固醇止癢膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
-{ id: 105, category: '藥妝店', title: 'Biore卸妝噴霧', done: false, imageSrc: 'wishlist-images/biore-cleansing-oil-mist.jpg' },
 { id: 107, category: '3coins', title: '兒童對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
@@ -5946,7 +5944,7 @@ let currentWishlistConvenienceDraft = '';
 let wishlistCategoryEditMode = false;
 const DEFAULT_WISHLIST_CATEGORIES = ['3coins', '無印良品', CONVENIENCE_WISHLIST_PARENT, '藥妝店', '機場必買', '伴手禮'];
 const REMOVED_WISHLIST_CATEGORIES = ['Uniqlo'];
-const OBSOLETE_WISHLIST_TITLES = ['兒童視訊對講機', '兒童對講機(需手提行李)', '兒童對講機*需手提行李', '防撕裂廚房紙巾', '玻玻尿酸保濕眼膜'];
+const OBSOLETE_WISHLIST_TITLES = ['兒童視訊對講機', '兒童對講機(需手提行李)', '兒童對講機*需手提行李', '防撕裂廚房紙巾', '玻玻尿酸保濕眼膜', 'Biore卸妝噴霧', 'Biore卸妝噴霧油'];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家',
 'UNIQLO': 'Uniqlo',
@@ -5978,13 +5976,12 @@ let editingWishlistItemKey = null;
 function ensureRequiredWishlistItems() {
 let added = false;
 const beforeCount = wishItems.length;
-wishItems = wishItems.filter(item => !OBSOLETE_WISHLIST_TITLES.includes(item.title));
+wishItems = wishItems.filter(item => item.id !== 105 && !OBSOLETE_WISHLIST_TITLES.includes(item.title));
 if (wishItems.length !== beforeCount) added = true;
 wishItems.forEach(item => {
 const renamedWishlistItem = [
 { id: 103, oldTitle: '喉嚨殺菌消炎噴劑', newTitle: '喉嚨殺菌消炎劑' },
 { id: 104, oldTitle: '無類固醇止癢軟膏', newTitle: '無類固醇止癢膏' },
-{ id: 105, oldTitle: 'Biore卸妝噴霧油', newTitle: 'Biore卸妝噴霧' }
 ].find(entry => item.id === entry.id || (item.category === '藥妝店' && item.title === entry.oldTitle));
 if (renamedWishlistItem && item.title !== renamedWishlistItem.newTitle) {
 item.title = renamedWishlistItem.newTitle;
