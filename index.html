@@ -5682,7 +5682,6 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 325, category: '藥妝店', title: '濕疹藥膏', done: false, imageSrc: 'wishlist-images/eczema-ointment.png' },
 { id: 326, category: '藥妝店', title: '鐵&葉酸軟糖', done: false, imageSrc: 'wishlist-images/iron-folic-acid-gummy.png' },
 { id: 327, category: '藥妝店', title: '消水腫藥丸', done: false, imageSrc: 'wishlist-images/water-retention-supplement.png' },
-{ id: 328, category: '藥妝店', title: '卸妝膏', done: false, imageSrc: 'wishlist-images/duo-cleansing-balm.png' },
 { id: 329, category: '藥妝店', title: '速攻藍莓', done: false, imageSrc: 'wishlist-images/dhc-blueberry-supplement.png' },
 { id: 330, category: '藥妝店', title: '腳跟保濕棒', done: false, imageSrc: 'wishlist-images/heel-moisturizing-stick.png' },
 { id: 331, category: '藥妝店', title: 'Tomica小車', done: false, imageSrc: 'wishlist-images/tomica-mini-car.png' },
@@ -5710,7 +5709,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 354, category: '無印良品', title: '精華棉片', done: false, imageSrc: 'wishlist-images/muji-essence-pads.jpeg' },
 { id: 355, category: '無印良品', title: '可可夾心餅', done: false, imageSrc: 'wishlist-images/muji-cocoa-sandwich-biscuit.avif' },
 { id: 356, category: '超商', title: '森永燒布丁', done: false, imageSrc: 'wishlist-images/convenience-morinaga-baked-pudding.jpg' },
-{ id: 357, category: '藥妝店', title: 'DOU卸妝膏', done: false, imageSrc: 'wishlist-images/drugstore-dou-cleansing-balm.jpg' },
+{ id: 357, category: '藥妝店', title: 'DUO卸妝膏', done: false, imageSrc: 'wishlist-images/drugstore-dou-cleansing-balm.jpg' },
 { id: 358, category: 'Lawson', title: '砂糖吐司脆餅', done: false, imageSrc: 'wishlist-images/lawson-sugar-toast-rusk.avif' },
 { id: 359, category: '7-11', title: '魷魚仙貝', done: false, imageSrc: 'wishlist-images/seven-eleven-squid-rice-cracker.avif' },
 { id: 360, category: 'Lawson', title: '蛤蜊味噌湯', done: false, imageSrc: 'wishlist-images/lawson-clam-miso-soup.avif' },
@@ -5767,12 +5766,13 @@ let editingWishlistItemKey = null;
 function ensureRequiredWishlistItems() {
 let added = false;
 const beforeCount = wishItems.length;
-wishItems = wishItems.filter(item => item.id !== 105 && !OBSOLETE_WISHLIST_TITLES.includes(item.title));
+wishItems = wishItems.filter(item => item.id !== 105 && item.id !== 328 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && item.title === '卸妝膏'));
 if (wishItems.length !== beforeCount) added = true;
 wishItems.forEach(item => {
 const renamedWishlistItem = [
 { id: 103, oldTitle: '喉嚨殺菌消炎噴劑', newTitle: '喉嚨殺菌消炎劑' },
 { id: 104, oldTitle: '無類固醇止癢軟膏', newTitle: '無類固醇止癢膏' },
+{ id: 357, oldTitle: 'DOU卸妝膏', newTitle: 'DUO卸妝膏' },
 ].find(entry => item.id === entry.id || (item.category === '藥妝店' && item.title === entry.oldTitle));
 if (renamedWishlistItem && item.title !== renamedWishlistItem.newTitle) {
 item.title = renamedWishlistItem.newTitle;
@@ -5791,6 +5791,30 @@ added = true;
 }
 }
 });
+const drugstoreDedupTitles = new Set(['喉嚨殺菌消炎劑', '無類固醇止癢膏']);
+const drugstoreKeepers = new Map();
+const drugstoreDuplicates = [];
+wishItems.forEach(item => {
+if (item.category !== '藥妝店' || !drugstoreDedupTitles.has(item.title)) return;
+const keeper = drugstoreKeepers.get(item.title);
+if (!keeper) {
+drugstoreKeepers.set(item.title, item);
+return;
+}
+if (item.done && !keeper.done) keeper.done = true;
+if (!getWishlistImageSrc(keeper) && getWishlistImageSrc(item)) keeper.imageSrc = getWishlistImageSrc(item);
+if (!keeper.productUrl && item.productUrl) keeper.productUrl = item.productUrl;
+drugstoreDuplicates.push(item);
+});
+if (drugstoreDuplicates.length) {
+wishItems = wishItems.filter(item => !drugstoreDuplicates.includes(item));
+added = true;
+}
+const obsoleteDrugstoreCleansingBalms = wishItems.filter(item => item.category === '藥妝店' && item.title === '卸妝膏');
+if (obsoleteDrugstoreCleansingBalms.length) {
+wishItems = wishItems.filter(item => !obsoleteDrugstoreCleansingBalms.includes(item));
+added = true;
+}
 const legacyAtMilkTeaItems = wishItems.filter(item => item.category === '全家' && (item.title === 'AT奶茶冰沙' || item.title === 'AT奶茶冰沙*冷藏櫃' || item.title === '奶茶冰沙*冷藏櫃'));
 if (legacyAtMilkTeaItems.length > 1) {
 const canonicalAtMilkTea = legacyAtMilkTeaItems.find(item => item.title === '奶茶冰沙*冷藏櫃') || legacyAtMilkTeaItems[0];
