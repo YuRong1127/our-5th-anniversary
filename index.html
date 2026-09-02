@@ -1025,6 +1025,27 @@ padding-right: 0;
 box-sizing: border-box;
 scrollbar-gutter: stable;
 }
+#details-modal {
+align-items: center;
+overflow-y: auto;
+padding-top: max(10px, calc(env(safe-area-inset-top) + 8px));
+padding-bottom: max(10px, calc(env(safe-area-inset-bottom) + 8px));
+}
+#details-modal .modal-container {
+width: 92%;
+max-width: 400px;
+}
+#details-modal .modal-content {
+max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+padding-top: 16px;
+padding-bottom: 16px;
+}
+#details-modal .modal-scroll-area {
+padding-left: 0;
+padding-right: 0;
+box-sizing: border-box;
+scrollbar-gutter: stable;
+}
 .panel-modal-content { height: auto; max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); border-radius: 35px; background: #fdfaf8; }
 #itinerary-detail-modal {
 padding-top: max(22px, calc(env(safe-area-inset-top) + 14px));
@@ -4998,6 +5019,31 @@ line-height: 1.2;
 }
 }
 
+/* Keep the expense-details frame identical to the wallet frame on compact screens. */
+@media (max-width: 390px), (max-height: 700px) {
+#details-modal {
+align-items: center;
+padding-top: max(8px, calc(env(safe-area-inset-top) + 6px));
+padding-bottom: max(8px, calc(env(safe-area-inset-bottom) + 6px));
+}
+#details-modal .modal-container {
+width: 96%;
+max-width: 400px;
+padding: 14px 10px 10px;
+}
+#details-modal .modal-content {
+max-height: calc(100vh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+border-radius: 24px;
+padding: 14px 12px;
+}
+}
+/* Wallet and expense details share one fixed, scrollable panel frame. */
+#wallet-modal .modal-content,
+#details-modal .modal-content {
+height: min(82vh, 640px);
+max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+box-sizing: border-box;
+}
 /* Confirmation dialog: Confirm wider, Cancel narrower, both labels centered. */
 #alert-modal .alert-actions > .alert-cancel-btn {
   flex: 0 0 112px !important;
@@ -11146,7 +11192,6 @@ wishlistLongPressTimer = null;
 wishlistLongPressPointer = null;
 }
 function startWishlistActionPress(event, key) {
-if (!window.__isPwaAppMode) return;
 if (event.target.closest('button, input, label')) return;
 const item = getWishlistItemByKey(key);
 if (!item) return;
@@ -11518,7 +11563,7 @@ const moreHint = items.length < 3 ? `<button type="button" class="wishlist-more-
 list.innerHTML = items.map(item => {
 const itemKey = wishItems.indexOf(item);
 const hasGiftProducts = itemUsesWishlistGiftProducts(item);
-return `<div class="wishlist-item ${item.done ? 'done' : ''} ${hasGiftProducts ? 'has-gift-products' : ''}" data-wishlist-key="${itemKey}" onclick="handleWishlistItemClick(event, ${itemKey})" oncontextmenu="if (window.__isPwaAppMode) { event.preventDefault(); openWishlistActionMenu(${itemKey}, event.clientX, event.clientY); }" onpointerdown="startWishlistActionPress(event, ${itemKey})" onpointermove="moveWishlistActionPress(event)" onpointerup="cancelWishlistActionPress()" onpointercancel="cancelWishlistActionPress()" onpointerleave="cancelWishlistActionPress()">
+return `<div class="wishlist-item ${item.done ? 'done' : ''} ${hasGiftProducts ? 'has-gift-products' : ''}" data-wishlist-key="${itemKey}" onclick="handleWishlistItemClick(event, ${itemKey})" oncontextmenu="event.preventDefault(); openWishlistActionMenu(${itemKey}, event.clientX, event.clientY);" onpointerdown="startWishlistActionPress(event, ${itemKey})" onpointermove="moveWishlistActionPress(event)" onpointerup="cancelWishlistActionPress()" onpointercancel="cancelWishlistActionPress()" onpointerleave="cancelWishlistActionPress()">
 ${renderWishlistStoreBadge(item)}
 <span class="wishlist-qty-control" aria-label="購買數量"><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, -1)">-</button><span class="wishlist-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, 1)">+</button></span>
 <button type="button" class="wishlist-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${item.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${itemKey})">${item.done ? '✓' : ''}</button>
