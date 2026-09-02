@@ -251,35 +251,6 @@ color: var(--heart-pink);
 box-shadow: inset 0 0 0 2px rgba(209,122,109,.28);
 transition: box-shadow .18s ease, background .18s ease;
 }
-.day-drag-ghost {
-position: fixed;
-left: 0;
-top: 0;
-z-index: 2500;
-pointer-events: none;
-min-width: 62px;
-padding: 10px 0;
-box-sizing: border-box;
-border-radius: 16px;
-text-align: center;
-background: #fffdfb;
-color: var(--heart-pink);
-font-weight: 900;
-box-shadow: 0 0 0 3px rgba(209,122,109,.14);
-transform: none;
-transition: box-shadow .16s ease;
-will-change: transform;
-}
-.day-drag-ghost small {
-display: block;
-font-size: .72rem;
-margin-bottom: 2px;
-}
-.day-drag-ghost > div {
-white-space: nowrap;
-line-height: 1.1;
-text-align: center;
-}
 body.day-dragging {
 cursor: grabbing;
 user-select: none;
@@ -963,10 +934,6 @@ background: rgba(209,122,109,.96);
 .modal-content { width: 100%; max-height: 86vh; overflow: hidden; display: flex; flex-direction: column; padding: 30px 20px; border: 1px solid #f9f0ed; border-radius: 30px; background: var(--modal-bg); box-shadow: 0 10px 40px rgba(141,110,99,.1); }
 .modal-scroll-area { min-height: 0; flex: 1; overflow-y: auto; padding: 5px; -webkit-overflow-scrolling: touch; }
 .modal-title { margin-bottom: 15px; color: var(--main-brown); font-size: 1.4rem; font-weight: 900; text-align: center; }
-.wishlist-title-basket {
-display: inline-block;
-transform: translateY(-2px);
-}
 .itinerary-detail-title {
 display: flex;
 align-items: center;
@@ -1098,11 +1065,7 @@ justify-content: center;
 #settle-content > div,
 #stats-content > div { width: 100%; }
 .settle-panel-content { display: flex; align-items: center; justify-content: center; text-align: center; }
-.settle-summary-title { color: var(--main-brown); font-size: 1.08rem; font-weight: 900; line-height: 1.7; }
 .settle-summary-subtitle { margin-top: 4px; color: #6d8f6b; font-size: 1.2rem; font-weight: 900; }
-.settle-summary-icon { margin-top: 8px; font-size: 2.4rem; }
-.stats-summary { text-align: center; }
-.stats-label { color: #aaa; font-size: .75rem; font-weight: 900; }
 .empty-state {
 position: relative;
 text-align: center;
@@ -1392,7 +1355,6 @@ font-weight: 900;
 line-height: 1.35;
 box-shadow: 0 4px 12px rgba(141,110,99,.06);
 }
-.boundary-nowrap { white-space: nowrap; }
 #work-modal .modal-btn-primary,
 #finish-modal .modal-btn-primary {
 display: inline-flex;
@@ -1631,9 +1593,6 @@ overflow: visible;
   font-size: .84rem;
   line-height: 1;
   pointer-events: none;
-}
-.route-schedule-popup-separator {
-  display: none;
 }
 .alert-actions .modal-btn-primary {
 flex: 1;
@@ -2225,7 +2184,6 @@ color: #8f817a;
 text-align: center;
 align-self: center;
 }
-.fund-balance-label { display: none; }
 .fund-balance-main { margin-top: 0; color: #8f817a; font-size: .78rem; font-weight: 900; white-space: nowrap; }
 .fund-balance-sub { display: none; }
 .topup-area { display: none; }
@@ -2359,12 +2317,6 @@ color: #b87568;
 font-size: .98rem;
 font-weight: 900;
 line-height: 24px;
-}
-.flight-ticket-sub {
-margin-top: 3px;
-color: #b79a91;
-font-size: .72rem;
-font-weight: 800;
 }
 .flight-ticket-fare {
 order: 1;
@@ -2540,31 +2492,6 @@ font-weight: 900;
 text-align: center;
 word-break: break-word;
 }
-.flight-info-line {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 8px;
-padding: 6px 0;
-border-bottom: 1px dashed #eadbd4;
-font-size: .82rem;
-font-weight: 800;
-line-height: 1.35;
-}
-.flight-info-line:last-child {
-border-bottom: 0;
-}
-.flight-info-name {
-color: #8d6e63;
-white-space: nowrap;
-}
-.flight-info-data {
-min-width: 0;
-color: #6f5952;
-font-weight: 900;
-text-align: right;
-word-break: break-word;
-}
 .flight-ticket-view .flight-priority-badge {
 margin-left: 4px;
 padding: 2px 6px;
@@ -2695,14 +2622,6 @@ font-size: .86rem;
 background: #fff7cf;
 color: #8d6e63;
 box-shadow: inset 0 -8px 0 rgba(247,216,111,.42);
-}
-.note-color-btn::before {
-content: '';
-width: 18px;
-height: 18px;
-border-radius: 50%;
-background: conic-gradient(#c86f77, #d98b72, #d6b55a, #6d8f6b, #5f9c92, #6f7fa6, #9a7fa6, #c86f77);
-box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(141,110,99,.14);
 }
 .note-custom-color-btn {
 position: relative;
@@ -2952,39 +2871,6 @@ font-weight: inherit;
 .note-block {
 margin-bottom: 8px;
 }
-.note-block-actions {
-display: flex;
-justify-content: flex-end;
-margin-top: 4px;
-}
-.note-toolbar {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-margin-top: 8px;
-padding-top: 12px;
-border-top: 1px dashed #f0e2dd;
-}
-.note-after-image-hint { display: none; }
-.note-image-btn {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-gap: 5px;
-border-color: #f2ded8;
-background: #fffaf7;
-color: #c07d6d;
-font-weight: 900;
-}
-.note-remove-btn {
-border: 0;
-background: transparent;
-color: #e57373;
-font-size: .78rem;
-font-weight: 900;
-text-decoration: underline;
-}
 .photo-preview-item {
 position: relative;
 overflow: visible;
@@ -3103,25 +2989,7 @@ font-size: .82rem;
 font-weight: 900;
 box-shadow: 0 6px 14px rgba(141,110,99,.22);
 }
-.note-image-drag-hint {
-display: none !important;
-}
 body:not(.edit-mode) .photo-preview-item {
-cursor: zoom-in;
-}
-.note-inline-image {
-margin: 12px 0 14px;
-overflow: hidden;
-border: 1px solid #f0e6e2;
-border-radius: 18px;
-background: #fff;
-box-shadow: 0 8px 18px rgba(141,110,99,.08);
-}
-.note-inline-image img {
-display: block;
-width: 100%;
-max-height: 320px;
-object-fit: cover;
 cursor: zoom-in;
 }
 .note-block[data-block-type="image"] {
@@ -3522,32 +3390,9 @@ font-size: .78rem;
 font-weight: 900;
 line-height: 1;
 }
-.wishlist-category-edit-btn {
-position: absolute;
-right: 8px;
-top: -24px;
-z-index: 2;
-height: 24px;
-border: 0;
-border-radius: 0;
-padding: 0 2px;
-background: transparent;
-color: #b99d95;
-font-size: .7rem;
-font-weight: 900;
-text-decoration: underline;
-text-underline-offset: 3px;
-box-shadow: none;
-}
-.wishlist-category-edit-btn.is-active {
-background: transparent;
-color: var(--heart-pink);
-}
 .prep-tabs .wishlist-tab { min-height: 38px; padding: 0 6px; border-radius: 12px; background: rgba(255,255,255,.68); color: #a98e87; font-size: .75rem; line-height: 1.15; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(240,230,226,.72); }
 .wishlist-tab.active { background: #fff; color: var(--heart-pink); box-shadow: 0 4px 12px rgba(141,110,99,.12), inset 0 0 0 1px rgba(209,122,109,.08); }
 .wishlist-add-category-tab { border: 1px dashed #e5c8bf; background: rgba(255,250,247,.74); color: #b87568; }
-.wishlist-category-edit-tab { background: rgba(255,255,255,.72); color: #b89d95; }
-.wishlist-tabs.is-managing .wishlist-category-edit-tab { background: #fff; color: var(--heart-pink); box-shadow: 0 3px 10px rgba(141,110,99,.08); }
 .wishlist-category-form {
 display: none;
 gap: 8px;
@@ -3607,20 +3452,6 @@ color: var(--main-brown);
 font-size: 1.05rem;
 font-weight: 900;
 line-height: 1.1;
-}
-.wishlist-form-close {
-position: absolute;
-right: -2px;
-top: 50%;
-transform: translateY(-50%);
-width: 28px;
-height: 28px;
-border: 0;
-border-radius: 50%;
-background: transparent;
-color: #d17a6d;
-font-size: 1.25rem;
-line-height: 1;
 }
 .wishlist-form-row {
 display: grid;
@@ -3838,22 +3669,6 @@ background: #fff8f5;
 }
 .wishlist-subtabs.show { display: grid; }
 .wishlist-subtabs.is-hidden { display: none; }
-.wishlist-subtab {
-height: 28px;
-min-width: 0;
-border: 0;
-border-radius: 11px;
-background: transparent;
-color: #b79a91;
-font-size: .75rem;
-font-weight: 900;
-white-space: nowrap;
-}
-.wishlist-subtab.active {
-background: #fff;
-color: var(--heart-pink);
-box-shadow: 0 3px 9px rgba(141,110,99,.08), inset 0 0 0 1px rgba(209,122,109,.08);
-}
 .wishlist-input { flex: 1; min-width: 0; border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 14px; outline: 0; background: #fff; color: #705b55; font-size: .92rem; }
 .wishlist-input::placeholder { color: #cbbcb7; font-size: .82rem; }
 .route-mode-grid {
@@ -4938,22 +4753,13 @@ line-height: 1.2;
 width: 28px;
 height: 28px;
 }
-.docs-hint { margin: -4px 2px 12px; color: #b79a91; font-size: .78rem; font-weight: 800; line-height: 1.55; text-align: center; }
 .docs-security-note { margin: -6px 0 12px; color: #b79a91; font-size: .72rem; font-weight: 800; text-align: center; }
-.docs-add-form { justify-content: center; margin: -2px 0 16px; }
-.docs-add-btn { width: auto; min-width: 104px; height: 36px; flex: 0 0 auto; padding: 0 14px; border: 1px solid #f0d9d2; border-radius: 999px; background: #fff5f0; color: #c47b72; font-size: .78rem; display: inline-flex; align-items: center; justify-content: center; gap: 5px; box-shadow: none; }
-.docs-add-btn .docs-add-plus { font-size: .98rem; line-height: 1; }
 .docs-list .wishlist-item { grid-template-columns: 42px minmax(0,1fr) 34px; cursor: pointer; position: relative; }
 .docs-thumb { width: 34px; height: 34px; border: 1px solid #efd9d2; border-radius: 12px; background: #fff8f4; color: #b87568; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; pointer-events: none; }
 .docs-thumb.has-image { padding: 0; }
 .docs-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .docs-file-mark { font-size: .58rem; font-weight: 900; letter-spacing: 0; color: #b87568; }
 .docs-menu-wrap { position: relative; }
-.docs-menu-btn { width: 32px; height: 32px; border: 0; border-radius: 50%; background: #fff5f0; color: #c47b72; font-size: 1.2rem; font-weight: 900; line-height: 1; display: inline-flex; align-items: center; justify-content: center; }
-.docs-menu-popover { position: absolute; right: 0; top: 38px; z-index: 5; min-width: 94px; padding: 6px; border: 1px solid #f0d9d2; border-radius: 14px; background: rgba(255,253,251,.98); box-shadow: 0 4px 12px rgba(141,110,99,.07); display: none; }
-.docs-menu-wrap.open .docs-menu-popover { display: grid; gap: 4px; }
-.docs-menu-popover button { border: 0; border-radius: 10px; background: transparent; color: #8d6e63; font-size: .78rem; font-weight: 900; padding: 8px 10px; text-align: left; }
-.docs-menu-popover button:active { background: #fff1eb; }
 .wishlist-photo-btn {
 width: 32px;
 height: 32px;
@@ -5076,7 +4882,6 @@ box-shadow: inset 0 3px 8px rgba(141,110,99,.13);
 opacity: .86;
 }
 .auth-cancel-btn { border: 0; background: transparent; color: #b8796f; text-decoration: underline; font-size: .76rem; font-weight: 700; }
-.kaomoji-fix { display: inline-block; margin-left: 2px; transform: translateY(-2px); white-space: nowrap; letter-spacing: 0; }
 .hidden-input { position: absolute; opacity: 0; pointer-events: none; }
 @media (min-width: 768px) {
 main,
@@ -5443,7 +5248,6 @@ header {
 @media (max-width: 520px) {
   .note-image-preview-toolbar { width: min(92vw, 420px); gap: 2px; padding: 5px; }
   .note-preview-tool { min-width: 34px; width: 34px; padding: 0; }
-  .note-preview-tool-label { display: none; }
   .note-preview-toolbar-separator { margin: 0 1px; }
 }
 </style>
@@ -5872,66 +5676,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false },
-{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
-{ id: 104, category: '藥妝店', title: '無類固醇止癢膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
-{ id: 107, category: '3coins', title: '兒童對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
-{ id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
-{ id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
-{ id: 310, category: '3coins', title: '兩用油瓶460ml', done: false, imageSrc: 'wishlist-images/threecoins-2way-oil-bottle-460ml.jpg' },
-{ id: 311, category: '無印良品', title: '鋁製伸縮衣架', done: false, imageSrc: 'wishlist-images/muji-aluminum-telescopic-hanger.jpg' },
-{ id: 312, category: '3coins', title: '壓縮機&壓縮袋', done: false, imageSrc: 'wishlist-images/threecoins-compression-pump-bag.jpg' },
-{ id: 313, category: '無印良品', title: '藥用BB霜#03', done: false, imageSrc: 'wishlist-images/muji-bb-cream-03-instagram.jpg' },
-{ id: 314, category: '無印良品', title: '精油護手霜', done: false, imageSrc: 'wishlist-images/muji-essential-oil-hand-cream.png' },
-{ id: 315, category: '無印良品', title: '頭皮護理液', done: false, imageSrc: 'wishlist-images/muji-scalp-care-essence.jpg' },
-{ id: 334, category: '無印良品', title: '鹽味巧克力派', done: false, imageSrc: 'wishlist-images/muji-salty-chocolate-stick-pie.jpg' },
-{ id: 316, category: '7-11', title: '抹茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-smoothie.jpg' },
-{ id: 317, category: '藥妝店', title: '溫泡碳酸入浴錠', done: false, imageSrc: 'wishlist-images/onpo-carbonated-bath-tablets.png', productUrl: 'https://tw.buy.yahoo.com/gdsale/%E6%97%A5%E6%9C%AC%E6%BA%AB%E6%B3%A1-%E7%A2%B3%E9%85%B8%E5%85%A5%E6%B5%B4%E9%8C%A040gx20%E9%8C%A0-2%E6%AC%BE%E4%BB%BB%E9%81%B8-11507543.html' },
-{ id: 318, category: '藥妝店', title: 'hydra-EX面膜', done: false, imageSrc: 'wishlist-images/hydra-ex-mask.png' },
-{ id: 319, category: '藥妝店', title: '玻尿酸保濕眼膜', done: false, imageSrc: 'wishlist-images/lululun-hydra-eye-filler.png' },
-{ id: 320, category: '藥妝店', title: '指緣角質藥膏', done: false, imageSrc: 'wishlist-images/cuticle-keratin-ointment.png' },
-{ id: 321, category: '超商', title: '葡萄軟糖', done: false, imageSrc: 'wishlist-images/convenience-grape-gummy.png' },
-{ id: 322, category: '全家', title: '抹茶白巧克力餅', done: false, imageSrc: 'wishlist-images/familymart-matcha-white-chocolate-cookie.jpg' },
-{ id: 323, category: '藥妝店', title: '加濕蒸氣口罩', done: false, imageSrc: 'wishlist-images/humidifying-steam-mask.png' },
-{ id: 324, category: '藥妝店', title: '睫毛精華液', done: false, imageSrc: 'wishlist-images/eyelash-serum.png' },
-{ id: 325, category: '藥妝店', title: '濕疹藥膏', done: false, imageSrc: 'wishlist-images/eczema-ointment.png' },
-{ id: 326, category: '藥妝店', title: '鐵&葉酸軟糖', done: false, imageSrc: 'wishlist-images/iron-folic-acid-gummy.png' },
-{ id: 327, category: '藥妝店', title: '消水腫藥丸', done: false, imageSrc: 'wishlist-images/water-retention-supplement.png' },
-{ id: 328, category: '藥妝店', title: '卸妝膏', done: false, imageSrc: 'wishlist-images/duo-cleansing-balm.png' },
-{ id: 329, category: '藥妝店', title: '速攻藍莓', done: false, imageSrc: 'wishlist-images/dhc-blueberry-supplement.png' },
-{ id: 330, category: '藥妝店', title: '腳跟保濕棒', done: false, imageSrc: 'wishlist-images/heel-moisturizing-stick.png' },
-{ id: 331, category: '藥妝店', title: 'Tomica小車', done: false, imageSrc: 'wishlist-images/tomica-mini-car.png' },
-{ id: 332, category: '藥妝店', title: '鼻下保濕棒', done: false, imageSrc: 'wishlist-images/under-nose-moisturizing-stick.png' },
-{ id: 333, category: '藥妝店', title: '大正感冒藥', done: false, imageSrc: 'wishlist-images/taisho-cold-medicine.png' },
-{ id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
-{ id: 336, category: '全家', title: '奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
-{ id: 337, category: '7-11', title: '抹茶軟餅乾', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-soft-cookie.webp' },
-{ id: 338, category: '無印良品', title: '水凝保濕乳霜', done: false, imageSrc: 'wishlist-images/muji-hydrating-gel-cream-instagram.jpg' },
-{ id: 339, category: '7-11', title: '洋蔥酸奶薯條', done: false, imageSrc: 'wishlist-images/seven-eleven-onion-yogurt-fries.webp' },
-{ id: 340, category: '全家', title: '蟹肉棒', done: false, imageSrc: 'wishlist-images/familymart-crab-stick.webp' },
-{ id: 341, category: '藥妝店', title: '醫療級眼罩', done: false, imageSrc: 'wishlist-images/medical-eye-mask.jpg' },
-{ id: 342, category: '7-11', title: '濕潤巧克脆球', done: false, imageSrc: 'wishlist-images/seven-eleven-moist-choco-crunch.jpg' },
-{ id: 343, category: '超商', title: '抹茶味覺糖', done: false, imageSrc: 'wishlist-images/convenience-uha-matcha-gummy.jpg' },
-{ id: 344, category: '超商', title: '生起司包', done: false, imageSrc: 'wishlist-images/convenience-cheese-wrap.jpg' },
-{ id: 345, category: '超商', title: '皇家卡士達布丁', done: false, imageSrc: 'wishlist-images/convenience-royal-custard-pudding.jpg' },
-{ id: 346, category: '超商', title: '含咖啡因提神飲', done: false, imageSrc: 'wishlist-images/convenience-caffeinated-energy-drink.jpg' },
-{ id: 347, category: '超商', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' },
-{ id: 348, category: '藥妝店', title: 'DHC GABA', done: false, imageSrc: 'wishlist-images/dhc-gaba.webp' },
-{ id: 349, category: '藥妝店', title: '命之母生理期', done: false, imageSrc: 'wishlist-images/inochi-no-haha-period.jpg' },
-{ id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '小罐DUO(紅色)、三重限定吉伊卡哇', done: false },
-{ id: 351, category: '7-11', title: '本格紅茶', done: false, imageSrc: 'wishlist-images/seven-eleven-honkaku-tea.jpg' },
-{ id: 352, category: '7-11', title: '芝士漢堡排', done: false, imageSrc: 'wishlist-images/seven-eleven-cheese-hamburg.jpeg' },
-{ id: 353, category: '無印良品', title: '四合一面膜', done: false, imageSrc: 'wishlist-images/muji-all-in-one-mask.jpg' },
-{ id: 354, category: '無印良品', title: '精華棉片', done: false, imageSrc: 'wishlist-images/muji-essence-pads.jpeg' },
-{ id: 355, category: '無印良品', title: '可可夾心餅', done: false, imageSrc: 'wishlist-images/muji-cocoa-sandwich-biscuit.avif' },
-{ id: 356, category: '超商', title: '森永燒布丁', done: false, imageSrc: 'wishlist-images/convenience-morinaga-baked-pudding.jpg' },
-{ id: 357, category: '藥妝店', title: 'DOU卸妝膏', done: false, imageSrc: 'wishlist-images/drugstore-dou-cleansing-balm.jpg' },
-{ id: 358, category: 'Lawson', title: '砂糖吐司脆餅', done: false, imageSrc: 'wishlist-images/lawson-sugar-toast-rusk.avif' },
-{ id: 359, category: '7-11', title: '魷魚仙貝', done: false, imageSrc: 'wishlist-images/seven-eleven-squid-rice-cracker.avif' },
-{ id: 360, category: 'Lawson', title: '蛤蜊味噌湯', done: false, imageSrc: 'wishlist-images/lawson-clam-miso-soup.avif' },
-{ id: 361, category: '7-11', title: '夏威夷豆巧', done: false, imageSrc: 'wishlist-images/seven-eleven-macadamia-chocolate.avif' },
-{ id: 362, category: '7-11', title: '炭烤鹽雞腿', done: false, imageSrc: 'wishlist-images/seven-eleven-charcoal-salted-chicken-thigh.jpg' },
-{ id: 363, category: '藥妝店', title: '足跟美容液', done: false, imageSrc: 'wishlist-images/drugstore-heel-beauty-lotion.jpg' },
-{ id: 364, category: 'Lawson', title: '蜂蜜蛋糕', done: false, imageSrc: 'wishlist-images/lawson-honey-castella.jpg' }
+...REQUIRED_WISHLIST_ITEMS.map(item => ({ ...item }))
 ];
 const CONVENIENCE_WISHLIST_PARENT = '超商';
 const CONVENIENCE_WISHLIST_CATEGORIES = ['全家', '7-11', 'Lawson'];
