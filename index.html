@@ -4457,6 +4457,10 @@ height: 100%;
 object-fit: cover;
 display: block;
 }
+#wishlist-list.is-gift-list .wishlist-gift-product-photo-space {
+width: 20px;
+height: 20px;
+}
 #wishlist-list.is-gift-list .wishlist-gift-product-photo-emoji {
 display: flex;
 align-items: center;
@@ -4582,8 +4586,12 @@ overflow: hidden;
 }
 .wishlist-action-menu.show {
 display: grid;
-grid-template-columns: repeat(2, minmax(0, 1fr));
+grid-template-rows: repeat(2, minmax(0, 1fr));
 gap: 0;
+}
+#wishlist-list.is-gift-list .wishlist-action-menu.show {
+grid-template-rows: none;
+grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .wishlist-action-menu button {
 height: 100%;
@@ -4596,9 +4604,13 @@ font-size: .98rem;
 cursor: pointer;
 }
 .wishlist-action-menu button + button {
-border-left: 1px solid rgba(225, 194, 185, .72);
+border-top: 1px solid rgba(225, 194, 185, .72);
 background: rgba(229, 163, 151, .92);
 color: #fff;
+}
+#wishlist-list.is-gift-list .wishlist-action-menu button + button {
+border-top: 0;
+border-left: 1px solid rgba(225, 194, 185, .72);
 }
 .wishlist-action-menu button:active,
 .wishlist-action-menu button:hover {
@@ -11517,7 +11529,8 @@ const products = normalizeWishlistGiftProducts(item);
 if (!products.length) return renderWishlistTitle(item.title);
 return `<span class="wishlist-gift-products">${products.map((product, index) => {
 const imageSrc = getWishlistGiftProductImageSrc(product);
-return `<span class="wishlist-gift-product ${product.done ? 'is-done' : ''}"><button type="button" class="wishlist-gift-product-check btn-press-effect" aria-label="切換${escapeHtml(product.title)}完成狀態" aria-pressed="${product.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistGiftProduct(${itemKey}, ${index})">${product.done ? '✓' : ''}</button><span class="wishlist-gift-product-text">${renderWishlistTitle(product.title)}</span><button type="button" class="wishlist-gift-product-photo btn-press-effect" aria-label="${imageSrc ? '查看圖片' : '新增圖片'}" onclick="openWishlistGiftProductImage(event, ${itemKey}, ${index})">${imageSrc ? `<img src="${escapeHtml(resolveWishlistImageSrc(imageSrc))}" alt="${escapeHtml(product.title)}圖片" loading="eager" decoding="async">` : '<span class="wishlist-gift-product-photo-emoji">📷</span>'}</button><span class="wishlist-gift-product-qty" aria-label="${escapeHtml(product.title)}購買數量"><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, -1)">-</button><span class="wishlist-gift-product-qty-value">${getWishlistItemQty(product)}</span><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, 1)">+</button></span><input type="file" id="wishlist-gift-photo-input-${itemKey}-${index}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistGiftProductImage(${itemKey}, ${index}, event)"></span>`;
+const photoButton = imageSrc ? `<button type="button" class="wishlist-gift-product-photo btn-press-effect" aria-label="查看圖片" onclick="openWishlistGiftProductImage(event, ${itemKey}, ${index})"><img src="${escapeHtml(resolveWishlistImageSrc(imageSrc))}" alt="${escapeHtml(product.title)}圖片" loading="eager" decoding="async"></button>` : '<span class="wishlist-gift-product-photo-space" aria-hidden="true"></span>';
+return `<span class="wishlist-gift-product ${product.done ? 'is-done' : ''}"><button type="button" class="wishlist-gift-product-check btn-press-effect" aria-label="切換${escapeHtml(product.title)}完成狀態" aria-pressed="${product.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistGiftProduct(${itemKey}, ${index})">${product.done ? '✓' : ''}</button><span class="wishlist-gift-product-text">${renderWishlistTitle(product.title)}</span>${photoButton}<span class="wishlist-gift-product-qty" aria-label="${escapeHtml(product.title)}購買數量"><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, -1)">-</button><span class="wishlist-gift-product-qty-value">${getWishlistItemQty(product)}</span><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, 1)">+</button></span><input type="file" id="wishlist-gift-photo-input-${itemKey}-${index}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistGiftProductImage(${itemKey}, ${index}, event)"></span>`;
 }).join('')}</span>`;
 }
 function renderWishlistItemTitle(item, itemKey) {
@@ -13443,5 +13456,3 @@ function speakJapaneseText(button) {
 </script>
 </body>
 </html>
-
-
