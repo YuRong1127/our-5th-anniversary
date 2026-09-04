@@ -5695,7 +5695,6 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 326, category: '藥妝店', title: '鐵&葉酸軟糖', done: false, imageSrc: 'wishlist-images/iron-folic-acid-gummy.png' },
 { id: 327, category: '藥妝店', title: '消水腫藥丸', done: false, imageSrc: 'wishlist-images/water-retention-supplement.png' },
 { id: 329, category: '藥妝店', title: '速攻藍莓', done: false, imageSrc: 'wishlist-images/dhc-blueberry-supplement.png' },
-{ id: 330, category: '藥妝店', title: '腳跟保濕棒', done: false, imageSrc: 'wishlist-images/heel-moisturizing-stick.png' },
 { id: 331, category: '藥妝店', title: 'Tomica小車', done: false, imageSrc: 'wishlist-images/tomica-mini-car.png' },
 { id: 332, category: '藥妝店', title: '鼻下保濕棒', done: false, imageSrc: 'wishlist-images/under-nose-moisturizing-stick.png' },
 { id: 333, category: '藥妝店', title: '大正感冒藥', done: false, imageSrc: 'wishlist-images/taisho-cold-medicine.png' },
@@ -5778,7 +5777,7 @@ let editingWishlistItemKey = null;
 function ensureRequiredWishlistItems() {
 let added = false;
 const beforeCount = wishItems.length;
-wishItems = wishItems.filter(item => item.id !== 105 && item.id !== 328 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && item.title === '卸妝膏'));
+wishItems = wishItems.filter(item => item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒')));
 if (wishItems.length !== beforeCount) added = true;
 wishItems.forEach(item => {
 const renamedWishlistItem = [
@@ -11212,6 +11211,7 @@ let wishlistActionMenuItemKey = null;
 let wishlistLongPressTimer = null;
 let wishlistLongPressPointer = null;
 let wishlistLongPressTriggered = false;
+let wishlistLongPressFeedbackAt = 0;
 function closeWishlistActionMenu() {
 const menu = document.getElementById('wishlist-action-menu');
 if (menu) {
@@ -11236,6 +11236,7 @@ wishlistLongPressTriggered = false;
 wishlistLongPressPointer = { x: event.clientX, y: event.clientY };
 wishlistLongPressTimer = setTimeout(() => {
 wishlistLongPressTriggered = true;
+triggerWishlistLongPressFeedback(key);
 openWishlistActionMenu(key, wishlistLongPressPointer.x, wishlistLongPressPointer.y);
 setTimeout(() => { wishlistLongPressTriggered = false; }, 800);
 wishlistLongPressTimer = null;
@@ -11245,6 +11246,19 @@ function moveWishlistActionPress(event) {
 if (!wishlistLongPressTimer || !wishlistLongPressPointer) return;
 const distance = Math.hypot(event.clientX - wishlistLongPressPointer.x, event.clientY - wishlistLongPressPointer.y);
 if (distance > 10) cancelWishlistActionPress();
+}
+function playWishlistActionMenuSound(key) {
+const itemRow = document.querySelector(`#wishlist-list .wishlist-item[data-wishlist-key="${Number(key)}"]`);
+if (!itemRow) return;
+// Audio is unlocked from the initial pointer gesture; play at the same trigger as haptics.
+unlockCuteClickSound().then(() => playCuteClickSound(itemRow));
+}
+function triggerWishlistLongPressFeedback(key) {
+wishlistLongPressFeedbackAt = performance.now();
+if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+try { navigator.vibrate(45); } catch (error) {}
+}
+playWishlistActionMenuSound(key);
 }
 function openWishlistActionMenu(key, x, y) {
 const item = getWishlistItemByKey(key);
@@ -13137,6 +13151,8 @@ const tap = pendingPointer;
 pendingPointer = null;
 if (tap.pointerId !== undefined && event.pointerId !== undefined && tap.pointerId !== event.pointerId) return;
 if (tap.moved) return;
+// A long press already played its sound at the same moment as the vibration.
+if (tap.control.matches?.('.wishlist-item') && performance.now() - wishlistLongPressFeedbackAt < 1500) return;
 const releaseControl = findCuteClickTarget(event.target);
 if (releaseControl !== tap.control && !tap.control.contains(event.target)) return;
 playCuteClickSound(tap.control);
