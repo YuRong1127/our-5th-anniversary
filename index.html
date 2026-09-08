@@ -260,10 +260,11 @@ user-select: none;
 
 
 
-main { padding: 0 20px; margin-top: 237px; }
-body.day-3-theme main { margin-top: 227px; }
-.day-section { display: none; animation: fadeIn .32s ease-out; }
+main { padding: 0; margin-top: 225px; overflow-x: clip; }
+body.day-3-theme main { margin-top: 215px; }
+.day-section { display: none; box-sizing: border-box; padding: 0 20px; animation: none; }
 .day-section.active { display: block; }
+.day-section.day-swipe-arrived { animation: none; }
 .day-section.active::after {
 content: '—  已經到最底了喔 —';
 display: block;
@@ -378,7 +379,7 @@ box-shadow: none;
 body.day-3-theme .sticky-top-container {
 background: var(--bg-color);
 }
-body.day-3-theme main::before {
+#day-3::before {
 content: '五週年紀念日';
 display: flex;
 align-items: center;
@@ -5105,7 +5106,7 @@ box-sizing: border-box;
 #day-content.day-page-track {
   display: flex;
   align-items: flex-start;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   transition: none;
 }
@@ -5125,6 +5126,8 @@ box-sizing: border-box;
 #day-content.day-page-track > .day-track-page-target { order: 2; }
 #day-content.day-page-track.day-page-track-prev > .day-track-page-target { order: 1; }
 #day-content.day-page-track.day-page-track-prev > .day-track-page-current { order: 2; }
+#day-content.day-page-track.day-page-track-preview-prev > .day-track-page-target { order: 1; }
+#day-content.day-page-track.day-page-track-preview-prev > .day-track-page-current { order: 2; }
 #day-content.day-page-track-next {
   animation: dayPageTrackNext 340ms cubic-bezier(.77,0,.175,1) both;
 }
@@ -6410,9 +6413,10 @@ if (!options.auto) hasManualDaySelection = true;
 const previousScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 const previousDay = currentDay;
 const transitionDirection = options.direction || (day > previousDay ? 'next' : 'prev');
-const previousSection = document.getElementById(`day-${previousDay}`);
-const nextSection = document.getElementById(`day-${day}`);
-const shouldAnimateDayChange = !options.auto && !options.fromGesture && previousDay !== day && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const previousSection = document.getElementById(`day-${previousDay}`);
+  const nextSection = document.getElementById(`day-${day}`);
+  const shouldAnimateDayChange = !options.auto && !options.fromGesture && previousDay !== day && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  previousSection?.classList.remove('day-swipe-arrived');
 currentDay = day;
 document.body.classList.toggle('day-3-theme', day === 3);
 document.querySelectorAll('.date-item').forEach(el => el.classList.remove('active'));
@@ -6434,8 +6438,10 @@ if (shouldAnimateDayChange && dayContent && previousSection && nextSection) {
     nextSection.classList.remove('day-track-page', 'day-track-page-target');
   }, 360);
 }
-initFloatingBackground();
-scheduleVisibleArtRefit();
+if (!options.fromGesture) {
+  initFloatingBackground();
+  scheduleVisibleArtRefit();
+}
 if (!options.auto && !shouldAnimateDayChange) scrollDaySectionToTop(day, previousScrollTop);
 if (!options.skipHistory && !isHandlingAppHistory) pushAppHistory(day);
 }
@@ -7237,7 +7243,7 @@ getRouteScheduleInputs().forEach(input => {
 input.value = formatRouteSingleTimeValue(input.value);
 });
 }
-function setRouteSchedules(value, pickedValue = '') {
+function setRouteSchedules(value, pickedValue = '', preserveDisplayText = false) {
 const values = (Array.isArray(value) ? value : String(value || '').split('|')).map(item => String(item || '').trim()).filter(Boolean);
 document.getElementById('route-time-picker')?.classList.remove('show');
 activeRouteTimeInput = null;
@@ -7267,7 +7273,7 @@ pair.row.classList.toggle('is-hidden', index >= visibleCount);
 });
 updateRouteTransitScheduleVisibility();
 // Once schedule rows are loaded, use the first entered vehicle name in the display preview.
-if (selectedRouteMode === '大眾運輸') updateRoutePlanTextFromControls();
+if (selectedRouteMode === '大眾運輸' && !preserveDisplayText) updateRoutePlanTextFromControls();
 }
 function updateRouteTransitScheduleVisibility() {
 const schedule = document.getElementById('route-transit-schedule');
@@ -7384,7 +7390,7 @@ if (!isEditMode) return;
 currentRouteConnector = btn.closest('.connector-line');
 document.getElementById('route-plan-url').value = currentRouteConnector?.dataset.routeUrl || '';
 setRoutePlanEditorValue(currentRouteConnector?.dataset.routeText || '', currentRouteConnector?.dataset.routeMode || '');
-setRouteSchedules(currentRouteConnector?.dataset.routeSchedules || '', currentRouteConnector?.dataset.routeSchedulePicks || currentRouteConnector?.dataset.routeSchedulePick || '');
+setRouteSchedules(currentRouteConnector?.dataset.routeSchedules || '', currentRouteConnector?.dataset.routeSchedulePicks || currentRouteConnector?.dataset.routeSchedulePick || '', true);
 updateRoutePlanPreview();
 openSimpleModal('route-plan-modal');
 }
@@ -13008,7 +13014,7 @@ function clearDaySwipePreview(restoreCurrent = true) {
   }
   preview.currentSection.classList.remove('day-track-page', 'day-track-page-current');
   preview.targetSection.classList.remove('day-track-page', 'day-track-page-target');
-  content.classList.remove('day-page-track', 'day-page-track-prev', 'day-page-track-next');
+  content.classList.remove('day-page-track', 'day-page-track-prev', 'day-page-track-next', 'day-page-track-preview-prev');
   content.style.transition = '';
   content.style.transform = '';
   daySwipePreview = null;
@@ -13027,11 +13033,13 @@ function beginDaySwipePreview(direction) {
   document.querySelectorAll('.day-section').forEach(el => el.classList.remove('active'));
   currentSection.classList.add('active');
   targetSection.classList.add('active');
+  targetSection.querySelectorAll('.card.has-end-art').forEach(card => {
+    card.querySelectorAll('.itinerary-card-end-art').forEach(img => fitItineraryEndArtToTextBand(card, img));
+  });
   if (direction === 'prev') {
-    content.classList.add('day-page-track-prev');
+    content.classList.add('day-page-track-preview-prev');
     content.style.transform = 'translateX(-100%)';
   } else {
-    content.classList.add('day-page-track-next');
     content.style.transform = 'translateX(0)';
   }
   daySwipePreview = { direction, targetDay, content, currentSection, targetSection, cleanupTimer: 0 };
@@ -13052,8 +13060,14 @@ function finishDaySwipePreview(commit) {
   if (commit) {
     const target = preview.targetDay;
     const direction = preview.direction;
-    switchDay(target, { direction, fromGesture: true });
-    clearDaySwipePreview(false);
+    const content = preview.content;
+    content.style.transition = 'transform 180ms cubic-bezier(.23,1,.32,1)';
+    content.style.transform = direction === 'next' ? 'translateX(-100%)' : 'translateX(0)';
+    preview.cleanupTimer = window.setTimeout(() => {
+      preview.targetSection.classList.add('day-swipe-arrived');
+      switchDay(target, { direction, fromGesture: true });
+      clearDaySwipePreview(false);
+    }, 190);
     return true;
   }
   const content = preview.content;
@@ -13093,10 +13107,10 @@ snapToItineraryBottomIfClose(bottomDy, performance.now() - bottomSnapStartTime);
 if (!isMoving || isModalOpen) return;
 const deltaX = e.changedTouches[0].clientX - startX;
 const deltaY = e.changedTouches[0].clientY - startY;
-const isHorizontalSwipe = Math.abs(deltaX) > 58 && Math.abs(deltaY) < 70 && Math.abs(deltaX) > Math.abs(deltaY) * 1.35;
+const isHorizontalSwipe = Math.abs(deltaX) > 36 && Math.abs(deltaY) < 90 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
 if (daySwipePreview) {
-  const width = Math.max(1, daySwipePreview.content.getBoundingClientRect().width);
-  finishDaySwipePreview(isHorizontalSwipe && Math.abs(deltaX) > Math.min(90, width * .22));
+  const movedTowardTarget = daySwipePreview.direction === 'next' ? deltaX < 0 : deltaX > 0;
+  finishDaySwipePreview(isHorizontalSwipe && movedTowardTarget);
 } else if (isHorizontalSwipe) {
 if (deltaX < 0) {
 if (currentDay < 5) switchDay(currentDay + 1, { direction: 'next' });
@@ -13108,6 +13122,49 @@ else if (!isEditMode) openSimpleModal('work-modal');
 }
 isMoving = false;
 }, { passive: true });
+
+let dayPointerSwipe = null;
+document.getElementById('swipe-body').addEventListener('pointerdown', e => {
+  if (isEditMode || e.pointerType === 'touch' || e.button !== 0 || shouldIgnorePageTouch(e.target)) return;
+  dayPointerSwipe = { id: e.pointerId, startX: e.clientX, startY: e.clientY, moving: true, captured: false };
+});
+document.getElementById('swipe-body').addEventListener('pointermove', e => {
+  const swipe = dayPointerSwipe;
+  if (!swipe || swipe.id !== e.pointerId || !swipe.moving) return;
+  const deltaX = e.clientX - swipe.startX;
+  const deltaY = e.clientY - swipe.startY;
+  if (Math.abs(deltaY) > 28 && Math.abs(deltaY) > Math.abs(deltaX) * 1.15) {
+    swipe.moving = false;
+    return;
+  }
+  if (Math.abs(deltaX) > 8 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
+    if (!swipe.captured) {
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+      swipe.captured = true;
+    }
+    if (!daySwipePreview) beginDaySwipePreview(deltaX < 0 ? 'next' : 'prev');
+    if (daySwipePreview) {
+      e.preventDefault();
+      updateDaySwipePreview(deltaX);
+    }
+  }
+});
+document.getElementById('swipe-body').addEventListener('pointerup', e => {
+  const swipe = dayPointerSwipe;
+  if (!swipe || swipe.id !== e.pointerId) return;
+  const deltaX = e.clientX - swipe.startX;
+  const deltaY = e.clientY - swipe.startY;
+  const isHorizontalSwipe = swipe.moving && Math.abs(deltaX) > 36 && Math.abs(deltaY) < 90 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
+  if (daySwipePreview) {
+    const movedTowardTarget = daySwipePreview.direction === 'next' ? deltaX < 0 : deltaX > 0;
+    finishDaySwipePreview(isHorizontalSwipe && movedTowardTarget);
+  }
+  dayPointerSwipe = null;
+});
+document.getElementById('swipe-body').addEventListener('pointercancel', () => {
+  if (daySwipePreview) finishDaySwipePreview(false);
+  dayPointerSwipe = null;
+});
 
 let cuteClickAudioContext = null;
 let cuteClickLastAt = 0;
