@@ -1088,6 +1088,9 @@ justify-content: center;
 #settle-content > div,
 #stats-content > div { width: 100%; }
 .settle-panel-content { display: flex; align-items: center; justify-content: center; text-align: center; }
+#settle-modal .modal-content { padding-top: 18px; padding-bottom: 12px; }
+#settle-modal .modal-title { margin-bottom: 4px; }
+#settle-modal .modal-scroll-area { flex: 0 1 auto; overflow: visible; padding-top: 0; padding-bottom: 0; }
 .settle-summary-subtitle { margin-top: 4px; color: #6d8f6b; font-size: 1.2rem; font-weight: 900; }
 .empty-state {
 position: relative;
@@ -1392,18 +1395,18 @@ line-height: 1;
 }
 .settle-result {
 width: 100%;
-padding: 22px 4px;
+padding: 10px 4px 6px;
 text-align: center;
 color: var(--main-brown);
 }
 .settle-result-main { font-size: 1.02rem; font-weight: 900; line-height: 1.9; }
-.settle-loan-line { margin-top: 10px; line-height: 1.35; }
-.settle-loan-note { margin-top: 8px; color: var(--light-brown); font-size: .78rem; }
+.settle-loan-line { margin-top: 6px; line-height: 1.35; }
+.settle-loan-note { margin-top: 4px; color: var(--light-brown); font-size: .78rem; }
 .settle-result-icon { margin-top: 16px; font-size: 2.35rem; }
-.settle-money-pig { margin-top: 14px; font-size: 0; }
+.settle-money-pig { margin-top: 2px; font-size: 0; }
 .settle-money-pig img {
 display: block;
-width: min(190px, 58vw);
+width: min(230px, 68vw);
 height: auto;
 margin: 0 auto;
 filter: drop-shadow(0 10px 18px rgba(141,110,99,.14));
@@ -1651,6 +1654,7 @@ order: 1;
 order: 2;
 }
 #alert-modal:has(.wallet-unsaved-pig) p {
+margin-top: 8px;
 margin-bottom: 14px;
 }
 #alert-modal:has(.wallet-unsaved-pig) .alert-stack {
@@ -1667,7 +1671,7 @@ height: auto;
 margin: 0;
 object-fit: contain;
 object-position: center;
-clip-path: inset(2px round 17px);
+clip-path: none;
 filter: none;
 }
 #alert-modal:has(.wallet-unsaved-pig) .alert-actions .modal-btn-primary,
@@ -3267,11 +3271,16 @@ display: none;
 cursor: grabbing;
 }
 .expense-card { margin-bottom: 14px; padding: 18px; border: 1px solid #fdf5f2; border-radius: 24px; background: #fff; box-shadow: 0 4px 15px rgba(141,110,99,.06); }
+.expense-date-group-title { display: flex; align-items: center; gap: 9px; margin: 4px 4px 9px; color: #9b6a61; font-size: .82rem; font-weight: 900; }
+.expense-date-group-title::after { content: ''; height: 1px; flex: 1; background: #eadbd5; }
 .expense-top { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; min-height: 52px; }
 .expense-icon { width: 52px; height: 52px; flex: 0 0 52px; border: 1px solid #fdf5f2; border-radius: 18px; background: #fef9f6; overflow: hidden; }
 .expense-heading { min-width: 0; display: flex; min-height: 52px; flex-direction: column; justify-content: center; }
 .expense-title { min-width: 0; color: #34495e; font-size: 1.05rem; font-weight: 900; word-break: break-word; }
 .expense-time { margin-bottom: 7px; color: var(--light-brown); font-size: .82rem; font-weight: 700; }
+#details-modal .expense-top { align-items: stretch; min-height: 0; }
+#details-modal .expense-icon { width: auto; height: auto; aspect-ratio: 1 / 1; flex: 0 0 auto; }
+#details-modal .expense-heading { min-height: 0; justify-content: flex-start; }
 .expense-amount { display: inline-flex; flex: 0 1 auto; min-width: 0; align-items: baseline; color: var(--heart-pink); font-size: 1.28rem; font-weight: 900; overflow-wrap: anywhere; text-align: right; }
 .settle-badge { margin-left: auto; border: 1px solid #f9dcdc; border-radius: 999px; padding: 6px 11px; background: #fce4e4; color: #e53935; font-size: .75rem; font-weight: 900; }
 .settle-badge.done { border-color: #dcedc8; background: #f1f8e9; color: #689f38; }
@@ -3279,6 +3288,9 @@ cursor: grabbing;
 .expense-note { margin: 0 0 12px; padding: 12px; border-radius: 16px; background: #f8f8f8; color: #8e8e8e; font-size: .85rem; line-height: 1.8; }
 .expense-note-amount { display: flex; align-items: center; justify-content: space-between; min-width: 0; gap: 10px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #e7e1de; }
 .expense-note-amount > span:first-child { min-width: 0; }
+.expense-payment-summary { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+.expense-payment-summary > span { display: inline-flex; align-items: center; }
+.expense-summary-emoji { display: inline-flex; align-items: center; justify-content: center; margin-right: 4px; line-height: 1; transform: translateY(-3px); }
 .expense-actions { display: flex; align-items: center; gap: 8px; }
 .mini-btn { border: 1px solid #f0f0f0; border-radius: 10px; padding: 7px 16px; background: #fff; font-size: .85rem; font-weight: 900; }
 .green { color: #81c784; } .red { color: #e57373; }
@@ -5052,11 +5064,14 @@ border-radius: 24px;
 padding: 14px 12px;
 }
 }
-/* Wallet and expense details share one fixed, scrollable panel frame. */
-#wallet-modal .modal-content,
+/* Keep expense details scrollable while the wallet follows its form height. */
 #details-modal .modal-content {
 height: min(82vh, 640px);
 max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+box-sizing: border-box;
+}
+#wallet-modal .modal-content {
+height: auto;
 box-sizing: border-box;
 }
 /* Confirmation dialog: Confirm wider, Cancel narrower, both labels centered. */
@@ -6384,7 +6399,7 @@ return Boolean(editingId || title || amount || big || small || topupBig || topup
 }
 function closeWalletModal() {
 if (hasWalletDraft()) {
-showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">這筆還沒存～\n退出會清空內容喔</span><img class="alert-stack-pig wallet-unsaved-pig" src="images/pigs/wallet-unsaved-pig-inline-hd.png" alt="未存檔提醒小豬"></span>', () => {
+showConfirmAlertHtml('<span class="alert-stack"><span class="alert-stack-text">這筆還沒存耶，退出會清空內容喔</span><img class="alert-stack-pig wallet-unsaved-pig" src="images/pigs/wallet-unsaved-pig-inline-hd.png" alt="未存檔提醒小豬"></span>', () => {
 resetExpenseForm();
 closeModal('wallet-modal');
 });
@@ -12672,12 +12687,24 @@ listEl.innerHTML = `<div class="empty-state"><span class="inline-alert-row">目�
 return;
 }
 setPanelEmptyState('details-modal', false);
-listEl.innerHTML = expenses.map(e => {
+const expensesByDate = [...expenses].sort((a, b) => {
+const timeA = Date.parse(a.timeISO || '') || 0;
+const timeB = Date.parse(b.timeISO || '') || 0;
+return timeB - timeA;
+});
+let lastExpenseDateKey = '';
+listEl.innerHTML = expensesByDate.map(e => {
+const expenseDate = new Date(e.timeISO || '');
+const hasExpenseDate = !Number.isNaN(expenseDate.getTime());
+const expenseDateKey = hasExpenseDate ? `${expenseDate.getFullYear()}-${String(expenseDate.getMonth() + 1).padStart(2, '0')}-${String(expenseDate.getDate()).padStart(2, '0')}` : '未設定日期';
+const expenseDateLabel = hasExpenseDate ? `${expenseDate.getFullYear()}/${String(expenseDate.getMonth() + 1).padStart(2, '0')}/${String(expenseDate.getDate()).padStart(2, '0')}` : '未設定日期';
+const expenseDateHeader = expenseDateKey !== lastExpenseDateKey ? `<div class="expense-date-group-title">${expenseDateLabel}</div>` : '';
+lastExpenseDateKey = expenseDateKey;
 const currSymbol = e.displayCurrency === 'TWD' ? '$' : '¥';
 if (e.type === 'transitTopup') {
 const big = e.bigTransitTopup || 0;
 const small = e.smallTransitTopup || 0;
-return `<div class="expense-card">
+return `${expenseDateHeader}<div class="expense-card">
 <div class="expense-top">
 <div class="expense-icon">${getCategoryIconHtml('交通', 'cat-icon-md')}</div>
 <div class="expense-heading"><div class="expense-time">${formatDisplayTime(e.timeISO)}</div><div class="expense-title">交通卡儲值</div></div>
@@ -12696,7 +12723,7 @@ return `<div class="expense-card">
 if (e.type === 'topup') {
 const big = e.bigPigTopup || 0;
 const small = e.smallPigTopup || 0;
-return `<div class="expense-card">
+return `${expenseDateHeader}<div class="expense-card">
 <div class="expense-top">
 <div class="expense-icon">${getCategoryIconHtml('其他', 'cat-icon-md')}</div>
 <div class="expense-heading"><div class="expense-time">${formatDisplayTime(e.timeISO)}</div><div class="expense-title">公費儲值</div></div>
@@ -12719,14 +12746,14 @@ e.split === '小豬' ? `算 <b style="color:#d17a6d">小豬</b> 的` :
 const settleControl = e.payer === '公費'
 ? `<span class="settle-badge public-pay-badge">公費支付</span>`
 : `<button class="settle-badge ${e.isSettled ? 'done' : ''}" onclick="toggleSettleStatus(${e.id})">${e.isSettled ? '已清帳' : '欠費中'}</button>`;
-return `<div class="expense-card" style="${e.isSettled ? 'opacity:.8' : ''}">
+return `${expenseDateHeader}<div class="expense-card" style="${e.isSettled ? 'opacity:.8' : ''}">
 <div class="expense-top">
 <div class="expense-icon">${getCategoryIconHtml(e.category, 'cat-icon-md')}</div>
 <div class="expense-heading"><div class="expense-time">${formatDisplayTime(e.timeISO)}</div><div class="expense-title">${e.title}</div></div>
 </div>
 <div class="expense-note">
 <div class="expense-note-amount"><span>金額</span><span class="expense-amount">${currSymbol}${Math.round(e.amount).toLocaleString()}</span></div>
-💳 先由 <b style="color:#8d6e63">${e.payer}</b> 付款<br>⚖️ ${splitDesc}
+<div class="expense-payment-summary"><span><span class="expense-summary-emoji">💳</span><b style="color:#8d6e63">${e.payer}</b> 先付</span><span><span class="expense-summary-emoji">⚖️</span>${splitDesc}</span></div>
 </div>
 <div class="expense-actions">
 <button class="mini-btn green btn-press-effect" onclick="editExpense(${e.id})">編輯</button>
