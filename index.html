@@ -1025,7 +1025,7 @@ white-space: nowrap;
 padding-left: 0;
 padding-right: 0;
 box-sizing: border-box;
-scrollbar-gutter: stable;
+scrollbar-gutter: auto;
 }
 #details-modal {
 align-items: center;
@@ -1046,8 +1046,10 @@ padding-bottom: 16px;
 padding-left: 0;
 padding-right: 0;
 box-sizing: border-box;
-scrollbar-gutter: stable;
+scrollbar-gutter: auto;
+scrollbar-width: none;
 }
+#details-modal .modal-scroll-area::-webkit-scrollbar { display: none; width: 0; height: 0; }
 .panel-modal-content { height: auto; max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); border-radius: 35px; background: #fdfaf8; }
 #itinerary-detail-modal {
 padding-top: max(22px, calc(env(safe-area-inset-top) + 14px));
@@ -1705,6 +1707,7 @@ overflow: hidden;
 .wallet-label-hint { display: inline-flex; flex: 0 0 auto; margin-top: 0; color: #c7aaa1; font-size: .62rem; line-height: 1; }
 .wallet-input, .small-input { width: 100%; min-width: 0; height: var(--wallet-control-height); box-sizing: border-box; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); padding: 0 13px; outline: 0; background: #fffdfb; color: #6f5a54; font-size: .92rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
 .wallet-input::placeholder, .small-input::placeholder { color: #d3c3be; font-weight: 500; }
+.wallet-note { min-height: 46px; height: 46px; margin: 2px 0 8px; padding: 11px 13px; resize: none; line-height: 1.45; }
 .small-input { padding: 0 11px; font-size: .84rem; }
 .custom-datetime-container { display: flex; justify-content: space-between; align-items: center; gap: 18px; height: var(--wallet-control-height); min-height: var(--wallet-control-height); box-sizing: border-box; margin-bottom: 6px; padding: 0 13px; border: 1px solid #ead7cf; border-radius: var(--wallet-control-radius); background: #fffdfb; color: #6f5a54; font-weight: 800; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
 #exp-time-text { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; justify-content: flex-start; gap: clamp(14px, 7vw, 44px); white-space: nowrap; }
@@ -2197,7 +2200,7 @@ font-weight: 800;
 #both-input-area { display: none; width: 100%; box-sizing: border-box; margin-bottom: 6px; padding: 6px 9px; border: 1px dashed #e8bbb2; border-radius: 13px; background: #fffaf7; }
 .both-flex { display: flex; gap: 8px; width: 100%; }
 .both-flex > div { flex: 1 1 0; min-width: 0; }
-.summary-actions { display: grid; grid-template-columns: .9fr .9fr 1.08fr; gap: 7px; margin-top: 0; margin-bottom: 12px; padding-bottom: 0; border-bottom: 0; }
+.summary-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin-top: 0; margin-bottom: 12px; padding-bottom: 0; border-bottom: 0; }
 .summary-btn { min-height: 40px; border: 1px solid var(--card-border); border-radius: 12px; background: #fff; color: var(--main-brown); font-size: .82rem; font-weight: 900; white-space: nowrap; }
 .fund-balance-card {
 position: static;
@@ -3293,9 +3296,29 @@ cursor: grabbing;
 .expense-note-amount { display: flex; align-items: center; justify-content: space-between; min-width: 0; gap: 10px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #e7e1de; }
 .expense-note-amount > span:first-child { min-width: 0; }
 .expense-payment-summary { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+.expense-detail-note { margin-top: 9px; padding-top: 9px; border-top: 1px dashed #e7e1de; color: #806f69; line-height: 1.65; white-space: normal; overflow-wrap: anywhere; }
 .expense-payment-summary > span { display: inline-flex; align-items: center; }
 .expense-summary-emoji { display: inline-flex; align-items: center; justify-content: center; margin-right: 4px; line-height: 1; transform: translateY(-3px); }
 .expense-actions { display: flex; align-items: center; gap: 8px; }
+.expense-summary-toggle { width: 100%; border: 0; padding: 0; background: transparent; color: inherit; text-align: left; }
+.expense-compact-main { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto 18px; align-items: center; gap: 9px; }
+.expense-compact-icon { width: 38px; height: 38px; border: 1px solid #fdf5f2; border-radius: 12px; background: #fef9f6; overflow: hidden; }
+.expense-compact-icon .cat-icon-md { width: 100%; height: 100%; border-radius: 10px; }
+.expense-compact-heading { min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.expense-compact-time { margin-bottom: 4px; color: var(--light-brown); font-size: .78rem; font-weight: 700; line-height: 1; }
+.expense-compact-title { min-width: 0; color: #34495e; font-size: .96rem; font-weight: 900; overflow-wrap: anywhere; }
+.expense-compact-money { display: inline-flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.expense-compact-amount { color: var(--heart-pink); font-size: 1rem; font-weight: 900; white-space: nowrap; }
+#details-modal .expense-card.is-settled { border-color: #eee4e0; background: #fffcfb; box-shadow: 0 4px 15px rgba(146,112,100,.05); }
+#details-modal .expense-card.is-settled .expense-compact-amount { color: #aa9188; }
+#details-modal .expense-card.is-settled .expense-compact-title { color: #687780; }
+#details-modal .expense-card.is-settled .expense-compact-icon { opacity: .82; }
+.expense-expand-arrow { display: inline-flex; width: 18px; height: 22px; align-items: center; justify-content: center; color: #bd8c82; transition: transform .2s ease, color .2s ease; }
+.expense-expand-arrow svg { width: 13px; height: 13px; display: block; }
+.expense-card.is-expanded .expense-expand-arrow { color: #d17a6d; }
+.expense-expanded { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #eadbd5; }
+.expense-card.is-expanded .expense-expanded { display: block; }
+.expense-card.is-expanded .expense-expand-arrow { transform: rotate(180deg); }
 .mini-btn { border: 1px solid #f0f0f0; border-radius: 10px; padding: 7px 16px; background: #fff; font-size: .85rem; font-weight: 900; }
 .green { color: #81c784; } .red { color: #e57373; }
 .settle-highlight-name { color: #cb6a7f; font-size: 1.22rem; font-weight: 900; }
@@ -5074,6 +5097,10 @@ height: min(82vh, 640px);
 max-height: calc(100vh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 box-sizing: border-box;
 }
+#details-modal .modal-title {
+margin-top: 6px;
+margin-bottom: 6px;
+}
 #wallet-modal .modal-content {
 height: auto;
 box-sizing: border-box;
@@ -5419,6 +5446,17 @@ header {
   }
 }
 </style>
+<style id="global-hidden-scrollbars">
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+</style>
 </head>
 <body id="swipe-body">
 <div class="floating-bg" id="floating-bg"></div>
@@ -5668,7 +5706,7 @@ header {
 <div class="summary-actions">
 <button class="summary-btn btn-press-effect" onclick="showSettleSummary()" type="button">🧮 結算</button>
 <button class="summary-btn btn-press-effect" onclick="openStatsModal()" type="button">📊 統計</button>
-<button class="summary-btn btn-press-effect" onclick="openDetailsModal()" type="button">🧾 花費明細</button>
+<button class="summary-btn btn-press-effect" onclick="openDetailsModal()" type="button">🧾 花費清單</button>
 </div>
 <div class="modal-scroll-area">
 <div class="wallet-card">
@@ -5751,6 +5789,7 @@ header {
 </div>
 <input class="wallet-input" id="exp-amount" placeholder="請輸入花費金額" type="tel"/>
 </div>
+<textarea aria-label="備註（選填）" class="wallet-input wallet-note" id="exp-note" maxlength="500" placeholder="備註（選填）"></textarea>
 </div>
 <button class="modal-btn-primary btn-press-effect" id="submit-exp-btn" onclick="addExpense()" type="button">確認新增此筆</button>
 <button id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;width:100%;margin-top:12px;border:0;background:transparent;color:#999;text-decoration:underline" type="button">取消編輯</button>
@@ -5759,7 +5798,7 @@ header {
 </div>
 </div>
 </div>
-<div class="modal-overlay" id="details-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費明細</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
+<div class="modal-overlay" id="details-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費清單</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div class="modal-overlay" id="settle-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div class="panel-content settle-panel-content" id="settle-content"></div></div></div></div></div>
 <div class="modal-overlay" id="stats-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="stats-title-row"><div class="stats-main-title">📊 統計</div><div class="stats-tabs"><button class="stats-tab active btn-press-effect" data-stats-page="pie" onclick="setStatsPage('pie')" type="button">大餅圖</button><button class="stats-tab btn-press-effect" data-stats-page="bar" onclick="setStatsPage('bar')" type="button">柱狀圖</button></div></div><div class="modal-scroll-area"><div class="panel-content" id="stats-content"></div></div></div></div></div>
 <div class="modal-overlay" id="time-range-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-fields"><div class="time-range-field"><label for="time-range-start">開始</label><input class="time-range-input" id="time-range-start" inputmode="numeric" maxlength="5" oninput="formatTimeRangeInput(this)" placeholder="08:00" type="text"/></div><div class="time-range-field"><label for="time-range-end">結束</label><input class="time-range-input" id="time-range-end" inputmode="numeric" maxlength="5" oninput="formatTimeRangeInput(this)" placeholder="09:10" type="text"/></div></div><div class="time-range-actions"><button class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()" type="button">未定</button><button class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()" type="button">儲存時間</button></div></div></div></div>
@@ -6102,6 +6141,7 @@ let fp = null;
 let pendingNoteFocusIndex = null;
 let pendingNoteImageInsert = null;
 let savedNoteColorRange = null;
+let savedNoteSpeechRange = null;
 let noteColorPaletteOpenedAt = 0;
 let currentNoteTextColor = '';
 let preloadedDiscardPig = null;
@@ -6389,15 +6429,16 @@ if (content) content.classList.toggle('compact-empty-modal', Boolean(isEmpty));
 function hasWalletDraft() {
 const title = document.getElementById('exp-title')?.value.trim();
 const amount = document.getElementById('exp-amount')?.value.trim();
+const note = document.getElementById('exp-note')?.value.trim();
 const big = document.getElementById('both-big-pig')?.value.trim();
 const small = document.getElementById('both-small-pig')?.value.trim();
 const topupBig = document.getElementById('topup-big-pig')?.value.trim();
 const topupSmall = document.getElementById('topup-small-pig')?.value.trim();
 const transitBig = document.getElementById('transit-big-pig')?.value.trim();
 const transitSmall = document.getElementById('transit-small-pig')?.value.trim();
-const hasInput = Boolean(title || amount || big || small || topupBig || topupSmall || transitBig || transitSmall);
+const hasInput = Boolean(title || amount || note || big || small || topupBig || topupSmall || transitBig || transitSmall);
 const hasChangedOptions = hasInput && (currentPayer !== '大豬' || currentSplit !== '均分' || currentCategory !== '吃' || currentCurrency !== 'JPY');
-return Boolean(editingId || title || amount || big || small || topupBig || topupSmall || transitBig || transitSmall || hasChangedOptions);
+return Boolean(editingId || title || amount || note || big || small || topupBig || topupSmall || transitBig || transitSmall || hasChangedOptions);
 }
 function closeWalletModal() {
 const categoryMenu = document.getElementById('cat-menu');
@@ -8971,7 +9012,7 @@ return `<div class="note-block" data-block-index="${blockIndex}" data-block-type
 }).join('');
 const selectedColorClass = currentNoteTextColor ? ' has-selected-color' : '';
 const selectedColorStyle = currentNoteTextColor ? ` style="--swatch-color:${currentNoteTextColor}"` : '';
-const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="return showNoteColorPaletteDirect(event)" onmousedown="return showNoteColorPaletteDirect(event)" ontouchstart="return showNoteColorPaletteDirect(event)" onclick="return showNoteColorPaletteDirect(event)" aria-label="選擇文字顏色"><span class="note-color-wheel" aria-hidden="true"></span></button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
+const formatTools = isEditMode ? `<div class="note-format-toolbar"><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('undo')" aria-label="復原">↶</button><button type="button" class="note-format-btn btn-press-effect" onmousedown="event.preventDefault(); formatNoteText('bold')" aria-label="粗體">B</button><button type="button" class="note-format-btn note-highlight-btn btn-press-effect" onmousedown="event.preventDefault(); saveNoteSelectionForColor()" ontouchend="handleNoteHighlightButton(event)" onclick="handleNoteHighlightButton(event)" aria-label="網底">底</button><button type="button" class="note-format-btn note-custom-color-btn${selectedColorClass} btn-press-effect"${selectedColorStyle} onpointerdown="return showNoteColorPaletteDirect(event)" onmousedown="return showNoteColorPaletteDirect(event)" ontouchstart="return showNoteColorPaletteDirect(event)" onclick="return showNoteColorPaletteDirect(event)" aria-label="選擇文字顏色"><span class="note-color-wheel" aria-hidden="true"></span></button><button type="button" class="note-format-btn note-speech-insert-btn btn-press-effect" onpointerdown="return insertNoteSpeechButton(event)" aria-label="替選取的日文加入朗讀按鈕" title="替選取的日文加入朗讀按鈕">🔊</button><label class="note-format-btn note-format-image-btn btn-press-effect" onpointerdown="captureNoteImageInsertPoint()" aria-label="在游標處插入圖片">📷<input type="file" accept="image/*" multiple style="display:none" onchange="addDetailFieldPhotoFile(0, event, 'cursor')"></label></div>` : '';
 const isFlightNote = isFlightDetailCard(currentDetailCard);
 const visibleFormatTools = isFlightNote ? '' : formatTools;
 const insertTools = '';
@@ -9078,6 +9119,51 @@ const editor = node?.closest?.('.note-text-input') || document.querySelector('.n
 if (!editor || !editor.contains(range.startContainer)) return;
 savedNoteColorRange = range.cloneRange();
 setActiveNoteEditor(editor);
+}
+function insertNoteSpeechButton(event) {
+if (event) {
+event.preventDefault();
+event.stopPropagation();
+}
+const selection = window.getSelection();
+let range = selection && selection.rangeCount ? selection.getRangeAt(0) : null;
+let editor = null;
+if (range) {
+const node = range.startContainer.nodeType === Node.ELEMENT_NODE ? range.startContainer : range.startContainer.parentElement;
+editor = node?.closest?.('.note-text-input') || null;
+}
+editor = editor || document.querySelector('.note-text-input.is-active');
+if (!range || range.collapsed || !editor || !editor.contains(range.startContainer) || !editor.contains(range.endContainer)) {
+if (typeof showAlert === 'function') showAlert('請先反白選取要朗讀的日文');
+return false;
+}
+savedNoteSpeechRange = range.cloneRange();
+const speech = savedNoteSpeechRange.toString().trim();
+if (!speech) {
+savedNoteSpeechRange = null;
+if (typeof showAlert === 'function') showAlert('請先反白選取要朗讀的日文');
+return false;
+}
+setActiveNoteEditor(editor);
+const button = document.createElement('button');
+button.type = 'button';
+button.className = 'note-speak-btn btn-press-effect';
+button.dataset.speech = speech;
+button.setAttribute('aria-label', `播放「${speech}」`);
+button.setAttribute('title', `播放「${speech}」`);
+button.setAttribute('onclick', 'speakJapaneseText(this)');
+button.textContent = '🔊';
+const insertRange = savedNoteSpeechRange.cloneRange();
+insertRange.collapse(false);
+insertRange.insertNode(button);
+insertRange.setStartAfter(button);
+insertRange.collapse(true);
+selection.removeAllRanges();
+selection.addRange(insertRange);
+savedNoteSpeechRange = null;
+editor.dispatchEvent(new Event('input', { bubbles: true }));
+editor.focus();
+return false;
 }
 function handleNotePlainPaste(event) {
 const editor = event?.currentTarget;
@@ -12467,6 +12553,7 @@ bothManualEdits = { big: false, small: false };
 lastBothEdited = null;
 document.getElementById('exp-title').value = '';
 document.getElementById('exp-amount').value = '';
+document.getElementById('exp-note').value = '';
 document.getElementById('both-big-pig').value = '';
 document.getElementById('both-small-pig').value = '';
 document.getElementById('topup-big-pig').value = '';
@@ -12568,6 +12655,7 @@ queueTripCloudSave();
 return;
 }
 const title = document.getElementById('exp-title').value.trim();
+const note = document.getElementById('exp-note').value.trim();
 if (currentSplit === '都有啦') syncBothAmountSum('submit');
 const amount = parseMoneyValue(document.getElementById('exp-amount').value);
 if (!title) return showAlertHtml('<span class="inline-alert-row">哎呀！消費品項忘記寫了啦～<img class="inline-alert-pig" src="images/pigs/missing-title-pig-v2-inline.png" alt="忘記品項小豬"></span>');
@@ -12589,6 +12677,7 @@ smallShare = amount;
 const next = {
 id: editingId || Date.now(),
 title,
+note,
 amount,
 displayCurrency: currentCurrency,
 timeISO: document.getElementById('exp-time').value || getNowString(),
@@ -12657,6 +12746,7 @@ return;
 }
 setWalletMode('expense');
 document.getElementById('exp-title').value = e.title;
+document.getElementById('exp-note').value = e.note || '';
 document.getElementById('exp-time').value = e.timeISO;
 syncTimeDisplay();
 currentCurrency = e.displayCurrency;
@@ -12687,11 +12777,28 @@ renderExpenses();
 queueTripCloudSave();
 });
 }
-function toggleSettleStatus(id) {
+function toggleSettleStatus(id, button) {
+const wasExpanded = Boolean(button?.closest('.expense-card')?.classList.contains('is-expanded'));
 const item = expenses.find(x => x.id === id);
 if (item) item.isSettled = !item.isSettled;
 renderExpenses();
+if (wasExpanded) {
+const refreshedCard = document.querySelector(`#expense-details-list .expense-card[data-expense-id="${id}"]`);
+refreshedCard?.classList.add('is-expanded');
+refreshedCard?.querySelector('.expense-summary-toggle')?.setAttribute('aria-expanded', 'true');
+}
 queueTripCloudSave();
+}
+function toggleExpenseCard(button) {
+const card = button?.closest('.expense-card');
+if (!card) return;
+const expanded = card.classList.toggle('is-expanded');
+button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+}
+function getExpenseCompactHeader(e, category, title, amountText) {
+return `<button type="button" class="expense-summary-toggle btn-press-effect" onclick="toggleExpenseCard(this)" aria-expanded="false">
+<span class="expense-compact-main"><span class="expense-compact-icon">${getCategoryIconHtml(category || '其他', 'cat-icon-md')}</span><span class="expense-compact-heading"><span class="expense-compact-time">${formatDisplayTime(e.timeISO)}</span><span class="expense-compact-title">${title}</span></span><span class="expense-compact-money"><span class="expense-compact-amount">${amountText}</span></span><span class="expense-expand-arrow" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+</button>`;
 }
 function renderExpenses() {
 const listEl = document.getElementById('expense-details-list');
@@ -12720,12 +12827,9 @@ if (e.type === 'transitTopup') {
 const big = e.bigTransitTopup || 0;
 const small = e.smallTransitTopup || 0;
 return `${expenseDateHeader}<div class="expense-card">
-<div class="expense-top">
-<div class="expense-icon">${getCategoryIconHtml('交通', 'cat-icon-md')}</div>
-<div class="expense-heading"><div class="expense-time">${formatDisplayTime(e.timeISO)}</div><div class="expense-title">交通卡儲值</div></div>
-</div>
+${getExpenseCompactHeader(e, '交通', '交通卡儲值', `${currSymbol}${Math.round(e.amount).toLocaleString()}`)}
+<div class="expense-expanded">
 <div class="expense-note">
-<div class="expense-note-amount"><span>儲值交通卡</span><span class="expense-amount">${currSymbol}${Math.round(e.amount).toLocaleString()}</span></div>
 大豬交通卡 <b style="color:#d17a6d">${currSymbol}${Math.round(big).toLocaleString()}</b><br>小豬交通卡 <b style="color:#8d6e63">${currSymbol}${Math.round(small).toLocaleString()}</b>
 </div>
 <div class="expense-actions">
@@ -12733,18 +12837,16 @@ return `${expenseDateHeader}<div class="expense-card">
 <button class="mini-btn red btn-press-effect" onclick="confirmDelete(${e.id})">刪除</button>
 <span class="settle-badge public-pay-badge">交通卡儲值</span>
 </div>
+</div>
 </div>`;
 }
 if (e.type === 'topup') {
 const big = e.bigPigTopup || 0;
 const small = e.smallPigTopup || 0;
 return `${expenseDateHeader}<div class="expense-card">
-<div class="expense-top">
-<div class="expense-icon">${getCategoryIconHtml('其他', 'cat-icon-md')}</div>
-<div class="expense-heading"><div class="expense-time">${formatDisplayTime(e.timeISO)}</div><div class="expense-title">公費儲值</div></div>
-</div>
+${getExpenseCompactHeader(e, '其他', '公費儲值', `${currSymbol}${Math.round(e.amount).toLocaleString()}`)}
+<div class="expense-expanded">
 <div class="expense-note">
-<div class="expense-note-amount"><span>加入公費</span><span class="expense-amount">${currSymbol}${Math.round(e.amount).toLocaleString()}</span></div>
 大豬投入 <b style="color:#d17a6d">${currSymbol}${Math.round(big).toLocaleString()}</b><br>小豬投入 <b style="color:#8d6e63">${currSymbol}${Math.round(small).toLocaleString()}</b>
 </div>
 <div class="expense-actions">
@@ -12752,28 +12854,32 @@ return `${expenseDateHeader}<div class="expense-card">
 <button class="mini-btn red btn-press-effect" onclick="confirmDelete(${e.id})">刪除</button>
 <span class="settle-badge public-pay-badge">公費儲值</span>
 </div>
+</div>
 </div>`;
 }
 const splitDesc = e.split === '均分' ? `兩人 <b style="color:#d17a6d">均分</b>` :
 e.split === '大豬' ? `算 <b style="color:#d17a6d">大豬</b> 的` :
 e.split === '小豬' ? `算 <b style="color:#d17a6d">小豬</b> 的` :
 `大豬 <b style="color:#d17a6d">¥${Math.round(e.bigPigShare).toLocaleString()}</b> / 小豬 <b style="color:#d17a6d">¥${Math.round(e.smallPigShare).toLocaleString()}</b>`;
+const isSelfPaid = (e.payer === '大豬' && Number(e.smallPigShare || 0) <= 0) || (e.payer === '小豬' && Number(e.bigPigShare || 0) <= 0);
+const expenseNoteHtml = String(e.note || '').trim() ? `<div class="expense-detail-note">📝 ${escapeHtml(String(e.note).trim()).replace(/\n/g, '<br>')}</div>` : '';
 const settleControl = e.payer === '公費'
 ? `<span class="settle-badge public-pay-badge">公費支付</span>`
-: `<button class="settle-badge ${e.isSettled ? 'done' : ''}" onclick="toggleSettleStatus(${e.id})">${e.isSettled ? '已清帳' : '欠費中'}</button>`;
-return `${expenseDateHeader}<div class="expense-card" style="${e.isSettled ? 'opacity:.8' : ''}">
-<div class="expense-top">
-<div class="expense-icon">${getCategoryIconHtml(e.category, 'cat-icon-md')}</div>
-<div class="expense-heading"><div class="expense-time">${formatDisplayTime(e.timeISO)}</div><div class="expense-title">${e.title}</div></div>
-</div>
+: isSelfPaid
+? `<span class="settle-badge public-pay-badge">各付各的</span>`
+: `<button class="settle-badge ${e.isSettled ? 'done' : ''}" onclick="toggleSettleStatus(${e.id}, this)">${e.isSettled ? '已清帳' : '欠費中'}</button>`;
+return `${expenseDateHeader}<div class="expense-card ${e.isSettled || isSelfPaid ? 'is-settled' : ''}" data-expense-id="${e.id}">
+${getExpenseCompactHeader(e, e.category, e.title, `${currSymbol}${Math.round(e.amount).toLocaleString()}`)}
+<div class="expense-expanded">
 <div class="expense-note">
-<div class="expense-note-amount"><span>金額</span><span class="expense-amount">${currSymbol}${Math.round(e.amount).toLocaleString()}</span></div>
 <div class="expense-payment-summary"><span><span class="expense-summary-emoji">💳</span><b style="color:#8d6e63">${e.payer}</b> 先付</span><span><span class="expense-summary-emoji">⚖️</span>${splitDesc}</span></div>
+${expenseNoteHtml}
 </div>
 <div class="expense-actions">
 <button class="mini-btn green btn-press-effect" onclick="editExpense(${e.id})">編輯</button>
 <button class="mini-btn red btn-press-effect" onclick="confirmDelete(${e.id})">刪除</button>
 ${settleControl}
+</div>
 </div>
 </div>`;
 }).join('');
@@ -13777,6 +13883,7 @@ function speakJapaneseText(button) {
   }
   window.speechSynthesis.cancel();
   document.querySelectorAll('.note-speak-btn.is-speaking').forEach((item) => item.classList.remove('is-speaking'));
+  button.classList.add('is-speaking');
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'ja-JP';
   utterance.rate = 0.82;
@@ -13784,7 +13891,6 @@ function speakJapaneseText(button) {
   const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
   const japaneseVoice = voices.find((voice) => /^ja(?:-|_)/i.test(voice.lang));
   if (japaneseVoice) utterance.voice = japaneseVoice;
-  button.classList.add('is-speaking');
   utterance.onend = () => button.classList.remove('is-speaking');
   utterance.onerror = () => button.classList.remove('is-speaking');
   window.speechSynthesis.speak(utterance);

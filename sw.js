@@ -1,19 +1,20 @@
-﻿const CACHE_VERSION = 'mie-anniversary-v20260830-platform-copy-mode-1';
+﻿const CACHE_VERSION = 'mie-anniversary-v20260916-expense-settled-1';
 const APP_SHELL_URL = './index.html';
+const ACTIVE_CACHE_VERSION = 'mie-anniversary-v20260916-expense-note-short-16';
 const SECURE_VAULT_URL = './secure-docs/vault.json';
 const PIGGY_MENU_SOUND_URL = './sounds/piggy-menu-bubble.mp3';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.addAll([APP_SHELL_URL, SECURE_VAULT_URL, PIGGY_MENU_SOUND_URL]))
+    caches.open(ACTIVE_CACHE_VERSION).then((cache) => cache.addAll([APP_SHELL_URL, SECURE_VAULT_URL, PIGGY_MENU_SOUND_URL]))
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_VERSION).map((key) => caches.delete(key))))
+      .then((keys) => Promise.all(keys.filter((key) => key !== ACTIVE_CACHE_VERSION).map((key) => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
@@ -31,7 +32,7 @@ self.addEventListener('fetch', (event) => {
       fetch(request, { cache: 'no-store' })
         .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => {
+          caches.open(ACTIVE_CACHE_VERSION).then((cache) => {
             cache.put(request, copy.clone());
             cache.put(APP_SHELL_URL, copy);
           });
@@ -50,7 +51,7 @@ self.addEventListener('fetch', (event) => {
       .then((response) => {
         if (sameOrigin && response && response.ok) {
           const copy = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+          caches.open(ACTIVE_CACHE_VERSION).then((cache) => cache.put(request, copy));
         }
         return response;
       })
