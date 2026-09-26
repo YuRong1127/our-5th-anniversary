@@ -1,6 +1,6 @@
 ﻿const CACHE_VERSION = 'mie-anniversary-v20260916-expense-settled-1';
 const APP_SHELL_URL = './index.html';
-const ACTIVE_CACHE_VERSION = 'mie-anniversary-v20260926-hojicha-wishlist-36';
+const ACTIVE_CACHE_VERSION = 'mie-anniversary-v20260926-balanced-edit-bars-38';
 const SECURE_VAULT_URL = './secure-docs/vault.json';
 const PIGGY_MENU_SOUND_URL = './sounds/piggy-menu-bubble.mp3';
 
