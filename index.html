@@ -503,7 +503,8 @@ body.edit-mode .card > div:has(.map-place-control) {
 display: block;
 }
 .itinerary-icon { width: 32px; flex: 0 0 32px; align-self: stretch; display: flex; align-items: center; justify-content: center; font-size: 1.55rem; line-height: 1; }
-.time-badge { display: block; margin-bottom: 4px; color: var(--heart-pink); font-size: .72rem; font-weight: 800; }
+.time-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; white-space: nowrap; }
+.time-badge { display: inline-block; margin-bottom: 0; color: var(--heart-pink); font-size: .72rem; font-weight: 800; }
 .item-title { font-weight: 800; color: #705b55; line-height: 1.25; }
 body:not(.edit-mode) .item-title:has(.map-place-title-link) {
 display: inline-flex;
@@ -1202,6 +1203,21 @@ white-space: nowrap;
 border-color: #d8eadf;
 background: #f0fbf5;
 color: #6d8f6b;
+font-size: 0;
+}
+.map-place-btn.has-map-place::before {
+content: '✓';
+position: absolute;
+inset: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #6d8f6b;
+font-family: inherit;
+font-size: .6rem;
+font-weight: 900;
+line-height: 1;
+transform: translateY(-1px);
 }
 .map-place-control {
 position: static;
@@ -1214,6 +1230,7 @@ transform: translateY(-1px);
 }
 body.edit-mode .map-place-control { display: inline-flex; }
 .map-place-control .map-place-btn {
+position: relative;
 width: 17px;
 height: 17px;
 border-radius: 50%;
@@ -1223,6 +1240,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
+.map-place-control .map-place-btn.has-map-place { color: transparent; }
 .flight-detail-btn {
 border-color: #efd9ce;
 background: #fff4ee;
@@ -1331,7 +1349,7 @@ aspect-ratio: 230 / 177;
 margin: -4px 0 -18px;
 object-fit: contain;
 object-position: center;
-transform: translateX(-10px);
+transform: translate(-10px, -6px);
 }
 .boundary-modal-img {
 display: block;
@@ -1462,7 +1480,7 @@ aspect-ratio: 230 / 177;
 margin: -4px 0 -18px;
 object-fit: contain;
 object-position: center;
-transform: translateX(-10px);
+transform: translate(-10px, -6px);
 }
 #alert-modal .alert-actions {
 width: 100%;
@@ -1717,16 +1735,39 @@ overflow: hidden;
 .exp-date-text > span,
 .exp-clock-text > span { display: inline-block; line-height: 1; }
 .exp-clock-text { flex: 0 0 auto; }
-.time-range-content { align-items: stretch; max-width: 340px; padding: 24px 18px 18px; }
-.time-range-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0 14px; }
-.time-range-field { min-width: 0; }
-.time-range-field label { display: block; margin: 0 0 6px 2px; color: #9b6a61; font-size: .72rem; font-weight: 900; }
-.time-range-input { width: 100%; height: 44px; box-sizing: border-box; border: 1px solid #ead7cf; border-radius: 15px; padding: 0 10px; outline: 0; background: #fffdfb; color: #6f5a54; font-size: .96rem; font-weight: 900; text-align: center; }
-.time-range-input:focus { border-color: #d17a6d; box-shadow: 0 0 0 3px rgba(209,122,109,.12); }
+.time-range-content { align-items: stretch; max-width: 400px; padding: 24px 22px 20px; }
+.time-range-wheel-groups { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 10px 0 16px; }
+.time-range-wheel-group { display: grid; min-width: 0; gap: 8px; }
+.time-range-wheel-title { margin: 0 0 0 2px; color: #9b6a61; font-size: .84rem; font-weight: 900; line-height: 1.2; text-align: left; }
+.time-range-wheel-pair { display: grid; grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr); align-items: center; gap: 6px; }
+.time-range-wheel { height: 108px; box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; scroll-snap-type: y mandatory; scrollbar-width: none; border: 1px solid #ead7cf; border-radius: 18px; padding: 37px 3px; background: #fffdfb; box-shadow: inset 0 1px 0 rgba(255,255,255,.9); }
+.time-range-wheel::-webkit-scrollbar { display: none; }
+.time-range-wheel-option { display: flex; width: 100%; height: 34px; align-items: center; justify-content: center; scroll-snap-align: center; border: 0; border-radius: 11px; background: transparent; color: #c7aaa1; font: inherit; font-size: .85rem; font-weight: 800; cursor: pointer; }
+.time-range-wheel-option.active { background: #fff0ed; color: #c86f63; font-size: 1rem; font-weight: 900; }
+.time-range-wheel-colon { color: #b9877e; font-size: 1.1rem; font-weight: 900; text-align: center; }
 .time-range-actions { display: grid; grid-template-columns: .75fr 1fr; gap: 9px; }
 .time-range-clear-btn { min-height: 46px; border: 0; border-radius: 16px; background: var(--cancel-bg); color: var(--main-brown); font-size: .9rem; font-weight: 900; }
-body.edit-mode .time-badge { cursor: pointer; }
-body.edit-mode .time-badge::after { content: '  ✎'; color: #d3aaa0; font-size: .68rem; }
+body.edit-mode .time-badge { cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+body.edit-mode .time-badge::after {
+content: '✎';
+display: inline-block;
+margin-left: 6px;
+color: #d3aaa0;
+font-size: .68rem;
+line-height: 1;
+transform: translateY(-1px) scaleX(-1);
+transform-origin: center;
+}
+.time-stay-hint {
+display: inline-block;
+margin-left: 0;
+color: #ccb9b3;
+font-size: .58rem;
+font-weight: 700;
+line-height: 1;
+vertical-align: 1px;
+white-space: nowrap;
+}
 .calendar-icon-styled { width: 30px; height: 30px; flex: 0 0 30px; display: flex; align-items: center; justify-content: center; }
 .calendar-icon-styled svg { display: block; width: 26px; height: 26px; }
 #exp-time-picker-host { width: 100%; }
@@ -5801,7 +5842,7 @@ header {
 <div class="modal-overlay" id="details-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費清單</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div class="modal-overlay" id="settle-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div class="panel-content settle-panel-content" id="settle-content"></div></div></div></div></div>
 <div class="modal-overlay" id="stats-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="stats-title-row"><div class="stats-main-title">📊 統計</div><div class="stats-tabs"><button class="stats-tab active btn-press-effect" data-stats-page="pie" onclick="setStatsPage('pie')" type="button">大餅圖</button><button class="stats-tab btn-press-effect" data-stats-page="bar" onclick="setStatsPage('bar')" type="button">柱狀圖</button></div></div><div class="modal-scroll-area"><div class="panel-content" id="stats-content"></div></div></div></div></div>
-<div class="modal-overlay" id="time-range-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-fields"><div class="time-range-field"><label for="time-range-start">開始</label><input class="time-range-input" id="time-range-start" inputmode="numeric" maxlength="5" oninput="formatTimeRangeInput(this)" placeholder="08:00" type="text"/></div><div class="time-range-field"><label for="time-range-end">結束</label><input class="time-range-input" id="time-range-end" inputmode="numeric" maxlength="5" oninput="formatTimeRangeInput(this)" placeholder="09:10" type="text"/></div></div><div class="time-range-actions"><button class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()" type="button">未定</button><button class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()" type="button">儲存時間</button></div></div></div></div>
+<div class="modal-overlay" id="time-range-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-wheel-groups"><div class="time-range-wheel-group"><div class="time-range-wheel-title">開始時間</div><div class="time-range-wheel-pair"><div aria-label="開始時間的小時" class="time-range-wheel" id="time-range-start-hour" role="listbox"></div><span class="time-range-wheel-colon">:</span><div aria-label="開始時間的分鐘" class="time-range-wheel" id="time-range-start-minute" role="listbox"></div></div></div><div class="time-range-wheel-group"><div class="time-range-wheel-title">結束時間</div><div class="time-range-wheel-pair"><div aria-label="結束時間的小時" class="time-range-wheel" id="time-range-end-hour" role="listbox"></div><span class="time-range-wheel-colon">:</span><div aria-label="結束時間的分鐘" class="time-range-wheel" id="time-range-end-minute" role="listbox"></div></div></div></div><div class="time-range-actions"><button class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()" type="button">未定</button><button class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()" type="button">儲存時間</button></div></div></div></div>
 <div class="modal-overlay" id="wishlist-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeWishlistModal()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="wishlist-title-row"><div class="modal-title">🧺 想買的</div><div class="wishlist-title-actions"><button class="wishlist-title-action btn-press-effect" id="wishlist-add-item-toggle" onclick="openWishlistItemCreator()" type="button">＋新增品項</button><button class="wishlist-title-action btn-press-effect" id="wishlist-category-edit-toggle" onclick="toggleWishlistCategoryEditMode()" type="button">編輯分類</button></div></div><div class="wishlist-category-wrap"><div class="wishlist-tabs" id="wishlist-tabs"></div><div class="wishlist-subtabs" id="wishlist-subtabs"></div></div><div class="wishlist-category-form" id="wishlist-category-form"><input class="wishlist-input" id="wishlist-category-input" onkeydown="handleWishlistCategoryKey(event)" placeholder="例如：藥妝店必買" type="text"/><button class="wishlist-category-save btn-press-effect" onclick="addWishlistCategory()" type="button">新增</button><button class="wishlist-category-cancel btn-press-effect" onclick="toggleWishlistCategoryForm(false)" type="button">取消</button></div><div class="wishlist-form" id="wishlist-item-form"><div class="wishlist-form-head"><strong id="wishlist-item-form-title">新增 3coins</strong></div><div class="wishlist-form-row"><div class="wishlist-gift-fields" id="wishlist-gift-fields"><div aria-label="誰買的" class="wishlist-gift-buyer"><button aria-label="大豬" class="wishlist-gift-buyer-btn active btn-press-effect" data-buyer="大豬" onclick="setWishlistGiftBuyer('大豬')" type="button"><img alt="大豬" class="wishlist-gift-buyer-img" src="images/pigs/wishlist-big-pig.png"/></button><button aria-label="小豬" class="wishlist-gift-buyer-btn btn-press-effect" data-buyer="小豬" onclick="setWishlistGiftBuyer('小豬')" type="button"><img alt="小豬" class="wishlist-gift-buyer-img" src="images/pigs/wishlist-small-pig.png"/></button></div><input class="wishlist-input" id="wishlist-gift-recipient" placeholder="買給誰？" type="text"/></div><div class="wishlist-gift-product-editor" id="wishlist-gift-product-editor"></div><input accept="image/*" id="wishlist-gift-product-photo-input" onchange="attachPendingWishlistGiftProductPhoto(event)" style="display:none" type="file"/><input class="wishlist-input" id="wishlist-input" onkeydown="handleWishlistKey(event)" placeholder="我要買什麼？" type="text"/><div class="wishlist-new-tools"><button class="wishlist-new-photo-btn btn-press-effect" id="wishlist-new-photo-btn" onclick="chooseNewWishlistPhoto()" type="button">📷 新增照片</button></div><input accept="image/*" id="wishlist-new-photo-input" onchange="attachNewWishlistPhoto(event)" style="display:none" type="file"/><div class="wishlist-form-actions"><button class="wishlist-add-btn btn-press-effect" id="wishlist-save-item-btn" onclick="saveWishlistItem()" type="button">確定</button><button class="wishlist-form-cancel btn-press-effect" onclick="toggleWishlistItemForm(false)" type="button">取消</button></div></div></div><div class="modal-scroll-area"><div class="wishlist-list" id="wishlist-list"></div></div></div></div><div class="wishlist-action-menu" id="wishlist-action-menu" onclick="event.stopPropagation()"><button class="btn-press-effect" onclick="editWishlistActionItem(event)" type="button">編輯</button><button class="btn-press-effect" onclick="deleteWishlistActionItem(event)" type="button">刪除</button></div></div>
 <div class="modal-overlay" id="prep-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeModal('prep-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🎒 出發準備清單</div><div class="wishlist-tabs prep-tabs" id="prep-tabs"><button class="wishlist-tab active btn-press-effect" onclick="setPrepCategory('出行必備')" type="button">出行必備</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('生活日用')" type="button">生活日用</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('衣服配飾')" type="button">衣服配飾</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('藥品健康')" type="button">藥品健康</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('數位電器')" type="button">數位電器</button><button class="wishlist-tab btn-press-effect" onclick="setPrepCategory('妝髮用品')" type="button">妝髮用品</button></div><div class="wishlist-form"><input class="wishlist-input" id="prep-input" onkeydown="handlePrepKey(event)" placeholder="例如：護照、充電器、旅平險..." type="text"/><button class="wishlist-add-btn btn-press-effect" onclick="addPrepItem()" type="button">＋</button></div><div class="modal-scroll-area"><div class="wishlist-list" id="prep-list"></div></div></div></div></div>
 <div class="modal-overlay" id="docs-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeSecureDocs()"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🔐 重要資料夾</div><p class="docs-security-note">完整憑證只在這台裝置暫時解密，關閉後會重新上鎖</p><div class="modal-scroll-area"><div class="wishlist-list docs-list" id="docs-list"></div></div></div></div></div>
@@ -5896,7 +5937,8 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 364, category: 'Lawson', title: '蜂蜜蛋糕', done: false, imageSrc: 'wishlist-images/lawson-honey-castella.jpg' },
 { id: 365, category: '超商', title: '高千穗飲品', done: false, imageSrc: 'wishlist-images/takachiho-drink.png' },
 { id: 366, category: '全家', title: '梨果昔', done: false, imageSrc: 'wishlist-images/nashi-smoothie.webp' },
-{ id: 367, category: '藥妝店', title: '雲朵牙刷', done: false, imageSrc: 'wishlist-images/cloud-toothbrush.jpg' }
+{ id: 367, category: '藥妝店', title: '雲朵牙刷', done: false, imageSrc: 'wishlist-images/cloud-toothbrush.jpg' },
+{ id: 368, category: '7-11', title: '焙茶冰沙', done: false, imageSrc: 'wishlist-images/seven-eleven-hojicha-smoothie.jpg' }
 ];
 let wishItems = [
 { id: 101, category: '全家', title: '限定甜點', done: false },
@@ -7465,8 +7507,18 @@ return;
 const navLink = routeInline.querySelector('.route-nav-link');
 if (navLink) openRouteLink(event, navLink);
 }
+function getRouteEditorDurationMinutes() {
+const hourRaw = String(document.getElementById('route-plan-hours')?.value || '').trim();
+const minuteRaw = String(document.getElementById('route-plan-minutes')?.value || '').trim();
+if (!hourRaw && !minuteRaw) return null;
+const hours = Number(hourRaw || 0);
+const minutes = Number(minuteRaw || 0);
+if (!Number.isFinite(hours) || !Number.isFinite(minutes) || hours < 0 || minutes < 0) return null;
+return Math.round(hours * 60 + minutes);
+}
 function saveRoutePlan() {
 if (!currentRouteConnector) return;
+const connectorToUpdate = currentRouteConnector;
 const parsedRoute = parseRoutePaste(document.getElementById('route-plan-url').value);
 const routeUrl = parsedRoute.url;
 normalizeRouteScheduleInputs();
@@ -7483,6 +7535,9 @@ currentRouteConnector.dataset.routePair = getRoutePairKeyForConnector(currentRou
 currentRouteConnector.dataset.routeText = routeText || '已設定移動方式';
 if (selectedRouteMode) currentRouteConnector.dataset.routeMode = selectedRouteMode;
 else delete currentRouteConnector.dataset.routeMode;
+const routeDurationMinutes = getRouteEditorDurationMinutes();
+if (routeDurationMinutes !== null) currentRouteConnector.dataset.routeDurationMinutes = String(routeDurationMinutes);
+else delete currentRouteConnector.dataset.routeDurationMinutes;
 const schedules = selectedRouteMode === '大眾運輸' ? getRouteSchedules() : [];
 if (schedules.length) currentRouteConnector.dataset.routeSchedules = schedules.join('|');
 else delete currentRouteConnector.dataset.routeSchedules;
@@ -7495,6 +7550,7 @@ delete currentRouteConnector.dataset.routeSchedulePick;
 delete currentRouteConnector.dataset.routeSchedulePicks;
 }
 enhanceRouteConnectors();
+cascadeItineraryTimesFromConnector(connectorToUpdate);
 queueTripCloudSave();
 closeRoutePlanModal();
 }
@@ -7504,6 +7560,7 @@ delete currentRouteConnector.dataset.routeUrl;
 delete currentRouteConnector.dataset.routePair;
 delete currentRouteConnector.dataset.routeText;
 delete currentRouteConnector.dataset.routeMode;
+delete currentRouteConnector.dataset.routeDurationMinutes;
 delete currentRouteConnector.dataset.routeSchedules;
 delete currentRouteConnector.dataset.routeSchedulePick;
 delete currentRouteConnector.dataset.routeSchedulePicks;
@@ -7525,7 +7582,7 @@ closeModal('route-plan-modal');
 function buildItineraryCard(timeText, titleText, descText) {
 const card = document.createElement('div');
 card.className = 'card';
-card.innerHTML = `<span class="itinerary-icon btn-press-effect">📍</span><div><span class="time-badge editable" contenteditable="true">${timeText}</span><div class="item-title editable" contenteditable="true">${titleText}</div><div class="item-desc editable" contenteditable="true">${descText}</div></div>`;
+card.innerHTML = `<span class="itinerary-icon btn-press-effect">📍</span><div><span class="time-badge editable" contenteditable="false" onclick="openTimeRangeEditor(event, this)">${timeText}</span><div class="item-title editable" contenteditable="true">${titleText}</div><div class="item-desc editable" contenteditable="true">${descText}</div></div>`;
 return card;
 }
 function isFlightDetailCard(card) {
@@ -7576,6 +7633,13 @@ return keepsLockedFlightPairs(nextCards);
 }
 function enhanceItineraryCards() {
 document.querySelectorAll('.day-section .card').forEach(card => {
+const timeBadge = card.querySelector('.time-badge');
+if (timeBadge) {
+timeBadge.contentEditable = 'false';
+timeBadge.setAttribute('onclick', 'openTimeRangeEditor(event, this)');
+timeBadge.setAttribute('role', 'button');
+timeBadge.setAttribute('aria-label', '設定行程時間');
+}
 if (!card.querySelector('.reorder-controls')) {
 card.insertAdjacentHTML('beforeend', `<div class="reorder-controls"><button type="button" class="reorder-btn move-up-btn btn-press-effect" onclick="moveItineraryCard(event, this, -1)" aria-label="上移行程">▲</button><button type="button" class="reorder-btn move-down-btn btn-press-effect" onclick="moveItineraryCard(event, this, 1)" aria-label="下移行程">▼</button></div>`);
 }
@@ -8014,6 +8078,207 @@ start: normalizeTimeInputValue(times[0] || ''),
 end: normalizeTimeInputValue(times[1] || '')
 };
 }
+function formatStayDuration(minutes) {
+const total = Math.max(0, Math.round(Number(minutes) || 0));
+const hours = Math.floor(total / 60);
+const mins = total % 60;
+if (hours && mins) return `${hours} 小時 ${mins} 分`;
+if (hours) return `${hours} 小時`;
+return `${mins} 分`;
+}
+function refreshTimeStayHints(scope = document) {
+const badges = scope?.matches?.('.time-badge') ? [scope] : Array.from(scope?.querySelectorAll?.('.time-badge') || []);
+badges.forEach(badge => {
+const timeInfo = parseItineraryTimeInfo(badge.textContent || '');
+let row = badge.parentElement?.classList?.contains('time-row') ? badge.parentElement : null;
+let hint = row?.querySelector(':scope > .time-stay-hint') || (badge.nextElementSibling?.classList?.contains('time-stay-hint') ? badge.nextElementSibling : null);
+if (!timeInfo || timeInfo.isPoint) {
+hint?.remove();
+if (row) row.replaceWith(badge);
+return;
+}
+if (!row) {
+row = document.createElement('span');
+row.className = 'time-row';
+badge.insertAdjacentElement('beforebegin', row);
+row.appendChild(badge);
+if (hint) row.appendChild(hint);
+}
+if (!hint) {
+hint = document.createElement('span');
+hint.className = 'time-stay-hint';
+row.appendChild(hint);
+}
+hint.textContent = `・${formatStayDuration(timeInfo.duration)}`;
+});
+}
+let timeRangeWheelReady = false;
+let timeRangeWheelSyncing = false;
+const timeRangeWheelValues = { startHour: 9, startMinute: 0, endHour: 10, endMinute: 0 };
+const timeRangeWheelTimers = new Map();
+function getTimeRangeWheelKey(period, unit) {
+return `${period}${unit === 'hour' ? 'Hour' : 'Minute'}`;
+}
+function getTimeRangeWheel(period, unit) {
+return document.getElementById(`time-range-${period}-${unit}`);
+}
+function selectTimeRangeWheelValue(period, unit, value, shouldCenter = true) {
+const limit = unit === 'hour' ? 24 : 60;
+const key = getTimeRangeWheelKey(period, unit);
+timeRangeWheelValues[key] = Math.min(limit - 1, Math.max(0, Number(value) || 0));
+updateTimeRangeWheel(period, unit, shouldCenter);
+}
+function updateTimeRangeWheel(period, unit, shouldCenter = true) {
+const wheel = getTimeRangeWheel(period, unit);
+if (!wheel) return;
+const key = getTimeRangeWheelKey(period, unit);
+wheel.querySelectorAll('.time-range-wheel-option').forEach(option => {
+const active = Number(option.dataset.value) === timeRangeWheelValues[key];
+option.classList.toggle('active', active);
+option.setAttribute('aria-selected', active ? 'true' : 'false');
+if (active && shouldCenter) {
+timeRangeWheelSyncing = true;
+option.scrollIntoView({ block: 'center' });
+setTimeout(() => { timeRangeWheelSyncing = false; }, 80);
+}
+});
+}
+function handleTimeRangeWheel(event, period, unit) {
+event.preventDefault();
+event.stopPropagation();
+const key = getTimeRangeWheelKey(period, unit);
+selectTimeRangeWheelValue(period, unit, timeRangeWheelValues[key] + (event.deltaY > 0 ? 1 : -1));
+}
+function settleTimeRangeWheel(period, unit) {
+if (timeRangeWheelSyncing) return;
+const wheel = getTimeRangeWheel(period, unit);
+if (!wheel) return;
+clearTimeout(timeRangeWheelTimers.get(wheel));
+timeRangeWheelTimers.set(wheel, setTimeout(() => {
+if (timeRangeWheelSyncing) return;
+const center = wheel.scrollTop + wheel.clientHeight / 2;
+const options = Array.from(wheel.querySelectorAll('.time-range-wheel-option'));
+const closest = options.reduce((best, option) => Math.abs(option.offsetTop + option.offsetHeight / 2 - center) < Math.abs(best.offsetTop + best.offsetHeight / 2 - center) ? option : best, options[0]);
+if (closest) selectTimeRangeWheelValue(period, unit, Number(closest.dataset.value), true);
+}, 90));
+}
+function populateTimeRangeWheels() {
+if (timeRangeWheelReady) return;
+['start', 'end'].forEach(period => {
+['hour', 'minute'].forEach(unit => {
+const wheel = getTimeRangeWheel(period, unit);
+if (!wheel) return;
+const count = unit === 'hour' ? 24 : 60;
+wheel.innerHTML = Array.from({ length: count }, (_, value) => `<button type="button" class="time-range-wheel-option" data-value="${value}" role="option" onclick="selectTimeRangeWheelValue('${period}', '${unit}', ${value})">${String(value).padStart(2, '0')}</button>`).join('');
+wheel.addEventListener('wheel', event => handleTimeRangeWheel(event, period, unit), { passive: false });
+wheel.addEventListener('scroll', () => settleTimeRangeWheel(period, unit), { passive: true });
+});
+});
+timeRangeWheelReady = true;
+}
+function setTimeRangeWheelTime(period, value, fallbackHour, fallbackMinute) {
+const parsed = normalizeTimeInputValue(value || '');
+const [hour, minute] = parsed ? parsed.split(':').map(Number) : [fallbackHour, fallbackMinute];
+timeRangeWheelValues[getTimeRangeWheelKey(period, 'hour')] = hour;
+timeRangeWheelValues[getTimeRangeWheelKey(period, 'minute')] = minute;
+updateTimeRangeWheel(period, 'hour');
+updateTimeRangeWheel(period, 'minute');
+}
+function getTimeRangeWheelTime(period) {
+return `${String(timeRangeWheelValues[getTimeRangeWheelKey(period, 'hour')]).padStart(2, '0')}:${String(timeRangeWheelValues[getTimeRangeWheelKey(period, 'minute')]).padStart(2, '0')}`;
+}
+function parseItineraryTimeInfo(text) {
+const raw = String(text || '').trim();
+if (!raw || raw.includes('未定')) return null;
+const times = raw.match(/\b\d{1,2}:[0-5]\d\b/g) || [];
+if (!times.length || (/[\-–—～~]/.test(raw) && times.length < 2)) return null;
+const startText = normalizeTimeInputValue(times[0]);
+const endText = times[1] ? normalizeTimeInputValue(times[1]) : startText;
+if (!startText || !endText) return null;
+const [startHour, startMinute] = startText.split(':').map(Number);
+const [endHour, endMinute] = endText.split(':').map(Number);
+const start = startHour * 60 + startMinute;
+let end = endHour * 60 + endMinute;
+if (times[1] && end < start) end += 1440;
+return { start, end, duration: times[1] ? end - start : 0, isPoint: times.length === 1 };
+}
+function formatItineraryMinutes(value) {
+const minutes = ((Math.round(value) % 1440) + 1440) % 1440;
+return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
+}
+function parseDurationPhraseMinutes(value) {
+const raw = String(value || '').replace(/[,，]/g, ' ').trim();
+if (!raw) return null;
+const hourMatch = raw.match(/(\d+)\s*(?:小時|小时|時|hr|hrs|h)/i);
+const minuteMatch = raw.match(/(\d+)\s*(?:分鐘|分钟|分|min|mins|m)/i);
+if (!hourMatch && !minuteMatch) return null;
+return Number(hourMatch?.[1] || 0) * 60 + Number(minuteMatch?.[1] || 0);
+}
+function parsePickedScheduleMinutes(value) {
+const times = String(value || '').match(/\b\d{1,2}:[0-5]\d\b/g) || [];
+if (times.length < 2) return null;
+const start = parseItineraryTimeInfo(times[0]);
+const end = parseItineraryTimeInfo(times[1]);
+if (!start || !end) return null;
+let duration = end.start - start.start;
+if (duration < 0) duration += 1440;
+return duration;
+}
+function getConnectorTravelMinutes(connector) {
+if (!connector?.classList.contains('connector-line')) return null;
+if (connector.dataset.routeDurationMinutes !== undefined) {
+const exact = Number(connector.dataset.routeDurationMinutes);
+return Number.isFinite(exact) && exact >= 0 ? exact : null;
+}
+const pickedSchedules = String(connector.dataset.routeSchedulePicks || connector.dataset.routeSchedulePick || '').split('|').map(item => item.trim()).filter(Boolean);
+if (pickedSchedules.length === 1) {
+const pickedDuration = parsePickedScheduleMinutes(pickedSchedules[0]);
+if (pickedDuration !== null) return pickedDuration;
+}
+const sourceText = connector.dataset.routeText || connector.querySelector('.route-text')?.textContent || connector.querySelector('.flight-info-title')?.textContent || '';
+const segments = String(sourceText).split(/\s*(?:\/|／|\||、)\s*/).filter(Boolean);
+const durations = segments.map(segment => ({ segment, minutes: parseDurationPhraseMinutes(segment) })).filter(item => item.minutes !== null);
+if (!durations.length) return null;
+if (durations.length === 1) return durations[0].minutes;
+const routeMode = String(connector.dataset.routeMode || '').trim();
+if (routeMode) {
+const modeMatches = durations.filter(item => item.segment.includes(routeMode));
+if (modeMatches.length === 1) return modeMatches[0].minutes;
+}
+const uniqueDurations = [...new Set(durations.map(item => item.minutes))];
+return uniqueDurations.length === 1 ? uniqueDurations[0] : null;
+}
+function cascadeItineraryTimesFromCard(sourceCard) {
+if (!sourceCard?.classList.contains('card')) return 0;
+const sourceTime = parseItineraryTimeInfo(sourceCard.querySelector('.time-badge')?.textContent || '');
+if (!sourceTime) return 0;
+let currentCard = sourceCard;
+let currentEnd = sourceTime.end;
+let updatedCount = 0;
+while (currentCard) {
+const connector = currentCard.nextElementSibling;
+if (!connector?.classList.contains('connector-line')) break;
+const travelMinutes = getConnectorTravelMinutes(connector);
+if (travelMinutes === null) break;
+const nextCard = connector.nextElementSibling;
+if (!nextCard?.classList.contains('card')) break;
+const nextBadge = nextCard.querySelector('.time-badge');
+const nextTime = parseItineraryTimeInfo(nextBadge?.textContent || '');
+if (!nextBadge || !nextTime) break;
+const nextStart = currentEnd + travelMinutes;
+const nextEnd = nextStart + nextTime.duration;
+nextBadge.textContent = nextTime.isPoint ? formatItineraryMinutes(nextStart) : `${formatItineraryMinutes(nextStart)} - ${formatItineraryMinutes(nextEnd)}`;
+currentCard = nextCard;
+currentEnd = nextEnd;
+updatedCount += 1;
+}
+refreshTimeStayHints(sourceCard.closest('.day-section') || document);
+return updatedCount;
+}
+function cascadeItineraryTimesFromConnector(connector) {
+const sourceCard = connector?.previousElementSibling;
+return sourceCard?.classList.contains('card') ? cascadeItineraryTimesFromCard(sourceCard) : 0;
+}
 function openTimeRangeEditor(event, badgeEl) {
 if (event) {
 event.preventDefault();
@@ -8022,10 +8287,17 @@ event.stopPropagation();
 if (!isEditMode || !badgeEl) return;
 currentTimeBadgeTarget = badgeEl;
 const parsed = parseTimeBadgeText(badgeEl.textContent);
-document.getElementById('time-range-start').value = parsed.start;
-document.getElementById('time-range-end').value = parsed.end;
 openSimpleModal('time-range-modal');
-setTimeout(() => document.getElementById('time-range-start')?.focus(), 60);
+populateTimeRangeWheels();
+const now = new Date();
+setTimeRangeWheelTime('start', parsed.start, now.getHours(), now.getMinutes());
+setTimeRangeWheelTime('end', parsed.end, timeRangeWheelValues.startHour, timeRangeWheelValues.startMinute);
+setTimeout(() => {
+updateTimeRangeWheel('start', 'hour');
+updateTimeRangeWheel('start', 'minute');
+updateTimeRangeWheel('end', 'hour');
+updateTimeRangeWheel('end', 'minute');
+}, 60);
 }
 function closeTimeRangeEditor() {
 currentTimeBadgeTarget = null;
@@ -8033,13 +8305,19 @@ closeModal('time-range-modal');
 }
 function clearTimeRangeEditor() {
 if (currentTimeBadgeTarget) currentTimeBadgeTarget.textContent = '未定';
+if (currentTimeBadgeTarget) refreshTimeStayHints(currentTimeBadgeTarget);
+queueTripCloudSave();
 closeTimeRangeEditor();
 }
 function saveTimeRangeEditor() {
 if (!currentTimeBadgeTarget) return closeTimeRangeEditor();
-const start = normalizeTimeInputValue(document.getElementById('time-range-start')?.value || '');
-const end = normalizeTimeInputValue(document.getElementById('time-range-end')?.value || '');
-currentTimeBadgeTarget.textContent = start && end ? `${start} - ${end}` : start ? `${start} -` : end ? `- ${end}` : '未定';
+const targetBadge = currentTimeBadgeTarget;
+const start = getTimeRangeWheelTime('start');
+const end = getTimeRangeWheelTime('end');
+targetBadge.textContent = `${start} - ${end}`;
+cascadeItineraryTimesFromCard(targetBadge.closest('.card'));
+refreshTimeStayHints(targetBadge);
+queueTripCloudSave();
 closeTimeRangeEditor();
 }
 function rebuildSectionConnectors(section) {
@@ -10581,6 +10859,7 @@ section.appendChild(connector);
 const newCard = buildItineraryCard('08:00 - 09:00', '新增行程', '點擊此處補上行程細節');
 section.appendChild(newCard);
 enhanceRouteConnectors();
+refreshTimeStayHints(newCard);
 focusNewItineraryCard(newCard);
 }
 
@@ -10607,17 +10886,32 @@ html += `</div>`;
 });
 grid.innerHTML = html;
 }
-document.getElementById('day-content').addEventListener('click', e => {
+document.getElementById('day-content').addEventListener('pointerdown', e => {
 const timeBadge = e.target.closest('.time-badge');
 if (timeBadge && isEditMode) {
 openTimeRangeEditor(e, timeBadge);
 return;
 }
+}, true);
+document.getElementById('day-content').addEventListener('click', e => {
 const icon = e.target.closest('.itinerary-icon');
 if (!icon || !isEditMode) return;
 e.preventDefault();
 e.stopPropagation();
 openIconPicker(icon);
+});
+document.getElementById('day-content').addEventListener('focusin', e => {
+const timeBadge = e.target.closest('.time-badge');
+if (timeBadge && isEditMode) timeBadge.dataset.timeBeforeEdit = timeBadge.textContent.trim();
+});
+document.getElementById('day-content').addEventListener('focusout', e => {
+const timeBadge = e.target.closest('.time-badge');
+if (!timeBadge || !isEditMode) return;
+const before = timeBadge.dataset.timeBeforeEdit;
+delete timeBadge.dataset.timeBeforeEdit;
+if (before === undefined || before === timeBadge.textContent.trim()) return;
+cascadeItineraryTimesFromCard(timeBadge.closest('.card'));
+queueTripCloudSave();
 });
 
 
@@ -10863,7 +11157,7 @@ document.getElementById('header-normal-view').style.display = isEdit ? 'none' : 
 document.getElementById('edit-mode-title').style.display = isEdit ? 'block' : 'none';
 document.getElementById('main-btn').classList.toggle('hidden-piggy', isEdit);
 document.querySelectorAll('.editable').forEach(el => {
-el.contentEditable = el.classList.contains('route-text') ? false : isEdit;
+el.contentEditable = el.classList.contains('route-text') || el.classList.contains('time-badge') ? false : isEdit;
 });
 document.querySelectorAll('.more-info-btn').forEach(btn => {
 const isFlight = isFlightDetailCard(btn.closest('.card'));
@@ -13077,6 +13371,7 @@ if (Number.isInteger(data.currentDay) && hasManualDaySelection && isTripInProgre
 enhanceRouteConnectors();
 enhanceItineraryCards();
 enhanceSpecialItineraryArt();
+refreshTimeStayHints();
 
 toggleEditMode(false);
 switchDay(hasManualDaySelection && isTripInProgress() ? currentDay : getInitialTripDay(), { auto: true, skipHistory: true });
@@ -13657,6 +13952,7 @@ initDatePicker();
 initDayDragSwap();
 initItineraryDragSort();
 initAppBackButton();
+refreshTimeStayHints();
 document.getElementById('both-big-pig').addEventListener('input', () => syncBothAmountSum('big'));
 document.getElementById('both-small-pig').addEventListener('input', () => syncBothAmountSum('small'));
 document.getElementById('exp-amount').addEventListener('input', () => syncBothAmountSum('amount'));
