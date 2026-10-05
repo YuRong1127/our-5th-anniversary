@@ -5883,6 +5883,7 @@ header {
 let currentDay = 1;
 let expenses = [];
 const REQUIRED_WISHLIST_ITEMS = [
+{ id: 377, category: '藥妝店', title: '紅豆肩頸熱敷枕', done: false, imageSrc: 'wishlist-images/azuki-neck-shoulder-heat-pillow.jpg' },
 { id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
 { id: 104, category: '藥妝店', title: '無類固醇止癢膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
 { id: 107, category: '3coins', title: '對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
@@ -5892,6 +5893,8 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 374, category: '無印良品', title: '充氣床墊', done: false, imageSrc: 'wishlist-images/muji-inflatable-mattress.png' },
 { id: 311, category: '無印良品', title: '鋁製伸縮衣架', done: false, imageSrc: 'wishlist-images/muji-aluminum-telescopic-hanger.jpg' },
 { id: 312, category: '3coins', title: '壓縮機&壓縮袋', done: false, imageSrc: 'wishlist-images/threecoins-compression-pump-bag.jpg' },
+{ id: 375, category: '3coins', title: '雷射玩具槍', done: false, imageSrc: 'wishlist-images/threecoins-laser-toy-gun.png' },
+{ id: 376, category: '3coins', title: '標籤機', done: false, imageSrc: 'wishlist-images/threecoins-label-printer.jpg' },
 { id: 313, category: '無印良品', title: '藥用BB霜#03', done: false, imageSrc: 'wishlist-images/muji-bb-cream-03-instagram.jpg' },
 { id: 314, category: '無印良品', title: '精油護手霜', done: false, imageSrc: 'wishlist-images/muji-essential-oil-hand-cream.png' },
 { id: 315, category: '無印良品', title: '頭皮護理液', done: false, imageSrc: 'wishlist-images/muji-scalp-care-essence.jpg' },
@@ -5943,7 +5946,6 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 364, category: 'Lawson', title: '蜂蜜蛋糕', done: false, imageSrc: 'wishlist-images/lawson-honey-castella.jpg' },
 { id: 365, category: '超商', title: '高千穗飲品', done: false, imageSrc: 'wishlist-images/takachiho-drink.png' },
 { id: 366, category: '全家', title: '梨果昔', done: false, imageSrc: 'wishlist-images/nashi-smoothie.webp' },
-{ id: 367, category: '藥妝店', title: '雲朵牙刷', done: false, imageSrc: 'wishlist-images/cloud-toothbrush.jpg' },
 { id: 368, category: '7-11', title: '焙茶冰沙', done: false, imageSrc: 'wishlist-images/seven-eleven-hojicha-smoothie.jpg' },
 { id: 369, category: '全家', title: '麝香葡萄軟糖', done: false, imageSrc: 'wishlist-images/familymart-shine-muscat-gummy.jpg' },
 { id: 370, category: '7-11', title: '披薩洋芋片', done: false, imageSrc: 'wishlist-images/seven-eleven-pizza-potato-chips.jpg' },
@@ -5999,7 +6001,7 @@ let editingWishlistItemKey = null;
 function ensureRequiredWishlistItems() {
 let added = false;
 const beforeCount = wishItems.length;
-wishItems = wishItems.filter(item => item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒')));
+wishItems = wishItems.filter(item => item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒' || item.title === '雲朵牙刷')));
 if (wishItems.length !== beforeCount) added = true;
 wishItems.forEach(item => {
 const renamedWishlistItem = [
