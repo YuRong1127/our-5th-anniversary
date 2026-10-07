@@ -5903,19 +5903,15 @@ let expenses = [];
 const REQUIRED_WISHLIST_ITEMS = [
 { id: 378, category: '伴手禮', buyer: '小豬', recipient: '小籠包', title: '', done: false, qty: 1, products: [{ title: '肌膚之鑰-激光瓶50ml', done: false, qty: 1, imageSrc: 'wishlist-images/cle-de-peau-serum-50ml.jpeg' }] },
 { id: 377, category: '藥妝店', title: '紅豆肩頸熱敷枕', done: false, imageSrc: 'wishlist-images/azuki-neck-shoulder-heat-pillow.jpg' },
-{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
+{ id: 103, category: '藥妝店', title: '喉嚨殺菌消炎劑', done: false, qty: 2, qtyRevision: '2026-10-07', imageSrc: 'wishlist-images/throat-sterilizing-spray.webp' },
 { id: 104, category: '藥妝店', title: '無類固醇止癢膏', done: false, imageSrc: 'wishlist-images/non-steroid-itch-ointment.jpg' },
 { id: 107, category: '3coins', title: '對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
 { id: 310, category: '3coins', title: '兩用油瓶460ml', done: false, imageSrc: 'wishlist-images/threecoins-2way-oil-bottle-460ml.jpg' },
-{ id: 374, category: '無印良品', title: '充氣床墊', done: false, imageSrc: 'wishlist-images/muji-inflatable-mattress.png' },
-{ id: 311, category: '無印良品', title: '鋁製伸縮衣架', done: false, imageSrc: 'wishlist-images/muji-aluminum-telescopic-hanger.jpg' },
-{ id: 312, category: '3coins', title: '壓縮機&壓縮袋', done: false, imageSrc: 'wishlist-images/threecoins-compression-pump-bag.jpg' },
 { id: 375, category: '3coins', title: '雷射玩具槍', done: false, imageSrc: 'wishlist-images/threecoins-laser-toy-gun.png' },
 { id: 376, category: '3coins', title: '標籤機', done: false, imageSrc: 'wishlist-images/threecoins-label-printer.jpg' },
 { id: 313, category: '無印良品', title: '藥用BB霜#03', done: false, imageSrc: 'wishlist-images/muji-bb-cream-03-instagram.jpg' },
-{ id: 314, category: '無印良品', title: '精油護手霜', done: false, imageSrc: 'wishlist-images/muji-essential-oil-hand-cream.png' },
 { id: 315, category: '無印良品', title: '頭皮護理液', done: false, imageSrc: 'wishlist-images/muji-scalp-care-essence.jpg' },
 { id: 334, category: '無印良品', title: '鹽味巧克力派', done: false, imageSrc: 'wishlist-images/muji-salty-chocolate-stick-pie.jpg' },
 { id: 316, category: '7-11', title: '抹茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-smoothie.jpg' },
@@ -5925,15 +5921,14 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 320, category: '藥妝店', title: '指緣角質藥膏', done: false, imageSrc: 'wishlist-images/cuticle-keratin-ointment.png' },
 { id: 321, category: '超商', title: '葡萄軟糖', done: false, imageSrc: 'wishlist-images/convenience-grape-gummy.png' },
 { id: 322, category: '全家', title: '抹茶白巧克力餅', done: false, imageSrc: 'wishlist-images/familymart-matcha-white-chocolate-cookie.jpg' },
-{ id: 323, category: '藥妝店', title: '加濕蒸氣口罩', done: false, imageSrc: 'wishlist-images/humidifying-steam-mask.png' },
+{ id: 323, category: '藥妝店', title: '加濕蒸氣口罩', done: false, qty: 2, qtyRevision: '2026-10-07', imageSrc: 'wishlist-images/humidifying-steam-mask.png' },
 { id: 324, category: '藥妝店', title: '睫毛精華液', done: false, imageSrc: 'wishlist-images/eyelash-serum.png' },
 { id: 325, category: '藥妝店', title: '濕疹藥膏', done: false, imageSrc: 'wishlist-images/eczema-ointment.png' },
-{ id: 327, category: '藥妝店', title: '消水腫藥丸', done: false, imageSrc: 'wishlist-images/water-retention-supplement.png' },
 { id: 329, category: '藥妝店', title: '速攻藍莓', done: false, imageSrc: 'wishlist-images/dhc-blueberry-supplement.png' },
 { id: 331, category: '藥妝店', title: 'Tomica小車', done: false, imageSrc: 'wishlist-images/tomica-mini-car.png' },
 { id: 332, category: '藥妝店', title: '鼻下保濕棒', done: false, imageSrc: 'wishlist-images/under-nose-moisturizing-stick.png' },
 { id: 333, category: '藥妝店', title: '大正感冒藥', done: false, imageSrc: 'wishlist-images/taisho-cold-medicine.png' },
-{ id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
+{ id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, qty: 3, qtyRevision: '2026-10-07', imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
 { id: 336, category: '全家', title: '奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
 { id: 337, category: '7-11', title: '抹茶軟餅乾', done: false, imageSrc: 'wishlist-images/seven-eleven-matcha-soft-cookie.webp' },
 { id: 338, category: '無印良品', title: '水凝保濕乳霜', done: false, imageSrc: 'wishlist-images/muji-hydrating-gel-cream-instagram.jpg' },
@@ -6019,6 +6014,18 @@ let currentWishlistGiftBuyer = '大豬';
 let editingWishlistItemKey = null;
 function ensureRequiredWishlistItems() {
 let added = false;
+const removedOct7Items = { '無印良品': ['精油護手霜', '充氣床墊', '鋁製伸縮衣架'], '3coins': ['壓縮機&壓縮袋'], '藥妝店': ['消水腫藥丸'] };
+const beforeOct7Count = wishItems.length;
+wishItems = wishItems.filter(item => !(removedOct7Items[WISHLIST_CATEGORY_ALIASES[item.category] || item.category] || []).includes(item.title));
+if (wishItems.length !== beforeOct7Count) added = true;
+const oct7Quantities = { '喉嚨殺菌消炎劑': 2, '喉嚨殺菌消炎噴劑': 2, '加濕蒸氣口罩': 2, 'ELIXIR水凝霜': 3 };
+wishItems.forEach(item => {
+if (item.category === '藥妝店' && oct7Quantities[item.title] && item.qtyRevision !== '2026-10-07') {
+item.qty = oct7Quantities[item.title];
+item.qtyRevision = '2026-10-07';
+added = true;
+}
+});
 const beforeCount = wishItems.length;
 wishItems = wishItems.filter(item => item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒' || item.title === '雲朵牙刷')));
 if (wishItems.length !== beforeCount) added = true;
