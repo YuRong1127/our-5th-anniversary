@@ -343,6 +343,8 @@ opacity: 1;
 }
 .saturday-wakeup-art.is-fitted,
 .saturday-buffet-breakfast-art.is-fitted,
+.mitarashi-dango-art.is-fitted,
+.fukusuke-udon-art.is-fitted,
 .ooishiya-dinner-art.is-fitted,
 .meotoiwa-moon-art.is-fitted {
 filter: saturate(1.22) contrast(1.12) !important;
@@ -6016,6 +6018,7 @@ header {
 <button class="add-itinerary-btn btn-press-effect" id="add-itinerary-btn" onclick="addItineraryItem()" type="button">＋</button>
 <script>
 let currentDay = 1;
+const REMOVED_EXPENSE_IDS = new Set(['1789534801095', '1781736852891', '1778828074500', '1778828064230']);
 let expenses = [];
 const REQUIRED_WISHLIST_ITEMS = [
 { id: 2026101701, category: '藥妝店', title: 'DHC纖體錠', done: false, qty: 1, imageSrc: 'wishlist-images/dhc-slim-tablets.avif' },
@@ -8171,6 +8174,118 @@ document.querySelectorAll('.card.has-end-art').forEach(card => card.classList.re
 const specialArtCards = [
 {
 selector: '.day-section > .card',
+src: 'images/cards/bubu-card.png',
+alt: 'ぶぶ行程插圖',
+className: 'bubu-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === 'ぶぶ';
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/sky-cafe-terrace-card.png',
+alt: '天空咖啡露臺行程插圖',
+className: 'sky-cafe-terrace-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '天空咖啡露臺';
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/shima-cafe-card.png',
+alt: 'SHIMA CAFE行程插圖',
+className: 'shima-cafe-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === 'SHIMA CAFE';
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'images/cards/taoyuan-arrival-card.png',
+alt: '抵達桃園機場 TPE行程插圖',
+className: 'taoyuan-arrival-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim().startsWith('抵達桃園機場 TPE');
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'images/cards/dangoro-chaya-card.png',
+alt: '糰五郎茶屋行程插圖',
+className: 'dangoro-chaya-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '糰五郎茶屋';
+}
+},
+{
+selector: '#day-4 > .card',
+src: 'images/cards/akafuku-futami-card.png',
+alt: '赤福 二見店行程插圖',
+className: 'akafuku-futami-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '赤福 二見店';
+}
+},
+{
+selector: '#day-3 > .card',
+src: 'images/cards/pearl-plaza-gift-card.png',
+alt: '真珠廣場購物行程插圖',
+className: 'pearl-plaza-gift-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '真珠廣場購物';
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'images/cards/butasute-card.png',
+alt: '豚捨行程插圖',
+className: 'butasute-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '豚捨';
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'images/cards/ise-station-afternoon-card.png',
+alt: '午後伊勢站行程插圖',
+className: 'ise-station-afternoon-art',
+visibleRatio: 0.66,
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+const time = card.querySelector('.time-badge')?.textContent.trim() || '';
+return title === '伊勢站' && time.includes('14:45');
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/donki-sakae-card.png',
+alt: '唐吉訶德 榮本店行程插圖',
+className: 'donki-sakae-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '唐吉訶德 榮本店';
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'images/cards/yamamura-milk-school-card.png',
+alt: '山村みるく學校 內宮前店行程插圖',
+className: 'yamamura-milk-school-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '山村みるく學校 內宮前店';
+}
+},
+{
+selector: '.day-section > .card',
 src: 'images/cards/ise-soy-sauce-card.png',
 alt: '伊勢醬油本舖行程插圖',
 className: 'ise-soy-sauce-card-art',
@@ -8495,16 +8610,16 @@ return title === '八幡窯 海女小屋' || title === '八幡灶海女小屋午
 }
 },
 {
-selector: '#day-3 > .card',
+selector: '#day-2 > .card',
 src: 'images/cards/pearl-plaza-shopping-card.png',
-alt: '真珠廣場購物小圖',
+alt: '逛全家超商行程插圖',
 className: 'pearl-plaza-shopping-art',
 visibleRatio: 0.48,
 visibleTopRatio: 0.04,
 visibleBottomRatio: 0.96,
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
-return title === '真珠廣場購物';
+return title === '逛全家超商';
 }
 },
 {
@@ -14113,7 +14228,7 @@ if (CLOUD_STATIC_SYNC_ENABLED && typeof data.dayContentHTML === 'string' && data
 document.getElementById('day-content').innerHTML = data.dayContentHTML;
 }
 standardizeItemDescBreaks();
-expenses = Array.isArray(data.expenses) ? data.expenses : [];
+expenses = Array.isArray(data.expenses) ? data.expenses.filter(expense => !REMOVED_EXPENSE_IDS.has(String(expense.id))) : [];
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 wishlistCategories = Array.isArray(data.wishlistCategories) ? data.wishlistCategories : wishlistCategories;
 if (typeof data.currentWishlistCategory === 'string') currentWishlistCategory = getWishlistTopCategory(data.currentWishlistCategory);
