@@ -341,8 +341,15 @@ opacity: 0;
 visibility: visible;
 opacity: 1;
 }
+.saturday-wakeup-art.is-fitted,
+.saturday-buffet-breakfast-art.is-fitted,
+.ooishiya-dinner-art.is-fitted,
 .meotoiwa-moon-art.is-fitted {
-opacity: .82;
+filter: saturate(1.22) contrast(1.12) !important;
+-webkit-filter: saturate(1.22) contrast(1.12) !important;
+}
+.meotoiwa-moon-art.is-fitted {
+opacity: 1;
 }
 .ama-hut-lunch-art {
 filter: drop-shadow(0 1px 0 rgba(141,110,99,.22)) drop-shadow(0 3px 5px rgba(141,110,99,.14));
@@ -1262,7 +1269,7 @@ padding: 0 8px;
 box-shadow: 0 4px 12px rgba(190,124,102,.1);
 }
 body:not(.edit-mode) .flight-detail-btn {
-height: 30px;
+height: 24px;
 border-radius: 999px;
 font-size: .74rem;
 }
@@ -5304,6 +5311,47 @@ box-sizing: border-box;
 .futami-gift-size-price { display: inline-flex; align-items: baseline; gap: 2px; font-variant-numeric: tabular-nums; }
 .futami-gift-status { display: inline-block; margin-top: 0; white-space: nowrap; font-weight: 400; padding: 1px 7px; border-radius: 8px; background: #f8eeea; color: #b18e82; font-size: .68rem; line-height: 1.6; }
 .futami-gift-title-line { display: flex; align-items: center; flex-wrap: wrap; gap: 3px 6px; }
+
+.illustration-add-btn { display: none; }
+body.edit-mode .card-extra-controls { flex-direction: column; gap: 6px; align-items: flex-end; }
+body.edit-mode .illustration-add-btn { display: inline-flex; height: 23px; min-height: 0; border-radius: 9px; padding: 0 7px; font-size: .72rem; border-color: #efd9ce; background: #fffaf7; color: #c07d6d; }
+body.edit-mode .card-extra-controls > .more-info-btn,
+body.edit-mode .card-extra-controls > .illustration-add-btn { display: inline-flex; align-items: center; justify-content: center; width: 74px; height: 23px; min-height: 0; flex: 0 0 23px; box-sizing: border-box; line-height: 1; }
+body.edit-mode .card > div:has(> .item-title) { padding-right: 76px; }
+body.edit-mode .card.has-end-art { overflow: visible; }
+body.edit-mode .card .itinerary-card-end-art { display: block; cursor: pointer; pointer-events: auto; z-index: 3; outline-offset: 2px; }
+body.edit-mode .itinerary-card-end-art:hover, body.edit-mode .itinerary-card-end-art:focus-visible { outline: 1px dashed #d9867b; border-radius: 8px; }
+.card .custom-card-illustration { right: auto !important; bottom: auto !important; height: auto !important; max-width: 40% !important; max-height: 80%; object-fit: contain; transform: translate(-50%, -50%); }
+#illustration-modal { z-index: 1500; }
+#illustration-modal .modal-content { width: min(440px, 94vw); max-height: 90vh; overflow-y: auto; padding: 22px; }
+.illustration-preview-card { position: relative; height: 116px; margin: 14px 0 9px; padding: 18px 12px; border: 1px solid var(--card-border); border-radius: 22px; background: #fff; overflow: hidden; text-align: left; }
+.illustration-preview-card > strong { display: block; width: 48%; color: #705b55; font-size: .85rem; }
+#illustration-preview-desc { width: 48%; max-height: 48px; overflow: hidden; margin-top: 6px; color: #a59c9a; font-size: .7rem; line-height: 1.5; }
+#illustration-preview-image { position: absolute; transform: translate(-50%, -50%); height: auto; max-height: 80%; object-fit: contain; }
+#illustration-preview-image:not([src]) { display: none; }
+.illustration-hint { color: #bcaaaa; font-size: .75rem; margin-bottom: 12px; text-align: center; }
+.illustration-slider-label { display: block; margin: 11px 0 4px; color: #8d6e63; font-size: .82rem; text-align: left; }
+#illustration-modal input[type=range] { display: block; width: 100%; accent-color: #d9867b; }
+.illustration-editor-actions { display: flex; gap: 8px; margin-top: 14px; }
+.illustration-editor-actions button { flex: 1; border: 1px solid #f0e6e2; border-radius: 15px; padding: 9px 8px; font: inherit; font-size: .83rem; }
+.illustration-editor-actions .modal-btn-secondary { background: #fff8f5; color: #a67c71; }
+#illustration-apply:disabled { opacity: .4; }
+.flight-priority-toggle { border: 1px solid #d17a6d; cursor: pointer; font-family: inherit; }
+.flight-priority-toggle.is-off { background: #fff8f5; color: #bcaaaa; border-color: #ead9d2; }
+.flight-cell-value[contenteditable="true"] { display: inline-block; min-width: 25px; }
+
+.flight-ticket-view.is-editing .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view.is-editing .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { min-width: 0; }
+.flight-ticket-view.is-editing .flight-priority-toggle { margin-left: 3px; padding: 2px 5px; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
+
+body.edit-mode .illustration-add-btn.has-illustration { border-color: #e2aaa1; background: #ffe7e0; color: #ad6258; box-shadow: 0 4px 12px rgba(190,124,102,.12); }
+.illustration-preview-note { position: absolute; right: 12px; top: 14px; z-index: 5; display: inline-flex; align-items: center; justify-content: center; height: 23px; border-radius: 9px; padding: 0 7px; font-size: .72rem; }
+.illustration-preview-note[hidden] { display: none; }
+
+body.edit-mode .day-section > .card:has(.card-extra-controls) { min-height: 96px; }
+body.edit-mode .card-extra-controls { top: 50%; bottom: auto; transform: translateY(-50%); }
 </style>
 <style id="final-confirm-button-layout">
 /* Final confirmation layout: Cancel narrow, Confirm wide, both labels centered. */
@@ -5356,6 +5404,8 @@ box-sizing: border-box;
   font-weight: 900 !important;
   white-space: nowrap !important;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="anniversary-header-shorter">
 /* Reduce the white area above the 2026 Mie Anniversary title while keeping the content intact. */
@@ -5365,6 +5415,8 @@ header {
   max-height: 118px;
   padding: 18px 20px 8px;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="anniversary-header-text-fixed">
 /* Keep the shorter header while giving every title line enough room to render fully. */
@@ -5381,6 +5433,8 @@ header {
   gap: 2px;
   overflow: visible;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <!-- transit train display-name fix -->
 <style id="japanese-speech-button-style">
@@ -5407,6 +5461,8 @@ header {
 #itinerary-detail-fields .note-speak-btn:hover { background: #fff0e8; }
 #itinerary-detail-fields .note-speak-btn:active,
 #itinerary-detail-fields .note-speak-btn.is-speaking { transform: scale(.94); background: #ffe5d8; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="speech-inline-layout-style">
 #itinerary-detail-fields .note-text-view .note-nowrap {
@@ -5421,6 +5477,8 @@ header {
   margin-right: 1px;
   padding: 0;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="stable-note-and-menu-loading-style">
 /* Wait for note images to decode before opening the modal, so its first frame is stable. */
@@ -5439,6 +5497,8 @@ header {
 #floating-menu .menu-icon-img {
   display: block;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="toba-table-opaque-square-style">
 /* 鳥羽1番街 1F 表格：使用不透明白底與直角，不套用一般筆記圖片圓角。 */
@@ -5449,6 +5509,8 @@ header {
   clip-path: none !important;
   box-shadow: none !important;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="focal-image-zoom-style">
 /* 圖片檢視器：放大後顯示整張放大的圖片，不用固定框裁切四周。 */
@@ -5464,6 +5526,8 @@ header {
   max-width: none;
   max-height: none;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="note-image-preview-toolbar-style">
 #image-preview-modal.note-image-preview-active .modal-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
@@ -5518,6 +5582,8 @@ header {
   .note-preview-tool { min-width: 34px; width: 34px; padding: 0; }
   .note-preview-toolbar-separator { margin: 0 1px; }
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="note-image-preview-mobile-layout-fix">
 #image-preview-modal.note-image-preview-active .modal-container {
@@ -5557,6 +5623,8 @@ header {
     width: min(92vw, 420px);
   }
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 <style id="global-hidden-scrollbars">
 * {
@@ -5568,6 +5636,8 @@ header {
   width: 0 !important;
   height: 0 !important;
 }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] { white-space: nowrap; }
+.flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 </style>
 </head>
 <body id="swipe-body">
@@ -5953,7 +6023,9 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 2026101602, category: '藥妝店', title: '黑頭潔顏泥', done: false, qty: 1, imageSrc: 'wishlist-images/blackhead-cleansing-clay.avif' },
 { id: 2026101601, category: 'Lawson', title: '巧克力麵包', done: false, qty: 1, imageSrc: 'wishlist-images/lawson-chocolate-bread.jpg' },
 { id: 378, category: '伴手禮', buyer: '小豬', recipient: '小籠包', title: '', done: false, qty: 1, products: [{ title: '肌膚之鑰-激光瓶50ml', done: false, qty: 1, imageSrc: 'wishlist-images/cle-de-peau-serum-50ml.jpeg' }] },
-{ id: 379, category: '伴手禮', buyer: '大豬', recipient: '小燕子', title: '給小燕子的伴手禮', done: false, qty: 1, products: [{ title: '紅豆肩頸熱敷枕', done: false, qty: 1, imageSrc: 'wishlist-images/azuki-neck-shoulder-heat-pillow.jpg' }, { title: '足跟美容液', done: false, qty: 1, imageSrc: 'wishlist-images/drugstore-heel-beauty-lotion.jpg' }, { title: '招財貓擺飾', done: false, qty: 1 }] },
+{ id: 2026101704, category: '伴手禮', buyer: '小豬', recipient: '珮瑜', title: '', done: false, qty: 1, products: [{ title: '伊勢限定史努比', done: false, qty: 1 }] },
+{ id: 2026101703, category: '伴手禮', buyer: '大豬', recipient: '舒瑜', title: '', done: false, qty: 1, products: [{ title: '足跟美容液', done: false, qty: 1, imageSrc: 'wishlist-images/drugstore-heel-beauty-lotion.jpg' }] },
+{ id: 379, category: '伴手禮', buyer: '大豬', recipient: '小燕子', title: '給小燕子的伴手禮', done: false, qty: 1, products: [{ title: '足跟美容液', done: false, qty: 1, imageSrc: 'wishlist-images/drugstore-heel-beauty-lotion.jpg' }, { title: '招財貓擺飾', done: false, qty: 1 }] },
 { id: 380, category: '伴手禮', buyer: '大豬', recipient: '阿井', title: '給阿井的伴手禮', done: false, qty: 1, products: [{ title: '精油保濕潔面皂', done: false, qty: 1, imageSrc: 'wishlist-images/muji-essential-oil-moisturizing-face-soap.png' }] },
 { id: 382, category: '伴手禮', buyer: '小豬', recipient: '亞蘭姊', title: '商品內容待定', done: false, qty: 1, products: [] },
 { id: 383, category: '伴手禮', buyer: '小豬', recipient: '昀翎', title: '商品內容待定', done: false, qty: 1, products: [] },
@@ -5968,9 +6040,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 107, category: '3coins', title: '對講機*需手提行李', done: false, imageSrc: 'wishlist-images/threecoins-video-transceiver.png' },
 { id: 108, category: '3coins', title: '矽膠提帶手把', done: false, imageSrc: 'wishlist-images/threecoins-silicone-carry-handle.png' },
 { id: 109, category: '無印良品', title: '矽膠餐具套', done: false, imageSrc: 'wishlist-images/muji-silicone-cutlery-case.jpg' },
-{ id: 310, category: '3coins', title: '兩用油瓶460ml', done: false, imageSrc: 'wishlist-images/threecoins-2way-oil-bottle-460ml.jpg' },
 { id: 375, category: '3coins', title: '雷射玩具槍', done: false, imageSrc: 'wishlist-images/threecoins-laser-toy-gun.png' },
-{ id: 376, category: '3coins', title: '標籤機', done: false, imageSrc: 'wishlist-images/threecoins-label-printer.jpg' },
 { id: 313, category: '無印良品', title: '藥用BB霜#03', done: false, imageSrc: 'wishlist-images/muji-bb-cream-03-instagram.jpg' },
 { id: 315, category: '無印良品', title: '頭皮護理液', done: false, imageSrc: 'wishlist-images/muji-scalp-care-essence.jpg' },
 { id: 334, category: '無印良品', title: '鹽味巧克力派', done: false, imageSrc: 'wishlist-images/muji-salty-chocolate-stick-pie.jpg' },
@@ -6003,7 +6073,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 347, category: '全家', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' },
 { id: 348, category: '藥妝店', title: 'DHC GABA', done: false, imageSrc: 'wishlist-images/dhc-gaba.webp' },
 { id: 349, category: '藥妝店', title: '命之母生理期', done: false, imageSrc: 'wishlist-images/inochi-no-haha-period.jpg' },
-{ id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '小罐DUO(紅色)、三重限定吉伊卡哇', done: false },
+{ id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '名古屋蝦餅、三重限定吉伊卡哇', done: false },
 { id: 351, category: '7-11', title: '本格紅茶', done: false, imageSrc: 'wishlist-images/seven-eleven-honkaku-tea.jpg' },
 { id: 352, category: '7-11', title: '芝士漢堡排', done: false, imageSrc: 'wishlist-images/seven-eleven-cheese-hamburg.jpeg' },
 { id: 353, category: '無印良品', title: '四合一面膜', done: false, imageSrc: 'wishlist-images/muji-all-in-one-mask.jpg' },
@@ -6044,7 +6114,7 @@ let currentWishlistConvenienceDraft = '';
 let wishlistCategoryEditMode = false;
 const DEFAULT_WISHLIST_CATEGORIES = ['3coins', '無印良品', CONVENIENCE_WISHLIST_PARENT, '藥妝店', '機場必買', '伴手禮'];
 const REMOVED_WISHLIST_CATEGORIES = ['Uniqlo'];
-const OBSOLETE_WISHLIST_TITLES = ['兒童視訊對講機', '兒童對講機(需手提行李)', '兒童對講機*需手提行李', '防撕裂廚房紙巾', '玻玻尿酸保濕眼膜', 'Biore卸妝噴霧', 'Biore卸妝噴霧油', '鐵&葉酸軟糖'];
+const OBSOLETE_WISHLIST_TITLES = ['兒童視訊對講機', '兒童對講機(需手提行李)', '兒童對講機*需手提行李', '防撕裂廚房紙巾', '玻玻尿酸保濕眼膜', 'Biore卸妝噴霧', 'Biore卸妝噴霧油', '鐵&葉酸軟糖', '兩用油瓶460ml', '標籤機'];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家',
 'UNIQLO': 'Uniqlo',
@@ -6072,6 +6142,7 @@ let pendingWishlistGiftProducts = [];
 let pendingWishlistGiftPhotoIndex = null;
 let wishlistItemFormCloseTimer = null;
 let currentWishlistGiftBuyer = '大豬';
+let currentWishlistGiftViewBuyer = '大豬';
 let editingWishlistItemKey = null;
 function ensureRequiredWishlistItems() {
 let added = false;
@@ -6087,8 +6158,39 @@ item.qtyRevision = '2026-10-07';
 added = true;
 }
 });
+wishItems.forEach(item => {
+if (item.category !== '伴手禮' || item.buyer !== '大豬' || item.recipient !== '小燕子') return;
+if (Array.isArray(item.products)) {
+const keptProducts = item.products.filter(product => product.title !== '紅豆肩頸熱敷枕');
+if (keptProducts.length !== item.products.length) { item.products = keptProducts; added = true; }
+if (item.giftRevision !== '2026-10-17-xiaoyanzi') {
+item.products.forEach(product => { if (product.title === '招財貓擺飾') product.done = false; });
+item.done = item.products.length > 0 && item.products.every(product => Boolean(product.done));
+item.giftRevision = '2026-10-17-xiaoyanzi';
+added = true;
+}
+}
+});
+wishItems.forEach(item => {
+if (item.category !== '伴手禮' || item.buyer !== '大豬' || item.recipient !== '浩南哥') return;
+if (item.title && /小罐DUO/.test(item.title)) {
+item.title = item.title.replace(/小罐DUO(?:[（(]紅色[）)])?/g, '名古屋蝦餅');
+item.done = false;
+if (Array.isArray(item.productDone)) item.productDone[0] = false;
+added = true;
+}
+if (Array.isArray(item.products)) item.products.forEach(product => {
+if (/小罐DUO/.test(product.title || '')) {
+product.title = '名古屋蝦餅';
+product.done = false;
+product.imageSrc = '';
+item.done = false;
+added = true;
+}
+});
+});
 const beforeCount = wishItems.length;
-wishItems = wishItems.filter(item => item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒' || item.title === '雲朵牙刷')));
+wishItems = wishItems.filter(item => item.id !== 310 && item.id !== 376 && item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒' || item.title === '雲朵牙刷')));
 if (wishItems.length !== beforeCount) added = true;
 wishItems.forEach(item => {
 const renamedWishlistItem = [
@@ -6152,7 +6254,7 @@ added = true;
 REQUIRED_WISHLIST_ITEMS.forEach(requiredItem => {
 const existingItem = wishItems.find(item => item.id === requiredItem.id || (requiredItem.category === '伴手禮' && requiredItem.buyer && requiredItem.recipient ? item.category === requiredItem.category && item.buyer === requiredItem.buyer && item.recipient === requiredItem.recipient : item.category === requiredItem.category && item.title === requiredItem.title) || (requiredItem.id === 378 && item.category === '伴手禮' && item.buyer === '小豬' && item.recipient === '小籠包'));
 if (existingItem) {
-if ((requiredItem.id === 379 || requiredItem.id === 380) && Array.isArray(requiredItem.products)) {
+if ((requiredItem.id === 379 || requiredItem.id === 380 || requiredItem.id === 2026101704) && Array.isArray(requiredItem.products)) {
 if (!Array.isArray(existingItem.products) || !existingItem.products.length) {
 existingItem.products = requiredItem.products.map(product => ({ ...product, done: Boolean(existingItem.done) }));
 existingItem.title = '';
@@ -6163,6 +6265,7 @@ requiredItem.products.forEach(requiredProduct => {
 let existingProduct = existingItem.products.find(product => product.title === requiredProduct.title);
 if (!existingProduct) {
 existingItem.products.push({ ...requiredProduct });
+existingItem.done = existingItem.products.every(product => Boolean(product.done));
 added = true;
 } else if (requiredProduct.imageSrc && existingProduct.imageSrc !== requiredProduct.imageSrc) {
 existingProduct.imageSrc = requiredProduct.imageSrc;
@@ -7796,8 +7899,8 @@ if (moreBtn) {
 const isFlight = isFlightDetailCard(card);
 moreBtn.classList.toggle('flight-detail-btn', isFlight);
 moreBtn.setAttribute('aria-label', isFlight ? '班機詳細資料' : '行程介紹');
-moreBtn.style.display = isEditMode && isFlight ? 'none' : '';
-moreBtn.textContent = isEditMode ? (isFlight ? '' : '新增筆記') : (isFlight ? '🐯✈️' : '小筆記');
+moreBtn.style.display = '';
+moreBtn.textContent = isEditMode ? (isFlight ? '航班備忘' : '新增筆記') : (isFlight ? '🐯✈️' : '小筆記');
 }
 });
 updateReorderButtons();
@@ -7829,10 +7932,343 @@ section.insertBefore(familyCard, nextNode);
 }
 });
 }
+const ILLUSTRATION_STORAGE_KEY = 'anniversary-itinerary-illustrations-v1';
+let savedItineraryIllustrations = {};
+try { savedItineraryIllustrations = JSON.parse(localStorage.getItem(ILLUSTRATION_STORAGE_KEY) || '{}'); } catch (error) {}
+
+function getCardIllustrationKey(card) {
+if (!card.dataset.illustrationKey) {
+const section = card.closest('.day-section');
+card.dataset.illustrationKey = `${section?.id}:${Array.from(section?.querySelectorAll(':scope > .card') || []).indexOf(card)}`;
+}
+return card.dataset.illustrationKey;
+}
+function collectCardIllustrations() {
+const items = {};
+document.querySelectorAll('.day-section > .card').forEach(card => {
+const key = getCardIllustrationKey(card);
+if (card.dataset.illustrationRemoved === 'true') items[key] = { removed: true };
+else if (card.dataset.illustrationSrc) items[key] = { src: card.dataset.illustrationSrc, x: Number(card.dataset.illustrationX), y: Number(card.dataset.illustrationY), width: Number(card.dataset.illustrationWidth) };
+if (card.dataset.flightExtraNotes) items[key] = { ...items[key], notes: card.dataset.flightExtraNotes };
+});
+return items;
+}
+function persistCardIllustrations() {
+savedItineraryIllustrations = collectCardIllustrations();
+try { localStorage.setItem(ILLUSTRATION_STORAGE_KEY, JSON.stringify(savedItineraryIllustrations)); } catch (error) {}
+}
+function restoreCardIllustrations() {
+if (isEditMode) return;
+document.querySelectorAll('.day-section > .card').forEach(card => {
+const data = savedItineraryIllustrations[getCardIllustrationKey(card)];
+if (!data) return;
+if (typeof data.notes === 'string') card.dataset.flightExtraNotes = data.notes;
+if (data.removed) { card.dataset.illustrationRemoved = 'true'; delete card.dataset.illustrationSrc; return; }
+if (!/^(data:image\/(png|webp|jpeg);base64,|images\/)/.test(data.src || '')) return;
+delete card.dataset.illustrationRemoved;
+card.dataset.illustrationSrc = data.src;
+const width = Math.max(8, Math.min(40, Number(data.width) || 22));
+card.dataset.illustrationWidth = width;
+card.dataset.illustrationX = Math.max(50 + width / 2, Math.min(98 - width / 2, Number(data.x) || 78));
+card.dataset.illustrationY = Math.max(5, Math.min(95, Number(data.y) || 50));
+});
+}
+
+let illustrationCard = null;
+let illustrationDraft = null;
+let illustrationLoadToken = 0;
+
+function ensureIllustrationEditor() {
+if (document.getElementById('illustration-modal')) return;
+document.body.insertAdjacentHTML('beforeend', `<div class="modal-overlay" id="illustration-modal"><div class="modal-container"><div class="modal-content"><div class="modal-title">調整行程插圖</div><div class="illustration-preview-card" id="illustration-preview"><strong id="illustration-preview-title"></strong><div id="illustration-preview-desc"></div><span id="illustration-preview-note" class="card-tool-btn illustration-preview-note" hidden>小筆記</span><img id="illustration-preview-image" alt="插圖位置預覽"></div><div class="illustration-hint">插圖僅能放在行程條的中後段</div><label class="illustration-slider-label" for="illustration-x">左右位置</label><input id="illustration-x" type="range" min="50" max="98" step="1" oninput="updateIllustrationDraft()"><label class="illustration-slider-label" for="illustration-y">上下位置</label><input id="illustration-y" type="range" min="5" max="95" step="1" oninput="updateIllustrationDraft()"><label class="illustration-slider-label" for="illustration-width">插圖大小</label><input id="illustration-width" type="range" min="8" max="40" step="1" oninput="updateIllustrationDraft()"><div class="illustration-editor-actions"><button type="button" class="modal-btn-secondary" onclick="document.getElementById('illustration-file').click()">更換圖片</button><button type="button" class="modal-btn-secondary" onclick="removeCardIllustration()">移除插圖</button></div><div class="illustration-editor-actions"><button type="button" class="modal-btn-secondary" onclick="cancelIllustrationEditor()">取消</button><button type="button" class="modal-btn-primary" id="illustration-apply" onclick="applyCardIllustration()">套用</button></div><input id="illustration-file" type="file" accept="image/*" hidden onchange="loadCardIllustrationFile(event)"></div></div></div>`);
+}
+
+let flightExtraNoteOwner = null;
+let flightExtraNoteProxy = null;
+function isPlaneCategoryCard(card) {
+const icon = card.querySelector('.itinerary-icon');
+return /[🛫🛬✈🛩]/u.test(icon?.textContent || '') || /飛機|flight|plane/i.test(icon?.querySelector('img')?.alt || '');
+}
+function openFlightExtraNote(event, button) {
+flightExtraNoteOwner = button.closest('.card');
+flightExtraNoteProxy = document.createElement('div');
+flightExtraNoteProxy.className = 'card';
+flightExtraNoteProxy.dataset.detailFields = flightExtraNoteOwner.dataset.flightExtraNotes || '[]';
+flightExtraNoteProxy.innerHTML = '<div class="item-title">行程筆記</div><button type="button"></button>';
+openItineraryDetail(event, flightExtraNoteProxy.querySelector('button'));
+}
+function prepareIllustrationControls() {
+document.querySelectorAll('.day-section > .card').forEach(card => {
+const controls = card.querySelector('.card-extra-controls');
+if (controls && !controls.querySelector('.illustration-add-btn')) {
+const button = document.createElement('button');
+button.type = 'button';
+button.className = 'card-tool-btn illustration-add-btn btn-press-effect';
+button.setAttribute('onclick', 'openCardIllustrationEditor(event, this.closest(".card"))');
+controls.appendChild(button);
+}
+const image = card.querySelector('.itinerary-card-end-art');
+const button = controls?.querySelector('.illustration-add-btn');
+if (button) {
+const plane = isPlaneCategoryCard(card);
+button.classList.toggle('has-illustration', !plane && Boolean(image));
+const memo = isFlightDetailCard(card);
+button.textContent = plane ? '新增筆記' : (image ? '調整插圖' : '新增插圖');
+button.style.display = plane && !memo ? 'none' : '';
+button.setAttribute('onclick', plane ? 'openFlightExtraNote(event, this)' : 'openCardIllustrationEditor(event, this.closest(".card"))');
+if (plane && memo && card.dataset.flightExtraNotes) { button.textContent = '行程筆記'; if (!isEditMode) button.style.display = 'inline-flex'; }
+}
+if (image) {
+image.setAttribute('onclick', 'openCardIllustrationEditor(event, this.closest(".card"))');
+image.setAttribute('onkeydown', 'if(event.key === "Enter" || event.key === " ") openCardIllustrationEditor(event, this.closest(".card"))');
+image.tabIndex = isEditMode ? 0 : -1;
+image.setAttribute('role', isEditMode ? 'button' : 'img');
+if (isEditMode) image.setAttribute('aria-label', '調整此行程插圖');
+else image.removeAttribute('aria-label');
+}
+});
+}
+
+function renderCustomCardIllustrations() {
+document.querySelectorAll('.day-section > .card[data-illustration-src]').forEach(card => {
+if (!card.dataset.illustrationSrc || card.dataset.illustrationRemoved === 'true') return;
+card.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
+const img = document.createElement('img');
+img.className = 'itinerary-card-end-art custom-card-illustration is-fitted';
+img.src = card.dataset.illustrationSrc;
+img.alt = (card.querySelector('.item-title')?.textContent || '行程') + '插圖';
+img.style.left = `${Number(card.dataset.illustrationX) || 78}%`;
+img.style.top = `${Number(card.dataset.illustrationY) || 50}%`;
+img.style.width = `${Number(card.dataset.illustrationWidth) || 22}%`;
+card.classList.add('has-end-art');
+card.appendChild(img);
+});
+prepareIllustrationControls();
+}
+
+async function normalizeIllustrationImage(src) {
+const img = new Image();
+img.src = src;
+await img.decode();
+const canvas = document.createElement('canvas');
+const scale = Math.min(1, 1000 / Math.max(img.naturalWidth, img.naturalHeight));
+canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
+ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+let left = canvas.width, top = canvas.height, right = -1, bottom = -1;
+for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
+if (pixels[(y * canvas.width + x) * 4 + 3] > 16) {
+left = Math.min(left, x); right = Math.max(right, x);
+top = Math.min(top, y); bottom = Math.max(bottom, y);
+}
+}
+if (right < left) throw new Error('empty image');
+const trimmed = document.createElement('canvas');
+trimmed.width = right - left + 1; trimmed.height = bottom - top + 1;
+trimmed.getContext('2d').drawImage(canvas, left, top, trimmed.width, trimmed.height, 0, 0, trimmed.width, trimmed.height);
+return { src: trimmed.toDataURL('image/webp', .9), ratio: trimmed.width / trimmed.height };
+}
+
+async function openCardIllustrationEditor(event, card) {
+event?.preventDefault(); event?.stopPropagation();
+if (!isEditMode || !card) return;
+ensureIllustrationEditor();
+illustrationCard = card;
+illustrationDraft = null;
+const token = ++illustrationLoadToken;
+const src = card.dataset.illustrationSrc || card.querySelector('.itinerary-card-end-art')?.getAttribute('src');
+document.getElementById('illustration-preview-title').textContent = card.querySelector('.item-title')?.textContent || '';
+document.getElementById('illustration-preview-desc').textContent = card.querySelector('.item-desc')?.textContent || '';
+document.getElementById('illustration-preview-note').hidden = !noteHasContent(card);
+document.getElementById('illustration-preview-image').removeAttribute('src');
+document.getElementById('illustration-apply').disabled = true;
+document.getElementById('illustration-file').value = '';
+document.getElementById('illustration-x').value = card.dataset.illustrationX || 78;
+document.getElementById('illustration-y').value = card.dataset.illustrationY || 50;
+document.getElementById('illustration-width').value = card.dataset.illustrationWidth || 22;
+openSimpleModal('illustration-modal');
+if (!src) { document.getElementById('illustration-file').click(); return; }
+try {
+const image = await normalizeIllustrationImage(src);
+if (token !== illustrationLoadToken) return;
+illustrationDraft = image;
+document.getElementById('illustration-preview-image').src = image.src;
+document.getElementById('illustration-apply').disabled = false;
+updateIllustrationDraft();
+} catch (error) { showAlert('圖片讀取失敗，請重新選擇圖片'); }
+}
+
+async function loadCardIllustrationFile(event) {
+const file = event.target.files?.[0];
+if (!file || !illustrationCard || !isEditMode) return;
+const token = ++illustrationLoadToken;
+document.getElementById('illustration-apply').disabled = true;
+try {
+const image = await normalizeIllustrationImage(await readImageFile(file));
+if (token !== illustrationLoadToken) return;
+illustrationDraft = image;
+document.getElementById('illustration-preview-image').src = image.src;
+document.getElementById('illustration-apply').disabled = false;
+updateIllustrationDraft();
+} catch (error) { showAlert('圖片讀取失敗，請重新選擇圖片'); }
+}
+
+function updateIllustrationDraft() {
+if (!illustrationDraft) return;
+const stage = document.getElementById('illustration-preview');
+const widthInput = document.getElementById('illustration-width');
+let width = Number(widthInput.value);
+// Limit the complete image to the rear half and 80% of the card height.
+const maxWidthByHeight = stage.clientHeight * .8 * illustrationDraft.ratio / stage.clientWidth * 100;
+width = Math.min(width, maxWidthByHeight, 40);
+const height = stage.clientWidth * width / 100 / illustrationDraft.ratio / stage.clientHeight * 100;
+const xInput = document.getElementById('illustration-x');
+const yInput = document.getElementById('illustration-y');
+xInput.min = 50 + width / 2; xInput.max = 98 - width / 2;
+yInput.min = 5 + height / 2; yInput.max = 95 - height / 2;
+const x = Math.max(Number(xInput.min), Math.min(Number(xInput.max), Number(xInput.value)));
+const y = Math.max(Number(yInput.min), Math.min(Number(yInput.max), Number(yInput.value)));
+xInput.value = x; yInput.value = y;
+Object.assign(illustrationDraft, { x, y, width });
+const img = document.getElementById('illustration-preview-image');
+img.style.left = `${x}%`; img.style.top = `${y}%`; img.style.width = `${width}%`;
+}
+
+function applyCardIllustration() {
+if (!isEditMode || !illustrationCard || !illustrationDraft) return;
+const card = illustrationCard;
+card.dataset.illustrationSrc = illustrationDraft.src;
+card.dataset.illustrationX = illustrationDraft.x;
+card.dataset.illustrationY = illustrationDraft.y;
+card.dataset.illustrationWidth = illustrationDraft.width;
+delete card.dataset.illustrationRemoved;
+renderCustomCardIllustrations();
+cancelIllustrationEditor();
+}
+
+function removeCardIllustration() {
+if (!isEditMode || !illustrationCard) return;
+illustrationCard.dataset.illustrationRemoved = 'true';
+delete illustrationCard.dataset.illustrationSrc;
+illustrationCard.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
+illustrationCard.classList.remove('has-end-art');
+prepareIllustrationControls();
+cancelIllustrationEditor();
+}
+
+function cancelIllustrationEditor() {
+++illustrationLoadToken;
+closeModal('illustration-modal');
+illustrationCard = null; illustrationDraft = null;
+}
+
 function enhanceSpecialItineraryArt() {
+restoreCardIllustrations();
 document.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
 document.querySelectorAll('.card.has-end-art').forEach(card => card.classList.remove('has-end-art'));
 const specialArtCards = [
+{
+selector: '.day-section > .card',
+src: 'images/cards/ise-soy-sauce-card.png',
+alt: '伊勢醬油本舖行程插圖',
+className: 'ise-soy-sauce-card-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '伊勢醬油本舖';
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/harbs-sakae-card.png',
+alt: 'HARBS 榮本店行程插圖',
+className: 'harbs-sakae-card-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === 'HARBS 榮本店';
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/isuzugawa-cafe-card.png',
+alt: '五十鈴川咖啡行程插圖',
+className: 'isuzugawa-cafe-card-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '五十鈴川咖啡';
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/toba-aquarium-card.png',
+alt: '鳥羽水族館行程插圖',
+className: 'toba-aquarium-art',
+visibleRatio: 0.66,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '鳥羽水族館';
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/buffet-breakfast-card.png',
+alt: '享用Buffet早餐行程插圖',
+className: 'buffet-breakfast-art',
+visibleRatio: 0.62,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '享用Buffet早餐';
+}
+},
+{
+selector: '#day-4 > .card',
+src: 'images/cards/saturday-buffet-breakfast-card.png',
+alt: 'Buffet早餐吃飽飽行程插圖',
+className: 'saturday-buffet-breakfast-art',
+visibleRatio: 0.62,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === 'Buffet早餐吃飽飽';
+}
+},
+{
+selector: '.day-section > .card',
+src: 'images/cards/familymart-kashikojima-card.png',
+alt: '全家便利商店 賢島店行程插圖',
+className: 'familymart-kashikojima-art',
+visibleRatio: 0.62,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '全家便利商店 賢島店';
+}
+},
+{
+selector: '#day-4 > .card',
+src: 'images/cards/familymart-meotoiwa-card.png',
+alt: '全家便利商店 妻岩店行程插圖',
+className: 'familymart-meotoiwa-art',
+visibleRatio: 0.68,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '全家便利商店 妻岩店';
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'images/cards/fukusuke-udon-card.png',
+alt: '福助 烏龍麵行程插圖',
+className: 'fukusuke-udon-art',
+visibleRatio: 0.68,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === '福助 烏龍麵';
+}
+},
+{
+selector: '#day-5 > .card',
+src: 'images/cards/mitarashi-dango-card.png',
+alt: 'みたらし团子行程插圖',
+className: 'mitarashi-dango-art',
+visibleRatio: 0.68,
+match(card) {
+return card.querySelector('.item-title')?.textContent.trim() === 'みたらし团子';
+}
+},
 {
 selector: '.day-section > .card',
 src: 'images/cards/suginoko-card.png',
@@ -7984,11 +8420,24 @@ return title === '起床梳整';
 }
 },
 {
-selector: '#day-4 > .card',
+selector: '#day-5 > .card',
 src: 'images/cards/saturday-grooming-card.png',
-alt: '週六起床梳整小圖',
+alt: '週日日出化妝小圖',
 className: 'saturday-grooming-art',
 visibleRatio: 0.52,
+visibleTopRatio: 0.02,
+visibleBottomRatio: 0.98,
+match(card) {
+const title = card.querySelector('.item-title')?.textContent.trim() || '';
+return title === '剛起床的日出化妝';
+}
+},
+{
+selector: '#day-4 > .card',
+src: 'images/cards/saturday-wakeup-card.png',
+alt: '週六起床梳整小圖',
+className: 'saturday-wakeup-art',
+visibleRatio: 0.62,
 visibleTopRatio: 0.02,
 visibleBottomRatio: 0.98,
 match(card) {
@@ -8010,13 +8459,13 @@ return title === '辦理飯店退房';
 }
 },
 {
-selector: '#day-5 > .card',
+selector: '#day-1 > .card',
 src: 'images/cards/sunrise-makeup-card.png',
-alt: '日出化妝小圖',
+alt: 'Hotel Actel洗澎澎小休息插圖',
 className: 'sunrise-makeup-art',
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
-return title === '剛起床的日出化妝';
+return title === 'Hotel Actel洗澎澎小休息';
 }
 },
 {
@@ -8042,7 +8491,7 @@ visibleTopRatio: 0.05,
 visibleBottomRatio: 0.95,
 match(card) {
 const title = card.querySelector('.item-title')?.textContent.trim() || '';
-return title === '八幡灶海女小屋午餐';
+return title === '八幡窯 海女小屋' || title === '八幡灶海女小屋午餐';
 }
 },
 {
@@ -8074,7 +8523,7 @@ return title === 'Lawson伊勢二見町茶屋店';
 ];
 specialArtCards.forEach(art => {
 const targetCard = Array.from(document.querySelectorAll(art.selector)).find(card => art.match(card));
- if (!targetCard) return false;
+ if (!targetCard || targetCard.dataset.illustrationSrc || targetCard.dataset.illustrationRemoved === 'true') return false;
 targetCard.classList.add('has-end-art');
 const img = document.createElement('img');
 img.className = ['itinerary-card-end-art', art.className].filter(Boolean).join(' ');
@@ -8088,6 +8537,7 @@ const insertBefore = targetCard.querySelector('.reorder-controls, .delete-card-b
 targetCard.insertBefore(img, insertBefore || null);
 requestAnimationFrame(() => fitItineraryEndArtToTextBand(targetCard, img));
 });
+renderCustomCardIllustrations();
 }
 const itineraryEndArtVisibleBoundsCache = new Map();
 function getItineraryEndArtVisibleBounds(img) {
@@ -8125,7 +8575,7 @@ itineraryEndArtVisibleBoundsCache.set(cacheKey, boundsPromise);
 return boundsPromise;
 }
 async function fitItineraryEndArtToTextBand(card, img) {
-if (!card || !img) return;
+if (!card || !img || img.classList.contains('custom-card-illustration')) return;
 const cardRect = card.getBoundingClientRect();
 if (!cardRect.width || !cardRect.height) return;
 img.classList.remove('is-fitted');
@@ -8162,7 +8612,7 @@ return noteHasContent(card);
 }
 function getMoreInfoButtonText(card, hasMoreInfo) {
 const isFlight = isFlightDetailCard(card);
-if (isEditMode) return isFlight ? '' : (hasMoreInfo ? '有小筆記' : '新增筆記');
+if (isEditMode) return isFlight ? '航班備忘' : (hasMoreInfo ? '有小筆記' : '新增筆記');
 return isFlight ? '🐯✈️' : '小筆記';
 }
 function updateMoreInfoButtons() {
@@ -8172,7 +8622,7 @@ const hasMoreInfo = cardHasMoreInfo(card);
 if (moreBtn) {
 const isFlight = isFlightDetailCard(card);
 moreBtn.classList.toggle('is-empty', !hasMoreInfo);
-moreBtn.style.display = isEditMode && isFlight ? 'none' : '';
+moreBtn.style.display = '';
 moreBtn.textContent = getMoreInfoButtonText(card, hasMoreInfo);
 }
 const mapBtn = card.querySelector('.map-place-btn');
@@ -9439,13 +9889,23 @@ const canEdit = editable ? 'contenteditable="true"' : '';
 const cell = (group, person, value) => {
 const hasPriority = String(value || '').includes('優先');
 const cleanValue = String(value || '').replace('優先', '').trim();
-return `<div class="flight-table-cell" data-flight-table="${group}" data-flight-person="${person}" data-priority="${hasPriority ? 'true' : 'false'}" ${canEdit}>${escapeHtml(cleanValue)}${hasPriority ? '<span class="flight-priority-badge">優先</span>' : ''}</div>`;
+const priority = editable && group === 'luggage' ? `<button type="button" class="flight-priority-badge flight-priority-toggle ${hasPriority ? '' : 'is-off'}" aria-label="${person === 'big' ? '大豬' : '小豬'}優先登機" aria-pressed="${hasPriority}" onclick="toggleFlightPriority(event, this)">優先</button>` : (hasPriority ? '<span class="flight-priority-badge">優先</span>' : '');
+return `<div class="flight-table-cell" data-flight-table="${group}" data-flight-person="${person}" data-priority="${hasPriority ? 'true' : 'false'}"><span class="flight-cell-value" ${canEdit}>${escapeHtml(cleanValue)}</span>${priority}</div>`;
 };
 return `<div class="flight-info-table">
 <div class="flight-table-head"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="images/flight/goodboy.png" alt="大豬"></div><div class="flight-table-head has-pig-img"><img class="flight-table-head-img" src="images/flight/goodgirl.png" alt="小豬"></div>
 <div class="flight-table-label">座位</div>${cell('seats', 'big', seats.big)}${cell('seats', 'small', seats.small)}
 <div class="flight-table-label">行李</div>${cell('luggage', 'big', luggage.big)}${cell('luggage', 'small', luggage.small)}
 </div>`;
+}
+function toggleFlightPriority(event, button) {
+event.preventDefault(); event.stopPropagation();
+if (!isEditMode) return;
+const cell = button.closest('.flight-table-cell');
+const enabled = cell.dataset.priority !== 'true';
+cell.dataset.priority = String(enabled);
+button.setAttribute('aria-pressed', String(enabled));
+button.classList.toggle('is-off', !enabled);
 }
 function getFlightDetailViewHtml(blocks, editable = false) {
 const info = parseFlightDetailBlocks(blocks);
@@ -9535,7 +9995,7 @@ const insertTools = '';
 const flightPairKey = isFlightNote ? getLockedFlightPairKey(currentDetailCard) : '';
 const flightCornerSrc = flightPairKey === 'IT206' ? 'images/wallet/wallet-corner-friends.png' : flightPairKey === 'IT707' ? 'images/flight/flight-return-corner-friends.png' : '';
 const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration ${flightPairKey === 'IT707' ? 'return-flight-corner' : ''}" src="${flightCornerSrc}" alt="" aria-hidden="true">` : '';
-const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, false) : '';
+const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, isEditMode) : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${flightViewHtml || blocksHtml}${insertTools}${flightCorner}</div>`;
 bindNoteToolbarButtons(host);
 if (!isEditMode) updateNoteHighlightCollapses(host);
@@ -9903,7 +10363,17 @@ const page = document.querySelector('#itinerary-detail-fields .note-page');
 if (!page) return [];
 const flightEditor = page.querySelector('.flight-ticket-view.is-editing');
 if (flightEditor) {
-const read = (selector) => (flightEditor.querySelector(selector)?.textContent || '').replace(/\s+/g, ' ').trim();
+const read = (selector) => {
+const node = flightEditor.querySelector(selector);
+const code = node?.querySelector('.flight-airport-code');
+if (code) {
+const terminal = code.querySelector('.flight-airport-terminal')?.textContent || '';
+const detail = node.querySelector('.flight-airport-detail')?.textContent || '';
+const airportCode = Array.from(code.childNodes).filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('');
+return [airportCode, detail, terminal].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+}
+return (node?.textContent || '').replace(/\s+/g, ' ').trim();
+};
 const flightNo = read('[data-flight-field="flightNo"]');
 const flightPairKey = getLockedFlightPairKey(currentDetailCard);
 const titleNote = flightPairKey === 'IT707' ? '回程航班備忘' : '去程航班備忘';
@@ -9913,7 +10383,7 @@ const arrival = `${read('[data-flight-field="arrivalPlace"]')}，${read('[data-f
 const readTable = (group) => ['big', 'small'].map(person => {
 const label = person === 'big' ? '大豬' : '小豬';
 const cell = flightEditor.querySelector(`[data-flight-table="${group}"][data-flight-person="${person}"]`);
-const value = (cell?.textContent || '').replace(/\s+/g, ' ').trim();
+const value = ((cell?.querySelector('.flight-cell-value')?.textContent || '') + (cell?.dataset.priority === 'true' ? ' 優先' : '')).replace(/\s+/g, ' ').trim();
 return value ? `${label}：${value}` : '';
 }).filter(Boolean);
 const lines = [
@@ -10997,7 +11467,7 @@ const detailTitle = document.querySelector('#itinerary-detail-modal .modal-title
 const flightPairKey = isFlight ? getLockedFlightPairKey(currentDetailCard) : '';
 detailTitle.textContent = isFlight ? (flightPairKey === 'IT707' ? '回程航班備忘' : '去程航班備忘') : '行程介紹';
 document.querySelector('#itinerary-detail-modal .modal-btn-primary').textContent = '儲存介紹';
-document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode && !isFlight ? 'flex' : 'none';
+document.querySelector('#itinerary-detail-modal .modal-btn-primary').style.display = isEditMode ? 'flex' : 'none';
 if (isFlight) await warmFlightDetailImages(flightPairKey);
 const detailImageSources = [...new Set(getNoteBlocks(currentDetailCard).filter(block => block.type === 'image' && block.src).map(block => block.src))];
 if (detailImageSources.length) await warmImages(detailImageSources);
@@ -11082,6 +11552,10 @@ closeModal('itinerary-detail-modal');
 function saveItineraryDetail() {
 if (!currentDetailCard) return;
 setDetailFields(currentDetailCard, collectDetailFieldsFromModal());
+if (currentDetailCard === flightExtraNoteProxy && flightExtraNoteOwner) {
+flightExtraNoteOwner.dataset.flightExtraNotes = flightExtraNoteProxy.dataset.detailFields;
+prepareIllustrationControls();
+}
 updateMoreInfoButtons();
 closeItineraryDetailModal();
 queueTripCloudSave();
@@ -11404,10 +11878,11 @@ el.contentEditable = el.classList.contains('route-text') || el.classList.contain
 document.querySelectorAll('.more-info-btn').forEach(btn => {
 const isFlight = isFlightDetailCard(btn.closest('.card'));
 btn.classList.toggle('flight-detail-btn', isFlight);
-btn.style.display = isEdit && isFlight ? 'none' : '';
-btn.textContent = isEdit ? (isFlight ? '' : '新增筆記') : (isFlight ? '🐯✈️' : '小筆記');
+btn.style.display = '';
+btn.textContent = isEdit ? (isFlight ? '航班備忘' : '新增筆記') : (isFlight ? '🐯✈️' : '小筆記');
 });
 updateMoreInfoButtons();
+prepareIllustrationControls();
 if (shouldScrollToDayTop) scrollDaySectionToTop(currentDay, previousScrollTop);
 }
 function warmDiscardPigImage() {
@@ -11454,6 +11929,7 @@ const sources = [
 return warmImages(sources);
 }
 function saveEditChanges() {
+persistCardIllustrations();
 const dayToShow = currentDay;
 standardizeItemDescBreaks();
 window.suppressCloudApplyUntil = Date.now() + 3500;
@@ -11598,11 +12074,24 @@ updateWishlistAddFormTitle();
 function renderWishlistSubcategories() {
 const subtabs = document.getElementById('wishlist-subtabs');
 if (!subtabs) return;
+if (currentWishlistCategory === WISHLIST_GIFT_CATEGORY && !wishlistCategoryEditMode) {
+subtabs.classList.add('show');
+subtabs.classList.remove('is-hidden');
+subtabs.innerHTML = `<span class="wishlist-store-select-label">誰的伴手禮</span><details class="wishlist-store-picker"><summary aria-label="選擇伴手禮購買人"><span>${escapeHtml(currentWishlistGiftViewBuyer)}</span><span class="wishlist-store-chevron" aria-hidden="true"></span></summary><div class="wishlist-store-options">${['大豬', '小豬'].map(buyer => `<button type="button" class="wishlist-store-option ${buyer === currentWishlistGiftViewBuyer ? 'is-selected' : ''}" aria-pressed="${buyer === currentWishlistGiftViewBuyer}" onclick="setWishlistGiftViewBuyer('${buyer}')"><span>${buyer}</span><span aria-hidden="true">${buyer === currentWishlistGiftViewBuyer ? '♡' : ''}</span></button>`).join('')}</div></details>`;
+return;
+}
 const show = isConvenienceWishlistCategory() && !wishlistCategoryEditMode;
 subtabs.classList.toggle('show', show);
 subtabs.classList.toggle('is-hidden', !show);
 if (!CONVENIENCE_WISHLIST_CATEGORIES.includes(currentConvenienceCategory)) currentConvenienceCategory = '7-11';
 subtabs.innerHTML = show ? `<span class="wishlist-store-select-label">逛逛哪一家</span><details class="wishlist-store-picker"><summary aria-label="選擇超商"><span>${escapeHtml(currentConvenienceCategory)}</span><span class="wishlist-store-chevron" aria-hidden="true"></span></summary><div class="wishlist-store-options">${['7-11', '全家', 'Lawson'].map(category => `<button type="button" class="wishlist-store-option ${category === currentConvenienceCategory ? 'is-selected' : ''}" aria-pressed="${category === currentConvenienceCategory}" onclick="setConvenienceWishlistCategory('${escapeJsString(category)}')"><span>${escapeHtml(category)}</span><span aria-hidden="true">${category === currentConvenienceCategory ? '♡' : ''}</span></button>`).join('')}</div></details>` : '';
+}
+function setWishlistGiftViewBuyer(buyer) {
+if (!['大豬', '小豬'].includes(buyer)) return;
+currentWishlistGiftViewBuyer = buyer;
+setWishlistGiftBuyer(buyer);
+toggleWishlistItemForm(false);
+renderWishlist();
 }
 function setConvenienceWishlistCategory(category) {
 if (!CONVENIENCE_WISHLIST_DISPLAY_CATEGORIES.includes(category)) return;
@@ -11619,6 +12108,7 @@ currentWishlistCategory = CONVENIENCE_WISHLIST_PARENT;
 currentConvenienceCategory = normalized;
 } else {
 currentWishlistCategory = getWishlistTopCategory(normalized);
+if (currentWishlistCategory === WISHLIST_GIFT_CATEGORY) setWishlistGiftBuyer(currentWishlistGiftViewBuyer);
 }
 toggleWishlistCategoryForm(false);
 toggleWishlistItemForm(false);
@@ -12393,7 +12883,7 @@ const isConvenienceView = isConvenienceWishlistCategory();
 const effectiveCategory = isConvenienceView ? CONVENIENCE_WISHLIST_PARENT : getEffectiveWishlistCategory();
 const displayCategory = isConvenienceView ? CONVENIENCE_WISHLIST_PARENT : getWishlistCategoryDisplayName();
 list.classList.toggle('is-gift-list', effectiveCategory === WISHLIST_GIFT_CATEGORY);
-const items = wishItems.filter(wish => isConvenienceView ? (wish.category === currentConvenienceCategory || (getWishlistTopCategory(wish.category) === CONVENIENCE_WISHLIST_PARENT && !CONVENIENCE_WISHLIST_CATEGORIES.includes(wish.category))) : wish.category === effectiveCategory)
+const items = wishItems.filter(wish => isConvenienceView ? (wish.category === currentConvenienceCategory || (getWishlistTopCategory(wish.category) === CONVENIENCE_WISHLIST_PARENT && !CONVENIENCE_WISHLIST_CATEGORIES.includes(wish.category))) : wish.category === effectiveCategory && (effectiveCategory !== WISHLIST_GIFT_CATEGORY || (wish.buyer || '大豬') === currentWishlistGiftViewBuyer))
 .sort((a, b) => {
 if (isConvenienceView) {
 const groupSort = Number(!CONVENIENCE_WISHLIST_CATEGORIES.includes(a.category)) - Number(!CONVENIENCE_WISHLIST_CATEGORIES.includes(b.category));
@@ -13593,6 +14083,7 @@ host.dataset.day = String(currentDay);
 function collectTripCloudData(options = {}) {
 standardizeItemDescBreaks();
 const data = {
+itineraryIllustrations: savedItineraryIllustrations,
 expenses,
 wishItems,
 wishlistCategories: normalizeWishlistCategories(),
@@ -13613,6 +14104,10 @@ function applyTripCloudData(data) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (!data || isEditMode) return;
 isApplyingCloudData = true;
+if (data.itineraryIllustrations && typeof data.itineraryIllustrations === 'object' && !Array.isArray(data.itineraryIllustrations)) {
+savedItineraryIllustrations = data.itineraryIllustrations;
+try { localStorage.setItem(ILLUSTRATION_STORAGE_KEY, JSON.stringify(savedItineraryIllustrations)); } catch (error) {}
+}
 
 if (CLOUD_STATIC_SYNC_ENABLED && typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim() && data.staticContentVersion === STATIC_CONTENT_VERSION) {
 document.getElementById('day-content').innerHTML = data.dayContentHTML;
