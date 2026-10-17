@@ -3811,7 +3811,10 @@ background: #fff8f5;
 }
 .wishlist-subtabs.show { display: grid; }
 .wishlist-subtabs.is-hidden { display: none; }
-#wishlist-subtabs.show { display: flex; align-items: center; gap: 10px; padding: 7px 10px 3px; margin-bottom: 0; }
+#wishlist-subtabs.show { display: flex; width: fit-content; max-width: 100%; align-items: center; gap: 8px; padding: 10px 14px 8px; margin: 3px 5px 4px; }
+.wishlist-gift-buyer-filter { display: flex; align-items: center; gap: 6px; }
+.wishlist-gift-buyer-chip { border: 1px solid #e9e0dc; border-radius: 999px; padding: 4px 10px; background: #fffdfb; color: #a58d84; font: inherit; font-size: .78rem; font-weight: 750; line-height: 1.2; white-space: nowrap; cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+.wishlist-gift-buyer-chip.is-selected { border-color: #edc4ba; background: #fff0ed; color: #c87568; box-shadow: none; }
 #wishlist-modal .wishlist-category-wrap:has(#wishlist-subtabs.show) { margin-bottom: 0; }
 .wishlist-store-select-label { color: #a58d84; font-size: .78rem; white-space: nowrap; }
 .wishlist-store-select { flex: 1; min-width: 0; border: 1px solid var(--card-border); border-radius: 12px; padding: 8px 12px; background: #fff; color: #705b55; font: inherit; font-size: .86rem; }
@@ -4705,14 +4708,6 @@ max-width: 72px;
 #wishlist-list.is-gift-list .wishlist-photo-btn {
 display: none;
 }
-#wishlist-list.is-gift-list .wishlist-item.done .wishlist-gift-title,
-#wishlist-list.is-gift-list .wishlist-item.done .wishlist-gift-recipient,
-#wishlist-list.is-gift-list .wishlist-item.done .wishlist-gift-product {
-color: var(--light-brown);
-text-decoration-line: line-through;
-text-decoration-thickness: 2px;
-text-decoration-color: #d17a6d;
-}
 .wishlist-action-menu {
 position: absolute;
 inset: 0;
@@ -4997,7 +4992,7 @@ text-align: center;
 line-height: 1.6;
 }
 .wishlist-item.done { background: #fffaf7; opacity: .78; }
-.wishlist-item.done .wishlist-name { color: var(--light-brown); text-decoration-line: line-through; text-decoration-thickness: 2px; text-decoration-color: #d17a6d; }
+.wishlist-item.done:not(.has-gift-products) .wishlist-name { color: var(--light-brown); text-decoration-line: line-through; text-decoration-thickness: 2px; text-decoration-color: #d17a6d; }
 .wishlist-item.done .wishlist-check { background: var(--heart-pink); color: #fff; border-color: var(--heart-pink); }
 .wishlist-delete { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #fff7f6; color: #e57373; font-weight: 900; }
 .wishlist-empty { margin: 18px auto; padding: 22px 18px; border: 1px solid #f7e6e1; border-radius: 22px; background: #fffaf7; color: var(--light-brown); text-align: center; font-size: .9rem; font-weight: 800; line-height: 1.7; }
@@ -5343,9 +5338,8 @@ body.edit-mode .itinerary-card-end-art:hover, body.edit-mode .itinerary-card-end
 .card .custom-card-illustration { right: auto !important; bottom: auto !important; height: auto !important; max-width: 40% !important; max-height: 80%; object-fit: contain; transform: translate(-50%, -50%); }
 #illustration-modal { z-index: 1500; }
 #illustration-modal .modal-content { width: min(440px, 94vw); max-height: 90vh; overflow-y: auto; padding: 22px; }
-.illustration-preview-card { position: relative; height: 116px; margin: 14px 0 9px; padding: 18px 12px; border: 1px solid var(--card-border); border-radius: 22px; background: #fff; overflow: hidden; text-align: left; }
-.illustration-preview-card > strong { display: block; width: 48%; color: #705b55; font-size: .85rem; }
-#illustration-preview-desc { width: 48%; max-height: 48px; overflow: hidden; margin-top: 6px; color: #a59c9a; font-size: .7rem; line-height: 1.5; }
+.illustration-preview-viewport { position: relative; width: 100%; margin: 14px 0 9px; overflow: hidden; }
+.illustration-preview-card { position: absolute; top: 0; right: 0; height: 116px; margin: 0; padding: 14px 20px; border: 1.5px solid var(--card-border); border-radius: 25px; background: #fff; overflow: hidden; box-sizing: border-box; transform-origin: right top; }
 #illustration-preview-image { position: absolute; transform: translate(-50%, -50%); height: auto; max-height: 80%; object-fit: contain; }
 #illustration-preview-image:not([src]) { display: none; }
 .illustration-hint { color: #bcaaaa; font-size: .75rem; margin-bottom: 12px; text-align: center; }
@@ -5366,7 +5360,7 @@ body.edit-mode .itinerary-card-end-art:hover, body.edit-mode .itinerary-card-end
 .flight-ticket-view .flight-table-cell[data-flight-table="luggage"] .flight-cell-value { display: inline; min-width: 0; }
 
 body.edit-mode .illustration-add-btn.has-illustration { border-color: #e2aaa1; background: #ffe7e0; color: #ad6258; box-shadow: 0 4px 12px rgba(190,124,102,.12); }
-.illustration-preview-note { position: absolute; right: 12px; top: 14px; z-index: 5; display: inline-flex; align-items: center; justify-content: center; height: 23px; border-radius: 9px; padding: 0 7px; font-size: .72rem; }
+.illustration-preview-note { position: absolute; right: 16px; top: 18px; z-index: 5; display: inline-flex; align-items: center; justify-content: center; height: 28px; border-radius: 12px; padding: 0 10px; font-size: .85rem; }
 .illustration-preview-note[hidden] { display: none; }
 
 body.edit-mode .day-section > .card:has(.card-extra-controls) { min-height: 96px; }
@@ -6050,6 +6044,7 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 378, category: '伴手禮', buyer: '小豬', recipient: '小籠包', title: '', done: false, qty: 1, products: [{ title: '肌膚之鑰-激光瓶50ml', done: false, qty: 1, imageSrc: 'wishlist-images/cle-de-peau-serum-50ml.jpeg' }] },
 { id: 2026101704, category: '伴手禮', buyer: '小豬', recipient: '珮瑜', title: '', done: false, qty: 1, products: [{ title: '伊勢限定史努比', done: false, qty: 1 }] },
 { id: 2026101703, category: '伴手禮', buyer: '大豬', recipient: '舒瑜', title: '', done: false, qty: 1, products: [{ title: '足跟美容液', done: false, qty: 1, imageSrc: 'wishlist-images/drugstore-heel-beauty-lotion.jpg' }] },
+{ id: 2026101801, category: '伴手禮', buyer: '大豬', recipient: '洪尼尼', title: '', done: false, qty: 1, products: [{ title: '手持電扇', done: false, qty: 1 }] },
 { id: 379, category: '伴手禮', buyer: '大豬', recipient: '小燕子', title: '給小燕子的伴手禮', done: false, qty: 1, products: [{ title: '足跟美容液', done: false, qty: 1, imageSrc: 'wishlist-images/drugstore-heel-beauty-lotion.jpg' }, { title: '招財貓擺飾', done: false, qty: 1 }] },
 { id: 380, category: '伴手禮', buyer: '大豬', recipient: '阿井', title: '給阿井的伴手禮', done: false, qty: 1, products: [{ title: '精油保濕潔面皂', done: false, qty: 1, imageSrc: 'wishlist-images/muji-essential-oil-moisturizing-face-soap.png' }] },
 { id: 382, category: '伴手禮', buyer: '小豬', recipient: '亞蘭姊', title: '商品內容待定', done: false, qty: 1, products: [] },
@@ -8005,7 +8000,7 @@ let illustrationLoadToken = 0;
 
 function ensureIllustrationEditor() {
 if (document.getElementById('illustration-modal')) return;
-document.body.insertAdjacentHTML('beforeend', `<div class="modal-overlay" id="illustration-modal"><div class="modal-container"><div class="modal-content"><div class="modal-title">調整行程插圖</div><div class="illustration-preview-card" id="illustration-preview"><strong id="illustration-preview-title"></strong><div id="illustration-preview-desc"></div><span id="illustration-preview-note" class="card-tool-btn illustration-preview-note" hidden>小筆記</span><img id="illustration-preview-image" alt="插圖位置預覽"></div><div class="illustration-hint">插圖僅能放在行程條的中後段</div><label class="illustration-slider-label" for="illustration-x">左右位置</label><input id="illustration-x" type="range" min="50" max="98" step="1" oninput="updateIllustrationDraft()"><label class="illustration-slider-label" for="illustration-y">上下位置</label><input id="illustration-y" type="range" min="5" max="95" step="1" oninput="updateIllustrationDraft()"><label class="illustration-slider-label" for="illustration-width">插圖大小</label><input id="illustration-width" type="range" min="8" max="40" step="1" oninput="updateIllustrationDraft()"><div class="illustration-editor-actions"><button type="button" class="modal-btn-secondary" onclick="document.getElementById('illustration-file').click()">更換圖片</button><button type="button" class="modal-btn-secondary" onclick="removeCardIllustration()">移除插圖</button></div><div class="illustration-editor-actions"><button type="button" class="modal-btn-secondary" onclick="cancelIllustrationEditor()">取消</button><button type="button" class="modal-btn-primary" id="illustration-apply" onclick="applyCardIllustration()">套用</button></div><input id="illustration-file" type="file" accept="image/*" hidden onchange="loadCardIllustrationFile(event)"></div></div></div>`);
+document.body.insertAdjacentHTML('beforeend', `<div class="modal-overlay" id="illustration-modal"><div class="modal-container"><div class="modal-content"><div class="modal-title">調整行程插圖</div><div class="illustration-preview-viewport" id="illustration-preview-viewport"><div class="illustration-preview-card" id="illustration-preview"><span id="illustration-preview-note" class="card-tool-btn illustration-preview-note" hidden>小筆記</span><img id="illustration-preview-image" alt="插圖位置預覽"></div></div><div class="illustration-hint">插圖僅能放在行程條的中後段</div><label class="illustration-slider-label" for="illustration-x">左右位置</label><input id="illustration-x" type="range" min="50" max="98" step="1" oninput="updateIllustrationDraft()"><label class="illustration-slider-label" for="illustration-y">上下位置</label><input id="illustration-y" type="range" min="5" max="95" step="1" oninput="updateIllustrationDraft()"><label class="illustration-slider-label" for="illustration-width">插圖大小</label><input id="illustration-width" type="range" min="8" max="40" step="1" oninput="updateIllustrationDraft()"><div class="illustration-editor-actions"><button type="button" class="modal-btn-secondary" onclick="document.getElementById('illustration-file').click()">更換圖片</button><button type="button" class="modal-btn-secondary" onclick="removeCardIllustration()">移除插圖</button></div><div class="illustration-editor-actions"><button type="button" class="modal-btn-secondary" onclick="cancelIllustrationEditor()">取消</button><button type="button" class="modal-btn-primary" id="illustration-apply" onclick="applyCardIllustration()">套用</button></div><input id="illustration-file" type="file" accept="image/*" hidden onchange="loadCardIllustrationFile(event)"></div></div></div>`);
 }
 
 let flightExtraNoteOwner = null;
@@ -8093,7 +8088,29 @@ if (right < left) throw new Error('empty image');
 const trimmed = document.createElement('canvas');
 trimmed.width = right - left + 1; trimmed.height = bottom - top + 1;
 trimmed.getContext('2d').drawImage(canvas, left, top, trimmed.width, trimmed.height, 0, 0, trimmed.width, trimmed.height);
-return { src: trimmed.toDataURL('image/webp', .9), ratio: trimmed.width / trimmed.height };
+return {
+src: trimmed.toDataURL('image/webp', .9),
+ratio: trimmed.width / trimmed.height,
+visibleBox: {
+x: left / canvas.width,
+y: top / canvas.height,
+width: trimmed.width / canvas.width,
+height: trimmed.height / canvas.height
+}
+};
+}
+
+function syncIllustrationPreviewToCard(card) {
+const stage = document.getElementById('illustration-preview');
+const viewport = document.getElementById('illustration-preview-viewport');
+if (!stage || !viewport || !card?.offsetWidth || !card?.offsetHeight || !viewport.clientWidth) return;
+const previewSectionWidth = card.offsetWidth * .56;
+const scale = Math.min(1, viewport.clientWidth / previewSectionWidth);
+stage.style.width = `${card.offsetWidth}px`;
+stage.style.height = `${card.offsetHeight}px`;
+stage.style.transform = `scale(${scale})`;
+viewport.style.width = `${previewSectionWidth * scale}px`;
+viewport.style.height = `${card.offsetHeight * scale}px`;
 }
 
 async function openCardIllustrationEditor(event, card) {
@@ -8103,9 +8120,8 @@ ensureIllustrationEditor();
 illustrationCard = card;
 illustrationDraft = null;
 const token = ++illustrationLoadToken;
-const src = card.dataset.illustrationSrc || card.querySelector('.itinerary-card-end-art')?.getAttribute('src');
-document.getElementById('illustration-preview-title').textContent = card.querySelector('.item-title')?.textContent || '';
-document.getElementById('illustration-preview-desc').textContent = card.querySelector('.item-desc')?.textContent || '';
+const currentArt = card.querySelector('.itinerary-card-end-art');
+const src = card.dataset.illustrationSrc || currentArt?.getAttribute('src');
 document.getElementById('illustration-preview-note').hidden = !noteHasContent(card);
 document.getElementById('illustration-preview-image').removeAttribute('src');
 document.getElementById('illustration-apply').disabled = true;
@@ -8114,10 +8130,27 @@ document.getElementById('illustration-x').value = card.dataset.illustrationX || 
 document.getElementById('illustration-y').value = card.dataset.illustrationY || 50;
 document.getElementById('illustration-width').value = card.dataset.illustrationWidth || 22;
 openSimpleModal('illustration-modal');
+syncIllustrationPreviewToCard(card);
 if (!src) { document.getElementById('illustration-file').click(); return; }
 try {
 const image = await normalizeIllustrationImage(src);
 if (token !== illustrationLoadToken) return;
+const stage = document.getElementById('illustration-preview');
+const cardRect = card.getBoundingClientRect();
+if (currentArt && cardRect.width && cardRect.height) {
+if (!currentArt.classList.contains('custom-card-illustration')) await fitItineraryEndArtToTextBand(card, currentArt);
+const artRect = currentArt.getBoundingClientRect();
+const visible = image.visibleBox || { x: 0, y: 0, width: 1, height: 1 };
+const visibleLeft = artRect.left + artRect.width * visible.x;
+const visibleTop = artRect.top + artRect.height * visible.y;
+const visibleWidth = artRect.width * visible.width;
+const visibleHeight = artRect.height * visible.height;
+const cardPaddingOriginX = cardRect.left + card.clientLeft;
+const cardPaddingOriginY = cardRect.top + card.clientTop;
+document.getElementById('illustration-x').value = (visibleLeft + visibleWidth / 2 - cardPaddingOriginX) / card.clientWidth * 100;
+document.getElementById('illustration-y').value = (visibleTop + visibleHeight / 2 - cardPaddingOriginY) / card.clientHeight * 100;
+document.getElementById('illustration-width').value = visibleWidth / card.clientWidth * 100;
+}
 illustrationDraft = image;
 document.getElementById('illustration-preview-image').src = image.src;
 document.getElementById('illustration-apply').disabled = false;
@@ -12214,14 +12247,14 @@ if (!subtabs) return;
 if (currentWishlistCategory === WISHLIST_GIFT_CATEGORY && !wishlistCategoryEditMode) {
 subtabs.classList.add('show');
 subtabs.classList.remove('is-hidden');
-subtabs.innerHTML = `<span class="wishlist-store-select-label">誰的伴手禮</span><details class="wishlist-store-picker"><summary aria-label="選擇伴手禮購買人"><span>${escapeHtml(currentWishlistGiftViewBuyer)}</span><span class="wishlist-store-chevron" aria-hidden="true"></span></summary><div class="wishlist-store-options">${['大豬', '小豬'].map(buyer => `<button type="button" class="wishlist-store-option ${buyer === currentWishlistGiftViewBuyer ? 'is-selected' : ''}" aria-pressed="${buyer === currentWishlistGiftViewBuyer}" onclick="setWishlistGiftViewBuyer('${buyer}')"><span>${buyer}</span><span aria-hidden="true">${buyer === currentWishlistGiftViewBuyer ? '♡' : ''}</span></button>`).join('')}</div></details>`;
+subtabs.innerHTML = `<span class="wishlist-store-select-label">誰的伴手禮</span><div class="wishlist-gift-buyer-filter" role="group" aria-label="篩選伴手禮購買人">${['大豬', '小豬'].map(buyer => `<button type="button" class="wishlist-gift-buyer-chip ${buyer === currentWishlistGiftViewBuyer ? 'is-selected' : ''}" aria-pressed="${buyer === currentWishlistGiftViewBuyer}" onclick="setWishlistGiftViewBuyer('${buyer}')">#${buyer}</button>`).join('')}</div>`;
 return;
 }
 const show = isConvenienceWishlistCategory() && !wishlistCategoryEditMode;
 subtabs.classList.toggle('show', show);
 subtabs.classList.toggle('is-hidden', !show);
 if (!CONVENIENCE_WISHLIST_CATEGORIES.includes(currentConvenienceCategory)) currentConvenienceCategory = '7-11';
-subtabs.innerHTML = show ? `<span class="wishlist-store-select-label">逛逛哪一家</span><details class="wishlist-store-picker"><summary aria-label="選擇超商"><span>${escapeHtml(currentConvenienceCategory)}</span><span class="wishlist-store-chevron" aria-hidden="true"></span></summary><div class="wishlist-store-options">${['7-11', '全家', 'Lawson'].map(category => `<button type="button" class="wishlist-store-option ${category === currentConvenienceCategory ? 'is-selected' : ''}" aria-pressed="${category === currentConvenienceCategory}" onclick="setConvenienceWishlistCategory('${escapeJsString(category)}')"><span>${escapeHtml(category)}</span><span aria-hidden="true">${category === currentConvenienceCategory ? '♡' : ''}</span></button>`).join('')}</div></details>` : '';
+subtabs.innerHTML = show ? `<span class="wishlist-store-select-label">逛逛哪一家</span><div class="wishlist-gift-buyer-filter" role="group" aria-label="篩選超商">${CONVENIENCE_WISHLIST_CATEGORIES.map(category => `<button type="button" class="wishlist-gift-buyer-chip ${category === currentConvenienceCategory ? 'is-selected' : ''}" aria-pressed="${category === currentConvenienceCategory}" onclick="setConvenienceWishlistCategory('${escapeJsString(category)}')">#${escapeHtml(category)}</button>`).join('')}</div>` : '';
 }
 function setWishlistGiftViewBuyer(buyer) {
 if (!['大豬', '小豬'].includes(buyer)) return;
@@ -12744,7 +12777,8 @@ updateNewWishlistPhotoButton();
 function deleteWishlistItem(key) {
 const item = getWishlistItemByKey(key);
 if (!item) return;
-showConfirmAlert('真的不買給他了嗎？🥺', () => {
+const isGift = item.category === WISHLIST_GIFT_CATEGORY;
+showConfirmAlert(isGift ? '真的不買給他了嗎？🥺' : '對這個商品不心動了嗎?🥺', () => {
 const index = wishItems.indexOf(item);
 if (index >= 0) wishItems.splice(index, 1);
 renderWishlist();
@@ -12975,7 +13009,9 @@ const title = item.title || '商品內容待定';
 const done = Boolean(item.done);
 return `<span class="wishlist-gift-products"><span class="wishlist-gift-product ${done ? 'is-done' : ''}"><button type="button" class="wishlist-gift-product-check btn-press-effect" aria-label="切換完成狀態" aria-pressed="${done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistItem(${itemKey})">${done ? '✓' : ''}</button><span class="wishlist-gift-product-text">${renderWishlistTitle(title)}</span><span class="wishlist-gift-product-photo-space" aria-hidden="true"></span><span class="wishlist-gift-product-qty" aria-label="購買數量"><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, -1)">-</button><span class="wishlist-gift-product-qty-value">${getWishlistItemQty(item)}</span><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistQty(${itemKey}, 1)">+</button></span></span></span>`;
 }
-return `<span class="wishlist-gift-products">${products.map((product, index) => {
+const displayProducts = products.map((product, index) => ({ product, index }))
+.sort((a, b) => Number(Boolean(a.product.done)) - Number(Boolean(b.product.done)) || a.index - b.index);
+return `<span class="wishlist-gift-products">${displayProducts.map(({ product, index }) => {
 const imageSrc = getWishlistGiftProductImageSrc(product);
 const photoButton = imageSrc ? `<button type="button" class="wishlist-gift-product-photo btn-press-effect" aria-label="查看圖片" onclick="openWishlistGiftProductImage(event, ${itemKey}, ${index})"><img src="${escapeHtml(resolveWishlistImageSrc(imageSrc))}" alt="${escapeHtml(product.title)}圖片" loading="eager" decoding="async"></button>` : '<span class="wishlist-gift-product-photo-space" aria-hidden="true"></span>';
 return `<span class="wishlist-gift-product ${product.done ? 'is-done' : ''}"><button type="button" class="wishlist-gift-product-check btn-press-effect" aria-label="切換${escapeHtml(product.title)}完成狀態" aria-pressed="${product.done ? 'true' : 'false'}" onclick="event.stopPropagation(); toggleWishlistGiftProduct(${itemKey}, ${index})">${product.done ? '✓' : ''}</button><span class="wishlist-gift-product-text">${renderWishlistTitle(product.title)}</span>${photoButton}<span class="wishlist-gift-product-qty" aria-label="${escapeHtml(product.title)}購買數量"><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="減少數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, -1)">-</button><span class="wishlist-gift-product-qty-value">${getWishlistItemQty(product)}</span><button type="button" class="wishlist-gift-product-qty-btn btn-press-effect" aria-label="增加數量" onclick="event.stopPropagation(); changeWishlistGiftProductQty(${itemKey}, ${index}, 1)">+</button></span><input type="file" id="wishlist-gift-photo-input-${itemKey}-${index}" accept="image/*" style="display:none" onclick="event.stopPropagation()" onchange="attachWishlistGiftProductImage(${itemKey}, ${index}, event)"></span>`;
@@ -13022,12 +13058,12 @@ const displayCategory = isConvenienceView ? CONVENIENCE_WISHLIST_PARENT : getWis
 list.classList.toggle('is-gift-list', effectiveCategory === WISHLIST_GIFT_CATEGORY);
 const items = wishItems.filter(wish => isConvenienceView ? (wish.category === currentConvenienceCategory || (getWishlistTopCategory(wish.category) === CONVENIENCE_WISHLIST_PARENT && !CONVENIENCE_WISHLIST_CATEGORIES.includes(wish.category))) : wish.category === effectiveCategory && (effectiveCategory !== WISHLIST_GIFT_CATEGORY || (wish.buyer || '大豬') === currentWishlistGiftViewBuyer))
 .sort((a, b) => {
+const doneSort = Number(Boolean(a.done)) - Number(Boolean(b.done));
+if (doneSort) return doneSort;
 if (isConvenienceView) {
 const groupSort = Number(!CONVENIENCE_WISHLIST_CATEGORIES.includes(a.category)) - Number(!CONVENIENCE_WISHLIST_CATEGORIES.includes(b.category));
 if (groupSort) return groupSort;
 }
-const doneSort = Number(Boolean(a.done)) - Number(Boolean(b.done));
-if (doneSort) return doneSort;
 if (isConvenienceView) {
 const storeSort = getConvenienceWishlistSortIndex(a) - getConvenienceWishlistSortIndex(b);
 if (storeSort) return storeSort;
