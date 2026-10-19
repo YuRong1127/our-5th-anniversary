@@ -14297,7 +14297,7 @@ prepItems = Array.isArray(data.prepItems) ? data.prepItems : prepItems;
 docItems = Array.isArray(data.docItems) ? data.docItems : docItems;
 const addedDefaultPrepItems = normalizePrepItems();
 
-if (Number.isInteger(data.currentDay) && hasManualDaySelection && isTripInProgress()) currentDay = data.currentDay;
+// Cloud updates must preserve the day being viewed on this device.
 
 enhanceRouteConnectors();
 enhanceItineraryCards();
@@ -14305,7 +14305,7 @@ enhanceSpecialItineraryArt();
 refreshTimeStayHints();
 
 toggleEditMode(false);
-switchDay(hasManualDaySelection && isTripInProgress() ? currentDay : getInitialTripDay(), { auto: true, skipHistory: true });
+switchDay(currentDay, { auto: true, skipHistory: true });
 updateMoreInfoButtons();
 pushAppHistory(currentDay, true);
 updatePublicFundDisplay();
