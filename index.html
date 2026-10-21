@@ -7956,10 +7956,17 @@ const ILLUSTRATION_STORAGE_KEY = 'anniversary-itinerary-illustrations-v1';
 let savedItineraryIllustrations = {};
 try { savedItineraryIllustrations = JSON.parse(localStorage.getItem(ILLUSTRATION_STORAGE_KEY) || '{}'); } catch (error) {}
 
+function getLegacyCardIllustrationKey(card) {
+const section = card.closest('.day-section');
+return `${section?.id}:${Array.from(section?.querySelectorAll(':scope > .card') || []).indexOf(card)}`;
+}
 function getCardIllustrationKey(card) {
 if (!card.dataset.illustrationKey) {
 const section = card.closest('.day-section');
-card.dataset.illustrationKey = `${section?.id}:${Array.from(section?.querySelectorAll(':scope > .card') || []).indexOf(card)}`;
+const place = card.dataset.mapPlaceValue || card.dataset.mapPlaceInput || '';
+const title = card.querySelector('.item-title')?.textContent?.trim().replace(/\s+/g, ' ') || '';
+const time = card.querySelector('.time-badge')?.textContent?.trim().replace(/\s+/g, ' ') || '';
+card.dataset.illustrationKey = `v2:${encodeURIComponent([section?.id || '', place, title, time].join('|'))}`;
 }
 return card.dataset.illustrationKey;
 }
@@ -7980,8 +7987,10 @@ try { localStorage.setItem(ILLUSTRATION_STORAGE_KEY, JSON.stringify(savedItinera
 function restoreCardIllustrations() {
 if (isEditMode) return;
 document.querySelectorAll('.day-section > .card').forEach(card => {
-const data = savedItineraryIllustrations[getCardIllustrationKey(card)];
+const stableKey = getCardIllustrationKey(card);
+const data = savedItineraryIllustrations[stableKey] || savedItineraryIllustrations[getLegacyCardIllustrationKey(card)];
 if (!data) return;
+if (!savedItineraryIllustrations[stableKey]) savedItineraryIllustrations[stableKey] = data;
 if (typeof data.notes === 'string') card.dataset.flightExtraNotes = data.notes;
 if (data.removed) { card.dataset.illustrationRemoved = 'true'; delete card.dataset.illustrationSrc; return; }
 if (!/^(data:image\/(png|webp|jpeg);base64,|images\/)/.test(data.src || '')) return;
@@ -8203,6 +8212,8 @@ card.dataset.illustrationY = illustrationDraft.y;
 card.dataset.illustrationWidth = illustrationDraft.width;
 delete card.dataset.illustrationRemoved;
 renderCustomCardIllustrations();
+persistCardIllustrations();
+queueTripCloudSave(true);
 cancelIllustrationEditor();
 }
 
@@ -8213,6 +8224,8 @@ delete illustrationCard.dataset.illustrationSrc;
 illustrationCard.querySelectorAll('.itinerary-card-end-art').forEach(img => img.remove());
 illustrationCard.classList.remove('has-end-art');
 prepareIllustrationControls();
+persistCardIllustrations();
+queueTripCloudSave(true);
 cancelIllustrationEditor();
 }
 
@@ -14277,9 +14290,16 @@ function applyTripCloudData(data) {
 if (!CLOUD_SYNC_ENABLED) return;
 if (!data || isEditMode) return;
 isApplyingCloudData = true;
+let illustrationSyncNeeded = false;
+const localIllustrations = savedItineraryIllustrations && typeof savedItineraryIllustrations === 'object' ? savedItineraryIllustrations : {};
 if (data.itineraryIllustrations && typeof data.itineraryIllustrations === 'object' && !Array.isArray(data.itineraryIllustrations)) {
-savedItineraryIllustrations = data.itineraryIllustrations;
+const cloudIllustrations = data.itineraryIllustrations;
+savedItineraryIllustrations = { ...localIllustrations, ...cloudIllustrations };
+illustrationSyncNeeded = Object.keys(localIllustrations).some(key => !Object.prototype.hasOwnProperty.call(cloudIllustrations, key)) || Object.keys(cloudIllustrations).some(key => !key.startsWith('v2:'));
 try { localStorage.setItem(ILLUSTRATION_STORAGE_KEY, JSON.stringify(savedItineraryIllustrations)); } catch (error) {}
+} else if (Object.keys(localIllustrations).length) {
+savedItineraryIllustrations = localIllustrations;
+illustrationSyncNeeded = true;
 }
 
 if (CLOUD_STATIC_SYNC_ENABLED && typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim() && data.staticContentVersion === STATIC_CONTENT_VERSION) {
@@ -14317,6 +14337,10 @@ renderDocsFolder();
 editSnapshotHTML = document.getElementById('day-content')?.innerHTML || '';
 editSnapshotHeaderHTML = document.getElementById('header-normal-view')?.innerHTML || '';
 isApplyingCloudData = false;
+if (illustrationSyncNeeded) {
+persistCardIllustrations();
+queueTripCloudSave({ showStatus: false });
+}
 if (addedRequiredWishlistItems) queueTripCloudSave({ showStatus: false });
 if (addedDefaultPrepItems) queueTripCloudSave();
 }
