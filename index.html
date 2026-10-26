@@ -8075,12 +8075,31 @@ card.appendChild(img);
 prepareIllustrationControls();
 }
 
+function encodeIllustrationWebp(canvas) {
+// 插圖只會顯示在行程條後方一小塊，壓到約 90KB 以內，避免雲端文件過大
+let source = canvas;
+let quality = .82;
+let out = source.toDataURL('image/webp', quality);
+let guard = 0;
+while (out.length > 90000 && guard++ < 8) {
+if (out.startsWith('data:image/webp') && quality > .45) quality -= .1;
+else {
+const next = document.createElement('canvas');
+next.width = Math.max(64, Math.round(source.width * .8));
+next.height = Math.max(64, Math.round(source.height * .8));
+next.getContext('2d').drawImage(source, 0, 0, next.width, next.height);
+source = next;
+}
+out = source.toDataURL('image/webp', quality);
+}
+return out;
+}
 async function normalizeIllustrationImage(src) {
 const img = new Image();
 img.src = src;
 await img.decode();
 const canvas = document.createElement('canvas');
-const scale = Math.min(1, 1000 / Math.max(img.naturalWidth, img.naturalHeight));
+const scale = Math.min(1, 480 / Math.max(img.naturalWidth, img.naturalHeight));
 canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
 canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
 const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -8098,7 +8117,7 @@ const trimmed = document.createElement('canvas');
 trimmed.width = right - left + 1; trimmed.height = bottom - top + 1;
 trimmed.getContext('2d').drawImage(canvas, left, top, trimmed.width, trimmed.height, 0, 0, trimmed.width, trimmed.height);
 return {
-src: trimmed.toDataURL('image/webp', .9),
+src: encodeIllustrationWebp(trimmed),
 ratio: trimmed.width / trimmed.height,
 visibleBox: {
 x: left / canvas.width,
@@ -11345,6 +11364,29 @@ reader.onload = () => resolve(reader.result);
 reader.readAsDataURL(file);
 });
 }
+async function readImageFileCompressed(file, maxSide = 640, quality = .8) {
+const original = await readImageFile(file);
+if (!file.type || !file.type.startsWith('image/') || /gif|svg/.test(file.type)) return original;
+try {
+const img = new Image();
+img.src = original;
+await img.decode();
+const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+const canvas = document.createElement('canvas');
+canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+const ctx = canvas.getContext('2d');
+ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+let out = canvas.toDataURL('image/webp', quality);
+if (!out.startsWith('data:image/webp')) {
+ctx.globalCompositeOperation = 'destination-over';
+ctx.fillStyle = '#fff';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+out = canvas.toDataURL('image/jpeg', quality);
+}
+return out.length < original.length ? out : original;
+} catch (error) { return original; }
+}
 async function addDetailFieldPhotoFile(index, event, insertMode = 'end') {
 if (!currentDetailCard || !isEditMode) return;
 const files = Array.from(event.target.files || []).filter(file => file.type.startsWith('image/'));
@@ -12445,7 +12487,7 @@ async function attachPendingWishlistGiftProductPhoto(event) {
 const file = event.target.files && event.target.files[0];
 const index = pendingWishlistGiftPhotoIndex;
 if (!file || !file.type.startsWith('image/') || index === null || !pendingWishlistGiftProducts[index]) return;
-pendingWishlistGiftProducts[index].imageSrc = await readImageFile(file);
+pendingWishlistGiftProducts[index].imageSrc = await readImageFileCompressed(file);
 event.target.value = '';
 pendingWishlistGiftPhotoIndex = null;
 renderPendingWishlistGiftProducts();
@@ -12462,7 +12504,7 @@ document.getElementById('wishlist-new-photo-input')?.click();
 async function attachNewWishlistPhoto(event) {
 const file = event.target.files && event.target.files[0];
 if (!file || !file.type.startsWith('image/')) return;
-pendingWishlistImageSrc = await readImageFile(file);
+pendingWishlistImageSrc = await readImageFileCompressed(file);
 event.target.value = '';
 updateNewWishlistPhotoButton();
 }
@@ -12888,7 +12930,7 @@ const file = event.target.files && event.target.files[0];
 if (!file || !file.type.startsWith('image/')) return;
 const item = getWishlistItemByKey(key);
 if (!item) return;
-item.imageSrc = await readImageFile(file);
+item.imageSrc = await readImageFileCompressed(file);
 event.target.value = '';
 renderWishlist();
 queueTripCloudSave();
@@ -12919,7 +12961,7 @@ const item = getWishlistItemByKey(key);
 const products = item ? normalizeWishlistGiftProducts(item) : [];
 const product = products[productIndex];
 if (!product) return;
-product.imageSrc = await readImageFile(file);
+product.imageSrc = await readImageFileCompressed(file);
 event.target.value = '';
 renderWishlist();
 queueTripCloudSave();
@@ -13139,7 +13181,12 @@ const fileInput = event.target;
 const file = fileInput.files && fileInput.files[0];
 if (!file) return;
 const title = file.name.replace(/\.[^.]+$/, '');
-const fileSrc = await readImageFile(file);
+if (!file.type.startsWith('image/') && file.size > 600 * 1024) {
+showAlert('這個檔案超過 600KB，放進去會讓雲端儲存失敗。請先壓縮，或改用圖片。');
+fileInput.value = '';
+return;
+}
+const fileSrc = file.type.startsWith('image/') ? await readImageFileCompressed(file, 1600, .78) : await readImageFile(file);
 docItems.unshift({
 id: Date.now(),
 title,
@@ -14292,14 +14339,11 @@ if (!data || isEditMode) return;
 isApplyingCloudData = true;
 let illustrationSyncNeeded = false;
 const localIllustrations = savedItineraryIllustrations && typeof savedItineraryIllustrations === 'object' ? savedItineraryIllustrations : {};
-if (data.itineraryIllustrations && typeof data.itineraryIllustrations === 'object' && !Array.isArray(data.itineraryIllustrations)) {
-const cloudIllustrations = data.itineraryIllustrations;
-savedItineraryIllustrations = { ...localIllustrations, ...cloudIllustrations };
-illustrationSyncNeeded = Object.keys(localIllustrations).some(key => !Object.prototype.hasOwnProperty.call(cloudIllustrations, key)) || Object.keys(cloudIllustrations).some(key => !key.startsWith('v2:'));
-try { localStorage.setItem(ILLUSTRATION_STORAGE_KEY, JSON.stringify(savedItineraryIllustrations)); } catch (error) {}
-} else if (Object.keys(localIllustrations).length) {
-savedItineraryIllustrations = localIllustrations;
+if (data.itineraryIllustrations && typeof data.itineraryIllustrations === 'object' && !Array.isArray(data.itineraryIllustrations) && Object.keys(data.itineraryIllustrations).length) {
+// 舊版資料：插圖還放在主文件裡。合併後搬到各自獨立的文件（只會發生一次）
+savedItineraryIllustrations = { ...localIllustrations, ...data.itineraryIllustrations };
 illustrationSyncNeeded = true;
+try { localStorage.setItem(ILLUSTRATION_STORAGE_KEY, JSON.stringify(savedItineraryIllustrations)); } catch (error) {}
 }
 
 if (CLOUD_STATIC_SYNC_ENABLED && typeof data.dayContentHTML === 'string' && data.dayContentHTML.trim() && data.staticContentVersion === STATIC_CONTENT_VERSION) {
@@ -14364,6 +14408,16 @@ return window.saveTripToCloud(collectTripCloudData(options), { showStatus });
 }
 window.collectTripCloudData = collectTripCloudData;
 window.applyTripCloudData = applyTripCloudData;
+window.getSavedIllustrations = () => savedItineraryIllustrations;
+window.applyCloudIllustrations = function(cloudMap) {
+if (!cloudMap || typeof cloudMap !== 'object') return;
+const before = JSON.stringify(savedItineraryIllustrations);
+savedItineraryIllustrations = { ...savedItineraryIllustrations, ...cloudMap };
+if (JSON.stringify(savedItineraryIllustrations) === before) return;
+try { localStorage.setItem(ILLUSTRATION_STORAGE_KEY, JSON.stringify(savedItineraryIllustrations)); } catch (error) {}
+if (isEditMode || isApplyingCloudData) return;
+enhanceSpecialItineraryArt();
+};
 window.queueTripCloudSave = queueTripCloudSave;
 window.showSaveStatus = showSaveStatus;
 
@@ -14928,7 +14982,13 @@ updatePublicFundDisplay();
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
 import {
+  initializeFirestore,
   getFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  collection,
+  query,
+  where,
   doc,
   getDoc,
   getDocFromServer,
@@ -14947,12 +15007,72 @@ const firebaseConfig = {
   appId: "1:152526257344:web:859140aea03ccca6e64125"
 };
 
+const TRIP_ID = 'our-5th-anniversary';
+const SAVE_TIMEOUT_MS = 8000;
+const TIMED_OUT = Symbol('timed-out');
+
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const tripRef = doc(db, 'trips', 'our-5th-anniversary');
+// 開啟離線暫存：沒訊號時寫入會先存在手機裡，恢復連線後自動補上傳
+let db;
+try {
+  db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+} catch (error) {
+  console.warn('Firestore offline cache unavailable:', error);
+  db = getFirestore(app);
+}
+const tripRef = doc(db, 'trips', TRIP_ID);
 let saveTimer = null;
 let pendingSaveResolve = null;
 let latestCloudUpdatedAt = '';
+window.cloudSaveDirty = false;
+
+function withTimeout(promise, ms = SAVE_TIMEOUT_MS) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((resolve) => { timer = setTimeout(() => resolve(TIMED_OUT), ms); })
+  ]).finally(() => clearTimeout(timer));
+}
+
+function describeSaveError(error) {
+  const code = (error && error.code) || '';
+  if (code === 'permission-denied') return '儲存失敗：沒有寫入權限（請檢查 Firebase 規則）';
+  if (code === 'invalid-argument' || code === 'resource-exhausted') return '儲存失敗：資料太大（' + code + '）';
+  return '儲存失敗：' + (code || (error && error.message) || '未知錯誤');
+}
+
+// ---- 插圖：每一張各自存成一份文件，不再全部塞進同一份 ----
+function hashKey(str) {
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+const illDocId = (key) => TRIP_ID + '__ill__' + hashKey(key);
+const cloudIllCache = {};
+
+async function syncIllustrationsToCloud(map) {
+  const jobs = [];
+  for (const [key, item] of Object.entries(map || {})) {
+    const json = JSON.stringify(item);
+    if (cloudIllCache[key] === json) continue;
+    if (json.length > 900000) {
+      const err = new Error('illustration too large');
+      err.code = 'invalid-argument';
+      throw err;
+    }
+    jobs.push(
+      setDoc(doc(db, 'trips', illDocId(key)), { illTrip: TRIP_ID, key, item: json, updatedAt: Date.now() })
+        .then(() => { cloudIllCache[key] = json; })
+    );
+  }
+  await Promise.all(jobs);
+}
 
 async function backupCloudStaticBeforeOverwrite(nextPayload) {
   if (!nextPayload.dayContentHTML) return;
@@ -14961,7 +15081,7 @@ async function backupCloudStaticBeforeOverwrite(nextPayload) {
   const current = snapshot.data();
   if (!current.dayContentHTML || current.dayContentHTML === nextPayload.dayContentHTML) return;
   const backupId = String(Date.now());
-  const backupRef = doc(db, 'trips', 'our-5th-anniversary', 'backups', backupId);
+  const backupRef = doc(db, 'trips', TRIP_ID, 'backups', backupId);
   await setDoc(backupRef, {
     dayContentHTML: current.dayContentHTML,
     staticContentVersion: current.staticContentVersion || '',
@@ -14980,26 +15100,69 @@ window.saveTripToCloud = (data, options = {}) => {
     saveTimer = setTimeout(async () => {
       pendingSaveResolve = null;
       try {
+        const illustrations = data.itineraryIllustrations || {};
+        const rest = { ...data };
+        delete rest.itineraryIllustrations;
+        const approxSize = JSON.stringify(rest).length;
+        if (approxSize > 900000) {
+          const sizes = Object.entries(rest).map(([k, v]) => [k, JSON.stringify(v === undefined ? null : v).length]).sort((a, b) => b[1] - a[1]);
+          console.error('Main trip document too large. Biggest fields:', sizes.slice(0, 3));
+          const err = new Error('main document too large');
+          err.code = 'invalid-argument';
+          throw err;
+        }
         const payload = {
-          ...data,
+          ...rest,
           headerHTML: deleteField(),
           serverUpdatedAt: serverTimestamp()
         };
         if (!window.CLOUD_STATIC_SYNC_ENABLED) payload.dayContentHTML = deleteField();
         latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
+
+        let queuedOnly = false;
+        try {
+          const illResult = await withTimeout(syncIllustrationsToCloud(illustrations));
+          if (illResult === TIMED_OUT) queuedOnly = true;
+          else payload.itineraryIllustrations = deleteField(); // 舊版放在主文件裡的插圖搬完後清掉
+        } catch (illError) {
+          if (illError && illError.code === 'permission-denied') {
+            payload.itineraryIllustrations = illustrations; // 規則不允許新文件時，退回舊做法
+          } else {
+            throw illError;
+          }
+        }
+
         if (window.CLOUD_STATIC_SYNC_ENABLED) await backupCloudStaticBeforeOverwrite(payload);
-        await setDoc(tripRef, payload, { merge: true });
+        const mainResult = await withTimeout(setDoc(tripRef, payload, { merge: true }), queuedOnly ? 1500 : SAVE_TIMEOUT_MS);
+        if (mainResult === TIMED_OUT) queuedOnly = true;
         window.suppressCloudApplyUntil = Date.now() + 1500;
-        if (options.showStatus) window.showSaveStatus?.('儲存成功', 'success');
+        window.cloudSaveDirty = false;
+        if (options.showStatus) {
+          window.showSaveStatus?.(queuedOnly ? '已暫存在手機，連線後自動同步' : '儲存成功', 'success');
+        }
         resolve(true);
       } catch (error) {
         console.error('Firebase save failed:', error);
-        if (options.showStatus) window.showSaveStatus?.('儲存失敗', 'error');
+        window.lastCloudSaveError = (error && (error.code || error.message)) || String(error);
+        window.cloudSaveDirty = true;
+        if (options.showStatus) window.showSaveStatus?.(describeSaveError(error), 'error');
         resolve(false);
       }
     }, 350);
   });
 };
+
+function retryDirtySave() {
+  if (!window.cloudSaveDirty) return;
+  if (navigator.onLine === false) return;
+  window.cloudSaveDirty = false;
+  window.queueTripCloudSave?.({ showStatus: false });
+}
+window.addEventListener('online', retryDirtySave);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') retryDirtySave();
+});
+setInterval(retryDirtySave, 60000);
 
 window.compactTripCloudDraft = async () => {
   await setDoc(tripRef, {
@@ -15011,11 +15174,38 @@ window.compactTripCloudDraft = async () => {
 
 window.addEventListener('DOMContentLoaded', async () => {
   if (window.CLOUD_SYNC_ENABLED === false) return;
+
+  // 監聽各張插圖（與主文件分開，不會互相拖累）
+  try {
+    let firstServerSync = true;
+    onSnapshot(query(collection(db, 'trips'), where('illTrip', '==', TRIP_ID)), (qs) => {
+      const cloudMap = {};
+      qs.forEach((d) => {
+        const v = d.data();
+        if (!v || !v.key || typeof v.item !== 'string') return;
+        cloudIllCache[v.key] = v.item;
+        try { cloudMap[v.key] = JSON.parse(v.item); } catch (error) {}
+      });
+      window.applyCloudIllustrations?.(cloudMap);
+      if (firstServerSync && !qs.metadata.fromCache) {
+        firstServerSync = false;
+        // 只有這支手機有、雲端還沒有的插圖，補上傳一次
+        syncIllustrationsToCloud(window.getSavedIllustrations?.() || {}).catch((error) => console.error('Illustration backfill failed:', error));
+      }
+    }, (error) => {
+      console.error('Illustration sync failed:', error);
+    });
+  } catch (error) {
+    console.error('Illustration listener failed:', error);
+  }
+
   try {
     const snapshot = await getDocFromServer(tripRef).catch(() => getDoc(tripRef));
     if (!snapshot.exists()) {
+      const firstData = { ...window.collectTripCloudData() };
+      delete firstData.itineraryIllustrations;
       await setDoc(tripRef, {
-        ...window.collectTripCloudData(),
+        ...firstData,
         serverUpdatedAt: serverTimestamp()
       });
     } else {
