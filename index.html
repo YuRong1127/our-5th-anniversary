@@ -8232,7 +8232,7 @@ card.dataset.illustrationWidth = illustrationDraft.width;
 delete card.dataset.illustrationRemoved;
 renderCustomCardIllustrations();
 persistCardIllustrations();
-queueTripCloudSave(true);
+queueTripCloudSave({ showStatus: false, errorsOnly: true });
 cancelIllustrationEditor();
 }
 
@@ -8244,7 +8244,7 @@ illustrationCard.querySelectorAll('.itinerary-card-end-art').forEach(img => img.
 illustrationCard.classList.remove('has-end-art');
 prepareIllustrationControls();
 persistCardIllustrations();
-queueTripCloudSave(true);
+queueTripCloudSave({ showStatus: false, errorsOnly: true });
 cancelIllustrationEditor();
 }
 
@@ -14404,7 +14404,7 @@ showStatus = !!options.showStatus;
 }
 if (!CLOUD_SYNC_ENABLED) return;
 if (isApplyingCloudData || typeof window.saveTripToCloud !== 'function') return;
-return window.saveTripToCloud(collectTripCloudData(options), { showStatus });
+return window.saveTripToCloud(collectTripCloudData(options), { showStatus, errorsOnly: !!options.errorsOnly });
 }
 window.collectTripCloudData = collectTripCloudData;
 window.applyTripCloudData = applyTripCloudData;
@@ -15145,7 +15145,7 @@ window.saveTripToCloud = (data, options = {}) => {
         console.error('Firebase save failed:', error);
         window.lastCloudSaveError = (error && (error.code || error.message)) || String(error);
         window.cloudSaveDirty = true;
-        if (options.showStatus) window.showSaveStatus?.(describeSaveError(error), 'error');
+        if (options.showStatus || options.errorsOnly) window.showSaveStatus?.(describeSaveError(error), 'error');
         resolve(false);
       }
     }, 350);
