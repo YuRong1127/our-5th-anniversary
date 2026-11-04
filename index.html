@@ -3345,6 +3345,40 @@ cursor: grabbing;
 .expense-card { margin-bottom: 14px; padding: 18px; border: 1px solid #fdf5f2; border-radius: 24px; background: #fff; box-shadow: 0 4px 15px rgba(141,110,99,.06); }
 .expense-date-group-title { display: flex; align-items: center; gap: 9px; margin: 4px 4px 9px; color: #9b6a61; font-size: .82rem; font-weight: 900; }
 .expense-date-group-title::after { content: ''; height: 1px; flex: 1; background: #eadbd5; }
+.expense-search-tools { margin: 0 0 10px; padding: 0 2px; }
+.expense-search-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(84px, 24%); gap: 6px; }
+.expense-search-field { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 0 8px; border: 1px solid #eadbd5; border-radius: 12px; background: #fff; color: #9b6a61; }
+.expense-search-field:focus-within { border-color: #d98578; box-shadow: 0 0 0 3px rgba(217,133,120,.12); }
+.expense-search-field > span { font-size: 1.25rem; line-height: 1; }
+.expense-search-field input { width: 100%; min-width: 0; height: 42px; padding: 0; border: 0; outline: 0; background: transparent; color: #55423c; font: inherit; font-size: 16px; }
+.expense-search-field input::placeholder { color: #b7a6a0; }
+#expense-category-filter { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.expense-category-wrap { position: relative; min-width: 0; }
+.expense-category-button { display: flex; align-items: center; justify-content: flex-start; gap: 3px; width: 100%; min-width: 0; height: 44px; padding: 0 4px; border: 1px solid #eadbd5; border-radius: 12px; background: #fff; color: #715b54; font: inherit; font-size: .72rem; text-align: left; cursor: pointer; transition: border-color .16s ease, background .16s ease, box-shadow .16s ease; }
+.expense-category-button:hover { border-color: #ddc3bb; background: #fffdfa; }
+.expense-category-button[aria-expanded="true"] { border-color: #d98578; box-shadow: 0 0 0 3px rgba(217,133,120,.12); }
+.expense-category-button:focus-visible { outline: 2px solid rgba(217,133,120,.45); outline-offset: 2px; }
+.expense-category-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.expense-category-chevron { display: flex; flex: 0 0 auto; color: #a48b83; transition: transform .18s ease; }
+.expense-category-chevron svg { width: 10px; height: 10px; }
+.expense-category-button[aria-expanded="true"] .expense-category-chevron { transform: rotate(180deg); }
+.expense-category-menu { position: absolute; z-index: 40; top: calc(100% + 6px); right: 0; display: flex; flex-direction: column; width: max(100%, 112px); max-width: min(130px, calc(100vw - 40px)); max-height: min(280px, 48vh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid #eadbd5; border-radius: 15px; background: #fffdfb; box-shadow: 0 9px 24px rgba(141,110,99,.16); }
+.expense-category-menu[hidden] { display: none; }
+.expense-category-option { display: flex; align-items: center; width: 100%; padding: 7px 7px; border: 0; border-radius: 9px; background: transparent; color: #715b54; font: inherit; font-size: .84rem; line-height: 1.25; text-align: left; cursor: pointer; transition: background .14s ease, color .14s ease; }
+.expense-category-option:hover, .expense-category-option:focus-visible { outline: none; background: #fff2ed; color: #9b6a61; }
+.expense-category-option[aria-selected="true"] { background: #f8ebe7; color: #9b6a61; font-weight: 800; }
+.expense-search-count { margin: 6px 3px 0; color: #a48b83; font-size: .78rem; font-weight: 700; text-align: right; }
+.expense-search-empty { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 12px; color: #9b8179; text-align: center; }
+.expense-search-clear { padding: 7px 14px; border: 1px solid #eadbd5; border-radius: 999px; background: #fff; color: #9b6a61; font: inherit; font-weight: 800; }
+@media (max-width: 420px) {
+.expense-search-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+.expense-category-wrap { width: 84px; justify-self: end; }
+.expense-search-field { gap: 4px; padding: 0 8px; }
+.expense-search-field > span { font-size: 1rem; }
+.expense-search-field input { font-size: 16px; }
+.expense-search-field input::placeholder { font-size: 13px; }
+}
+
 .expense-top { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; min-height: 52px; }
 .expense-icon { width: 52px; height: 52px; flex: 0 0 52px; border: 1px solid #fdf5f2; border-radius: 18px; background: #fef9f6; overflow: hidden; }
 .expense-heading { min-width: 0; display: flex; min-height: 52px; flex-direction: column; justify-content: center; }
@@ -6017,7 +6051,7 @@ header {
 </div>
 </div>
 </div>
-<div class="modal-overlay" id="details-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費清單</div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
+<div class="modal-overlay" id="details-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('details-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧾 花費清單</div><div class="expense-search-tools"><div class="expense-search-row"><label class="expense-search-field"><span aria-hidden="true">⌕</span><input id="expense-search-input" type="search" placeholder="搜尋品項、備註、付款人或金額" autocomplete="off" oninput="updateExpenseSearch()" aria-label="搜尋品項、備註、付款人或金額"></label><div class="expense-category-wrap" id="expense-category-wrap"><input id="expense-category-filter" type="hidden" value=""><button id="expense-category-button" class="expense-category-button" type="button" onclick="toggleExpenseCategoryMenu(event)" aria-haspopup="listbox" aria-expanded="false" aria-label="依分類篩選"><span class="expense-category-label" id="expense-category-label">全部</span><span class="expense-category-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><path d="m3.5 6 4.5 4 4.5-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><div id="expense-category-menu" class="expense-category-menu" role="listbox" aria-label="依分類篩選" hidden><button class="expense-category-option" type="button" role="option" data-value="" aria-selected="true" onclick="selectExpenseCategory(this)">全部</button><button class="expense-category-option" type="button" role="option" data-value="吃" aria-selected="false" onclick="selectExpenseCategory(this)">吃飯</button><button class="expense-category-option" type="button" role="option" data-value="住" aria-selected="false" onclick="selectExpenseCategory(this)">住宿</button><button class="expense-category-option" type="button" role="option" data-value="交通" aria-selected="false" onclick="selectExpenseCategory(this)">交通</button><button class="expense-category-option" type="button" role="option" data-value="門票" aria-selected="false" onclick="selectExpenseCategory(this)">門票</button><button class="expense-category-option" type="button" role="option" data-value="禮物" aria-selected="false" onclick="selectExpenseCategory(this)">禮物</button><button class="expense-category-option" type="button" role="option" data-value="購物" aria-selected="false" onclick="selectExpenseCategory(this)">購物</button><button class="expense-category-option" type="button" role="option" data-value="玩樂" aria-selected="false" onclick="selectExpenseCategory(this)">玩樂</button><button class="expense-category-option" type="button" role="option" data-value="其他" aria-selected="false" onclick="selectExpenseCategory(this)">其他</button><button class="expense-category-option" type="button" role="option" data-value="__transitTopup" aria-selected="false" onclick="selectExpenseCategory(this)">交通卡儲值</button><button class="expense-category-option" type="button" role="option" data-value="__publicTopup" aria-selected="false" onclick="selectExpenseCategory(this)">公費儲值</button></div></div></div><div id="expense-search-count" class="expense-search-count" aria-live="polite"></div></div><div class="modal-scroll-area"><div id="expense-details-list"></div></div></div></div></div>
 <div class="modal-overlay" id="settle-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('settle-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="modal-title">🧮 結算</div><div class="modal-scroll-area"><div class="panel-content settle-panel-content" id="settle-content"></div></div></div></div></div>
 <div class="modal-overlay" id="stats-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeNestedModal('stats-modal')"><div class="modal-close-circle">✕</div></div><div class="modal-content panel-modal-content"><div class="stats-title-row"><div class="stats-main-title">📊 統計</div><div class="stats-tabs"><button class="stats-tab active btn-press-effect" data-stats-page="pie" onclick="setStatsPage('pie')" type="button">大餅圖</button><button class="stats-tab btn-press-effect" data-stats-page="bar" onclick="setStatsPage('bar')" type="button">柱狀圖</button></div></div><div class="modal-scroll-area"><div class="panel-content" id="stats-content"></div></div></div></div></div>
 <div class="modal-overlay" id="time-range-modal"><div class="modal-container"><div class="modal-close-btn btn-press-effect" onclick="closeTimeRangeEditor()"><div class="modal-close-circle">✕</div></div><div class="modal-content time-range-content"><div class="modal-title">設定行程時間</div><div class="time-range-wheel-groups"><div class="time-range-wheel-group"><div class="time-range-wheel-title">開始時間</div><div class="time-range-wheel-pair"><div aria-label="開始時間的小時" class="time-range-wheel" id="time-range-start-hour" role="listbox"></div><span class="time-range-wheel-colon">:</span><div aria-label="開始時間的分鐘" class="time-range-wheel" id="time-range-start-minute" role="listbox"></div></div></div><div class="time-range-wheel-group"><div class="time-range-wheel-title">結束時間</div><div class="time-range-wheel-pair"><div aria-label="結束時間的小時" class="time-range-wheel" id="time-range-end-hour" role="listbox"></div><span class="time-range-wheel-colon">:</span><div aria-label="結束時間的分鐘" class="time-range-wheel" id="time-range-end-minute" role="listbox"></div></div></div></div><div class="time-range-actions"><button class="time-range-clear-btn btn-press-effect" onclick="clearTimeRangeEditor()" type="button">未定</button><button class="modal-btn-primary btn-press-effect" onclick="saveTimeRangeEditor()" type="button">儲存時間</button></div></div></div></div>
@@ -14143,6 +14177,65 @@ return `<button type="button" class="expense-summary-toggle btn-press-effect" on
 <span class="expense-compact-main"><span class="expense-compact-icon">${getCategoryIconHtml(category || '其他', 'cat-icon-md')}</span><span class="expense-compact-heading"><span class="expense-compact-time">${formatDisplayTime(e.timeISO)}</span><span class="expense-compact-title">${title}</span></span><span class="expense-compact-money"><span class="expense-compact-amount">${amountText}</span></span><span class="expense-expand-arrow" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
 </button>`;
 }
+function updateExpenseSearch() {
+renderExpenses();
+}
+function closeExpenseCategoryMenu(returnFocus = false) {
+const menu = document.getElementById('expense-category-menu');
+const button = document.getElementById('expense-category-button');
+if (menu) menu.hidden = true;
+if (button) button.setAttribute('aria-expanded', 'false');
+if (returnFocus && button) button.focus();
+}
+function toggleExpenseCategoryMenu(event) {
+if (event) { event.preventDefault(); event.stopPropagation(); }
+const menu = document.getElementById('expense-category-menu');
+const button = document.getElementById('expense-category-button');
+if (!menu || !button) return;
+menu.hidden = !menu.hidden;
+button.setAttribute('aria-expanded', menu.hidden ? 'false' : 'true');
+}
+function selectExpenseCategory(option) {
+const filter = document.getElementById('expense-category-filter');
+const menu = document.getElementById('expense-category-menu');
+const label = document.getElementById('expense-category-label');
+if (!option || !filter || !menu) return;
+filter.value = option.dataset.value || '';
+menu.querySelectorAll('[role="option"]').forEach(item => item.setAttribute('aria-selected', item === option ? 'true' : 'false'));
+if (label) label.textContent = option.textContent.trim();
+closeExpenseCategoryMenu(true);
+updateExpenseSearch();
+}
+document.addEventListener('pointerdown', event => {
+const wrap = document.getElementById('expense-category-wrap');
+if (wrap && !wrap.contains(event.target)) closeExpenseCategoryMenu();
+});
+document.addEventListener('keydown', event => {
+const menu = document.getElementById('expense-category-menu');
+if (!menu || menu.hidden) return;
+if (event.key === 'Escape') { event.preventDefault(); closeExpenseCategoryMenu(true); return; }
+if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+const options = [...menu.querySelectorAll('[role="option"]')];
+if (!options.length) return;
+const current = options.indexOf(document.activeElement);
+const next = event.key === 'ArrowDown' ? (current + 1 + options.length) % options.length : (current <= 0 ? options.length - 1 : current - 1);
+event.preventDefault();
+options[next].focus();
+}
+});
+function clearExpenseSearch() {
+const input = document.getElementById('expense-search-input');
+const category = document.getElementById('expense-category-filter');
+const label = document.getElementById('expense-category-label');
+const menu = document.getElementById('expense-category-menu');
+if (input) input.value = '';
+if (category) category.value = '';
+if (label) label.textContent = '全部';
+if (menu) menu.querySelectorAll('[role="option"]').forEach((item, index) => item.setAttribute('aria-selected', index === 0 ? 'true' : 'false'));
+closeExpenseCategoryMenu();
+renderExpenses();
+if (input) input.focus();
+}
 function renderExpenses() {
 const listEl = document.getElementById('expense-details-list');
 if (!listEl) return;
@@ -14152,7 +14245,29 @@ listEl.innerHTML = `<div class="empty-state"><span class="inline-alert-row">目�
 return;
 }
 setPanelEmptyState('details-modal', false);
-const expensesByDate = [...expenses].sort((a, b) => {
+const keyword = (document.getElementById('expense-search-input')?.value || '').trim().toLocaleLowerCase();
+const searchTerms = keyword.split(/\s+/).filter(Boolean);
+const selectedCategory = document.getElementById('expense-category-filter')?.value || '';
+const filteredExpenses = expenses.filter(e => {
+const categoryMatches = !selectedCategory ||
+(selectedCategory === '__transitTopup' ? e.type === 'transitTopup' :
+selectedCategory === '__publicTopup' ? e.type === 'topup' : e.category === selectedCategory);
+if (!categoryMatches) return false;
+const amountValues = [e.amount, e.bigPigShare, e.smallPigShare, e.bigTransitTopup, e.smallTransitTopup, e.bigPigTopup, e.smallPigTopup]
+.filter(value => value !== undefined && value !== null)
+.flatMap(value => [String(value), Number(value).toLocaleString()]);
+const searchableText = [e.title, e.note, e.category, getCategoryLabel(e.category), e.payer, e.split,
+e.displayCurrency, e.timeISO, e.type === 'transitTopup' ? '交通卡儲值' : '', e.type === 'topup' ? '公費儲值' : '',
+...amountValues].filter(Boolean).join(' ').toLocaleLowerCase();
+return searchTerms.every(term => searchableText.includes(term));
+});
+const countEl = document.getElementById('expense-search-count');
+if (countEl) countEl.textContent = keyword || selectedCategory ? `搜尋結果 ${filteredExpenses.length} / 共 ${expenses.length} 筆` : `共 ${expenses.length} 筆`;
+if (!filteredExpenses.length) {
+listEl.innerHTML = `<div class="expense-search-empty"><span>沒有找到符合條件的帳務</span><button class="expense-search-clear btn-press-effect" type="button" onclick="clearExpenseSearch()">清除搜尋</button></div>`;
+return;
+}
+const expensesByDate = [...filteredExpenses].sort((a, b) => {
 const timeA = Date.parse(a.timeISO || '') || 0;
 const timeB = Date.parse(b.timeISO || '') || 0;
 return timeB - timeA;
