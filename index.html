@@ -5454,17 +5454,20 @@ body.edit-mode .card-extra-controls { top: 50%; bottom: auto; transform: transla
 .docs-category-tag { font:inherit; font-size:.85rem; color:var(--main-brown); border:1px solid var(--card-border); border-radius:18px; padding:7px 12px; background:#fff; cursor:pointer; }
 .docs-category-tag.active { color:var(--heart-pink); background:var(--accent-peach); border-color:var(--heart-pink); font-weight:700; }
 
-#topup-area .topup-entry-grid { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 6px 12px; align-items: center; margin-bottom: 10px; }
-#topup-area .topup-entry-grid > .wallet-label { margin: 0; }
-#topup-area .topup-entry-grid .currency-switch { width: 100%; height: 40px !important; padding: 0 8px; box-sizing: border-box; }
-#topup-area .topup-entry-grid .topup-flex { margin: 0; gap: 8px; }
-#topup-area .topup-entry-grid .topup-person-entry { display: flex; align-items: center; gap: 5px; min-width: 0; }
-#topup-area .topup-entry-grid .topup-person-entry label { flex: 0 0 auto; margin: 0 !important; font-size: .72rem !important; white-space: nowrap; }
-#topup-area .topup-entry-grid .small-input { width: 100%; min-width: 0; height: 40px; padding: 0 7px; }
-#topup-area .topup-detail-row { margin: 0 0 8px; }
-#topup-area .topup-detail-row .wallet-topup-record-toggle { height: 30px; padding: 0 2px; border: 0; background: transparent; gap: 5px; }
-#topup-area .wallet-topup-records { margin-top: 6px; }
-@media(max-width:360px) { #topup-area .topup-entry-grid { grid-template-columns: 72px minmax(0,1fr); column-gap: 8px; } #topup-area .topup-entry-grid .topup-flex { gap: 5px; } }
+#topup-area .topup-entry-grid, #transit-area .topup-entry-grid { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 6px 8px; align-items: center; margin-bottom: 10px; }
+#topup-area .topup-entry-grid > .wallet-label, #transit-area .topup-entry-grid > .wallet-label { margin: 0; }
+#topup-area .topup-entry-grid .currency-switch, #transit-area .topup-entry-grid .currency-switch { width: 100%; height: 40px !important; padding: 0 8px; box-sizing: border-box; }
+#topup-area .topup-entry-grid .topup-flex, #transit-area .topup-entry-grid .topup-flex { margin: 0; gap: 6px; }
+#topup-area .topup-entry-grid .topup-person-entry, #transit-area .topup-entry-grid .topup-person-entry { display: flex; align-items: center; gap: 2px; min-width: 0; }
+#topup-area .topup-entry-grid .topup-person-entry label, #transit-area .topup-entry-grid .topup-person-entry label { flex: 0 0 auto; margin: 0 !important; font-size: .72rem !important; white-space: nowrap; }
+#topup-area .topup-entry-grid .small-input, #transit-area .topup-entry-grid .small-input { width: 100%; min-width: 0; height: 40px; padding: 0 7px; }
+#transit-area .topup-entry-grid .wallet-transit-person-label { flex: 0 0 40px !important; width: 40px !important; }
+#topup-area .topup-entry-grid .wallet-topup-person-label { flex: 0 0 38px !important; width: 38px !important; }
+#transit-area .topup-entry-grid .wallet-transit-person-img { height: 30px; max-width: 40px; }
+#topup-area .topup-detail-row, #transit-area .topup-detail-row { margin: 0 0 8px; }
+#topup-area .topup-detail-row .wallet-topup-record-toggle, #transit-area .topup-detail-row .wallet-topup-record-toggle { height: 30px; padding: 0 2px; border: 0; background: transparent; gap: 5px; }
+#topup-area .wallet-topup-records, #transit-area .wallet-topup-records { margin-top: 6px; }
+@media(max-width:360px) { #topup-area .topup-entry-grid, #transit-area .topup-entry-grid { grid-template-columns: 60px minmax(0,1fr); column-gap: 6px; } #topup-area .topup-entry-grid .topup-flex, #transit-area .topup-entry-grid .topup-flex { gap: 4px; } }
 
 </style>
 <style id="final-confirm-button-layout">
@@ -6054,19 +6057,16 @@ header {
 <div class="topup-detail-row"><button class="wallet-topup-record-toggle" id="public-topup-record-toggle" type="button" aria-expanded="false" onclick="toggleTopupRecords('public', event)">儲值明細 <span class="wallet-topup-record-count">0</span> 筆 <span class="wallet-topup-chevron" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><div class="wallet-topup-records" id="public-topup-records" aria-live="polite"></div></div>
 </div>
 <div class="topup-area" id="transit-area">
-<label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
-<div class="wallet-input-group wallet-topup-currency-row">
+<div class="topup-entry-grid">
+<label class="wallet-label">儲值幣別</label><label class="wallet-label">交通卡儲值</label>
 <div class="currency-switch active-jpy btn-press-effect wallet-input" id="transit-currency-switch" onclick="toggleCurrency()" style="height: 46px; display: flex; align-items: center; justify-content: center;">
 <span id="transit-currency-label" style="font-weight: 900;">¥ JPY</span>
 </div>
-<button class="wallet-topup-record-toggle" id="transit-topup-record-toggle" type="button" aria-expanded="false" onclick="toggleTopupRecords('transit', event)">儲值紀錄 <span class="wallet-topup-record-count">0</span> 筆 <span class="wallet-topup-chevron" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-<div class="wallet-topup-records" id="transit-topup-records" aria-live="polite"></div>
-</div>
-<label class="wallet-label">交通卡儲值</label>
 <div class="topup-flex">
-<div style="display: flex; align-items: center; gap: 8px;"><label aria-label="大豬交通卡" class="wallet-label wallet-transit-person-label"><img alt="大豬交通卡" class="wallet-transit-person-img" src="images/wallet/wallet-transit-big.png" loading="lazy" decoding="async"/></label><input class="small-input" id="transit-big-pig" placeholder="0" type="tel"/></div>
-<div style="display: flex; align-items: center; gap: 8px;"><label aria-label="小豬交通卡" class="wallet-label wallet-transit-person-label"><img alt="小豬交通卡" class="wallet-transit-person-img" src="images/wallet/wallet-transit-small.png" loading="lazy" decoding="async"/></label><input class="small-input" id="transit-small-pig" placeholder="0" type="tel"/></div>
-</div>
+<div class="topup-person-entry"><label aria-label="大豬交通卡" class="wallet-label wallet-transit-person-label" for="transit-big-pig"><img alt="大豬交通卡" class="wallet-transit-person-img" src="images/wallet/wallet-transit-big.png" loading="lazy" decoding="async"/></label><input class="small-input" id="transit-big-pig" placeholder="0" type="tel"/></div>
+<div class="topup-person-entry"><label aria-label="小豬交通卡" class="wallet-label wallet-transit-person-label" for="transit-small-pig"><img alt="小豬交通卡" class="wallet-transit-person-img" src="images/wallet/wallet-transit-small.png" loading="lazy" decoding="async"/></label><input class="small-input" id="transit-small-pig" placeholder="0" type="tel"/></div>
+</div></div>
+<div class="topup-detail-row"><button class="wallet-topup-record-toggle" id="transit-topup-record-toggle" type="button" aria-expanded="false" onclick="toggleTopupRecords('transit', event)">儲值紀錄 <span class="wallet-topup-record-count">0</span> 筆 <span class="wallet-topup-chevron" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><div class="wallet-topup-records" id="transit-topup-records" aria-live="polite"></div></div>
 </div>
 <div id="expense-area">
 <label class="wallet-label">消費品項</label>
@@ -6559,7 +6559,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = false;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-11-01-sakae-congestion-v1';
+const STATIC_CONTENT_VERSION = '2026-11-05-wallet-layout-v2';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 
 const SECURE_DOCS_URL = new URL('secure-docs/vault.json?v=20260611-password-2', window.location.href).href;
