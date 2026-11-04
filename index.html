@@ -367,7 +367,25 @@ display: none;
 }
 body.day-3-theme header,
 body.day-3-theme .card,
-body.day-3-theme .expense-card {
+body.day-3-theme .modal-content, .modal-scroll-area, .wallet-card { overflow: visible; }
+.wallet-topup-currency-row { position: relative; flex-wrap: nowrap; align-items: center; z-index: 4; }
+.wallet-topup-currency-row > .currency-switch { flex: 1 1 0; width: auto; min-width: 0; }
+.wallet-topup-record-toggle { position: relative; z-index: 2; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 3px; height: 38px; padding: 0 8px; border: 1px solid #ead7cf; border-radius: 10px; background: #fffaf7; color: #8d6e63; font: inherit; font-size: .72rem; white-space: nowrap; cursor: pointer; pointer-events: auto; transition: background .16s ease, border-color .16s ease; }
+.wallet-topup-record-toggle[hidden] { display: none; }
+.wallet-topup-record-toggle:hover, .wallet-topup-record-toggle[aria-expanded="true"] { background: #fff1ec; border-color: #d98578; }
+.wallet-topup-chevron { display: inline-flex; width: 12px; height: 12px; transition: transform .18s ease; }
+.wallet-topup-chevron svg { width: 100%; height: 100%; }
+.wallet-topup-record-toggle[aria-expanded="true"] .wallet-topup-chevron { transform: rotate(180deg); }
+.wallet-topup-records { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 20; display: none; flex-direction: column; gap: 6px; min-width: 0; margin: 0; padding: 10px; border: 1px solid #ead7cf; border-radius: 14px; background: #fffdfb; box-shadow: 0 12px 30px rgba(141,110,99,.18); box-sizing: border-box; }
+.wallet-topup-records.is-open { display: flex !important; visibility: visible; opacity: 1; }
+.wallet-topup-close { align-self: flex-end; margin-top: 3px; padding: 5px 10px; border: 0; border-radius: 8px; background: #f7e8e2; color: #9b6a61; font: inherit; font-size: .72rem; cursor: pointer; }
+.wallet-topup-record { display: flex; align-items: center; min-width: 0; gap: 5px; color: #8d6e63; font-size: .72rem; line-height: 1.25; white-space: nowrap; }
+.wallet-topup-record-time { color: #b19a92; flex: 0 0 auto; }
+.wallet-topup-record-detail { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.wallet-topup-record-amount { color: #c9786c; font-weight: 900; flex: 0 0 auto; }
+.wallet-topup-record-actions { display: inline-flex; flex: 0 0 auto; gap: 2px; }
+.wallet-topup-record-actions button { padding: 0 2px; border: 0; background: transparent; color: #a9786d; font: inherit; font-size: .68rem; cursor: pointer; }
+.expense-card {
 background: linear-gradient(180deg, #fff 0%, #fffafd 100%);
 box-shadow: 0 10px 28px rgba(217,107,134,.12);
 }
@@ -3346,23 +3364,23 @@ cursor: grabbing;
 .expense-date-group-title { display: flex; align-items: center; gap: 9px; margin: 4px 4px 9px; color: #9b6a61; font-size: .82rem; font-weight: 900; }
 .expense-date-group-title::after { content: ''; height: 1px; flex: 1; background: #eadbd5; }
 .expense-search-tools { margin: 0 0 10px; padding: 0 2px; }
-.expense-search-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(84px, 24%); gap: 6px; }
-.expense-search-field { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 0 8px; border: 1px solid #eadbd5; border-radius: 12px; background: #fff; color: #9b6a61; }
+.expense-search-row { display: grid; grid-template-columns: minmax(270px, 1fr) minmax(72px, 72px); gap: 6px; width: 100%; box-sizing: border-box; }
+.expense-search-field { display: flex; align-items: center; gap: 5px; min-width: 0; padding: 0 8px; height: 38px; box-sizing: border-box; border: 1px solid #eadbd5; border-radius: 11px; background: #fff; color: #9b6a61; }
 .expense-search-field:focus-within { border-color: #d98578; box-shadow: 0 0 0 3px rgba(217,133,120,.12); }
-.expense-search-field > span { font-size: 1.25rem; line-height: 1; }
-.expense-search-field input { width: 100%; min-width: 0; height: 42px; padding: 0; border: 0; outline: 0; background: transparent; color: #55423c; font: inherit; font-size: 16px; }
+.expense-search-field > span { font-size: 1.05rem; line-height: 1; }
+.expense-search-field input { width: 100%; min-width: 0; height: 36px; padding: 0; border: 0; outline: 0; background: transparent; color: #55423c; font: inherit; font-size: 14px; }
 .expense-search-field input::placeholder { color: #b7a6a0; }
 #expense-category-filter { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .expense-category-wrap { position: relative; min-width: 0; }
-.expense-category-button { display: flex; align-items: center; justify-content: flex-start; gap: 3px; width: 100%; min-width: 0; height: 44px; padding: 0 4px; border: 1px solid #eadbd5; border-radius: 12px; background: #fff; color: #715b54; font: inherit; font-size: .72rem; text-align: left; cursor: pointer; transition: border-color .16s ease, background .16s ease, box-shadow .16s ease; }
+.expense-category-button { display: flex; align-items: center; justify-content: center; gap: 3px; width: 100%; min-width: 0; height: 38px; padding: 0 4px; border: 1px solid #eadbd5; border-radius: 11px; background: #fff; color: #715b54; font-family: inherit; font-size: 14px; font-weight: 400; line-height: 1; text-align: center; cursor: pointer; transition: border-color .16s ease, background .16s ease, box-shadow .16s ease; }
 .expense-category-button:hover { border-color: #ddc3bb; background: #fffdfa; }
 .expense-category-button[aria-expanded="true"] { border-color: #d98578; box-shadow: 0 0 0 3px rgba(217,133,120,.12); }
 .expense-category-button:focus-visible { outline: 2px solid rgba(217,133,120,.45); outline-offset: 2px; }
-.expense-category-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.expense-category-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
 .expense-category-chevron { display: flex; flex: 0 0 auto; color: #a48b83; transition: transform .18s ease; }
 .expense-category-chevron svg { width: 10px; height: 10px; }
 .expense-category-button[aria-expanded="true"] .expense-category-chevron { transform: rotate(180deg); }
-.expense-category-menu { position: absolute; z-index: 40; top: calc(100% + 6px); right: 0; display: flex; flex-direction: column; width: max(100%, 112px); max-width: min(130px, calc(100vw - 40px)); max-height: min(280px, 48vh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid #eadbd5; border-radius: 15px; background: #fffdfb; box-shadow: 0 9px 24px rgba(141,110,99,.16); }
+.expense-category-menu { position: absolute; z-index: 40; top: calc(100% + 6px); right: 0; display: flex; flex-direction: column; width: max(100%, 88px); max-width: min(100px, calc(100vw - 40px)); max-height: min(280px, 48vh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid #eadbd5; border-radius: 15px; background: #fffdfb; box-shadow: 0 9px 24px rgba(141,110,99,.16); }
 .expense-category-menu[hidden] { display: none; }
 .expense-category-option { display: flex; align-items: center; width: 100%; padding: 7px 7px; border: 0; border-radius: 9px; background: transparent; color: #715b54; font: inherit; font-size: .84rem; line-height: 1.25; text-align: left; cursor: pointer; transition: background .14s ease, color .14s ease; }
 .expense-category-option:hover, .expense-category-option:focus-visible { outline: none; background: #fff2ed; color: #9b6a61; }
@@ -3372,11 +3390,11 @@ cursor: grabbing;
 .expense-search-clear { padding: 7px 14px; border: 1px solid #eadbd5; border-radius: 999px; background: #fff; color: #9b6a61; font: inherit; font-weight: 800; }
 @media (max-width: 420px) {
 .expense-search-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
-.expense-category-wrap { width: 84px; justify-self: end; }
-.expense-search-field { gap: 4px; padding: 0 8px; }
+.expense-category-wrap { width: 72px; justify-self: end; }
+.expense-search-field { gap: 4px; padding: 0 8px; height: 38px; }
 .expense-search-field > span { font-size: 1rem; }
-.expense-search-field input { font-size: 16px; }
-.expense-search-field input::placeholder { font-size: 13px; }
+.expense-search-field input { font-size: 14px; }
+.expense-search-field input::placeholder { font-size: 12px; }
 }
 
 .expense-top { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; min-height: 52px; }
@@ -5985,10 +6003,12 @@ header {
 </div>
 <div class="topup-area" id="topup-area">
 <label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
-<div class="wallet-input-group">
+<div class="wallet-input-group wallet-topup-currency-row">
 <div class="currency-switch active-jpy btn-press-effect wallet-input" id="topup-currency-switch" onclick="toggleCurrency()" style="height: 46px; display: flex; align-items: center; justify-content: center;">
 <span id="topup-currency-label" style="font-weight: 900;">¥ JPY</span>
 </div>
+<button class="wallet-topup-record-toggle" id="public-topup-record-toggle" type="button" aria-expanded="false" onclick="toggleTopupRecords('public', event)">儲值紀錄 <span class="wallet-topup-record-count">0</span> 筆 <span class="wallet-topup-chevron" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+<div class="wallet-topup-records" id="public-topup-records" aria-live="polite"></div>
 </div>
 <label class="wallet-label">公費由誰投入</label>
 <div class="topup-flex">
@@ -5998,10 +6018,12 @@ header {
 </div>
 <div class="topup-area" id="transit-area">
 <label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
-<div class="wallet-input-group">
+<div class="wallet-input-group wallet-topup-currency-row">
 <div class="currency-switch active-jpy btn-press-effect wallet-input" id="transit-currency-switch" onclick="toggleCurrency()" style="height: 46px; display: flex; align-items: center; justify-content: center;">
 <span id="transit-currency-label" style="font-weight: 900;">¥ JPY</span>
 </div>
+<button class="wallet-topup-record-toggle" id="transit-topup-record-toggle" type="button" aria-expanded="false" onclick="toggleTopupRecords('transit', event)">儲值紀錄 <span class="wallet-topup-record-count">0</span> 筆 <span class="wallet-topup-chevron" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+<div class="wallet-topup-records" id="transit-topup-records" aria-live="polite"></div>
 </div>
 <label class="wallet-label">交通卡儲值</label>
 <div class="topup-flex">
@@ -6089,6 +6111,8 @@ header {
 let currentDay = 1;
 const REMOVED_EXPENSE_IDS = new Set(['1789534801095', '1781736852891', '1778828074500', '1778828064230']);
 let expenses = [];
+let publicTopups = [];
+let transitTopups = [];
 const REQUIRED_WISHLIST_ITEMS = [
 { id: 2026101701, category: '藥妝店', title: 'DHC纖體錠', done: false, qty: 1, imageSrc: 'wishlist-images/dhc-slim-tablets.avif' },
 { id: 2026101702, category: 'Lawson', title: '鮮奶麻糬泡芙', done: false, qty: 1, imageSrc: 'wishlist-images/lawson-milk-mochi-cream-puff.jpg' },
@@ -13472,22 +13496,65 @@ list.innerHTML = items.map(item => `<div class="wishlist-item ${item.done ? 'don
 function getCurrencyRateToJPY(currency) {
 return currency === 'TWD' ? 1 / currentFX : 1;
 }
+function renderTopupRecords() {
+const render = (items, hostId, label, isTransit) => {
+const host = document.getElementById(hostId);
+if (!host) return;
+const sorted = [...items].sort((a, b) => (Date.parse(b.timeISO || '') || 0) - (Date.parse(a.timeISO || '') || 0));
+host.innerHTML = sorted.map(item => {
+const symbol = item.displayCurrency === 'TWD' ? '$' : '¥';
+const amount = Math.round(Number(item.amount) || 0).toLocaleString();
+const time = formatDisplayTime(item.timeISO);
+const detail = isTransit ? `大豬 ${symbol}${Math.round(item.bigTransitTopup || 0).toLocaleString()}／小豬 ${symbol}${Math.round(item.smallTransitTopup || 0).toLocaleString()}` : `大豬 ${symbol}${Math.round(item.bigPigTopup || 0).toLocaleString()}／小豬 ${symbol}${Math.round(item.smallPigTopup || 0).toLocaleString()}`;
+return `<div class="wallet-topup-record" data-topup-id="${item.id}"><span class="wallet-topup-record-time">${escapeHtml(time)}</span><span class="wallet-topup-record-detail">${escapeHtml(detail)}</span><span class="wallet-topup-record-amount">${symbol}${amount}</span><span class="wallet-topup-record-actions"><button type="button" onclick="editExpense(${item.id})">編輯</button><button type="button" onclick="confirmDelete(${item.id})">刪除</button></span></div>`;
+}).join('') + `<button type="button" class="wallet-topup-close btn-press-effect" onclick="toggleTopupRecords('${isTransit ? 'transit' : 'public'}', event)">知道了，收合選單</button>`;
+};
+const updateToggle = (items, toggleId, hostId) => {
+const toggle = document.getElementById(toggleId);
+const host = document.getElementById(hostId);
+if (!toggle || !host) return;
+const count = toggle.querySelector('.wallet-topup-record-count');
+if (count) count.textContent = String(items.length);
+toggle.hidden = items.length === 0;
+const expanded = host.dataset.expanded === 'true' && items.length > 0;
+host.classList.toggle('is-open', expanded);
+host.hidden = false;
+host.style.display = expanded ? 'flex' : 'none';
+toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+};
+updateToggle(publicTopups, 'public-topup-record-toggle', 'public-topup-records');
+updateToggle(transitTopups, 'transit-topup-record-toggle', 'transit-topup-records');
+}
+function toggleTopupRecords(kind, event) {
+if (event) { event.preventDefault(); event.stopPropagation(); }
+const hostId = kind === 'transit' ? 'transit-topup-records' : 'public-topup-records';
+const toggleId = kind === 'transit' ? 'transit-topup-record-toggle' : 'public-topup-record-toggle';
+const host = document.getElementById(hostId);
+const toggle = document.getElementById(toggleId);
+if (!host || !toggle || toggle.hidden) return;
+const expanded = host.dataset.expanded === 'true';
+host.dataset.expanded = expanded ? 'false' : 'true';
+host.classList.toggle('is-open', !expanded);
+host.hidden = false;
+host.style.display = expanded ? 'none' : 'flex';
+toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+}
 function calculatePublicFund() {
 let topupJPY = 0;
 let spentJPY = 0;
 let bigTopupJPY = 0;
 let smallTopupJPY = 0;
-expenses.forEach(e => {
+publicTopups.forEach(e => {
 const rate = getCurrencyRateToJPY(e.displayCurrency);
-if (e.type === 'topup') {
 const big = (e.bigPigTopup || 0) * rate;
 const small = (e.smallPigTopup || 0) * rate;
 bigTopupJPY += big;
 smallTopupJPY += small;
 topupJPY += big + small;
-} else if (e.payer === '公費') {
-spentJPY += e.amount * rate;
-}
+});
+expenses.forEach(e => {
+const rate = getCurrencyRateToJPY(e.displayCurrency);
+if (e.payer === '公費') spentJPY += e.amount * rate;
 });
 return {
 topupJPY,
@@ -13559,6 +13626,7 @@ function toggleCurrency() {
     if (topupLabel) topupLabel.textContent = currentCurrency === 'JPY' ? '¥ JPY' : '$ TWD';
     if (transitLabel) transitLabel.textContent = currentCurrency === 'JPY' ? '¥ JPY' : '$ TWD';
     if (typeof updatePublicFundDisplay === 'function') updatePublicFundDisplay();
+if (typeof renderTopupRecords === 'function') renderTopupRecords();
 }
 function parseMoneyValue(value) {
 const n = parseFloat(String(value || '').replace(/,/g, '').trim());
@@ -13981,15 +14049,15 @@ smallTransitTopup,
 isSettled: true
 };
 if (editingId) {
-const idx = expenses.findIndex(x => x.id === editingId);
-if (idx !== -1) expenses[idx] = next;
+const idx = transitTopups.findIndex(x => x.id === editingId);
+if (idx !== -1) transitTopups[idx] = next;
 resetExpenseForm({ keepMode: true });
-renderExpenses();
-openDetailsModal();
+renderTopupRecords();
+openWallet();
 } else {
-expenses.unshift(next);
+transitTopups.unshift(next);
 resetExpenseForm({ keepMode: true });
-renderExpenses();
+renderTopupRecords();
 showAlert('交通卡儲值成功！');
 }
 queueTripCloudSave();
@@ -14017,15 +14085,15 @@ smallPigTopup: smallTopup,
 isSettled: true
 };
 if (editingId) {
-const idx = expenses.findIndex(x => x.id === editingId);
-if (idx !== -1) expenses[idx] = next;
+const idx = publicTopups.findIndex(x => x.id === editingId);
+if (idx !== -1) publicTopups[idx] = next;
 resetExpenseForm({ keepMode: true });
-renderExpenses();
-openDetailsModal();
+renderTopupRecords();
+openWallet();
 } else {
-expenses.unshift(next);
+publicTopups.unshift(next);
 resetExpenseForm({ keepMode: true });
-renderExpenses();
+renderTopupRecords();
 showAlertHtml('<span class="inline-alert-row">公費儲值成功！<img class="inline-alert-pig" src="images/pigs/fund-topup-success-pig-inline.png" alt="公費儲值成功小豬"></span>');
 }
 queueTripCloudSave();
@@ -14082,7 +14150,7 @@ queueTripCloudSave();
 }
 function cancelEdit() { resetExpenseForm(); }
 function editExpense(id) {
-const e = expenses.find(x => x.id === id);
+const e = expenses.find(x => x.id === id) || publicTopups.find(x => x.id === id) || transitTopups.find(x => x.id === id);
 if (!e) return;
 editingId = id;
 if (e.type === 'transitTopup') {
@@ -14149,7 +14217,10 @@ document.getElementById('wallet-modal').style.display = 'flex';
 function confirmDelete(id) {
 showConfirmAlert('要刪掉這筆花費嗎？\n刪掉後就回不來囉 (ﾟ Aﾟ ;)', () => {
 expenses = expenses.filter(x => x.id !== id);
+publicTopups = publicTopups.filter(x => x.id !== id);
+transitTopups = transitTopups.filter(x => x.id !== id);
 updatePublicFundDisplay();
+renderTopupRecords();
 renderExpenses();
 queueTripCloudSave();
 });
@@ -14248,7 +14319,7 @@ setPanelEmptyState('details-modal', false);
 const keyword = (document.getElementById('expense-search-input')?.value || '').trim().toLocaleLowerCase();
 const searchTerms = keyword.split(/\s+/).filter(Boolean);
 const selectedCategory = document.getElementById('expense-category-filter')?.value || '';
-const filteredExpenses = expenses.filter(e => {
+const filteredExpenses = expenses.filter(e => e.type !== 'topup' && e.type !== 'transitTopup').filter(e => {
 const categoryMatches = !selectedCategory ||
 (selectedCategory === '__transitTopup' ? e.type === 'transitTopup' :
 selectedCategory === '__publicTopup' ? e.type === 'topup' : e.category === selectedCategory);
@@ -14345,6 +14416,7 @@ ${settleControl}
 function openWallet() {
 closeMenu();
 updatePublicFundDisplay();
+renderTopupRecords();
 openSimpleModal('wallet-modal');
 if (!editingId) {
 document.getElementById('exp-time').value = getNowString();
@@ -14496,6 +14568,8 @@ standardizeItemDescBreaks();
 const data = {
 itineraryIllustrations: savedItineraryIllustrations,
 expenses,
+publicTopups,
+transitTopups,
 wishItems,
 wishlistCategories: normalizeWishlistCategories(),
 currentWishlistCategory,
@@ -14528,7 +14602,14 @@ if (CLOUD_STATIC_SYNC_ENABLED && typeof data.dayContentHTML === 'string' && data
 document.getElementById('day-content').innerHTML = data.dayContentHTML;
 }
 standardizeItemDescBreaks();
-expenses = Array.isArray(data.expenses) ? data.expenses.filter(expense => !REMOVED_EXPENSE_IDS.has(String(expense.id))) : [];
+const cloudExpenses = Array.isArray(data.expenses) ? data.expenses.filter(expense => !REMOVED_EXPENSE_IDS.has(String(expense.id))) : [];
+const hasSeparateTopupData = Array.isArray(data.publicTopups) || Array.isArray(data.transitTopups);
+let topupMigrationNeeded = false;
+publicTopups = Array.isArray(data.publicTopups) ? data.publicTopups : cloudExpenses.filter(expense => expense.type === 'topup');
+transitTopups = Array.isArray(data.transitTopups) ? data.transitTopups : cloudExpenses.filter(expense => expense.type === 'transitTopup');
+// 舊資料的儲值曾經放在 expenses，載入時搬到各自記錄區，避免重複顯示。
+topupMigrationNeeded = !hasSeparateTopupData && (publicTopups.length > 0 || transitTopups.length > 0);
+expenses = cloudExpenses.filter(expense => expense.type !== 'topup' && expense.type !== 'transitTopup');
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 wishlistCategories = Array.isArray(data.wishlistCategories) ? data.wishlistCategories : wishlistCategories;
 if (typeof data.currentWishlistCategory === 'string') currentWishlistCategory = getWishlistTopCategory(data.currentWishlistCategory);
@@ -14551,6 +14632,7 @@ switchDay(currentDay, { auto: true, skipHistory: true });
 updateMoreInfoButtons();
 pushAppHistory(currentDay, true);
 updatePublicFundDisplay();
+renderTopupRecords();
 renderExpenses();
 renderWishlist();
 renderPrepList();
@@ -14565,6 +14647,7 @@ queueTripCloudSave({ showStatus: false });
 }
 if (addedRequiredWishlistItems) queueTripCloudSave({ showStatus: false });
 if (addedDefaultPrepItems) queueTripCloudSave();
+if (topupMigrationNeeded) queueTripCloudSave({ showStatus: false });
 }
 let saveStatusTimer = null;
 function showSaveStatus(message, type = 'success') {
