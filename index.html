@@ -385,6 +385,33 @@ body.day-3-theme .modal-content, .modal-scroll-area, .wallet-card { overflow: vi
 .wallet-topup-record-amount { color: #c9786c; font-weight: 900; flex: 0 0 auto; }
 .wallet-topup-record-actions { display: inline-flex; flex: 0 0 auto; gap: 2px; }
 .wallet-topup-record-actions button { padding: 0 2px; border: 0; background: transparent; color: #a9786d; font: inherit; font-size: .68rem; cursor: pointer; }
+
+.wallet-topup-currency-row { flex-wrap: wrap; gap: 10px; }
+.wallet-topup-records { position: static; flex: 0 0 100%; width: 100%; max-height: 240px; overflow-y: auto; overscroll-behavior: contain; gap: 0; padding: 0 12px; border-radius: 14px; box-shadow: none; background: #fffdfb; }
+.wallet-topup-record { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 6px 10px; padding: 12px 0; white-space: normal; font-size: .78rem; line-height: 1.5; }
+.wallet-topup-record + .wallet-topup-record { border-top: 1px solid #f0e3de; }
+.wallet-topup-record-time { font-size: .72rem; align-self: center; }
+.wallet-topup-record-amount { justify-self: end; font-size: .96rem; }
+.wallet-topup-record-detail { align-self: start; overflow: visible; font-size: .76rem; }
+.wallet-topup-record-actions { align-items: flex-start; justify-content: flex-end; gap: 8px; }
+.wallet-topup-record-actions > button, .wallet-topup-more summary { min-height: 28px; padding: 2px 4px; }
+.wallet-topup-more { text-align: right; }
+.wallet-topup-more summary { list-style: none; cursor: pointer; color: #a9786d; font-weight: 700; min-width: 24px; text-align: center; border-radius: 7px; }
+.wallet-topup-more summary::-webkit-details-marker { display: none; }
+.wallet-topup-more[open] summary { background: #f7e8e2; }
+.wallet-topup-more button { display: block; margin-top: 4px; min-height: 30px; padding: 3px 6px; color: #b55f55; }
+
+
+.wallet-topup-records { padding: 0 9px; }
+.wallet-topup-record { display: flex; flex-wrap: nowrap; align-items: center; gap: 7px; padding: 11px 0; white-space: nowrap; }
+.wallet-topup-record-time { order: 0; flex: 0 0 auto; font-size: .68rem; }
+.wallet-topup-record-detail { order: 1; flex: 1 1 auto; min-width: 0; align-self: center; font-size: .7rem; overflow: hidden; text-overflow: ellipsis; }
+.wallet-topup-record-amount { order: 2; flex: 0 0 auto; font-size: .82rem; }
+.wallet-topup-record-actions { order: 3; flex: 0 0 auto; align-items: center; gap: 3px; }
+.wallet-topup-record-actions > button { padding: 2px; }
+.wallet-topup-more { display: flex; align-items: center; }
+.wallet-topup-more button { display: inline-block; margin: 0; }
+
 .expense-card {
 background: linear-gradient(180deg, #fff 0%, #fffafd 100%);
 box-shadow: 0 10px 28px rgba(217,107,134,.12);
@@ -5426,6 +5453,19 @@ body.edit-mode .card-extra-controls { top: 50%; bottom: auto; transform: transla
 .docs-category-tags { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 16px; }
 .docs-category-tag { font:inherit; font-size:.85rem; color:var(--main-brown); border:1px solid var(--card-border); border-radius:18px; padding:7px 12px; background:#fff; cursor:pointer; }
 .docs-category-tag.active { color:var(--heart-pink); background:var(--accent-peach); border-color:var(--heart-pink); font-weight:700; }
+
+#topup-area .topup-entry-grid { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 6px 12px; align-items: center; margin-bottom: 10px; }
+#topup-area .topup-entry-grid > .wallet-label { margin: 0; }
+#topup-area .topup-entry-grid .currency-switch { width: 100%; height: 40px !important; padding: 0 8px; box-sizing: border-box; }
+#topup-area .topup-entry-grid .topup-flex { margin: 0; gap: 8px; }
+#topup-area .topup-entry-grid .topup-person-entry { display: flex; align-items: center; gap: 5px; min-width: 0; }
+#topup-area .topup-entry-grid .topup-person-entry label { flex: 0 0 auto; margin: 0 !important; font-size: .72rem !important; white-space: nowrap; }
+#topup-area .topup-entry-grid .small-input { width: 100%; min-width: 0; height: 40px; padding: 0 7px; }
+#topup-area .topup-detail-row { margin: 0 0 8px; }
+#topup-area .topup-detail-row .wallet-topup-record-toggle { height: 30px; padding: 0 2px; border: 0; background: transparent; gap: 5px; }
+#topup-area .wallet-topup-records { margin-top: 6px; }
+@media(max-width:360px) { #topup-area .topup-entry-grid { grid-template-columns: 72px minmax(0,1fr); column-gap: 8px; } #topup-area .topup-entry-grid .topup-flex { gap: 5px; } }
+
 </style>
 <style id="final-confirm-button-layout">
 /* Final confirmation layout: Cancel narrow, Confirm wide, both labels centered. */
@@ -6002,19 +6042,16 @@ header {
 <div class="toggle-btn btn-press-effect" onclick="setWalletMode('transit')">交通卡儲值</div>
 </div>
 <div class="topup-area" id="topup-area">
-<label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
-<div class="wallet-input-group wallet-topup-currency-row">
+<div class="topup-entry-grid">
+<label class="wallet-label">儲值幣別</label><label class="wallet-label">公費由誰投入</label>
 <div class="currency-switch active-jpy btn-press-effect wallet-input" id="topup-currency-switch" onclick="toggleCurrency()" style="height: 46px; display: flex; align-items: center; justify-content: center;">
 <span id="topup-currency-label" style="font-weight: 900;">¥ JPY</span>
 </div>
-<button class="wallet-topup-record-toggle" id="public-topup-record-toggle" type="button" aria-expanded="false" onclick="toggleTopupRecords('public', event)">儲值紀錄 <span class="wallet-topup-record-count">0</span> 筆 <span class="wallet-topup-chevron" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-<div class="wallet-topup-records" id="public-topup-records" aria-live="polite"></div>
-</div>
-<label class="wallet-label">公費由誰投入</label>
 <div class="topup-flex">
-<div style="display: flex; align-items: center; gap: 8px;"><label aria-label="大豬" class="wallet-label wallet-topup-person-label"><img alt="大豬" class="wallet-topup-person-img" src="images/wallet/wallet-topup-big.png" loading="lazy" decoding="async"/></label><input class="small-input" id="topup-big-pig" placeholder="0" type="tel"/></div>
-<div style="display: flex; align-items: center; gap: 8px;"><label aria-label="小豬" class="wallet-label wallet-topup-person-label"><img alt="小豬" class="wallet-topup-person-img" src="images/wallet/wallet-topup-small.png" loading="lazy" decoding="async"/></label><input class="small-input" id="topup-small-pig" placeholder="0" type="tel"/></div>
-</div>
+<div class="topup-person-entry"><label class="wallet-label wallet-topup-person-label" for="topup-big-pig" aria-label="大豬"><img alt="大豬" class="wallet-topup-person-img" src="images/wallet/wallet-topup-big.png" loading="lazy" decoding="async"/></label><input class="small-input" id="topup-big-pig" placeholder="0" type="tel"/></div>
+<div class="topup-person-entry"><label class="wallet-label wallet-topup-person-label" for="topup-small-pig" aria-label="小豬"><img alt="小豬" class="wallet-topup-person-img" src="images/wallet/wallet-topup-small.png" loading="lazy" decoding="async"/></label><input class="small-input" id="topup-small-pig" placeholder="0" type="tel"/></div>
+</div></div>
+<div class="topup-detail-row"><button class="wallet-topup-record-toggle" id="public-topup-record-toggle" type="button" aria-expanded="false" onclick="toggleTopupRecords('public', event)">儲值明細 <span class="wallet-topup-record-count">0</span> 筆 <span class="wallet-topup-chevron" aria-hidden="true"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><div class="wallet-topup-records" id="public-topup-records" aria-live="polite"></div></div>
 </div>
 <div class="topup-area" id="transit-area">
 <label class="wallet-label">儲值幣別<span class="wallet-label-hint">點選切換</span></label>
@@ -13505,9 +13542,10 @@ host.innerHTML = sorted.map(item => {
 const symbol = item.displayCurrency === 'TWD' ? '$' : '¥';
 const amount = Math.round(Number(item.amount) || 0).toLocaleString();
 const time = formatDisplayTime(item.timeISO);
-const detail = isTransit ? `大豬 ${symbol}${Math.round(item.bigTransitTopup || 0).toLocaleString()}／小豬 ${symbol}${Math.round(item.smallTransitTopup || 0).toLocaleString()}` : `大豬 ${symbol}${Math.round(item.bigPigTopup || 0).toLocaleString()}／小豬 ${symbol}${Math.round(item.smallPigTopup || 0).toLocaleString()}`;
-return `<div class="wallet-topup-record" data-topup-id="${item.id}"><span class="wallet-topup-record-time">${escapeHtml(time)}</span><span class="wallet-topup-record-detail">${escapeHtml(detail)}</span><span class="wallet-topup-record-amount">${symbol}${amount}</span><span class="wallet-topup-record-actions"><button type="button" onclick="editExpense(${item.id})">編輯</button><button type="button" onclick="confirmDelete(${item.id})">刪除</button></span></div>`;
-}).join('') + `<button type="button" class="wallet-topup-close btn-press-effect" onclick="toggleTopupRecords('${isTransit ? 'transit' : 'public'}', event)">知道了，收合選單</button>`;
+const contributions = isTransit ? [['大豬', item.bigTransitTopup], ['小豬', item.smallTransitTopup]] : [['大豬', item.bigPigTopup], ['小豬', item.smallPigTopup]];
+const detail = contributions.filter(([, value]) => Number(value) > 0).map(([name, value]) => `${name} ${symbol}${Math.round(Number(value)).toLocaleString()}`).join('・');
+return `<div class="wallet-topup-record" data-topup-id="${item.id}"><span class="wallet-topup-record-time">${escapeHtml(time)}</span><span class="wallet-topup-record-amount">${symbol}${amount}</span><span class="wallet-topup-record-detail">${escapeHtml(detail).replace('／', '・')}</span><span class="wallet-topup-record-actions"><button type="button" onclick="editExpense(${item.id})">編輯</button><button type="button" onclick="confirmDelete(${item.id})">刪除</button></span></div>`;
+}).join('');
 };
 const updateToggle = (items, toggleId, hostId) => {
 const toggle = document.getElementById(toggleId);
@@ -13522,6 +13560,8 @@ host.hidden = false;
 host.style.display = expanded ? 'flex' : 'none';
 toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
 };
+render(publicTopups, 'public-topup-records', '公費', false);
+render(transitTopups, 'transit-topup-records', '交通卡', true);
 updateToggle(publicTopups, 'public-topup-record-toggle', 'public-topup-records');
 updateToggle(transitTopups, 'transit-topup-record-toggle', 'transit-topup-records');
 }
