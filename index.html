@@ -3391,7 +3391,7 @@ cursor: grabbing;
 .expense-date-group-title { display: flex; align-items: center; gap: 9px; margin: 4px 4px 9px; color: #9b6a61; font-size: .82rem; font-weight: 900; }
 .expense-date-group-title::after { content: ''; height: 1px; flex: 1; background: #eadbd5; }
 .expense-search-tools { margin: 0 0 10px; padding: 0 2px; }
-.expense-search-row { display: grid; grid-template-columns: minmax(270px, 1fr) minmax(72px, 72px); gap: 6px; width: 100%; box-sizing: border-box; }
+.expense-search-row { display: grid; grid-template-columns: minmax(0, 1fr) 72px; gap: 6px; width: 100%; box-sizing: border-box; }
 .expense-search-field { display: flex; align-items: center; gap: 5px; min-width: 0; padding: 0 8px; height: 38px; box-sizing: border-box; border: 1px solid #eadbd5; border-radius: 11px; background: #fff; color: #9b6a61; }
 .expense-search-field:focus-within { border-color: #d98578; box-shadow: 0 0 0 3px rgba(217,133,120,.12); }
 .expense-search-field > span { font-size: 1.05rem; line-height: 1; }
@@ -3416,7 +3416,7 @@ cursor: grabbing;
 .expense-search-empty { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 28px 12px; color: #9b8179; text-align: center; }
 .expense-search-clear { padding: 7px 14px; border: 1px solid #eadbd5; border-radius: 999px; background: #fff; color: #9b6a61; font: inherit; font-weight: 800; }
 @media (max-width: 420px) {
-.expense-search-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+.expense-search-row { grid-template-columns: minmax(0, 1fr) 72px; gap: 6px; }
 .expense-category-wrap { width: 72px; justify-self: end; }
 .expense-search-field { gap: 4px; padding: 0 8px; height: 38px; }
 .expense-search-field > span { font-size: 1rem; }
@@ -5469,6 +5469,23 @@ body.edit-mode .card-extra-controls { top: 50%; bottom: auto; transform: transla
 #topup-area .wallet-topup-records, #transit-area .wallet-topup-records { margin-top: 6px; }
 @media(max-width:360px) { #topup-area .topup-entry-grid, #transit-area .topup-entry-grid { grid-template-columns: 60px minmax(0,1fr); column-gap: 6px; } #topup-area .topup-entry-grid .topup-flex, #transit-area .topup-entry-grid .topup-flex { gap: 4px; } }
 
+
+/* Compact single-line topup records; long amounts remain fully readable. */
+.wallet-topup-records { overflow-x: auto; }
+.wallet-topup-record { min-width: max-content; gap: 10px; }
+.wallet-topup-record-time { font-variant-numeric: tabular-nums; }
+.wallet-topup-record-detail { display: inline-flex; gap: 8px; flex: 1 0 auto; overflow: visible; }
+.topup-contribution { display: inline-flex; align-items: center; gap: 3px; font-variant-numeric: tabular-nums; }
+.topup-contribution img { width: 22px; height: 22px; object-fit: contain; }
+.wallet-topup-record-amount { padding-left: 6px; border-left: 1px solid #ead7cf; }
+.wallet-topup-record-actions { gap: 5px; }
+
+/* Share column widths across records so actions align on every row. */
+.wallet-topup-records.is-open { display: grid !important; grid-template-columns: max-content minmax(max-content, 1fr) max-content; column-gap: 10px; }
+.wallet-topup-record { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; min-width: 0; column-gap: 10px; }
+.wallet-topup-record-time { grid-column: 1; }
+.wallet-topup-record-detail { grid-column: 2; }
+.wallet-topup-record-actions { grid-column: 3; justify-self: end; }
 </style>
 <style id="final-confirm-button-layout">
 /* Final confirmation layout: Cancel narrow, Confirm wide, both labels centered. */
@@ -6169,6 +6186,12 @@ if (backup && typeof backup.ts === 'string' && Array.isArray(backup.publicTopups
 } catch (error) {}
 return null;
 }
+// Restore topups before the first render, even when cloud sync is unavailable.
+const initialTopupBackup = readTopupBackup();
+if (initialTopupBackup) {
+publicTopups = initialTopupBackup.publicTopups;
+transitTopups = initialTopupBackup.transitTopups;
+}
 const REQUIRED_WISHLIST_ITEMS = [
 { id: 2026101701, category: '藥妝店', title: 'DHC纖體錠', done: false, qty: 1, imageSrc: 'wishlist-images/dhc-slim-tablets.avif' },
 { id: 2026101702, category: 'Lawson', title: '鮮奶麻糬泡芙', done: false, qty: 1, imageSrc: 'wishlist-images/lawson-milk-mochi-cream-puff.jpg' },
@@ -6198,12 +6221,9 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 317, category: '藥妝店', title: '溫泡碳酸入浴錠', done: false, imageSrc: 'wishlist-images/onpo-carbonated-bath-tablets.png', productUrl: 'https://tw.buy.yahoo.com/gdsale/%E6%97%A5%E6%9C%AC%E6%BA%AB%E6%B3%A1-%E7%A2%B3%E9%85%B8%E5%85%A5%E6%B5%B4%E9%8C%A040gx20%E9%8C%A0-2%E6%AC%BE%E4%BB%BB%E9%81%B8-11507543.html' },
 { id: 318, category: '藥妝店', title: 'hydra-EX面膜', done: false, imageSrc: 'wishlist-images/hydra-ex-mask.png' },
 { id: 319, category: '藥妝店', title: '玻尿酸保濕眼膜', done: false, imageSrc: 'wishlist-images/lululun-hydra-eye-filler.png' },
-{ id: 320, category: '藥妝店', title: '指緣角質藥膏', done: false, imageSrc: 'wishlist-images/cuticle-keratin-ointment.png' },
 { id: 321, category: '超商', title: '葡萄軟糖', done: false, imageSrc: 'wishlist-images/convenience-grape-gummy.png' },
 { id: 322, category: '全家', title: '抹茶白巧克力餅', done: false, imageSrc: 'wishlist-images/familymart-matcha-white-chocolate-cookie.jpg' },
 { id: 323, category: '藥妝店', title: '加濕蒸氣口罩', done: false, qty: 2, qtyRevision: '2026-10-07', imageSrc: 'wishlist-images/humidifying-steam-mask.png' },
-{ id: 324, category: '藥妝店', title: '睫毛精華液', done: false, imageSrc: 'wishlist-images/eyelash-serum.png' },
-{ id: 329, category: '藥妝店', title: '速攻藍莓', done: false, imageSrc: 'wishlist-images/dhc-blueberry-supplement.png' },
 { id: 331, category: '藥妝店', title: 'Tomica小車', done: false, imageSrc: 'wishlist-images/tomica-mini-car.png' },
 { id: 335, category: '藥妝店', title: 'ELIXIR水凝霜', done: false, qty: 3, qtyRevision: '2026-10-07', imageSrc: 'wishlist-images/ELIXIR水凝霜.jpg' },
 { id: 336, category: '全家', title: '奶茶冰沙*冷藏櫃', done: false, imageSrc: 'wishlist-images/AT奶茶冰沙.jpg' },
@@ -6218,7 +6238,6 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 345, category: '超商', title: '皇家卡士達布丁', done: false, imageSrc: 'wishlist-images/convenience-royal-custard-pudding.jpg' },
 { id: 346, category: '超商', title: '含咖啡因提神飲', done: false, imageSrc: 'wishlist-images/convenience-caffeinated-energy-drink.jpg' },
 { id: 347, category: '全家', title: '半熟乳酪蛋糕', done: false, imageSrc: 'wishlist-images/convenience-half-baked-cheesecake.jpg' },
-{ id: 348, category: '藥妝店', title: 'DHC GABA', done: false, imageSrc: 'wishlist-images/dhc-gaba.webp' },
 { id: 350, category: '伴手禮', buyer: '大豬', recipient: '浩南哥', title: '名古屋蝦餅、三重限定吉伊卡哇', done: false },
 { id: 351, category: '7-11', title: '本格紅茶', done: false, imageSrc: 'wishlist-images/seven-eleven-honkaku-tea.jpg' },
 { id: 352, category: '7-11', title: '芝士漢堡排', done: false, imageSrc: 'wishlist-images/seven-eleven-cheese-hamburg.jpeg' },
@@ -6244,7 +6263,6 @@ const REQUIRED_WISHLIST_ITEMS = [
 { id: 373, category: 'Lawson', title: '地瓜片', done: false, imageSrc: 'wishlist-images/lawson-sweet-potato-chips.jpg' }
 ];
 let wishItems = [
-{ id: 101, category: '全家', title: '限定甜點', done: false },
 { id: 102, category: '機場必買', title: '免稅店小零食', done: false },
 ...REQUIRED_WISHLIST_ITEMS.map(item => ({ ...item }))
 ];
@@ -6259,6 +6277,8 @@ let currentWishlistConvenienceDraft = '';
 let wishlistCategoryEditMode = false;
 const DEFAULT_WISHLIST_CATEGORIES = ['3coins', '無印良品', 'Uniqlo', 'Montbell', CONVENIENCE_WISHLIST_PARENT, '藥妝店', '機場必買', '伴手禮'];
 const REMOVED_WISHLIST_CATEGORIES = [];
+const REMOVED_WISHLIST_ENTRIES = [["藥妝店","DHC GABA"],["藥妝店","速攻藍莓"],["藥妝店","睫毛精華液"],["藥妝店","指緣角質藥膏"],["全家","限定甜點"]];
+function isRemovedWishlistEntry(item) { return REMOVED_WISHLIST_ENTRIES.some(([category, title]) => item.category === category && item.title === title); }
 const OBSOLETE_WISHLIST_TITLES = ['兒童視訊對講機', '兒童對講機(需手提行李)', '兒童對講機*需手提行李', '防撕裂廚房紙巾', '玻玻尿酸保濕眼膜', 'Biore卸妝噴霧', 'Biore卸妝噴霧油', '鐵&葉酸軟糖', '兩用油瓶460ml', '標籤機'];
 const WISHLIST_CATEGORY_ALIASES = {
 '超商必買': '全家',
@@ -6335,7 +6355,7 @@ added = true;
 });
 });
 const beforeCount = wishItems.length;
-wishItems = wishItems.filter(item => item.id !== 310 && item.id !== 376 && item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒' || item.title === '雲朵牙刷')));
+wishItems = wishItems.filter(item => item.id !== 310 && item.id !== 376 && item.id !== 105 && item.id !== 328 && item.id !== 330 && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !isRemovedWishlistEntry(item) && !(item.category === '藥妝店' && (item.title === '卸妝膏' || item.title === '腳跟保濕棒' || item.title === '雲朵牙刷')));
 if (wishItems.length !== beforeCount) added = true;
 wishItems.forEach(item => {
 const renamedWishlistItem = [
@@ -12416,7 +12436,7 @@ if (!CONVENIENCE_WISHLIST_DISPLAY_CATEGORIES.includes(currentConvenienceCategory
 wishItems.forEach(item => {
 if (item && WISHLIST_CATEGORY_ALIASES[item.category]) item.category = WISHLIST_CATEGORY_ALIASES[item.category];
 });
-wishItems = wishItems.filter(item => !REMOVED_WISHLIST_CATEGORIES.includes(getWishlistTopCategory(item.category)) && !OBSOLETE_WISHLIST_TITLES.includes(item.title));
+wishItems = wishItems.filter(item => !REMOVED_WISHLIST_CATEGORIES.includes(getWishlistTopCategory(item.category)) && !OBSOLETE_WISHLIST_TITLES.includes(item.title) && !isRemovedWishlistEntry(item));
 ensureRequiredWishlistItems();
 if (WISHLIST_CATEGORY_ALIASES[currentWishlistCategory]) currentWishlistCategory = getWishlistTopCategory(WISHLIST_CATEGORY_ALIASES[currentWishlistCategory]);
 if (REMOVED_WISHLIST_CATEGORIES.includes(currentWishlistCategory)) currentWishlistCategory = DEFAULT_WISHLIST_CATEGORIES[0] || '';
@@ -13562,8 +13582,8 @@ const symbol = item.displayCurrency === 'TWD' ? '$' : '¥';
 const amount = Math.round(Number(item.amount) || 0).toLocaleString();
 const time = formatDisplayTime(item.timeISO);
 const contributions = isTransit ? [['大豬', item.bigTransitTopup], ['小豬', item.smallTransitTopup]] : [['大豬', item.bigPigTopup], ['小豬', item.smallPigTopup]];
-const detail = contributions.filter(([, value]) => Number(value) > 0).map(([name, value]) => `${name} ${symbol}${Math.round(Number(value)).toLocaleString()}`).join('・');
-return `<div class="wallet-topup-record" data-topup-id="${item.id}"><span class="wallet-topup-record-time">${escapeHtml(time)}</span><span class="wallet-topup-record-amount">${symbol}${amount}</span><span class="wallet-topup-record-detail">${escapeHtml(detail).replace('／', '・')}</span><span class="wallet-topup-record-actions"><button type="button" onclick="editExpense(${item.id})">編輯</button><button type="button" onclick="confirmDelete(${item.id})">刪除</button></span></div>`;
+const detail = contributions.filter(([, value]) => Number(value) > 0).map(([name, value]) => `<span class="topup-contribution">${name} ${symbol}${Math.round(Number(value)).toLocaleString()}</span>`).join('');
+return `<div class="wallet-topup-record" data-topup-id="${item.id}"><span class="wallet-topup-record-time">${escapeHtml(time)}</span><span class="wallet-topup-record-detail">${detail}</span><span class="wallet-topup-record-actions"><button type="button" onclick="editExpense(${item.id})">編輯</button><button type="button" onclick="confirmDelete(${item.id})">刪除</button></span></div>`;
 }).join('');
 };
 const updateToggle = (items, toggleId, hostId) => {
