@@ -6150,6 +6150,25 @@ const REMOVED_EXPENSE_IDS = new Set(['1789534801095', '1781736852891', '17788280
 let expenses = [];
 let publicTopups = [];
 let transitTopups = [];
+const TOPUP_BACKUP_KEY = 'our5th-topup-backup-v1';
+function saveTopupBackup() {
+try { localStorage.setItem(TOPUP_BACKUP_KEY, JSON.stringify({ ts: new Date().toISOString(), publicTopups, transitTopups })); } catch (error) {}
+}
+function notifyTopupUploadFailure(savePromise) {
+if (!savePromise || typeof savePromise.then !== 'function') return;
+savePromise.then(ok => {
+if (ok !== false || !window.cloudSaveDirty) return;
+const reason = window.lastCloudSaveError ? `<br><span style="font-size:12px;opacity:.7">錯誤代碼：${escapeHtml(String(window.lastCloudSaveError))}</span>` : '';
+showAlertHtml(`<span class="inline-alert-row">哎呀！這筆儲值沒有存到雲端耶～手機有先幫你記著，下次打開網站會再補傳一次<img class="inline-alert-pig" src="images/pigs/wallet-unsaved-pig-inline-hd.png" alt="沒有存到小豬"></span>${reason}`);
+}).catch(() => {});
+}
+function readTopupBackup() {
+try {
+const backup = JSON.parse(localStorage.getItem(TOPUP_BACKUP_KEY) || 'null');
+if (backup && typeof backup.ts === 'string' && Array.isArray(backup.publicTopups) && Array.isArray(backup.transitTopups)) return backup;
+} catch (error) {}
+return null;
+}
 const REQUIRED_WISHLIST_ITEMS = [
 { id: 2026101701, category: '藥妝店', title: 'DHC纖體錠', done: false, qty: 1, imageSrc: 'wishlist-images/dhc-slim-tablets.avif' },
 { id: 2026101702, category: 'Lawson', title: '鮮奶麻糬泡芙', done: false, qty: 1, imageSrc: 'wishlist-images/lawson-milk-mochi-cream-puff.jpg' },
@@ -6559,7 +6578,7 @@ const CLOUD_SYNC_ENABLED = true;
 window.CLOUD_SYNC_ENABLED = CLOUD_SYNC_ENABLED;
 const CLOUD_STATIC_SYNC_ENABLED = false;
 window.CLOUD_STATIC_SYNC_ENABLED = CLOUD_STATIC_SYNC_ENABLED;
-const STATIC_CONTENT_VERSION = '2026-11-05-wallet-layout-v2';
+const STATIC_CONTENT_VERSION = '2026-11-05-topup-backup-v3';
 window.STATIC_CONTENT_VERSION = STATIC_CONTENT_VERSION;
 
 const SECURE_DOCS_URL = new URL('secure-docs/vault.json?v=20260611-password-2', window.location.href).href;
@@ -14100,7 +14119,8 @@ resetExpenseForm({ keepMode: true });
 renderTopupRecords();
 showAlert('交通卡儲值成功！');
 }
-queueTripCloudSave();
+saveTopupBackup();
+notifyTopupUploadFailure(queueTripCloudSave());
 return;
 }
 if (currentWalletMode === 'topup') {
@@ -14136,7 +14156,8 @@ resetExpenseForm({ keepMode: true });
 renderTopupRecords();
 showAlertHtml('<span class="inline-alert-row">公費儲值成功！<img class="inline-alert-pig" src="images/pigs/fund-topup-success-pig-inline.png" alt="公費儲值成功小豬"></span>');
 }
-queueTripCloudSave();
+saveTopupBackup();
+notifyTopupUploadFailure(queueTripCloudSave());
 return;
 }
 const title = document.getElementById('exp-title').value.trim();
@@ -14259,6 +14280,7 @@ showConfirmAlert('要刪掉這筆花費嗎？\n刪掉後就回不來囉 (ﾟ A�
 expenses = expenses.filter(x => x.id !== id);
 publicTopups = publicTopups.filter(x => x.id !== id);
 transitTopups = transitTopups.filter(x => x.id !== id);
+saveTopupBackup();
 updatePublicFundDisplay();
 renderTopupRecords();
 renderExpenses();
@@ -14649,6 +14671,13 @@ publicTopups = Array.isArray(data.publicTopups) ? data.publicTopups : cloudExpen
 transitTopups = Array.isArray(data.transitTopups) ? data.transitTopups : cloudExpenses.filter(expense => expense.type === 'transitTopup');
 // 舊資料的儲值曾經放在 expenses，載入時搬到各自記錄區，避免重複顯示。
 topupMigrationNeeded = !hasSeparateTopupData && (publicTopups.length > 0 || transitTopups.length > 0);
+// 如果雲端比這支手機最後一次儲值還舊（代表上次上傳沒成功），就用手機暫存的儲值資料，並重新上傳
+const topupBackup = readTopupBackup();
+if (topupBackup && (!data.updatedAt || String(data.updatedAt) < topupBackup.ts)) {
+publicTopups = topupBackup.publicTopups;
+transitTopups = topupBackup.transitTopups;
+topupMigrationNeeded = true;
+}
 expenses = cloudExpenses.filter(expense => expense.type !== 'topup' && expense.type !== 'transitTopup');
 wishItems = Array.isArray(data.wishItems) ? data.wishItems : wishItems;
 wishlistCategories = Array.isArray(data.wishlistCategories) ? data.wishlistCategories : wishlistCategories;
