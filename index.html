@@ -14539,8 +14539,8 @@ let smallDebtJPY = 0;
 expenses.forEach(e => {
 if (e.type === 'topup' || e.type === 'transitTopup') return;
 if (e.isSettled) return;
-const bShareJPY = e.displayCurrency === 'TWD' ? e.bigPigShare / FX : e.bigPigShare;
-const sShareJPY = e.displayCurrency === 'TWD' ? e.smallPigShare / FX : e.smallPigShare;
+const bShareJPY = e.displayCurrency === 'TWD' ? (Number(e.bigPigShare) || 0) / currentFX : (Number(e.bigPigShare) || 0);
+const sShareJPY = e.displayCurrency === 'TWD' ? (Number(e.smallPigShare) || 0) / currentFX : (Number(e.smallPigShare) || 0);
 if (e.payer === '大豬') smallDebtJPY += sShareJPY;
 else if (e.payer === '小豬') bigDebtJPY += bShareJPY;
 });
@@ -15580,14 +15580,24 @@ window.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    onSnapshot(tripRef, (docSnapshot) => {
-      if (!docSnapshot.exists()) return;
-      if (Date.now() < (window.suppressCloudApplyUntil || 0)) return;
-      const data = docSnapshot.data();
-      if (docSnapshot.metadata?.fromCache) return;
+    let pendingCloudSnapshot = null;
+    let cloudApplyTimer = null;
+    function applyLatestCloudSnapshot() {
+      clearTimeout(cloudApplyTimer);
+      if (!pendingCloudSnapshot) return;
+      const delay = (window.suppressCloudApplyUntil || 0) - Date.now();
+      if (delay > 0) { cloudApplyTimer = setTimeout(applyLatestCloudSnapshot, delay + 30); return; }
+      const data = pendingCloudSnapshot.data();
+      pendingCloudSnapshot = null;
       if (data.updatedAt && latestCloudUpdatedAt && data.updatedAt <= latestCloudUpdatedAt) return;
       latestCloudUpdatedAt = data.updatedAt || latestCloudUpdatedAt;
       window.applyTripCloudData(data);
+    }
+    onSnapshot(tripRef, { includeMetadataChanges: true }, (docSnapshot) => {
+      if (!docSnapshot.exists()) return;
+      if (docSnapshot.metadata?.fromCache || docSnapshot.metadata?.hasPendingWrites) return;
+      pendingCloudSnapshot = docSnapshot;
+      applyLatestCloudSnapshot();
     }, (error) => {
       console.error('Firebase sync failed:', error);
     });
