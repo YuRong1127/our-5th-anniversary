@@ -10359,7 +10359,7 @@ blocks.forEach((block, blockIndex) => {
 const previousBlock = merged[merged.length - 1];
 if (block.type === 'text' && ['⬇️T2往T1時刻表', '⬇️T1往T2時刻表'].includes(block.text) &&
     previousBlock?.type === 'text' && previousBlock.text.startsWith('航廈間接駁車\n')) {
-  previousBlock.html = `${previousBlock.html}<br>${plainTextToHtml(block.text)}`;
+  previousBlock.html = `${previousBlock.html}${plainTextToHtml(block.text)}`;
   previousBlock.text += `\n${block.text}`;
   return;
 }
