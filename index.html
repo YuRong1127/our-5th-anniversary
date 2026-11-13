@@ -2918,13 +2918,22 @@ box-decoration-break: clone;
 -webkit-box-decoration-break: clone;
 }
 .note-highlight-section {
-margin: 2px 0 6px;
+margin: 2px 0 10px;
 }
 .note-highlight-section:last-child {
 margin-bottom: 0;
 }
 .note-highlight-section + br:has(+ .note-highlight-section) {
 display: none;
+}
+.note-block:has(> .note-text-view > .note-highlight-section:last-child .note-highlight-body.has-overflow:not(.is-expanded)):has(+ .note-block > .note-text-view > .note-highlight-section:first-child) {
+margin-bottom: 2px;
+}
+.note-block:has(> .note-text-view > .note-highlight-section:last-child .note-highlight-body.has-overflow:not(.is-expanded)):has(+ .note-block > .note-text-view > .note-highlight-section:first-child) > .note-text-view {
+padding-bottom: 0;
+}
+.note-block:has(> .note-text-view > .note-highlight-section:last-child .note-highlight-body.has-overflow:not(.is-expanded)) + .note-block > .note-text-view:has(> .note-highlight-section:first-child) {
+padding-top: 0;
 }
 .note-highlight-heading {
 display: block;
