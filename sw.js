@@ -47,7 +47,7 @@ self.addEventListener('fetch', (event) => {
   const sameOrigin = requestUrl.origin === self.location.origin;
 
   event.respondWith(
-    (sameOrigin ? fetch(request, { cache: 'no-store' }) : fetch(request))
+    fetch(request)
       .then((response) => {
         if (sameOrigin && response && response.ok) {
           const copy = response.clone();
