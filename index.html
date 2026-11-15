@@ -10441,6 +10441,11 @@ const flightCornerSrc = flightPairKey === 'IT206' ? 'images/wallet/wallet-corner
 const flightCorner = flightCornerSrc ? `<img class="flight-corner-illustration ${flightPairKey === 'IT707' ? 'return-flight-corner' : ''}" src="${flightCornerSrc}" alt="" aria-hidden="true">` : '';
 const flightViewHtml = isFlightNote ? getFlightDetailViewHtml(blocks, isEditMode) : '';
 host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flightCorner ? 'has-flight-corner' : ''}" data-field-index="0">${visibleFormatTools}${flightViewHtml || blocksHtml}${insertTools}${flightCorner}</div>`;
+const noteImages = host.querySelectorAll('.note-image-frame img, img.note-inline-photo');
+noteImages.forEach((image, index) => {
+image.loading = 'eager';
+image.fetchPriority = index === 0 ? 'high' : 'auto';
+});
 if (!isEditMode && currentDetailCard.querySelector('.item-title')?.textContent.trim() === '鳥羽水族館') {
 const page = host.querySelector('.note-page');
 const heading = Array.from(page?.children || []).find(node => node.textContent.trim() === '時刻表及地圖');
