@@ -45,19 +45,22 @@ self.addEventListener('fetch', (event) => {
 
   const requestUrl = new URL(request.url);
   const sameOrigin = requestUrl.origin === self.location.origin;
-  // Display saved images immediately; refresh their cached copies in the background.
+
+  // Storage is optional: it must never delay or break the displayed response.
   if (sameOrigin && (request.destination === 'image' || /\.(?:png|jpe?g|webp|gif|avif|svg)$/i.test(requestUrl.pathname))) {
-    const cachePromise = caches.open(ACTIVE_CACHE_VERSION);
-    const cachedPromise = cachePromise.then(cache => cache.match(request));
-    const freshPromise = fetch(request).then(async response => {
-      if (response.ok) {
-        const cache = await cachePromise;
-        await cache.put(request, response.clone());
-      }
-      return response;
-    });
-    event.waitUntil(freshPromise.then(() => {}, () => {}));
-    event.respondWith(cachedPromise.then(cached => cached || freshPromise));
+    const cachePromise = caches.open(ACTIVE_CACHE_VERSION).catch(() => null);
+    const cachedPromise = cachePromise.then(cache => cache ? cache.match(request).catch(() => null) : null);
+    let networkPromise;
+    const getNetwork = () => networkPromise || (networkPromise = fetch(request));
+    const responsePromise = cachedPromise.then(cached => cached || getNetwork());
+    event.respondWith(responsePromise);
+    event.waitUntil((async () => {
+      const cache = await cachePromise;
+      const cached = await cachedPromise;
+      if (!cache || cached) return;
+      const response = await getNetwork();
+      if (response.ok) await cache.put(request, response.clone());
+    })().catch(() => {}));
     return;
   }
 
