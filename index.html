@@ -3,6 +3,7 @@
 
 <html lang="zh-TW">
 <head>
+<link rel="preload" as="image" href="images/pigs/piggy-main.webp" fetchpriority="high">
 <link rel="preload" as="image" href="images/menu/menu-edit-computer.webp" fetchpriority="high">
 <link rel="preload" as="image" href="images/menu/menu-prep-bag.webp" fetchpriority="high">
 <link rel="preload" as="image" href="images/menu/menu-wishlist-gift.webp" fetchpriority="high">
@@ -6200,7 +6201,7 @@ Shimakaze郵筒
 <div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon"><img alt="重要資料" class="menu-icon-img menu-icon-docs" decoding="async" src="images/menu/menu-docs-writing.webp" loading="eager" fetchpriority="high"/></div></div>
 <div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon"><img alt="記帳錢包" class="menu-icon-img menu-icon-wallet" decoding="async" src="images/menu/menu-wallet-money.webp" loading="eager" fetchpriority="high"/></div></div>
 </div>
-<button aria-label="開啟小豬選單" class="float-icon main-piggy btn-press-effect" id="main-btn" onclick="handlePiggyMenuClick(event)" onpointerup="handlePiggyMenuPointer(event)" type="button"><img alt="小豬選單" decoding="async" fetchpriority="high" src="images/pigs/piggy-main.webp" loading="lazy"/></button>
+<button aria-label="開啟小豬選單" class="float-icon main-piggy btn-press-effect" id="main-btn" onclick="handlePiggyMenuClick(event)" onpointerup="handlePiggyMenuPointer(event)" type="button"><img alt="小豬選單" decoding="async" fetchpriority="high" src="images/pigs/piggy-main.webp" loading="eager"/></button>
 <button class="add-itinerary-btn btn-press-effect" id="add-itinerary-btn" onclick="addItineraryItem()" type="button">＋</button>
 <script>
 let currentDay = 1;
