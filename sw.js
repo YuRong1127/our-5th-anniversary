@@ -45,6 +45,22 @@ self.addEventListener('fetch', (event) => {
 
   const requestUrl = new URL(request.url);
   const sameOrigin = requestUrl.origin === self.location.origin;
+  // Display saved images immediately; refresh their cached copies in the background.
+  if (sameOrigin && (request.destination === 'image' || /\.(?:png|jpe?g|webp|gif|avif|svg)$/i.test(requestUrl.pathname))) {
+    const cachePromise = caches.open(ACTIVE_CACHE_VERSION);
+    const cachedPromise = cachePromise.then(cache => cache.match(request));
+    const freshPromise = fetch(request).then(async response => {
+      if (response.ok) {
+        const cache = await cachePromise;
+        await cache.put(request, response.clone());
+      }
+      return response;
+    });
+    event.waitUntil(freshPromise.then(() => {}, () => {}));
+    event.respondWith(cachedPromise.then(cached => cached || freshPromise));
+    return;
+  }
+
 
   event.respondWith(
     (sameOrigin ? fetch(request, { cache: 'no-store' }) : fetch(request))
