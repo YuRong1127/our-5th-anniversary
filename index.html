@@ -3,6 +3,11 @@
 
 <html lang="zh-TW">
 <head>
+<link rel="preload" as="image" href="images/menu/menu-edit-computer.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/menu/menu-prep-bag.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/menu/menu-wishlist-gift.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/menu/menu-docs-writing.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/menu/menu-wallet-money.webp" fetchpriority="high">
 <link rel="preload" as="image" href="images/icons/titlecute.png" fetchpriority="high"/>
 <link rel="preload" as="image" href="images/modals/work-schedule-reminder.png" fetchpriority="high"/>
 <link rel="preload" as="image" href="images/modals/trip-finished-hug.png" fetchpriority="high"/>
@@ -6189,11 +6194,11 @@ Shimakaze郵筒
 </div>
 <div class="menu-backdrop" id="menu-backdrop" onclick="closeMenu()"></div>
 <div class="floating-menu" id="floating-menu">
-<div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon"><img alt="編輯行程" class="menu-icon-img menu-icon-edit" decoding="async" src="images/menu/menu-edit-computer.webp" loading="lazy"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon"><img alt="出發清單" class="menu-icon-img menu-icon-prep" decoding="async" src="images/menu/menu-prep-bag.webp" loading="lazy"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon"><img alt="願望清單" class="menu-icon-img menu-icon-wishlist" decoding="async" src="images/menu/menu-wishlist-gift.webp" loading="lazy"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon"><img alt="重要資料" class="menu-icon-img menu-icon-docs" decoding="async" src="images/menu/menu-docs-writing.webp" loading="lazy"/></div></div>
-<div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon"><img alt="記帳錢包" class="menu-icon-img menu-icon-wallet" decoding="async" src="images/menu/menu-wallet-money.webp" loading="lazy"/></div></div>
+<div class="menu-action btn-press-effect" onclick="handleEditClick()"><span class="menu-label">編輯行程</span><div class="float-icon"><img alt="編輯行程" class="menu-icon-img menu-icon-edit" decoding="async" src="images/menu/menu-edit-computer.webp" loading="eager" fetchpriority="high"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openPrepList()"><span class="menu-label">出發清單</span><div class="float-icon"><img alt="出發清單" class="menu-icon-img menu-icon-prep" decoding="async" src="images/menu/menu-prep-bag.webp" loading="eager" fetchpriority="high"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openWishlist()"><span class="menu-label">願望清單</span><div class="float-icon"><img alt="願望清單" class="menu-icon-img menu-icon-wishlist" decoding="async" src="images/menu/menu-wishlist-gift.webp" loading="eager" fetchpriority="high"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openDocsFolder()"><span class="menu-label">重要資料</span><div class="float-icon"><img alt="重要資料" class="menu-icon-img menu-icon-docs" decoding="async" src="images/menu/menu-docs-writing.webp" loading="eager" fetchpriority="high"/></div></div>
+<div class="menu-action btn-press-effect" onclick="openWallet()"><span class="menu-label">記帳錢包</span><div class="float-icon"><img alt="記帳錢包" class="menu-icon-img menu-icon-wallet" decoding="async" src="images/menu/menu-wallet-money.webp" loading="eager" fetchpriority="high"/></div></div>
 </div>
 <button aria-label="開啟小豬選單" class="float-icon main-piggy btn-press-effect" id="main-btn" onclick="handlePiggyMenuClick(event)" onpointerup="handlePiggyMenuPointer(event)" type="button"><img alt="小豬選單" decoding="async" fetchpriority="high" src="images/pigs/piggy-main.webp" loading="lazy"/></button>
 <button class="add-itinerary-btn btn-press-effect" id="add-itinerary-btn" onclick="addItineraryItem()" type="button">＋</button>
@@ -6962,6 +6967,7 @@ refitVisibleItineraryEndArt();
 });
 }
 function switchDay(day, options = {}) {
+scheduleDayNotePreload(day);
 if (isModalOpen) return;
 if (Date.now() < dateClickSuppressedUntil && !options.auto) return;
 if (day === currentDay && !options.auto) {
@@ -10447,7 +10453,8 @@ host.innerHTML = `<div class="note-page ${isEditMode ? 'is-editing' : ''} ${flig
 const noteImages = host.querySelectorAll('.note-image-frame img, img.note-inline-photo');
 noteImages.forEach((image, index) => {
 image.loading = 'eager';
-image.fetchPriority = index === 0 ? 'high' : 'auto';
+image.fetchPriority = 'high';
+showNoteImageLoadState(image);
 });
 if (!isEditMode && currentDetailCard.querySelector('.item-title')?.textContent.trim() === '鳥羽水族館') {
 const page = host.querySelector('.note-page');
@@ -12392,6 +12399,68 @@ return img;
 function warmImages(sources) {
 return Promise.all(sources.map(src => warmImage(src).decode?.().catch(() => {}) || Promise.resolve()));
 }
+
+let dayNotePreloadTimer;
+let dayNotePreloadToken = 0;
+function scheduleDayNotePreload(day) {
+const token = ++dayNotePreloadToken;
+clearTimeout(dayNotePreloadTimer);
+dayNotePreloadTimer = setTimeout(async () => {
+const section = document.getElementById('day-' + (day || currentDay));
+if (!section) return;
+const sources = new Set();
+section.querySelectorAll('.card').forEach(card => {
+getNoteBlocks(card).forEach(block => {
+if (block.type === 'image' && block.src) sources.add(block.src);
+if (block.html) {
+const template = document.createElement('template');
+template.innerHTML = block.html;
+template.content.querySelectorAll('img[src]').forEach(img => sources.add(img.getAttribute('src')));
+}
+});
+});
+for (const src of sources) {
+if (token !== dayNotePreloadToken) return;
+while (isModalOpen) {
+await new Promise(resolve => setTimeout(resolve, 500));
+if (token !== dayNotePreloadToken) return;
+}
+await new Promise(resolve => {
+const image = new Image();
+image.fetchPriority = 'low';
+image.decoding = 'async';
+image.onload = image.onerror = resolve;
+image.src = src;
+if (image.complete) resolve();
+});
+}
+}, 1200);
+}
+function showNoteImageLoadState(image) {
+if (isEditMode || (image.complete && image.naturalWidth)) return;
+const status = document.createElement('button');
+status.type = 'button';
+status.className = 'note-image-load-status';
+status.textContent = '圖片載入中…';
+status.disabled = true;
+status.style.cssText = 'display:block;width:100%;min-height:90px;border:1px solid #eadbd6;border-radius:12px;background:#fffaf7;color:#8d6e63;font:inherit;text-align:center;margin:4px 0';
+image.before(status);
+image.addEventListener('load', () => status.remove(), {once:true});
+const failed = () => {
+status.disabled = false;
+status.textContent = '圖片載入失敗，點此重新載入';
+};
+image.addEventListener('error', failed);
+status.onclick = event => {
+event.stopPropagation();
+status.disabled = true;
+status.textContent = '圖片載入中…';
+const src = image.getAttribute('src');
+image.src = src.split('#')[0] + (src.includes('?') ? '&' : '?') + 'imageRetry=' + Date.now();
+};
+if (image.complete) { if (image.naturalWidth) status.remove(); else failed(); }
+}
+
 function warmAllDetailImages() {
 const sources = [];
 document.querySelectorAll('.card').forEach(card => {
@@ -15687,7 +15756,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
       .then((registration) => {
-        registration.update();
+
         if (registration.waiting) registration.waiting.postMessage({ type: 'SKIP_WAITING' });
         registration.addEventListener('updatefound', () => {
           const worker = registration.installing;
@@ -15701,37 +15770,9 @@ if ('serviceWorker' in navigator) {
       })
       .catch(error => console.error('Service worker register failed:', error));
   });
-  let refreshingForSw = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshingForSw) return;
-    refreshingForSw = true;
-    window.location.reload();
-  });
+
 }
-window.addEventListener('DOMContentLoaded', () => {
-  [
-    'images/pigs/money-pig.png',
-    'images/pigs/typing-pig.png',
-    'images/pigs/angry-pig-inline.png',
-    'images/anniversary/anniv-left-inline.png',
-    'images/anniversary/anniv-right-inline.png',
-    'images/pigs/empty-wallet-pig-inline.png',
-    'images/pigs/empty-stats-pig-inline.png',
-    'images/pigs/empty-details-pig-inline.png',
-    'images/pigs/missing-title-pig-v2-inline.png',
-    'images/pigs/invalid-amount-pig-inline.png',
-    'images/pigs/fund-topup-success-pig-inline.png',
-    'images/pigs/wallet-unsaved-pig-inline-hd.png',
-    'images/pigs/discard-unsaved-pig.png'
-  ].concat(FLIGHT_DETAIL_IMAGE_SOURCES)
-  .filter((src, index, list) => list.indexOf(src) === index)
-  .forEach((src) => {
-    const img = warmImage(src);
-    img.decode?.().catch(() => {});
-    if (src === 'images/pigs/discard-unsaved-pig.png') preloadedDiscardPig = img;
-  });
-  warmAllDetailImages();
-});
+window.addEventListener('DOMContentLoaded', () => scheduleDayNotePreload());
 
 document.getElementById('route-plan-text').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
