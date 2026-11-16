@@ -12445,27 +12445,45 @@ if (image.complete) resolve();
 }
 function showNoteImageLoadState(image) {
 if (isEditMode || (image.complete && image.naturalWidth)) return;
+const existingFrame = image.closest('.note-image-frame');
+const frame = existingFrame || document.createElement('span');
+if (!existingFrame) {
+frame.style.cssText = 'display:block;position:relative';
+image.before(frame);
+frame.appendChild(image);
+}
+const oldMinHeight = frame.style.minHeight;
+const oldVisibility = image.style.visibility;
+frame.style.minHeight = '90px';
+image.style.visibility = 'hidden';
 const status = document.createElement('button');
 status.type = 'button';
 status.className = 'note-image-load-status';
 status.textContent = '圖片載入中…';
 status.disabled = true;
-status.style.cssText = 'display:block;width:100%;min-height:90px;border:1px solid #eadbd6;border-radius:12px;background:#fffaf7;color:#8d6e63;font:inherit;text-align:center;margin:4px 0';
-image.before(status);
-image.addEventListener('load', () => status.remove(), {once:true});
+status.style.cssText = 'position:absolute;inset:0;z-index:1;width:100%;height:100%;border:0;border-radius:12px;background:#fffaf7;color:#8d6e63;font:inherit;text-align:center;margin:0';
+frame.appendChild(status);
+const loaded = () => {
+status.remove();
+image.style.visibility = oldVisibility;
+frame.style.minHeight = oldMinHeight;
+if (!existingFrame && frame.parentNode) frame.replaceWith(image);
+image.removeEventListener('error', failed);
+};
 const failed = () => {
 status.disabled = false;
 status.textContent = '圖片載入失敗，點此重新載入';
 };
+image.addEventListener('load', loaded, {once:true});
 image.addEventListener('error', failed);
 status.onclick = event => {
 event.stopPropagation();
 status.disabled = true;
 status.textContent = '圖片載入中…';
-const src = image.getAttribute('src');
-image.src = src.split('#')[0] + (src.includes('?') ? '&' : '?') + 'imageRetry=' + Date.now();
+const src = image.getAttribute('src').split('#')[0];
+image.src = src + (src.includes('?') ? '&' : '?') + 'imageRetry=' + Date.now();
 };
-if (image.complete) { if (image.naturalWidth) status.remove(); else failed(); }
+if (image.complete) { if (image.naturalWidth) loaded(); else failed(); }
 }
 
 function warmAllDetailImages() {
