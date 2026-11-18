@@ -1,6 +1,6 @@
-﻿const CACHE_VERSION = 'mie-anniversary-v20261119-full-itinerary-1';
+﻿const CACHE_VERSION = 'mie-anniversary-v20261119-map-icons-2';
 const APP_SHELL_URL = './index.html';
-const ACTIVE_CACHE_VERSION = 'mie-anniversary-v20261119-full-itinerary-1';
+const ACTIVE_CACHE_VERSION = 'mie-anniversary-v20261119-map-icons-2';
 const SECURE_VAULT_URL = './secure-docs/vault.json';
 const PIGGY_MENU_SOUND_URL = './sounds/piggy-menu-bubble.mp3';
 
