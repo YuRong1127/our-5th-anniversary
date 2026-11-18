@@ -1497,6 +1497,7 @@ padding: 10px 4px 6px;
 text-align: center;
 color: var(--main-brown);
 }
+
 .settle-result-main { font-size: 1.02rem; font-weight: 900; line-height: 1.9; }
 .settle-loan-line { margin-top: 6px; line-height: 1.35; }
 .settle-loan-note { margin-top: 4px; color: var(--light-brown); font-size: .78rem; }
@@ -14430,7 +14431,7 @@ openDetailsModal();
 expenses.unshift(next);
 resetExpenseForm();
 renderExpenses();
-showAlert('新增成功！🐽');
+showAlertHtml('<span class="inline-alert-row">新增成功！<img class="inline-alert-pig" src="images/pigs/expense-added-success-pig.webp" alt="愛心小豬"></span>');
 }
 queueTripCloudSave();
 }
